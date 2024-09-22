@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
@@ -7,11 +8,14 @@ using UnityEngine;
 
 public class LobbyManager : MonoBehaviour
 {
-    private Lobby _hostLobby; // Referencia a la sala creada
+    private Lobby _hostLobby; // Referencia a la sala creada (difiere de null sólo en el caso del host)
+    private Lobby _joinedLobby; // Referencia a la sala a la que se ha unido
     // Nombre para la sala
     private string _lobbyName = "TimeSpin";
     // Se almacena el número máximo de jugadores de la sala
     private const int MAX_PLAYERS = 8;
+    // Se almacena el número actual de jugadores en la sala
+    [SerializeField] private int NUM_PLAYERS_IN_LOBBY;
     // Variables encargadas de hacer una pulsación cada cierto tiempo, para que la sala no se destruya por inactividad
     private float _heartBeatLobbyTimer = 0;
     private const int MAX_HEARTBEAT_TIMER = 15;
@@ -27,8 +31,8 @@ public class LobbyManager : MonoBehaviour
             Debug.Log("Signed in " + AuthenticationService.Instance.PlayerId);
         };
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
-        // CreatePrivateLobby();
-        // await JoinPublicLobby();
+        // Mediante esta corrutina, se actualiza cada cierto tiempo el estado del lobby, para tener siempre la información correcta (por si alguien se conecta o desconecta)
+        StartCoroutine(UpdateLobby());
     }
 
     private void Update()
@@ -39,7 +43,8 @@ public class LobbyManager : MonoBehaviour
             HandleLobbyHeartbeat();
         }
     }
-
+    
+    #region Updates
     // Esta función se utiliza para enviar un mensaje al lobby cada 15 segundos, para evitar que la sala desaparezca por inactividad
     private async void HandleLobbyHeartbeat()
     {
@@ -55,7 +60,43 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
+    // Función para actualizar continuamente el lobby
+    private IEnumerator UpdateLobby()
+    {
+        while (true)
+        {
+            // Cada segundo, se actualiza el estado del lobby
+            yield return new WaitForSeconds(1f);
 
+            if (_joinedLobby != null)
+            {
+                // Se crea la tarea encargada de obtener el Lobby
+                var tarea = GetLobby();
+                // Mediante un delegado, se espera a que la tarea finalice para continuar
+                yield return new WaitUntil(() => tarea.IsCompleted);
+                // Se actualiza el número de jugadores en la sala
+                if (_joinedLobby != null)
+                {
+                    NUM_PLAYERS_IN_LOBBY = _joinedLobby.Players.Count;
+                }
+            }
+        }
+    }
+    private async Task GetLobby()
+    {
+        try
+        {
+            // Mediante el ID de la sala, se obtiene una referencia actualizada
+            Lobby lobbyActualizado = await Lobbies.Instance.GetLobbyAsync(_joinedLobby.Id);
+            _joinedLobby = lobbyActualizado;
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.Log(e);
+        }
+    }
+    #endregion
+    #region Create
     // Función asíncrona para crear la sala privada con un nombre y un número máximo de integrantes
     private async void CreatePrivateLobby()
     {
@@ -70,6 +111,7 @@ public class LobbyManager : MonoBehaviour
             };
 
             _hostLobby = await LobbyService.Instance.CreateLobbyAsync(_lobbyName, MAX_PLAYERS, createLobbyOptions);
+            _joinedLobby = _hostLobby;
             Debug.Log("Created Lobby! " + _hostLobby.LobbyCode);
             // PrintPlayers(_hostLobby);
         }
@@ -93,6 +135,7 @@ public class LobbyManager : MonoBehaviour
             };
 
             _hostLobby = await LobbyService.Instance.CreateLobbyAsync(_lobbyName, MAX_PLAYERS, createLobbyOptions);
+            _joinedLobby = _hostLobby;
             Debug.Log("Created Lobby! " + _hostLobby.LobbyCode);
             // PrintPlayers(_hostLobby);
         }
@@ -101,7 +144,8 @@ public class LobbyManager : MonoBehaviour
             Debug.Log(e);
         }
     }
-
+    #endregion
+    #region Join
     // Función asíncrona para unirse a una sala privada mediante código
     private async Task JoinLobbyByCode(string lobbyCode)
     {
@@ -112,7 +156,7 @@ public class LobbyManager : MonoBehaviour
             {
                 Player = SelectionController.instance.GetPlayer()
             };
-            await Lobbies.Instance.JoinLobbyByCodeAsync(lobbyCode, options);
+            _joinedLobby = await Lobbies.Instance.JoinLobbyByCodeAsync(lobbyCode, options);
             Debug.Log("Joined Lobby with code: " + lobbyCode);
         }
         catch (LobbyServiceException e)
@@ -142,7 +186,7 @@ public class LobbyManager : MonoBehaviour
                 Player = SelectionController.instance.GetPlayer()
             };
             // Se intenta unir a una sala disponible
-            await LobbyService.Instance.QuickJoinLobbyAsync(options);
+            _joinedLobby = await LobbyService.Instance.QuickJoinLobbyAsync(options);
         }
         catch (LobbyServiceException e)
         {
@@ -151,9 +195,27 @@ public class LobbyManager : MonoBehaviour
             CreatePublicLobby();
         }
     }
-
+    #endregion
+    #region Leave
+    // Con esta función, el jugador abandona la sala
+    public async Task LeaveLobby()
+    {
+        try
+        {
+            // Se limpian todas las referencias del código
+            await LobbyService.Instance.RemovePlayerAsync(_joinedLobby.Id, AuthenticationService.Instance.PlayerId);
+            Debug.Log("Jugador ha abandonado la sala");
+            _joinedLobby = null;
+            _hostLobby = null;
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.Log(e);
+        }
+    }
+    #endregion
+    #region Debug
     // Se obtienen los jugadores del lobby y se muestran por pantalla
-    /*
     private void PrintPlayers(Lobby l)
     {
         Debug.Log("Players in lobby ------ ");
@@ -162,11 +224,8 @@ public class LobbyManager : MonoBehaviour
             Debug.Log(p.Id + " " + p.Data["Name"].Value + " " + p.Data["Character"].Value);
         }
     }
-    */
-
 
     // Función asíncrona para listar todas las lobbies existentes
-    /*
     private async void ListLobbies()
     {
         try
@@ -184,5 +243,6 @@ public class LobbyManager : MonoBehaviour
             Debug.Log(e);
         }
     }
-    */
+    #endregion
+
 }
