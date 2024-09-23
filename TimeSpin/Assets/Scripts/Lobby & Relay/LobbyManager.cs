@@ -1,5 +1,7 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
@@ -8,17 +10,27 @@ using UnityEngine;
 
 public class LobbyManager : MonoBehaviour
 {
+    public static LobbyManager instance;
+
     private Lobby _hostLobby; // Referencia a la sala creada (difiere de null sólo en el caso del host)
     private Lobby _joinedLobby; // Referencia a la sala a la que se ha unido
     // Nombre para la sala
     private string _lobbyName = "TimeSpin";
     // Se almacena el número máximo de jugadores de la sala
-    private const int MAX_PLAYERS = 8;
+    private const int MAX_PLAYERS = 4;
     // Se almacena el número actual de jugadores en la sala
     [SerializeField] private int NUM_PLAYERS_IN_LOBBY;
     // Variables encargadas de hacer una pulsación cada cierto tiempo, para que la sala no se destruya por inactividad
     private float _heartBeatLobbyTimer = 0;
     private const int MAX_HEARTBEAT_TIMER = 15;
+    // Variables que almacenan la clave del relay creado por el host
+    private string _relayCode;
+    private string KEY_START_GAME = "relayCode"; // Key para el diccionario
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     private async void Start()
     {
@@ -43,7 +55,7 @@ public class LobbyManager : MonoBehaviour
             HandleLobbyHeartbeat();
         }
     }
-    
+
     #region Updates
     // Esta función se utiliza para enviar un mensaje al lobby cada 15 segundos, para evitar que la sala desaparezca por inactividad
     private async void HandleLobbyHeartbeat()
@@ -98,7 +110,7 @@ public class LobbyManager : MonoBehaviour
     #endregion
     #region Create
     // Función asíncrona para crear la sala privada con un nombre y un número máximo de integrantes
-    private async void CreatePrivateLobby()
+    public async void CreatePrivateLobby()
     {
         try
         {
@@ -113,7 +125,8 @@ public class LobbyManager : MonoBehaviour
             _hostLobby = await LobbyService.Instance.CreateLobbyAsync(_lobbyName, MAX_PLAYERS, createLobbyOptions);
             _joinedLobby = _hostLobby;
             Debug.Log("Created Lobby! " + _hostLobby.LobbyCode);
-            // PrintPlayers(_hostLobby);
+            // Una vez creada la sala, se inicia el relay para el host, para que pueda visualizar a su personaje en la sala
+            StartHostGame();
         }
         catch (LobbyServiceException e)
         {
@@ -137,7 +150,8 @@ public class LobbyManager : MonoBehaviour
             _hostLobby = await LobbyService.Instance.CreateLobbyAsync(_lobbyName, MAX_PLAYERS, createLobbyOptions);
             _joinedLobby = _hostLobby;
             Debug.Log("Created Lobby! " + _hostLobby.LobbyCode);
-            // PrintPlayers(_hostLobby);
+            // Una vez creada la sala, se inicia el relay para el host, para que pueda visualizar a su personaje en la sala
+            StartHostGame();
         }
         catch (LobbyServiceException e)
         {
@@ -147,7 +161,7 @@ public class LobbyManager : MonoBehaviour
     #endregion
     #region Join
     // Función asíncrona para unirse a una sala privada mediante código
-    private async Task JoinLobbyByCode(string lobbyCode)
+    public async Task JoinLobbyByCode(string lobbyCode)
     {
         try
         {
@@ -158,6 +172,8 @@ public class LobbyManager : MonoBehaviour
             };
             _joinedLobby = await Lobbies.Instance.JoinLobbyByCodeAsync(lobbyCode, options);
             Debug.Log("Joined Lobby with code: " + lobbyCode);
+            // Una vez se ha unido a la sala, se une al cliente al relay creado por el host, para que pueda visualizar a su personaje en la sala
+            StartClientGame();
         }
         catch (LobbyServiceException e)
         {
@@ -176,7 +192,7 @@ public class LobbyManager : MonoBehaviour
     }
 
     // Función asíncrona para unirse a una sala pública cualquiera
-    private async Task JoinPublicLobby()
+    public async Task JoinPublicLobby()
     {
         try
         {
@@ -187,6 +203,8 @@ public class LobbyManager : MonoBehaviour
             };
             // Se intenta unir a una sala disponible
             _joinedLobby = await LobbyService.Instance.QuickJoinLobbyAsync(options);
+            // Una vez se ha unido a la sala, se une al cliente al relay creado por el host, para que pueda visualizar a su personaje en la sala
+            StartClientGame();
         }
         catch (LobbyServiceException e)
         {
@@ -233,15 +251,47 @@ public class LobbyManager : MonoBehaviour
             QueryResponse queryResponse = await Lobbies.Instance.QueryLobbiesAsync();
 
             Debug.Log("Lobbies found: " + queryResponse.Results.Count);
-            foreach(Lobby lobby in queryResponse.Results)
+            foreach (Lobby lobby in queryResponse.Results)
             {
                 Debug.Log(lobby.Name + " " + lobby.MaxPlayers);
             }
         }
-        catch(LobbyServiceException e)
+        catch (LobbyServiceException e)
         {
             Debug.Log(e);
         }
+    }
+    #endregion
+    #region Start
+    private async void StartHostGame()
+    {
+        // Tras crear la sala, aparecerá se creará el punto de conexión para los demás jugadores y aparecerán sus personajes
+        // Se espera a que se cree para continuar
+        await RelayManager.instance.CreateRelay(MAX_PLAYERS);
+        // Una vez creado se obtiene la clave
+        _relayCode = RelayManager.instance.GetJoinCode();
+        // Se actualiza el lobby con dicha clave, para que al intentar iniciar, los jugadores no necesiten introducir este código
+        Lobby lobby = await Lobbies.Instance.UpdateLobbyAsync(_joinedLobby.Id, new UpdateLobbyOptions
+        {
+            Data = new Dictionary<string, DataObject> {
+                    {
+                        KEY_START_GAME, new DataObject(DataObject.VisibilityOptions.Member, _relayCode)
+                    } }
+        });
+        // Se actualiza la referencia del lobby actual
+        _joinedLobby = lobby;
+        // Una vez hecho, se inicia el Host
+        NetworkManager.Singleton.StartHost();
+    }
+
+    private void StartClientGame()
+    {
+        // Comienza el juego como un cliente
+        // Primero debe de unirse al Relay que haya creado el Host
+        // Para hacerlo, primero debe conseguir la clave del Relay
+        _relayCode = _joinedLobby.Data[KEY_START_GAME].Value;
+        // Después, se utiliza para unirse al Relay. Una vez hecho, se comienza el juego como cliente
+        RelayManager.instance.JoinRelay(_relayCode);
     }
     #endregion
 

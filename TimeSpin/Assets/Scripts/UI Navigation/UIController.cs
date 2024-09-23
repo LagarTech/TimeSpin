@@ -6,7 +6,6 @@ public class UIController : MonoBehaviour
 {
     public GameObject Desarrollador;  // Imagen desarrollador
     public GameObject Cinematica;     // Cinematica
-    public GameObject UILobbyTest;    // Lobby
     public GameObject Menu;           //Menu principal
     public GameObject Creditos;
     public GameObject Configuracion;
@@ -37,7 +36,8 @@ public class UIController : MonoBehaviour
 
         Cinematica.SetActive(false);
         Menu.SetActive(false);
-        UILobbyTest.SetActive(false);
+        Crear.SetActive(false);
+        Unirse.SetActive(false);
         PracticaPanel.SetActive(false);
         ConfiguracionPanel.SetActive(false);
         CreditosPanel.SetActive(false);
@@ -96,18 +96,20 @@ public class UIController : MonoBehaviour
 
         // Mostrar el lobby
         Nombre.SetActive(true);
-        UILobbyTest.SetActive(true);
-      
+        Crear.SetActive(true);
+        Unirse.SetActive(true);
+
     }
 
     void OnPracticaButtonClicked()
     {
         // Ocultar la cinemática y el menu
         Menu.SetActive(false);
-        UILobbyTest.SetActive(false);
+        Crear.SetActive(false);
+        Unirse.SetActive(false);
 
 
-       
+
         // Mostrar el lobby
         PracticaPanel.SetActive(true);
     }
@@ -116,7 +118,8 @@ public class UIController : MonoBehaviour
     {
         // Ocultar la cinemática y el menu
         Menu.SetActive(false);
-        UILobbyTest.SetActive(false);
+        Crear.SetActive(false);
+        Unirse.SetActive(false);
         // Mostrar el lobby
 
         CreditosPanel.SetActive(true);
@@ -126,7 +129,8 @@ public class UIController : MonoBehaviour
     {
         // Ocultar la cinemática y el menu
         Menu.SetActive(false);
-        UILobbyTest.SetActive(false);
+        Crear.SetActive(false);
+        Unirse.SetActive(false);
 
         // Mostrar el lobby
         ConfiguracionPanel.SetActive(true);
@@ -140,7 +144,8 @@ public class UIController : MonoBehaviour
         {
             Menu.SetActive(true);
             ConfiguracionPanel.SetActive(false);
-            UILobbyTest.SetActive(false);
+            Crear.SetActive(false);
+            Unirse.SetActive(false);
             PracticaPanel.SetActive(false);
             CreditosPanel.SetActive(false);
         };
@@ -149,18 +154,20 @@ public class UIController : MonoBehaviour
         {
             Menu.SetActive(true);
             CreditosPanel.SetActive(false);
-            UILobbyTest.SetActive(false);
+            Crear.SetActive(false);
+            Unirse.SetActive(false);
             PracticaPanel.SetActive(false);
             ConfiguracionPanel.SetActive(false);
         };
 
-        if (UILobbyTest.active)
+        if (Crear.active)
         {
             Menu.SetActive(true);
             ConfiguracionPanel.SetActive(false);
             CreditosPanel.SetActive(false);
             PracticaPanel.SetActive(false);
-            UILobbyTest.SetActive(false);
+            Crear.SetActive(false);
+            Unirse.SetActive(false);
         };
 
         if (PracticaPanel.active)
@@ -168,7 +175,8 @@ public class UIController : MonoBehaviour
             Menu.SetActive(true);
             ConfiguracionPanel.SetActive(false);
             CreditosPanel.SetActive(false);
-            UILobbyTest.SetActive(false);
+            Crear.SetActive(false);
+            Unirse.SetActive(false);
             PracticaPanel.SetActive(false);
         };
 
