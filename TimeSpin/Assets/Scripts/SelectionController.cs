@@ -7,7 +7,7 @@ public class SelectionController : MonoBehaviour
 {
     public static SelectionController instance;
     // Variables que almacenan la información con la que se caracteriza un jugador en línea
-    [SerializeField] private string _selectedCharacter;
+    [SerializeField] private int _selectedCharacter;
     [SerializeField] private string _namePlayer;
 
     private void Awake()
@@ -22,7 +22,7 @@ public class SelectionController : MonoBehaviour
         }
     }
     // Función para modificar el personaje escogido
-    public void ModifyCharacter(string newCharacter)
+    public void ModifyCharacter(int newCharacter)
     {
         _selectedCharacter = newCharacter;
     }
@@ -43,7 +43,7 @@ public class SelectionController : MonoBehaviour
             {
                 // Solo almacenamos el nombre del jugador, junto con el color del coche que lleve
                 { "Name", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, _namePlayer) },
-                { "Character", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, _selectedCharacter) }
+                { "Character", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, _selectedCharacter.ToString()) }
             }
         };
     }
