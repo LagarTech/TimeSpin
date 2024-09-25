@@ -263,8 +263,10 @@ public class LobbyManager : MonoBehaviour
     }
     #endregion
     #region Start
+
     private async void StartHostGame()
     {
+        /*
         // Tras crear la sala, aparecerá se creará el punto de conexión para los demás jugadores y aparecerán sus personajes
         // Se espera a que se cree para continuar
         await RelayManager.instance.CreateRelay(MAX_PLAYERS);
@@ -282,16 +284,19 @@ public class LobbyManager : MonoBehaviour
         _joinedLobby = lobby;
         // Una vez hecho, se inicia el Host
         NetworkManager.Singleton.StartHost();
+        */
     }
 
     private void StartClientGame()
     {
+        /*
         // Comienza el juego como un cliente
         // Primero debe de unirse al Relay que haya creado el Host
         // Para hacerlo, primero debe conseguir la clave del Relay
         _relayCode = _joinedLobby.Data[KEY_START_GAME].Value;
         // Después, se utiliza para unirse al Relay. Una vez hecho, se comienza el juego como cliente
         RelayManager.instance.JoinRelay(_relayCode);
+        */
     }
     #endregion
 
