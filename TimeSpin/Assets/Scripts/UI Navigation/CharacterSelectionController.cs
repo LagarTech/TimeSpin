@@ -35,6 +35,11 @@ public class CharacterSelectionController : MonoBehaviour
     void UpdateCharacterPreview()
     {
         SelectionController.instance.ModifyCharacter(currentCharacterIndex);
-        characterPreview.sprite = characterSprites[currentCharacterIndex];
+        // Se comprueba si el código se ejecuta en el cliente o en el servidor
+        if(Application.platform != RuntimePlatform.LinuxServer)
+        {
+            // Solo se puede acceder a elementos gráficos en el cliente
+            characterPreview.sprite = characterSprites[currentCharacterIndex];
+        }
     }
 }

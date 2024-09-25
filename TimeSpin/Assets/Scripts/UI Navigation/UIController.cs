@@ -31,6 +31,8 @@ public class UIController : MonoBehaviour
 
     void Start()
     {
+        if (Application.platform == RuntimePlatform.LinuxServer) return; // Evita la ejecución en el servidor
+
         // Al inicio, mostramos solo la imagen del desarrollador y ocultamos lo demás
         Desarrollador.SetActive(true);
 

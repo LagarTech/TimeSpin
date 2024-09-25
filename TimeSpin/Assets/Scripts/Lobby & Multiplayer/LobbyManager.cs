@@ -8,7 +8,7 @@ using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 
-public class LobbyManager : MonoBehaviour
+public class LobbyManager: MonoBehaviour
 {
     public static LobbyManager instance;
 
@@ -125,8 +125,16 @@ public class LobbyManager : MonoBehaviour
             _hostLobby = await LobbyService.Instance.CreateLobbyAsync(_lobbyName, MAX_PLAYERS, createLobbyOptions);
             _joinedLobby = _hostLobby;
             Debug.Log("Created Lobby! " + _hostLobby.LobbyCode);
-            // Una vez creada la sala, se inicia el relay para el host, para que pueda visualizar a su personaje en la sala
-            StartHostGame();
+            // Una vez creada la sala, se hace una petición para iniciar un servidor de Multiplay
+
+            // Una vez activo, se recibe la IP y el puerto del servidor para establecer la conexión
+            // Se guarda dicha información en la sala
+
+            // Por último, se une al cliente al servidor
+            string IP = "34.88.70.88";
+            string port = "9000";
+            MultiplayManager.Instance.JoinToServer(IP, port);
+
         }
         catch (LobbyServiceException e)
         {
