@@ -22,15 +22,26 @@ public class UIController : MonoBehaviour
     public GameObject Jugar;
     public GameObject Crear;
     public GameObject Unirse;
+    public GameObject volver;
+
 
     public Button avanzarButton;      // Botón para avanzar en la cinemática
     public Button jugar;              // Botón para jugar
     public Button creditos;           // Botón para pantalla de creditos
     public Button configuracion;      // Botón para pantalla de config
     public Button practica;
+   
+
+    public InputField playerNameInput;  // El InputField donde el jugador escribe su nombre
+
+
 
     void Start()
     {
+        if (Application.platform == RuntimePlatform.LinuxServer) return; // Evita la ejecución en el servidor
+
+        playerNameInput.interactable = true;
+
         // Al inicio, mostramos solo la imagen del desarrollador y ocultamos lo demás
         Desarrollador.SetActive(true);
 
@@ -41,6 +52,8 @@ public class UIController : MonoBehaviour
         PracticaPanel.SetActive(false);
         ConfiguracionPanel.SetActive(false);
         CreditosPanel.SetActive(false);
+        volver.SetActive(false);
+        
 
         // Corrutina que espera 4 segundos antes de cambiar la visibilidad
         StartCoroutine(ShowCinematicAfterDelay(4.0f));
@@ -98,6 +111,13 @@ public class UIController : MonoBehaviour
         Nombre.SetActive(true);
         Crear.SetActive(true);
         Unirse.SetActive(true);
+        volver.SetActive(true);
+
+        // Bloquea el InputField para que no se pueda editar más
+        playerNameInput.interactable = false;
+
+        // Opcionalmente, puedes hacer algo más aquí, como pasar a otra escena o mostrar un mensaje
+        Debug.Log("Nombre del jugador: " + playerNameInput.text);
 
     }
 
@@ -181,4 +201,7 @@ public class UIController : MonoBehaviour
         };
 
     }
+
+
+
 }
