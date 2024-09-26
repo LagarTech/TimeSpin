@@ -34,6 +34,9 @@ public class LobbyManager: MonoBehaviour
 
     private async void Start()
     {
+        // Este código solo se ejecuta en el cliente
+        if (Application.platform == RuntimePlatform.LinuxServer) return;
+
         // Se inicializan los servicios de Unity
         await UnityServices.InitializeAsync();
         // Se hace un registro anónimo
@@ -49,6 +52,8 @@ public class LobbyManager: MonoBehaviour
 
     private void Update()
     {
+        // Este código solo se ejecuta en el cliente
+        if (Application.platform == RuntimePlatform.LinuxServer) return;
         // Si estamos unidos a un lobby, cada cierto tiempo se la mandan pulsaciones
         if (_hostLobby != null)
         {
@@ -131,7 +136,7 @@ public class LobbyManager: MonoBehaviour
             // Se guarda dicha información en la sala
 
             // Por último, se une al cliente al servidor
-            string IP = "34.88.70.88";
+            string IP = "34.76.252.208";
             string port = "9000";
             MultiplayManager.Instance.JoinToServer(IP, port);
 

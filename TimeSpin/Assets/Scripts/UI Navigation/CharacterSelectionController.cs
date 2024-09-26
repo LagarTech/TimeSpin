@@ -9,6 +9,8 @@ public class CharacterSelectionController : MonoBehaviour
 
     void Start()
     {
+        // Este código solo se ejecuta en el cliente
+        if (Application.platform == RuntimePlatform.LinuxServer) return;
         // Mostrar el primer personaje al inicio
         UpdateCharacterPreview();
     }
@@ -35,11 +37,6 @@ public class CharacterSelectionController : MonoBehaviour
     void UpdateCharacterPreview()
     {
         SelectionController.instance.ModifyCharacter(currentCharacterIndex);
-        // Se comprueba si el código se ejecuta en el cliente o en el servidor
-        if(Application.platform != RuntimePlatform.LinuxServer)
-        {
-            // Solo se puede acceder a elementos gráficos en el cliente
-            characterPreview.sprite = characterSprites[currentCharacterIndex];
-        }
+        characterPreview.sprite = characterSprites[currentCharacterIndex];
     }
 }
