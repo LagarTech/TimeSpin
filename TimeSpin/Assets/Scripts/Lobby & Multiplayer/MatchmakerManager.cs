@@ -9,7 +9,7 @@ using Unity.Services.Matchmaker;
 using Unity.Services.Matchmaker.Models;
 using UnityEngine;
 
-public class MatchmakerManager : MonoBehaviour
+public class MatchmakerManager : NetworkBehaviour
 {
     public static MatchmakerManager Instance;
 
@@ -35,17 +35,17 @@ public class MatchmakerManager : MonoBehaviour
         }
     }
 
-    private async void Update()
+    private void Update()
     {
         // Este código solo se ejecuta en el servidor, ya que es el encargado de desasignarlo
         if(Application.platform == RuntimePlatform.LinuxServer)
         {
-            // Si no hay ningún cliente conectado 
+            // Si no hay ningún cliente conectado se detiene el servidor
             if(NetworkManager.Singleton.ConnectedClients.Count == 0 && !_isDeallocating)
             {
                 _isDeallocating = true;
                 _deallocatingCancellationToken = false;
-                // DeallocateServer();
+                DeallocateServer();
             }
             if(NetworkManager.Singleton.ConnectedClients.Count != 0)
             {
@@ -53,6 +53,18 @@ public class MatchmakerManager : MonoBehaviour
                 _deallocatingCancellationToken = true;
             }
 
+        }
+    }
+
+    private void OnApplicationQuit()
+    {
+        if(Application.platform != RuntimePlatform.LinuxServer)
+        {
+            if(NetworkManager.Singleton.IsConnectedClient)
+            {
+                NetworkManager.Singleton.Shutdown(true);
+                NetworkManager.Singleton.DisconnectClient(OwnerClientId);
+            }
         }
     }
 
@@ -105,6 +117,17 @@ public class MatchmakerManager : MonoBehaviour
             }
 
             await Task.Delay(1000);
+        }
+    }
+
+    // Función para desasignar un servidor
+    private async void DeallocateServer()
+    {
+        await Task.Delay(60 * 1000);
+
+        if(!_deallocatingCancellationToken)
+        {
+            Application.Quit();
         }
     }
 

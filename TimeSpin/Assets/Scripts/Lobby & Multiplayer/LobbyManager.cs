@@ -176,8 +176,28 @@ public class LobbyManager: MonoBehaviour
             _hostLobby = await LobbyService.Instance.CreateLobbyAsync(_lobbyName, MAX_PLAYERS, createLobbyOptions);
             _joinedLobby = _hostLobby;
             Debug.Log("Created Lobby! " + _hostLobby.LobbyCode);
-            // Una vez creada la sala, se inicia el relay para el host, para que pueda visualizar a su personaje en la sala
-            StartHostGame();
+
+            // Una vez creada la sala, se hace una petición para iniciar un servidor de Multiplay
+            await MatchmakerManager.Instance.FirstServerJoin();
+
+            // Una vez activo, se recibe la IP y el puerto del servidor para establecer la conexión
+            string serverIP = MatchmakerManager.Instance.GetServerIP();
+            ushort serverPort = MatchmakerManager.Instance.GetServerPort();
+
+            // Se guarda dicha información en la sala
+            Dictionary<string, DataObject> lobbyData = new Dictionary<string, DataObject>
+            {
+                { "serverIP", new DataObject(DataObject.VisibilityOptions.Member, serverIP) },
+                { "serverPort", new DataObject(DataObject.VisibilityOptions.Member, serverPort.ToString()) }
+            };
+
+            // Actualizar el lobby con la IP y el puerto
+            _joinedLobby = await LobbyService.Instance.UpdateLobbyAsync(_hostLobby.Id, new UpdateLobbyOptions
+            {
+                Data = lobbyData
+            });
+
+            Debug.Log("Server information saved to lobby!");
         }
         catch (LobbyServiceException e)
         {
@@ -198,8 +218,13 @@ public class LobbyManager: MonoBehaviour
             };
             _joinedLobby = await Lobbies.Instance.JoinLobbyByCodeAsync(lobbyCode, options);
             Debug.Log("Joined Lobby with code: " + lobbyCode);
-            // Una vez se ha unido a la sala, se une al cliente al relay creado por el host, para que pueda visualizar a su personaje en la sala
-            StartClientGame();
+            // Una vez se una al lobby, se trata de unir al servidor, con los datos almacenados
+            // Se obtienen la IP y el servidor
+            string serverIP = _joinedLobby.Data["serverIP"].Value;
+            string serverPort = _joinedLobby.Data["serverPort"].Value;
+            // Se une al servidor
+            MultiplayManager.Instance.JoinToServer(serverIP, serverPort);
+
         }
         catch (LobbyServiceException e)
         {
@@ -229,8 +254,13 @@ public class LobbyManager: MonoBehaviour
             };
             // Se intenta unir a una sala disponible
             _joinedLobby = await LobbyService.Instance.QuickJoinLobbyAsync(options);
-            // Una vez se ha unido a la sala, se une al cliente al relay creado por el host, para que pueda visualizar a su personaje en la sala
-            StartClientGame();
+            // Una vez se una al lobby, se trata de unir al servidor, con los datos almacenados
+            // Se obtienen la IP y el servidor
+            string serverIP = _joinedLobby.Data["serverIP"].Value;
+            string serverPort = _joinedLobby.Data["serverPort"].Value;
+            // Se une al servidor
+            MultiplayManager.Instance.JoinToServer(serverIP, serverPort);
+
         }
         catch (LobbyServiceException e)
         {
@@ -286,43 +316,6 @@ public class LobbyManager: MonoBehaviour
         {
             Debug.Log(e);
         }
-    }
-    #endregion
-    #region Start
-
-    private async void StartHostGame()
-    {
-        /*
-        // Tras crear la sala, aparecerá se creará el punto de conexión para los demás jugadores y aparecerán sus personajes
-        // Se espera a que se cree para continuar
-        await RelayManager.instance.CreateRelay(MAX_PLAYERS);
-        // Una vez creado se obtiene la clave
-        _relayCode = RelayManager.instance.GetJoinCode();
-        // Se actualiza el lobby con dicha clave, para que al intentar iniciar, los jugadores no necesiten introducir este código
-        Lobby lobby = await Lobbies.Instance.UpdateLobbyAsync(_joinedLobby.Id, new UpdateLobbyOptions
-        {
-            Data = new Dictionary<string, DataObject> {
-                    {
-                        KEY_START_GAME, new DataObject(DataObject.VisibilityOptions.Member, _relayCode)
-                    } }
-        });
-        // Se actualiza la referencia del lobby actual
-        _joinedLobby = lobby;
-        // Una vez hecho, se inicia el Host
-        NetworkManager.Singleton.StartHost();
-        */
-    }
-
-    private void StartClientGame()
-    {
-        /*
-        // Comienza el juego como un cliente
-        // Primero debe de unirse al Relay que haya creado el Host
-        // Para hacerlo, primero debe conseguir la clave del Relay
-        _relayCode = _joinedLobby.Data[KEY_START_GAME].Value;
-        // Después, se utiliza para unirse al Relay. Una vez hecho, se comienza el juego como cliente
-        RelayManager.instance.JoinRelay(_relayCode);
-        */
     }
     #endregion
 
