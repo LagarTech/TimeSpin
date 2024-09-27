@@ -6,7 +6,7 @@ public class UIController : MonoBehaviour
 {
     public GameObject Desarrollador;  // Imagen desarrollador
     public GameObject Cinematica;     // Cinematica
-    public GameObject Menu;           //Menu principal
+    public GameObject Menu;           // Menu principal
     public GameObject Creditos;
     public GameObject Configuracion;
 
@@ -26,9 +26,12 @@ public class UIController : MonoBehaviour
 
     public Button avanzarButton;      // Botón para avanzar en la cinemática
     public Button jugar;              // Botón para jugar
-    public Button creditos;           // Botón para pantalla de creditos
-    public Button configuracion;      // Botón para pantalla de config
+    public Button creditos;           // Botón para pantalla de créditos
+    public Button configuracion;      // Botón para pantalla de configuración
     public Button practica;
+    public InputField nombreInputField; // InputField para el nombre del jugador
+
+    private bool nombreFijado = false; // Controla si el nombre ya está fijado
 
     void Start()
     {
@@ -56,14 +59,13 @@ public class UIController : MonoBehaviour
         // Agregar el listener para el botón jugar
         jugar.onClick.AddListener(OnJugarButtonClicked);
 
-        // Agregar el listener para el botón jugar
+        // Agregar el listener para el botón de créditos
         creditos.onClick.AddListener(OnCreditosButtonClicked);
 
-        // Agregar el listener para el botón jugar
+        // Agregar el listener para el botón de configuración
         configuracion.onClick.AddListener(OnConfiguracionButtonClicked);
 
         practica.onClick.AddListener(OnPracticaButtonClicked);
-
     }
 
     IEnumerator ShowCinematicAfterDelay(float delay)
@@ -74,7 +76,7 @@ public class UIController : MonoBehaviour
         // Oculta la imagen de desarrollador
         Desarrollador.SetActive(false);
 
-        // Muestra la cinematica
+        // Muestra la cinemática
         Cinematica.SetActive(true);
     }
 
@@ -87,11 +89,17 @@ public class UIController : MonoBehaviour
         // Mostrar el lobby
         Menu.SetActive(true);
         Nombre.SetActive(true);
-
     }
 
     void OnJugarButtonClicked()
     {
+        // Bloquear el InputField para que no se pueda modificar más
+        if (!nombreFijado && !string.IsNullOrEmpty(nombreInputField.text))
+        {
+            nombreFijado = true;
+            nombreInputField.interactable = false; // Desactiva el InputField
+        }
+
         // Ocultar la cinemática y el menu
         Creditos.SetActive(false);
         Configuracion.SetActive(false);
@@ -105,7 +113,6 @@ public class UIController : MonoBehaviour
         Crear.SetActive(true);
         Unirse.SetActive(true);
         Volver.SetActive(true);
-
     }
 
     void OnPracticaButtonClicked()
@@ -115,8 +122,6 @@ public class UIController : MonoBehaviour
         Crear.SetActive(false);
         Unirse.SetActive(false);
         Nombre.SetActive(false);
-
-
 
         // Mostrar el lobby
         PracticaPanel.SetActive(true);
@@ -144,7 +149,6 @@ public class UIController : MonoBehaviour
 
         // Mostrar el lobby
         ConfiguracionPanel.SetActive(true);
-
     }
 
     public void OnVolverButtonClicked()
@@ -154,24 +158,25 @@ public class UIController : MonoBehaviour
         {
             Menu.SetActive(true);
             Nombre.SetActive(true);
+
             ConfiguracionPanel.SetActive(false);
             Crear.SetActive(false);
             Unirse.SetActive(false);
             PracticaPanel.SetActive(false);
             CreditosPanel.SetActive(false);
-
-        };
+        }
 
         if (ConfiguracionPanel.active)
         {
             Menu.SetActive(true);
             Nombre.SetActive(true);
+
             CreditosPanel.SetActive(false);
             Crear.SetActive(false);
             Unirse.SetActive(false);
             PracticaPanel.SetActive(false);
             ConfiguracionPanel.SetActive(false);
-        };
+        }
 
         if (Crear.active)
         {
@@ -183,24 +188,26 @@ public class UIController : MonoBehaviour
             Practica.SetActive(true);
             Configuracion.SetActive(true);
             Creditos.SetActive(true);
+            nombreInputField.interactable = true;
+
             Volver.SetActive(false);
             ConfiguracionPanel.SetActive(false);
             CreditosPanel.SetActive(false);
             PracticaPanel.SetActive(false);
             Crear.SetActive(false);
             Unirse.SetActive(false);
-        };
+        }
 
         if (PracticaPanel.active)
         {
             Menu.SetActive(true);
             Nombre.SetActive(true);
+
             ConfiguracionPanel.SetActive(false);
             CreditosPanel.SetActive(false);
             Crear.SetActive(false);
             Unirse.SetActive(false);
             PracticaPanel.SetActive(false);
-        };
-
+        }
     }
 }
