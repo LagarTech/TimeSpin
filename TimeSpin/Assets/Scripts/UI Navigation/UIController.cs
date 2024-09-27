@@ -22,6 +22,7 @@ public class UIController : MonoBehaviour
     public GameObject Jugar;
     public GameObject Crear;
     public GameObject Unirse;
+    public GameObject Volver;
 
     public Button avanzarButton;      // Botón para avanzar en la cinemática
     public Button jugar;              // Botón para jugar
@@ -43,6 +44,8 @@ public class UIController : MonoBehaviour
         PracticaPanel.SetActive(false);
         ConfiguracionPanel.SetActive(false);
         CreditosPanel.SetActive(false);
+        Volver.SetActive(false);
+        Nombre.SetActive(false);
 
         // Corrutina que espera 4 segundos antes de cambiar la visibilidad
         StartCoroutine(ShowCinematicAfterDelay(4.0f));
@@ -83,12 +86,13 @@ public class UIController : MonoBehaviour
 
         // Mostrar el lobby
         Menu.SetActive(true);
+        Nombre.SetActive(true);
 
     }
 
     void OnJugarButtonClicked()
     {
-       // Ocultar la cinemática y el menu
+        // Ocultar la cinemática y el menu
         Creditos.SetActive(false);
         Configuracion.SetActive(false);
         Practica.SetActive(false);
@@ -100,6 +104,7 @@ public class UIController : MonoBehaviour
         Nombre.SetActive(true);
         Crear.SetActive(true);
         Unirse.SetActive(true);
+        Volver.SetActive(true);
 
     }
 
@@ -109,6 +114,7 @@ public class UIController : MonoBehaviour
         Menu.SetActive(false);
         Crear.SetActive(false);
         Unirse.SetActive(false);
+        Nombre.SetActive(false);
 
 
 
@@ -122,8 +128,9 @@ public class UIController : MonoBehaviour
         Menu.SetActive(false);
         Crear.SetActive(false);
         Unirse.SetActive(false);
-        // Mostrar el lobby
+        Nombre.SetActive(false);
 
+        // Mostrar el lobby
         CreditosPanel.SetActive(true);
     }
 
@@ -133,6 +140,7 @@ public class UIController : MonoBehaviour
         Menu.SetActive(false);
         Crear.SetActive(false);
         Unirse.SetActive(false);
+        Nombre.SetActive(false);
 
         // Mostrar el lobby
         ConfiguracionPanel.SetActive(true);
@@ -145,16 +153,19 @@ public class UIController : MonoBehaviour
         if (CreditosPanel.active)
         {
             Menu.SetActive(true);
+            Nombre.SetActive(true);
             ConfiguracionPanel.SetActive(false);
             Crear.SetActive(false);
             Unirse.SetActive(false);
             PracticaPanel.SetActive(false);
             CreditosPanel.SetActive(false);
+
         };
 
         if (ConfiguracionPanel.active)
         {
             Menu.SetActive(true);
+            Nombre.SetActive(true);
             CreditosPanel.SetActive(false);
             Crear.SetActive(false);
             Unirse.SetActive(false);
@@ -165,6 +176,14 @@ public class UIController : MonoBehaviour
         if (Crear.active)
         {
             Menu.SetActive(true);
+            Nombre.SetActive(true);
+            Der.SetActive(true);
+            Izq.SetActive(true);
+            Jugar.SetActive(true);
+            Practica.SetActive(true);
+            Configuracion.SetActive(true);
+            Creditos.SetActive(true);
+            Volver.SetActive(false);
             ConfiguracionPanel.SetActive(false);
             CreditosPanel.SetActive(false);
             PracticaPanel.SetActive(false);
@@ -175,6 +194,7 @@ public class UIController : MonoBehaviour
         if (PracticaPanel.active)
         {
             Menu.SetActive(true);
+            Nombre.SetActive(true);
             ConfiguracionPanel.SetActive(false);
             CreditosPanel.SetActive(false);
             Crear.SetActive(false);

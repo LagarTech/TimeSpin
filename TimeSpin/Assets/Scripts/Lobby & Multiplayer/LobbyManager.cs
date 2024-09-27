@@ -130,15 +130,28 @@ public class LobbyManager: MonoBehaviour
             _hostLobby = await LobbyService.Instance.CreateLobbyAsync(_lobbyName, MAX_PLAYERS, createLobbyOptions);
             _joinedLobby = _hostLobby;
             Debug.Log("Created Lobby! " + _hostLobby.LobbyCode);
+
             // Una vez creada la sala, se hace una petición para iniciar un servidor de Multiplay
+            await MatchmakerManager.Instance.FirstServerJoin();
 
             // Una vez activo, se recibe la IP y el puerto del servidor para establecer la conexión
-            // Se guarda dicha información en la sala
+            string serverIP = MatchmakerManager.Instance.GetServerIP();
+            ushort serverPort = MatchmakerManager.Instance.GetServerPort();
 
-            // Por último, se une al cliente al servidor
-            string IP = "34.76.252.208";
-            string port = "9000";
-            MultiplayManager.Instance.JoinToServer(IP, port);
+            // Se guarda dicha información en la sala
+            Dictionary<string, DataObject> lobbyData = new Dictionary<string, DataObject>
+            {
+                { "serverIP", new DataObject(DataObject.VisibilityOptions.Member, serverIP) },
+                { "serverPort", new DataObject(DataObject.VisibilityOptions.Member, serverPort.ToString()) }
+            };
+
+            // Actualizar el lobby con la IP y el puerto
+            _joinedLobby = await LobbyService.Instance.UpdateLobbyAsync(_hostLobby.Id, new UpdateLobbyOptions
+            {
+                Data = lobbyData
+            });
+
+            Debug.Log("Server information saved to lobby!");
 
         }
         catch (LobbyServiceException e)
