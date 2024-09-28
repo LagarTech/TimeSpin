@@ -115,7 +115,7 @@ public class LobbyManager: MonoBehaviour
     #endregion
     #region Create
     // Función asíncrona para crear la sala privada con un nombre y un número máximo de integrantes
-    public async void CreatePrivateLobby()
+    public async Task CreatePrivateLobby()
     {
         try
         {
@@ -152,6 +152,9 @@ public class LobbyManager: MonoBehaviour
             });
 
             Debug.Log("Server information saved to lobby!");
+
+            // Se pasa el código del lobby a la UI para poder mostrarlo
+            UI_Lobby.instance.EnterLobbyCode(_joinedLobby.LobbyCode);
 
         }
         catch (LobbyServiceException e)
@@ -316,10 +319,10 @@ public class LobbyManager: MonoBehaviour
     }
 
     // Se obtienen los jugadores del lobby y se muestran por pantalla
-    private void PrintPlayers(Lobby l)
+    public void PrintPlayers()
     {
         Debug.Log("Players in lobby ------ ");
-        foreach (Player p in l.Players)
+        foreach (Player p in _joinedLobby.Players)
         {
             Debug.Log(p.Id + " " + p.Data["Name"].Value + " " + p.Data["Character"].Value);
         }

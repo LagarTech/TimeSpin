@@ -19,7 +19,7 @@ public class PlayerSetup : NetworkBehaviour
         // Primero se obtienen los datos de los jugadores en el lobby
          _playersData = LobbyManager.instance.GetPlayersInLobby();
         // Se obtiene el identificador del jugador, para poder establecer sus datos personalizados
-        _playerID = (int)OwnerClientId;
+        _playerID = (int)OwnerClientId - 1;
         // Después, se recoloca en la escena del museo
         PositionPlayer();
         // Se establece el nombre del jugador
@@ -37,6 +37,7 @@ public class PlayerSetup : NetworkBehaviour
     {
         _playersData.TryGetValue("Names", out List<string> playerNames);
         _playerName.text = playerNames[_playerID];
+        LobbyManager.instance.PrintPlayers();
     }
 
     private void CharacterPlayer()
@@ -47,7 +48,7 @@ public class PlayerSetup : NetworkBehaviour
             p.SetActive(false);
         }
         // Después, se obtiene el personaje que se debe visibilizar
-        _playersData.TryGetValue("Names", out List<string> playerCharacters);
+        _playersData.TryGetValue("Characters", out List<string> playerCharacters);
         int characterSelected = int.Parse(playerCharacters[_playerID]);
         _characterList[characterSelected].SetActive(true);
     }

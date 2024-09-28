@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
+    public static UIController instance;
+
     public GameObject Desarrollador;  // Imagen desarrollador
     public GameObject Cinematica;     // Cinematica
     public GameObject Menu;           // Menu principal
@@ -23,6 +25,7 @@ public class UIController : MonoBehaviour
     public GameObject Crear;
     public GameObject Unirse;
     public GameObject Volver;
+    public GameObject LobbyCode;
 
     public Button avanzarButton;      // Botón para avanzar en la cinemática
     public Button jugar;              // Botón para jugar
@@ -32,6 +35,18 @@ public class UIController : MonoBehaviour
     public InputField nombreInputField; // InputField para el nombre del jugador
 
     private bool nombreFijado = false; // Controla si el nombre ya está fijado
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
 
     void Start()
     {
@@ -44,6 +59,7 @@ public class UIController : MonoBehaviour
         Menu.SetActive(false);
         Crear.SetActive(false);
         Unirse.SetActive(false);
+        LobbyCode.SetActive(false);
         PracticaPanel.SetActive(false);
         ConfiguracionPanel.SetActive(false);
         CreditosPanel.SetActive(false);
@@ -113,6 +129,7 @@ public class UIController : MonoBehaviour
         Crear.SetActive(true);
         Unirse.SetActive(true);
         Volver.SetActive(true);
+        LobbyCode.SetActive(true);
     }
 
     void OnPracticaButtonClicked()
@@ -122,6 +139,7 @@ public class UIController : MonoBehaviour
         Crear.SetActive(false);
         Unirse.SetActive(false);
         Nombre.SetActive(false);
+        LobbyCode.SetActive(false);
 
         // Mostrar el lobby
         PracticaPanel.SetActive(true);
@@ -134,6 +152,7 @@ public class UIController : MonoBehaviour
         Crear.SetActive(false);
         Unirse.SetActive(false);
         Nombre.SetActive(false);
+        LobbyCode.SetActive(false);
 
         // Mostrar el lobby
         CreditosPanel.SetActive(true);
@@ -146,6 +165,7 @@ public class UIController : MonoBehaviour
         Crear.SetActive(false);
         Unirse.SetActive(false);
         Nombre.SetActive(false);
+        LobbyCode.SetActive(false);
 
         // Mostrar el lobby
         ConfiguracionPanel.SetActive(true);
@@ -162,6 +182,7 @@ public class UIController : MonoBehaviour
             ConfiguracionPanel.SetActive(false);
             Crear.SetActive(false);
             Unirse.SetActive(false);
+            LobbyCode.SetActive(false);
             PracticaPanel.SetActive(false);
             CreditosPanel.SetActive(false);
         }
@@ -174,6 +195,7 @@ public class UIController : MonoBehaviour
             CreditosPanel.SetActive(false);
             Crear.SetActive(false);
             Unirse.SetActive(false);
+            LobbyCode.SetActive(false);
             PracticaPanel.SetActive(false);
             ConfiguracionPanel.SetActive(false);
         }
@@ -196,6 +218,7 @@ public class UIController : MonoBehaviour
             PracticaPanel.SetActive(false);
             Crear.SetActive(false);
             Unirse.SetActive(false);
+            LobbyCode.SetActive(false);
         }
 
         if (PracticaPanel.active)
@@ -208,6 +231,13 @@ public class UIController : MonoBehaviour
             Crear.SetActive(false);
             Unirse.SetActive(false);
             PracticaPanel.SetActive(false);
+            LobbyCode.SetActive(false);
         }
+    }
+
+    public void OcultarMenu()
+    {
+        Menu.SetActive(false);
+        Nombre.SetActive(false);
     }
 }
