@@ -288,7 +288,33 @@ public class LobbyManager: MonoBehaviour
         }
     }
     #endregion
-    #region Debug
+    #region Data
+
+    // Función para obtener los datos de los jugadores en el lobby y poder mostrarlos
+    public Dictionary<string, List<string>> GetPlayersInLobby()
+    {
+        // Se crea un diccionario de listas de strings, para almacenar los nombres y los personajes escogidos por los jugadores
+        Dictionary<string, List<string>> dataPlayers = new Dictionary<string, List<string>>();
+        // Se crea la lista de personajes y se van añadiendo los personajes elegidos de cada uno de los jugadores
+        List<string> personajes = new List<string>();
+        foreach (Player p in _joinedLobby.Players)
+        {
+            personajes.Add(p.Data["Character"].Value);
+        }
+        // Se añade la lista al diccionario
+        dataPlayers.Add("Characters", personajes);
+        // Se crea la lista de nombres y se van añadiendo los nombres de cada uno de los jugadores
+        List<string> nombres = new List<string>();
+        foreach (Player p in _joinedLobby.Players)
+        {
+            nombres.Add(p.Data["Name"].Value);
+        }
+        // Se añade la lista al diccionario
+        dataPlayers.Add("Names", nombres);
+
+        return dataPlayers;
+    }
+
     // Se obtienen los jugadores del lobby y se muestran por pantalla
     private void PrintPlayers(Lobby l)
     {
