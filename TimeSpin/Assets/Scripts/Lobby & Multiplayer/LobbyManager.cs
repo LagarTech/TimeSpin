@@ -23,9 +23,6 @@ public class LobbyManager: MonoBehaviour
     // Variables encargadas de hacer una pulsación cada cierto tiempo, para que la sala no se destruya por inactividad
     private float _heartBeatLobbyTimer = 0;
     private const int MAX_HEARTBEAT_TIMER = 15;
-    // Variables que almacenan la clave del relay creado por el host
-    private string _relayCode;
-    private string KEY_START_GAME = "relayCode"; // Key para el diccionario
 
     private void Awake()
     {
@@ -82,8 +79,8 @@ public class LobbyManager: MonoBehaviour
     {
         while (true)
         {
-            // Cada segundo, se actualiza el estado del lobby
-            yield return new WaitForSeconds(1f);
+            // Cada dos segundos, se actualiza el estado del lobby
+            yield return new WaitForSeconds(2f);
 
             if (_joinedLobby != null)
             {
@@ -99,7 +96,7 @@ public class LobbyManager: MonoBehaviour
             }
         }
     }
-    private async Task GetLobby()
+    public async Task GetLobby()
     {
         try
         {

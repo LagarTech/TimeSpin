@@ -14,10 +14,12 @@ public class PlayerSetup : NetworkBehaviour
     private int _playerID;
 
     // Este script se encarga de mostrar el nombre y el personaje correcto del jugador
-    void Start()
+    async void Start()
     {
         // Primero se obtienen los datos de los jugadores en el lobby
-         _playersData = LobbyManager.instance.GetPlayersInLobby();
+        // Se actualiza la referencia del lobby
+        await LobbyManager.instance.GetLobby();
+        _playersData = LobbyManager.instance.GetPlayersInLobby();
         // Se obtiene el identificador del jugador, para poder establecer sus datos personalizados
         _playerID = (int)OwnerClientId - 1;
         // Después, se recoloca en la escena del museo
