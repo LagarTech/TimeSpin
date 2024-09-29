@@ -50,7 +50,7 @@ public class MultiplayManager : MonoBehaviour
 
     private async void Update()
     {
-        if (Application.platform == RuntimePlatform.LinuxServer)
+        if (NetworkManager.Singleton.IsServer && Application.platform == RuntimePlatform.LinuxServer)
         {
             if(_serverQueryHandler != null)
             {

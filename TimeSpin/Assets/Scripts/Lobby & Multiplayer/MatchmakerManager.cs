@@ -38,7 +38,7 @@ public class MatchmakerManager : NetworkBehaviour
     private void Update()
     {
         // Este código solo se ejecuta en el servidor, ya que es el encargado de desasignarlo
-        if(Application.platform == RuntimePlatform.LinuxServer)
+        if(NetworkManager.Singleton.IsServer && Application.platform == RuntimePlatform.LinuxServer)
         {
             // Si no hay ningún cliente conectado se detiene el servidor
             if(NetworkManager.Singleton.ConnectedClients.Count == 0 && !_isDeallocating)
@@ -58,7 +58,7 @@ public class MatchmakerManager : NetworkBehaviour
 
     private void OnApplicationQuit()
     {
-        if(Application.platform != RuntimePlatform.LinuxServer)
+        if(NetworkManager.Singleton.IsServer && Application.platform == RuntimePlatform.LinuxServer)
         {
             if(NetworkManager.Singleton.IsConnectedClient)
             {

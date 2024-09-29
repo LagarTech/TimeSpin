@@ -16,6 +16,8 @@ public class PlayerSetup : NetworkBehaviour
     // Este script se encarga de mostrar el nombre y el personaje correcto del jugador
     async void Start()
     {
+        // Este código solo se ejecuta en el servidor
+        if (Application.platform == RuntimePlatform.LinuxServer) return;
         // Primero se obtienen los datos de los jugadores en el lobby
         // Se actualiza la referencia del lobby
         await LobbyManager.instance.GetLobby();
