@@ -14,18 +14,21 @@ public class PlayerSetup : NetworkBehaviour
     private int _playerID;
 
     // Este script se encarga de mostrar el nombre y el personaje correcto del jugador
-    async void Start()
+    public override async void OnNetworkSpawn()
     {
+        // Se obtiene el identificador del jugador, para poder establecer sus datos personalizados
+        _playerID = (int)OwnerClientId - 1;
         // Este código solo se ejecuta en el servidor
-        if (Application.platform == RuntimePlatform.LinuxServer) return;
+        if (Application.platform == RuntimePlatform.LinuxServer)
+        {
+            // Se coloca al jugador en la parte correcta de la escena
+            PositionPlayer();
+            return;
+        };
         // Primero se obtienen los datos de los jugadores en el lobby
         // Se actualiza la referencia del lobby
         await LobbyManager.instance.GetLobby();
         _playersData = LobbyManager.instance.GetPlayersInLobby();
-        // Se obtiene el identificador del jugador, para poder establecer sus datos personalizados
-        _playerID = (int)OwnerClientId - 1;
-        // Después, se recoloca en la escena del museo
-        PositionPlayer();
         // Se establece el nombre del jugador
         NamePlayer();
         // Se muestra su personaje escogido
@@ -57,6 +60,5 @@ public class PlayerSetup : NetworkBehaviour
         _characterList[characterSelected].SetActive(true);
     }
 
-    
-
+   
 }
