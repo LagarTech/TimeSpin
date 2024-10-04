@@ -101,6 +101,11 @@ public class GridManager : MonoBehaviour
         return _gridTiles[x, z];
     }
 
+    public Tile[] GetWalkableNeighbours(Tile currentTile)
+    {
+        return new Tile[1];
+    }
+
     private void UpdateTimer()
     {
         // Calcular minutos y segundos

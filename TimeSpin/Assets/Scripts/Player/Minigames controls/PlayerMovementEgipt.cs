@@ -27,4 +27,6 @@ public class PlayerMovementEgipt : MonoBehaviour
         Vector2Int tilePos = new Vector2Int((int)transform.position.x, -(int)transform.position.z);
         _currentTile = GridManager.Instance.GetTile(tilePos.x, tilePos.y);
     }
+
+    public Tile GetCurrentTile() { return _currentTile; }
 }
