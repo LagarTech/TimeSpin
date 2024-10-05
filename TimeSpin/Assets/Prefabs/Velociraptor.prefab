@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 6103715358061750563}
   - component: {fileID: 3810707609811758585}
   - component: {fileID: 1605862787596417126}
+  - component: {fileID: 1331556883038783374}
   m_Layer: 0
   m_Name: Velociraptor
-  m_TagString: Untagged
+  m_TagString: Velociraptor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -131,3 +132,17 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1331556883038783374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1987019318103240747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b3123c62dc2e7949b7c029987dc6dc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  points: 2
+  visibleTime: 2.5
