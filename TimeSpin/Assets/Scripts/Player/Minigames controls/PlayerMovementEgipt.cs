@@ -12,6 +12,9 @@ public class PlayerMovementEgipt : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Si el juego no está funcionando, se evita realizar movimientos
+        if (!GridManager.Instance.runningGame) return;
+
         // Gestión de los controles
         _movementDirection = Vector3.zero;
 

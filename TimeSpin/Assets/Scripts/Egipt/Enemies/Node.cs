@@ -22,8 +22,8 @@ public class Node
         this.f = h + g;
         this.isGoal = isGoal_in;
         this.nodeInfo = info;
-        this.row = info.xTile;
-        this.column = info.zTile;
+        this.column = info.xTile;
+        this.row = info.zTile;
         this.previousNode = prev;
     }
 }
