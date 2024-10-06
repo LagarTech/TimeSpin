@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Dynamic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class AStarMind : MonoBehaviour
@@ -64,13 +62,50 @@ public class AStarMind : MonoBehaviour
         {
             // Función expandir - se obtienen las casillas caminables destino
             Tile[] walkableNeighbours = GridManager.Instance.GetWalkableNeighbours(currentCell);
+
+            // Se crea un nodo con cada uno de los vecinos
+            for (int i = 0; i < walkableNeighbours.Length; i++)
+            {
+                // Se sigue el mismo proceso que con el nodo inicial
+                heuristic = CalculateHeuristic(walkableNeighbours[i], goal);
+                Node nextNode = new Node(heuristic, firstNode.g + 1, IsGoal(walkableNeighbours[i], goal), walkableNeighbours[i], firstNode);
+                // Se comprueba si el nodo se encuentra en la lista cerrada
+                bool founded = false;
+                foreach (Node node in _closedList)
+                {
+                    if (node.column == nextNode.column && node.row == nextNode.row)
+                    {
+                        founded = true;
+                    }
+                }
+                if (founded) continue;
+                // Se comprueba si hay un ciclo
+                _currentNode = nextNode;
+                if (IsCicle(_currentNode))
+                {
+                    continue;
+                }
+                // Se añade el nodo a la lista abierta
+                _openedList.Add(nextNode);
+            }
+
+            // SE ORDENA LA LISTA DE NUEVO
+            _openedList.Sort(Comparator.CompareNodesByF);
+            firstNode = _openedList[0];
+            currentCell = firstNode.nodeInfo;
+            _closedList.Add(firstNode);
+            _openedList.Remove(firstNode);
+        }
+
+        if (firstNode.isGoal)
+        {
+            CalculatePath(firstNode);
+            return;
         }
     }
 
-
-
     // Se calcula la heurística de una casilla
-    public int CalculateHeuristic(Tile posTile, Tile goalTile)
+    private int CalculateHeuristic(Tile posTile, Tile goalTile)
     {
         int column = posTile.xTile;
         int row = posTile.zTile;
@@ -83,7 +118,7 @@ public class AStarMind : MonoBehaviour
     }
 
     // Se calcula si el nodo es meta o no
-    public bool IsGoal(Tile currentPos, Tile goal)
+    private bool IsGoal(Tile currentPos, Tile goal)
     {
         if (currentPos.xTile == goal.xTile && currentPos.zTile == goal.zTile)
         {
@@ -92,6 +127,53 @@ public class AStarMind : MonoBehaviour
         else
         {
             return false;
+        }
+    }
+
+    // Función recursiva que calcula si se produce un ciclo
+    public bool IsCicle(Node node)
+    {
+        if (node.previousNode != null)
+        {
+            if (node.previousNode.row == _currentNode.row && node.previousNode.column == _currentNode.column)
+            {
+                return true;
+            }
+            IsCicle(node.previousNode);
+        }
+        return false;
+    }
+
+    // Función para calcular el camino
+    public void CalculatePath(Node goal)
+    {
+        // Se calcula el camino en función de las coordenadas de las casillas, accediendo al nodo padre de cada uno, hasta que se llege al nodo raíz, que no tiene padre
+        Node aux = goal;
+        while (aux.previousNode != null)
+        {
+            if (aux.row == aux.previousNode.row)
+            {
+                if (aux.column > aux.previousNode.column)
+                {
+                    _path.Add(LocomotionController.MoveDirection.Right);
+                }
+                else
+                {
+                    _path.Add(LocomotionController.MoveDirection.Left);
+                }
+            }
+            if (aux.column == aux.previousNode.column)
+            {
+                if (aux.row < aux.previousNode.row)
+                {
+                    _path.Add(LocomotionController.MoveDirection.Up);
+                }
+                else
+                {
+                    _path.Add(LocomotionController.MoveDirection.Down);
+                }
+            }
+            aux = aux.previousNode;
         }
     }
 }

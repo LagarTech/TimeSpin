@@ -8,6 +8,11 @@ public class GridManager : MonoBehaviour
 {
     public static GridManager Instance;
 
+    // Variable que controla el flujo del juego
+    public bool runningGame = false;
+    // Variable que gestiona el número de jugadores
+    private int _numPlayers;
+
     // Dimensiones del tablero
     private const int COLUMNS = 13;
     private const int ROWS = 9;
@@ -33,6 +38,11 @@ public class GridManager : MonoBehaviour
     // Número de casillas con pinchos
     private int _numSpikes = 0;
 
+    // Gestión de la aparición de momias
+    // Prefab de la momia
+    [SerializeField] private GameObject _mummy;
+    // Tiempo que tiene que transcurrir para que se genere una nueva momia
+    private float _mummyTime = 30f;
 
     private void Awake()
     {
@@ -41,12 +51,16 @@ public class GridManager : MonoBehaviour
 
     private void Start()
     {
+        // Se genera el tablero
         GenerateGrid();
+        // Se prepara la gestión aleatoria de los pinchos
         PrepareSpikesSpawn();
     }
 
     private void Update()
     {
+        if (!runningGame) return;
+
         // GESTIÓN DEL TIEMPO RESTANTE
         if(_remainingTime > 0f)
         {
@@ -58,9 +72,14 @@ public class GridManager : MonoBehaviour
         else
         {
             _remainingTime = 0f;
-            // GameOver
+            // Se actualiza el temporizador
+            UpdateTimer();
+            // Se indica que el juego ha finalizado
+            runningGame = false;
+            GameOver();
             return;
         }
+
         // APARICIÓN DE PINCHOS
         _spikesTime -= Time.deltaTime;
         if(_spikesTime < 0f)
@@ -68,7 +87,27 @@ public class GridManager : MonoBehaviour
             _spikesTime = 10f; // Entre apariciones se deja un tiempo de 10 segundos
             SpawnSpikes();
         }
+
+        // GENERACIÓN DE MOMIAS
+        _mummyTime -= Time.deltaTime;
+        if(_mummyTime < 0f)
+        {
+            GameObject.Instantiate(_mummy, new Vector3(7.5f, 0.5f, -4.5f), Quaternion.identity);
+            _mummyTime = 30f;
+        }
+
+        // CONTROL DEL NÚMERO DE JUGADORES
+        _numPlayers = GameObject.FindGameObjectsWithTag("Player").Length;
+        // Si sólo queda un jugador, se termina el juego
+        if(_numPlayers == 1)
+        {
+            runningGame = false;
+            GameOver();
+        }
+
     }
+
+    #region Grid
 
     private void GenerateGrid()
     {
@@ -98,13 +137,55 @@ public class GridManager : MonoBehaviour
 
     public Tile GetTile(int x, int z)
     {
+        // Comprobar si las coordenadas están dentro de los límites del tablero
+        if (x < 0 || x >= COLUMNS || z < 0 || z >= ROWS)
+        {
+            // Si están fuera de los límites, devolver null
+            return null;
+        }
+
+        // Si están dentro de los límites, devolver la casilla correspondiente
         return _gridTiles[x, z];
     }
 
     public Tile[] GetWalkableNeighbours(Tile currentTile)
     {
-        return new Tile[1];
+        List<Tile> walkableNeighbours = new List<Tile>();
+
+        // Obtener las coordenadas de la casilla actual
+        Vector2Int currentPos = new Vector2Int(currentTile.xTile, currentTile.zTile);
+
+        // Definir los posibles desplazamientos (arriba, abajo, izquierda, derecha)
+        Vector2Int[] directions = new Vector2Int[]
+        {
+        new Vector2Int(0, -1),  // Arriba
+        new Vector2Int(0, 1), // Abajo
+        new Vector2Int(-1, 0), // Izquierda
+        new Vector2Int(1, 0)   // Derecha
+        };
+
+        // Iterar sobre cada dirección y obtener las casillas vecinas
+        foreach (Vector2Int dir in directions)
+        {
+            // Obtener las coordenadas de la casilla vecina
+            Vector2Int neighbourPos = currentPos + dir;
+
+            // Obtener la casilla vecina del GridManager (o tu gestor de tablero)
+            Tile neighbourTile = GridManager.Instance.GetTile(neighbourPos.x, neighbourPos.y);
+
+            // Si la casilla vecina existe y es caminable, añadirla a la lista
+            if (neighbourTile != null && neighbourTile.isWalkable)
+            {
+                walkableNeighbours.Add(neighbourTile);
+            }
+        }
+
+        // Devolver la lista de vecinos caminables como un array
+        return walkableNeighbours.ToArray();
     }
+    #endregion
+
+    #region Timer
 
     private void UpdateTimer()
     {
@@ -115,6 +196,10 @@ public class GridManager : MonoBehaviour
         // Actualizar el texto del TMP para que muestre el tiempo restante
         _timerText.text = string.Format("{0:00}:{1:00}", displayMinutes, displaySeconds);
     }
+
+    #endregion
+
+    #region Spikes
 
     private void PrepareSpikesSpawn()
     {
@@ -148,5 +233,12 @@ public class GridManager : MonoBehaviour
         GetTile((int)spikesTilePos.x, (int)spikesTilePos.y).MakeNonWalkable();
         // Se indica que se ha generado una casilla más con pinchos
         _numSpikes++;
+    }
+
+    #endregion
+
+    private void GameOver()
+    {
+
     }
 }

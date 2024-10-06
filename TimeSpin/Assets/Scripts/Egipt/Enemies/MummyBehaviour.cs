@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(LocomotionController))]
-public class MommyBehaviour : MonoBehaviour
+public class MummyBehaviour : MonoBehaviour
 {
     private LocomotionController _locomotionController;
     private AStarMind _pathController;
 
-    private PlayerMovementEgipt _target; // Personaje objetivo al que va a perseguir
+    [SerializeField] private PlayerMovementEgipt _target; // Personaje objetivo al que va a perseguir
+    [SerializeField] private int _numPlayers; // Número de jugadores en la escena
     private List<PlayerMovementEgipt> _players = new List<PlayerMovementEgipt>();
     private const float _timeToChangeTarget = 10f; // Tiempo que transcurre en el cambio de objetivos
     private float _currentTime = 0f;
+
+    private Tile _currentTile;
 
     private void Awake()
     {
@@ -28,6 +31,8 @@ public class MommyBehaviour : MonoBehaviour
 
     private void Update()
     {
+        // Si el juego no está funcionando, no se ejecuta ninguna acción
+        if (!GridManager.Instance.runningGame) return;
         _currentTime += Time.deltaTime; // Se actualiza el tiempo transcurrido
         // Si se ha terminado el movimiento anterior, se calcula uno nuevo en base al objetivo
         if(_locomotionController.finishedMove)
@@ -35,7 +40,7 @@ public class MommyBehaviour : MonoBehaviour
             // Se calcula la casilla en la que se encuentra el agente
             // Para ello, se truncan los valores de su posición en los ejes x y z. A este último se le cambia el signo
             Vector2Int tilePos = new Vector2Int((int)transform.position.x, -(int)transform.position.z);
-            Tile _currentTile = GridManager.Instance.GetTile(tilePos.x, tilePos.y);
+            _currentTile = GridManager.Instance.GetTile(tilePos.x, tilePos.y);
             // Si es tiempo de cambiar de objetivo, actualizar la lista de jugadores y seleccionar uno nuevo
             if (_currentTime >= _timeToChangeTarget)
             {
@@ -45,6 +50,8 @@ public class MommyBehaviour : MonoBehaviour
             }
             // Se toma la casilla en la que se encuentra el objetivo
             Tile targetTile = _target.GetCurrentTile();
+            // Se comprueba si se ha atrapado a algún jugador
+            // CheckPlayers();
             // Se establece un nuevo movimiento en función de lo calculado con el algoritmo de búsqueda
             _locomotionController.SetNewDirection(_pathController.GetNextMove(_currentTile, targetTile));
         }
@@ -70,13 +77,38 @@ public class MommyBehaviour : MonoBehaviour
     private void SetTarget()
     {
         if (_players.Count == 0) return; // Si no hay jugadores, no se asigna un objetivo
-
+        _numPlayers = _players.Count;
         // Seleccionar un jugador aleatorio de la lista de jugadores conectados
-        PlayerMovementEgipt targetPlayer = _players[Random.Range(0, _players.Count)];
+        PlayerMovementEgipt targetPlayer = _players[Random.Range(0, _numPlayers)];
 
         if (targetPlayer != null)
         {
             _target = targetPlayer;
+        }
+    }
+
+    private void CheckPlayers()
+    {
+        foreach(var player in _players)
+        {
+            if(_currentTile == player.GetCurrentTile())
+            {
+                player.gameObject.SetActive(false);
+                UpdatePlayersList();
+                SetTarget();
+                _currentTime = 0f; // Reiniciar el temporizador
+            }
+        }
+    }
+
+    public void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            collision.gameObject.SetActive(false);
+            UpdatePlayersList();
+            SetTarget();
+            _currentTime = 0f; // Reiniciar el temporizador
         }
     }
 }
