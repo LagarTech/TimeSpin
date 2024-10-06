@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8556254571352913411}
   - component: {fileID: 8748363347359010499}
   - component: {fileID: 2839970743688527792}
+  - component: {fileID: 3163973851769648135}
   m_Layer: 0
   m_Name: Dinosaurio
   m_TagString: Untagged
@@ -131,3 +132,17 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3163973851769648135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 866343013889784745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b3123c62dc2e7949b7c029987dc6dc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  points: 1
+  visibleTime: 1.5
