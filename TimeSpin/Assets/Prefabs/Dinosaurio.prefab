@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3163973851769648135}
   m_Layer: 0
   m_Name: Dinosaurio
-  m_TagString: Untagged
+  m_TagString: Base
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -145,4 +145,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   points: 1
-  visibleTime: 1.5
+  visibleTime: 3
+  dinosaurType: Base
+  player: {fileID: 0}
+  hitDistance: 2
+  requiredHits: 1
