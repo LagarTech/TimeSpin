@@ -15,6 +15,7 @@ public class PlayerMovementFuture : MonoBehaviour
     private void Update()
     {
         // Si el juego no está funcionando, se evita realizar movimientos
+        if (!GravityManager.Instance.runningGame) return;
 
         // Mientras los jugadores estén flotando, no se podrán controlar
         if (GravityManager.Instance.floating && !_startedRotation)

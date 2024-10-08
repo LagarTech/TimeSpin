@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GravityManager : MonoBehaviour
 {
     public static GravityManager Instance;
+
+    // Variable que controla el flujo del juego
+    public bool runningGame = false;
 
     // Tiempo que se espera entre cambios de gravedad
     private const float _gravitySwitchTime = 10f;
@@ -19,6 +23,10 @@ public class GravityManager : MonoBehaviour
     // Referencias a las plataformas, para calcular el tiempo que se tarda en ir de una a otra
     [SerializeField] private Transform _topPlatform;
     [SerializeField] private Transform _bottomPlatform;
+
+    // Temporizador del juego
+    [SerializeField] private TMP_Text _timerText;
+    private float _remainingTime = 120f; // El tiempo de juego son 2 minutos (120 segundos)
 
     private void Awake()
     {
@@ -43,6 +51,27 @@ public class GravityManager : MonoBehaviour
 
     private void Update()
     {
+        if (!runningGame) return;
+
+        // GESTIÓN DEL TIEMPO RESTANTE
+        if (_remainingTime > 0f)
+        {
+            // Disminuir el tiempo restante
+            _remainingTime -= Time.deltaTime;
+            // Se actualiza el temporizador
+            UpdateTimer();
+        }
+        else
+        {
+            _remainingTime = 0f;
+            // Se actualiza el temporizador
+            UpdateTimer();
+            // Se indica que el juego ha finalizado
+            runningGame = false;
+            GameOver();
+            return;
+        }
+
         // GESTIÓN DE LA INVERSIÓN DE LA GRAVEDAD
         _gravityTimer += Time.deltaTime;
 
@@ -88,6 +117,21 @@ public class GravityManager : MonoBehaviour
     {
         floating = false;
         _floatTimer = 0f;
+    }
+
+    private void UpdateTimer()
+    {
+        // Calcular minutos y segundos
+        int displayMinutes = Mathf.FloorToInt(_remainingTime / 60);
+        int displaySeconds = Mathf.FloorToInt(_remainingTime % 60);
+
+        // Actualizar el texto del TMP para que muestre el tiempo restante
+        _timerText.text = string.Format("{0:00}:{1:00}", displayMinutes, displaySeconds);
+    }
+
+    private void GameOver()
+    {
+
     }
 
 
