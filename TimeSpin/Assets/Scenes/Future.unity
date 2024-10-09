@@ -1241,8 +1241,9 @@ GameObject:
   m_Component:
   - component: {fileID: 243814001}
   - component: {fileID: 243814000}
+  - component: {fileID: 243814002}
   m_Layer: 0
-  m_Name: '@GravityManager'
+  m_Name: '@FutureManager'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1281,6 +1282,110 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &243814002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 243813999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37e49a6007d71ad4ca5ebe396ba4020f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _platformsDown:
+  - {fileID: 1267420359}
+  - {fileID: 1654774678}
+  - {fileID: 1092179306}
+  - {fileID: 27797740}
+  - {fileID: 1028752508}
+  - {fileID: 227993583}
+  - {fileID: 488372003}
+  - {fileID: 511219154}
+  - {fileID: 1687906474}
+  - {fileID: 81744795}
+  - {fileID: 348769037}
+  - {fileID: 1011979008}
+  - {fileID: 12304469}
+  - {fileID: 2055952302}
+  - {fileID: 1898898854}
+  - {fileID: 516994532}
+  - {fileID: 2000553173}
+  - {fileID: 1757551755}
+  - {fileID: 1847943841}
+  - {fileID: 215877639}
+  - {fileID: 535824886}
+  - {fileID: 1585268200}
+  - {fileID: 2061068882}
+  - {fileID: 1666329475}
+  - {fileID: 496480627}
+  - {fileID: 1989467462}
+  - {fileID: 2066423792}
+  - {fileID: 1108932680}
+  - {fileID: 260943310}
+  - {fileID: 1855210523}
+  - {fileID: 417043466}
+  - {fileID: 769241483}
+  - {fileID: 1020792547}
+  - {fileID: 1437875206}
+  - {fileID: 1538770697}
+  - {fileID: 1994861676}
+  - {fileID: 1075974323}
+  - {fileID: 763349737}
+  - {fileID: 1786457981}
+  - {fileID: 651727371}
+  - {fileID: 2048767656}
+  - {fileID: 755918946}
+  - {fileID: 1609777905}
+  - {fileID: 646501352}
+  - {fileID: 357102417}
+  _platformsUp:
+  - {fileID: 1788533407}
+  - {fileID: 1378663036}
+  - {fileID: 1988858910}
+  - {fileID: 568712899}
+  - {fileID: 2133386450}
+  - {fileID: 2031858432}
+  - {fileID: 1568753430}
+  - {fileID: 1998923458}
+  - {fileID: 1322851724}
+  - {fileID: 737274359}
+  - {fileID: 759232961}
+  - {fileID: 1249802098}
+  - {fileID: 577299625}
+  - {fileID: 270713532}
+  - {fileID: 19717810}
+  - {fileID: 1685164543}
+  - {fileID: 1138631901}
+  - {fileID: 663147320}
+  - {fileID: 1818311480}
+  - {fileID: 1025725804}
+  - {fileID: 1958879194}
+  - {fileID: 2024173909}
+  - {fileID: 1287891466}
+  - {fileID: 1045363906}
+  - {fileID: 144738562}
+  - {fileID: 1842033492}
+  - {fileID: 13522479}
+  - {fileID: 1304394984}
+  - {fileID: 1640008150}
+  - {fileID: 1455908351}
+  - {fileID: 1384376303}
+  - {fileID: 973265468}
+  - {fileID: 1019313719}
+  - {fileID: 612636824}
+  - {fileID: 1928545104}
+  - {fileID: 875974261}
+  - {fileID: 832913152}
+  - {fileID: 1157788786}
+  - {fileID: 1954959531}
+  - {fileID: 1520165280}
+  - {fileID: 1490391250}
+  - {fileID: 1816903622}
+  - {fileID: 1119719873}
+  - {fileID: 1358579422}
+  - {fileID: 1705648149}
 --- !u!4 &245492142 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6a40e243b2762344ea4068551caac956, type: 3}

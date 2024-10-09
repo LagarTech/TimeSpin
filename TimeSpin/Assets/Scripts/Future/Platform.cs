@@ -72,6 +72,21 @@ public class Platform : MonoBehaviour
         _meshRenderer.enabled = false;
     }
 
+    public void FallPlatform()
+    {
+        // Se disminuye el contador de la plataforma
+        platformCount = 0;
+        // Se disminuye el contador de las vecinas
+        foreach (Platform platform in _neighbourPlatforms)
+        {
+            if(platform.platformCount > 0)
+            {
+                platformCount--;
+            }
+        }
+    }
+
+
 
 
 
