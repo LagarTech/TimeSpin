@@ -13,8 +13,12 @@ public class DinosaurController : MonoBehaviour
     private int hitCount = 0;           // Cuenta los clicks (para el T-Rex)
     public int requiredHits = 1;        // Golpes minimos para matar al dinosaurio (1 por defecto)
 
+    private GameManager gameManager;
+
     void Start()
     {
+        gameManager = GameObject.Find("GameManager")?.GetComponent<GameManager>();
+
         // Si el dinosaurio es un T-Rex, necesita dos golpes
         if (dinosaurType == "TRex")
         {
@@ -30,6 +34,12 @@ public class DinosaurController : MonoBehaviour
 
     void Update()
     {
+        // Si el juego no ha empezado o ha terminado, que no se pueda hacer nada
+        if (!gameManager.IsGameActive() || gameManager.IsGameOver())
+        {
+            return;
+        }
+
         timer += Time.deltaTime;
         if (timer >= visibleTime)
         {

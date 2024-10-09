@@ -11,6 +11,9 @@ public class GameManager : MonoBehaviour
     private float timeLeft;
     private float spawnTimer;
 
+    public bool isGameOver = false;      // Controla si el juego ha terminado
+    public bool isGameActive = false;    // Controla si el juego está activo
+
     public Text timeText;                 // UI del tiempo
     public Text scoreText;                // UI de la puntuación
     private int score;
@@ -23,6 +26,10 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        // Si el juego no ha empezado, no hace na
+        if (!isGameActive || isGameOver)
+            return;
+
         // Timer
         if (timeLeft > 0)
         {
@@ -40,7 +47,7 @@ public class GameManager : MonoBehaviour
         else
         {
             // Fin
-            Debug.Log("¡El juego ha terminado!");
+            EndGame();
         }
     }
 
@@ -70,5 +77,33 @@ public class GameManager : MonoBehaviour
         //Puntuacion
         scoreText.text = "Puntuación: " + score;
     }
+
+    // Detengo el juego cuando se acabe el tiempo
+    void EndGame()
+    {
+        isGameOver = true;
+        isGameActive = false;
+        Debug.Log("¡El juego ha terminado!");
+    }
+
+    // Método para comenzar el juego
+    public void StartGame()
+    {
+        isGameActive = true;
+        isGameOver = false;
+        timeLeft = gameTime;   // Reiniciar el tiempo
+        score = 0;             // Reiniciar la puntuación
+        UpdateUI();            // Actualizar la interfaz
+    }
+    public bool IsGameOver()
+    {
+        return isGameOver;
+    }
+
+    public bool IsGameActive()
+    {
+        return isGameActive;
+    }
+
 }
 
