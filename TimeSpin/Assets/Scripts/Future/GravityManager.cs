@@ -13,7 +13,7 @@ public class GravityManager : MonoBehaviour
     // Tiempo que se espera entre cambios de gravedad
     private const float _gravitySwitchTime = 10f;
     private float _gravityTimer; // Temporizador
-    private bool _isGravityInverted = false; // Controla si se ha invertido la gravedad o no
+    public bool isGravityInverted = false; // Controla si se ha invertido la gravedad o no
 
     // Gestión de que los jugadores floten
     private const float _gravity = 9.81f;
@@ -27,6 +27,8 @@ public class GravityManager : MonoBehaviour
     // Temporizador del juego
     [SerializeField] private TMP_Text _timerText;
     private float _remainingTime = 120f; // El tiempo de juego son 2 minutos (120 segundos)
+
+    private int _numPlayers = 0; // Control del número de jugadores
 
     private void Awake()
     {
@@ -92,6 +94,15 @@ public class GravityManager : MonoBehaviour
                 StopFloating();
             }
         }
+
+        // CONTROL DEL NÚMERO DE JUGADORES
+        _numPlayers = GameObject.FindGameObjectsWithTag("Player").Length;
+        // Si sólo queda un jugador, se termina el juego
+        if (_numPlayers == 1)
+        {
+            runningGame = false;
+            GameOver();
+        }
     }
 
     private void StartFloating()
@@ -101,7 +112,7 @@ public class GravityManager : MonoBehaviour
         _floatTimer = 0f;
 
         // Se invierte la gravedad
-        if (_isGravityInverted)
+        if (isGravityInverted)
         {
             Physics.gravity = new Vector3(0, -_gravity, 0);  // Gravedad normal
         }
@@ -109,7 +120,7 @@ public class GravityManager : MonoBehaviour
         {
             Physics.gravity = new Vector3(0, _gravity, 0);   // Gravedad invertida
         }
-        _isGravityInverted = !_isGravityInverted;
+        isGravityInverted = !isGravityInverted;
 
     }
 

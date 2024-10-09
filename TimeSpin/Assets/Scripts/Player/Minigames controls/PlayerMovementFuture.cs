@@ -17,6 +17,13 @@ public class PlayerMovementFuture : MonoBehaviour
         // Si el juego no está funcionando, se evita realizar movimientos
         if (!GravityManager.Instance.runningGame) return;
 
+        // Se comprueba que el jugador no ha salido de los límites establecidos, es decir, que no se ha caído
+        if(transform.position.y < -5f || transform.position.y > 15f)
+        {
+            // Si se ha caído, se desactiva
+            gameObject.SetActive(false);
+        }
+
         // Mientras los jugadores estén flotando, no se podrán controlar
         if (GravityManager.Instance.floating && !_startedRotation)
         {

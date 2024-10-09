@@ -117,7 +117,13 @@ public class PlatformManager : MonoBehaviour
 
         // Fase de caída
         elapsedTime = 0f;
-        Vector3 fallTarget = originalPosition + new Vector3(0, -5f, 0); // Punto de destino de la caída
+
+        // Verificar si la gravedad está invertida
+        bool isGravityInverted = GravityManager.Instance.isGravityInverted;
+        // Si la gravedad está invertida, el destino de caída será hacia arriba
+        float fallDirection = isGravityInverted ? 5f : -5f;
+        Vector3 fallTarget = originalPosition + new Vector3(0, fallDirection, 0); // Punto de destino de la caída
+
         while (elapsedTime < _fallDuration)
         {
             elapsedTime += Time.deltaTime;
