@@ -19,6 +19,9 @@ public class PlayerMovement : NetworkBehaviour
         // Los clientes capturan los inputs y los envían al servidor, que actualizará la dirección de movimiento en función de ello
         else
         {
+            // Sólo se capturan los inputs del propietario del jugador
+            if (!IsOwner) return;
+
             _movementDirection = Vector3.zero;
 
             if (Input.GetKey(KeyCode.W)) _movementDirection.z = 1f;

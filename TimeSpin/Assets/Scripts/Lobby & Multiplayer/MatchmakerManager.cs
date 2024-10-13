@@ -58,13 +58,20 @@ public class MatchmakerManager : NetworkBehaviour
 
     private void OnApplicationQuit()
     {
-        if(NetworkManager.Singleton.IsServer && Application.platform == RuntimePlatform.LinuxServer)
+        // Verifica si el NetworkManager es el servidor y está ejecutándose en Linux
+        if (NetworkManager.Singleton.IsServer && Application.platform == RuntimePlatform.LinuxServer)
         {
-            if(NetworkManager.Singleton.IsConnectedClient)
+            // Verifica si hay clientes conectados
+            if (NetworkManager.Singleton.ConnectedClients.Count > 0)
             {
-                NetworkManager.Singleton.Shutdown(true);
-                NetworkManager.Singleton.DisconnectClient(OwnerClientId);
+                // Desconecta a todos los clientes
+                foreach (var client in NetworkManager.Singleton.ConnectedClients)
+                {
+                    NetworkManager.Singleton.DisconnectClient(client.Key);
+                }
             }
+            // Finaliza el NetworkManager
+            NetworkManager.Singleton.Shutdown();
         }
     }
 

@@ -3853,8 +3853,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 841680917}
-  - component: {fileID: 841680919}
   - component: {fileID: 841680920}
+  - component: {fileID: 841680919}
   m_Layer: 0
   m_Name: '@MatchmakerManager'
   m_TagString: Untagged
@@ -3902,10 +3902,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GlobalObjectIdHash: 3747802116
+  InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
   SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
 --- !u!1 &855225605
@@ -8838,7 +8840,7 @@ MonoBehaviour:
   ConnectionData:
     Address: 127.0.0.1
     Port: 7777
-    ServerListenAddress: 127.0.0.1
+    ServerListenAddress: 0.0.0.0
   DebugSimulator:
     PacketDelayMS: 0
     PacketJitterMS: 0
@@ -8855,12 +8857,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 593a2fe42fa9d37498c96f9a383b6521, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RunInBackground: 1
-  LogLevel: 1
   NetworkConfig:
     ProtocolVersion: 0
     NetworkTransport: {fileID: 2033069897}
-    PlayerPrefab: {fileID: 3430042367936128065, guid: 6bb4ed29acb5a314b8a18d9471aad4d3, type: 3}
+    PlayerPrefab: {fileID: 7414490698973742745, guid: 6bb4ed29acb5a314b8a18d9471aad4d3, type: 3}
     Prefabs:
       NetworkPrefabsLists:
       - {fileID: 11400000, guid: 734b0f4856eb8e34786aa2c95ac2d51f, type: 2}
@@ -8880,6 +8880,8 @@ MonoBehaviour:
     SpawnTimeout: 1
     EnableNetworkLogs: 1
     OldPrefabList: []
+  RunInBackground: 1
+  LogLevel: 1
 --- !u!4 &2033069899
 Transform:
   m_ObjectHideFlags: 0
