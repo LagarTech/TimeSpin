@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class TrunkSpawner : MonoBehaviour
 {
-    // Prefab del tronco, para generarlo correctamente
-    [SerializeField] private GameObject _trunkPrefab;
     // Extremos para la generación aleatoria de los troncos
     private float _minX = -3;
     private float _maxX = 3;
 
-    private float _spawnInterval = 3f; // Tiempo entre spawns
+    private float _spawnInterval = 1.5f; // Tiempo entre spawns
     private float _spawnTimer = 0f;   // Temporizador para controlar el spawn
 
     private void Update()
     {
+        if (!RaceManager.instance.runningGame) return;
+
         // Incrementa el temporizador basado en el tiempo real transcurrido
         _spawnTimer += Time.deltaTime;
 
@@ -36,13 +36,20 @@ public class TrunkSpawner : MonoBehaviour
         Quaternion spawnRotation = Quaternion.Euler(0, 0, 90); // Rotación en Z
 
         // Instancia el tronco
-        GameObject newTrunk = Instantiate(_trunkPrefab, spawnPosition, spawnRotation);
+        GameObject newTrunk = TrunkPool.instance.GetTrunkFromPool();
+
+        if (newTrunk != null)
+        {
+            // Ubica el tronco en la posición inicial
+            newTrunk.transform.position = spawnPosition;
+            newTrunk.transform.rotation = spawnRotation;
+        }
 
         // Aplica una fuerza para que ruede hacia el inicio (en Z = 0)
         Rigidbody trunkRb = newTrunk.GetComponent<Rigidbody>();
         if (trunkRb != null)
         {
-            trunkRb.AddForce(Vector3.back * 500f); // Ajusta la fuerza según sea necesario
+            trunkRb.AddForce(Vector3.back * 500f);
         }
     }
 
