@@ -14,12 +14,13 @@ public class LobbyManager: MonoBehaviour
 
     private Lobby _hostLobby; // Referencia a la sala creada (difiere de null sólo en el caso del host)
     private Lobby _joinedLobby; // Referencia a la sala a la que se ha unido
+    public bool inLobby = false;
     // Nombre para la sala
     private string _lobbyName = "TimeSpin";
     // Se almacena el número máximo de jugadores de la sala
     private const int MAX_PLAYERS = 4;
     // Se almacena el número actual de jugadores en la sala
-    [SerializeField] private int NUM_PLAYERS_IN_LOBBY;
+    public int NUM_PLAYERS_IN_LOBBY;
     // Variables encargadas de hacer una pulsación cada cierto tiempo, para que la sala no se destruya por inactividad
     private float _heartBeatLobbyTimer = 0;
     private const int MAX_HEARTBEAT_TIMER = 15;
@@ -153,6 +154,8 @@ public class LobbyManager: MonoBehaviour
             // Se pasa el código del lobby a la UI para poder mostrarlo
             UI_Lobby.instance.EnterLobbyCode(_joinedLobby.LobbyCode);
 
+            inLobby = true;
+
         }
         catch (LobbyServiceException e)
         {
@@ -198,6 +201,8 @@ public class LobbyManager: MonoBehaviour
             });
 
             Debug.Log("Server information saved to lobby!");
+
+            inLobby = true;
         }
         catch (LobbyServiceException e)
         {
@@ -224,6 +229,8 @@ public class LobbyManager: MonoBehaviour
             string serverPort = _joinedLobby.Data["serverPort"].Value;
             // Se une al servidor
             MultiplayManager.Instance.JoinToServer(serverIP, serverPort);
+
+            inLobby = true;
 
         }
         catch (LobbyServiceException e)
@@ -261,6 +268,8 @@ public class LobbyManager: MonoBehaviour
             // Se une al servidor
             MultiplayManager.Instance.JoinToServer(serverIP, serverPort);
 
+            inLobby = true;
+
         }
         catch (LobbyServiceException e)
         {
@@ -281,6 +290,7 @@ public class LobbyManager: MonoBehaviour
             Debug.Log("Jugador ha abandonado la sala");
             _joinedLobby = null;
             _hostLobby = null;
+            inLobby = false;
         }
         catch (LobbyServiceException e)
         {

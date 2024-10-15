@@ -4,14 +4,15 @@ using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using Unity.Services.Core;
-using Unity.Services.Multiplay;
 using UnityEngine;
+// El servicio de Multiplay no es compatible con WebGL y sólo es necesario para el código del servidor
+#if UNITY_SERVER
+using Unity.Services.Multiplay;
+#endif
 
 public class MultiplayManager : MonoBehaviour
 {
     public static MultiplayManager Instance;
-    private IServerQueryHandler _serverQueryHandler; // Variable para el manejador del servidor
-
     private void Awake()
     {
         if(Instance == null)
@@ -23,6 +24,9 @@ public class MultiplayManager : MonoBehaviour
             Destroy(this);
         }
     }
+
+    #if UNITY_SERVER
+    private IServerQueryHandler _serverQueryHandler; // Variable para el manejador del servidor
 
     private async void Start()
     {
@@ -62,6 +66,7 @@ public class MultiplayManager : MonoBehaviour
             }
         }
     }
+    #endif
 
     // Esta función se utiliza para conectar a los clientes con el servidor
     public void JoinToServer(string IP, string port)
