@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.ConstrainedExecution;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 
-public class GridManager : MonoBehaviour
+public class GridManager : NetworkBehaviour
 {
     public static GridManager Instance;
 
     // Variable que controla el flujo del juego
-    public bool runningGame = false;
+    public bool runningGame = true;
     // Variable que gestiona el número de jugadores
     private int _numPlayers;
 
@@ -42,7 +43,7 @@ public class GridManager : MonoBehaviour
     // Prefab de la momia
     [SerializeField] private GameObject _mummy;
     // Tiempo que tiene que transcurrir para que se genere una nueva momia
-    private float _mummyTime = 30f;
+    private float _mummyTime = 0f;
 
     private void Awake()
     {
@@ -51,10 +52,13 @@ public class GridManager : MonoBehaviour
 
     private void Start()
     {
-        // Se genera el tablero
-        GenerateGrid();
-        // Se prepara la gestión aleatoria de los pinchos
-        PrepareSpikesSpawn();
+        // Se genera el tablero, la lógica sólo se almacena en el servidor
+        if(Application.platform == RuntimePlatform.LinuxServer)
+        {
+            GenerateGrid();
+            // Se prepara la gestión aleatoria de los pinchos en el servidor
+            PrepareSpikesSpawn();
+        }
     }
 
     private void Update()
@@ -66,14 +70,20 @@ public class GridManager : MonoBehaviour
         {
             // Disminuir el tiempo restante
             _remainingTime -= Time.deltaTime;
-            // Se actualiza el temporizador
-            UpdateTimer();
+            // Se actualiza el temporizador sólo en el cliente
+            if(Application.platform != RuntimePlatform.LinuxServer)
+            {
+                UpdateTimer();
+            }
         }
         else
         {
             _remainingTime = 0f;
-            // Se actualiza el temporizador
-            UpdateTimer();
+            // Se actualiza el temporizador sólo en el cliente
+            if (Application.platform != RuntimePlatform.LinuxServer)
+            {
+                UpdateTimer();
+            }
             // Se indica que el juego ha finalizado
             runningGame = false;
             GameOver();
@@ -81,6 +91,7 @@ public class GridManager : MonoBehaviour
         }
 
         // APARICIÓN DE PINCHOS
+        // Esto ser realizará en el servidor, que es el que almacena la lógica, y en el cliente, para hacerlo visible
         _spikesTime -= Time.deltaTime;
         if(_spikesTime < 0f)
         {
@@ -89,20 +100,35 @@ public class GridManager : MonoBehaviour
         }
 
         // GENERACIÓN DE MOMIAS
-        _mummyTime -= Time.deltaTime;
-        if(_mummyTime < 0f)
+        // Únicamente en el servidor, se spawnearán directamente en el cliente
+        if(Application.platform == RuntimePlatform.LinuxServer)
         {
-            GameObject.Instantiate(_mummy, new Vector3(7.5f, 0.5f, -4.5f), Quaternion.identity);
-            _mummyTime = 30f;
+            _mummyTime -= Time.deltaTime;
+            if(_mummyTime < 0f)
+            {
+                if (IsServer)  // Solo el servidor puede spawnear objetos
+                {
+                    // Instancia el objeto en el servidor
+                    GameObject _mummyObj = Instantiate(_mummy, Vector3.zero, Quaternion.identity);
+
+                    // Lo registramos en la red para sincronizarlo con los clientes
+                    _mummyObj.GetComponent<NetworkObject>().Spawn();
+                    _mummyTime = 30f;
+                }
+            }
         }
 
         // CONTROL DEL NÚMERO DE JUGADORES
-        _numPlayers = GameObject.FindGameObjectsWithTag("Player").Length;
-        // Si sólo queda un jugador, se termina el juego
-        if(_numPlayers == 1)
+        // Únicamente en el servidor
+        if(Application.platform == RuntimePlatform.LinuxServer)
         {
-            runningGame = false;
-            GameOver();
+            _numPlayers = GameObject.FindGameObjectsWithTag("Player").Length;
+            // Si sólo queda un jugador, se termina el juego
+            if(_numPlayers == 1)
+            {
+                runningGame = false;
+                GameOver();
+            }
         }
 
     }
@@ -223,8 +249,10 @@ public class GridManager : MonoBehaviour
 
     private void SpawnSpikes()
     {
+        // Primero se realiza la lógica en el servidor
+        int randomSpike = _randomSpikesSpawn[_numSpikes];
         // Se activan los pinchos de la casilla que toque según el orden aleatorio
-        _spikesList[_randomSpikesSpawn[_numSpikes]].SetActive(true);
+        _spikesList[randomSpike].SetActive(true);
         // Se obtiene la posición global de dicha casilla
         Vector3 spikesPos = _spikesList[_randomSpikesSpawn[_numSpikes]].transform.position;
         // Se pasa de dichas coordenadas a las locales del escenario
@@ -233,6 +261,15 @@ public class GridManager : MonoBehaviour
         GetTile((int)spikesTilePos.x, (int)spikesTilePos.y).MakeNonWalkable();
         // Se indica que se ha generado una casilla más con pinchos
         _numSpikes++;
+        // Una vez hecho, se activan los pinchos en los clientes
+        SpawnSpikesClientRpc(randomSpike);
+    }
+
+    [ClientRpc]
+    private void SpawnSpikesClientRpc(int idSpike)
+    {
+        // Se hace visible en los clientes la trampa que toque, en base a lo realizado en el servidor
+        _spikesList[idSpike].SetActive(true);
     }
 
     #endregion

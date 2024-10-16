@@ -1414,7 +1414,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1769465553
+  GlobalObjectIdHash: 2765586497
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -1561,6 +1561,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a5ce332259c1fd47b33037133c84f3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentScene: 0
+  _currentTile:
+    xTile: 0
+    zTile: 0
+    tileCenterPos: {x: 0, y: 0, z: 0}
+    isWalkable: 0
+  _startingPositions:
+  - {x: 0.5, y: 0.52, z: -0.5}
+  - {x: 0.5, y: 0.52, z: -8.5}
+  - {x: 12.5, y: 0.52, z: -0.5}
+  - {x: 12.5, y: 0.52, z: -8.5}
 --- !u!1 &7595886194814359533
 GameObject:
   m_ObjectHideFlags: 0

@@ -23,6 +23,8 @@ public class LocomotionController : MonoBehaviour
 
     private void Start()
     {
+        // Sólo se gestiona el movimiento en el servidor
+        if (Application.platform != RuntimePlatform.LinuxServer) return;
         // Por defecto, se indica que se ha terminado un movimiento, para calcular otro nuevo
         finishedMove = true;
         // Se inicializa a cero el objetivo
@@ -31,6 +33,8 @@ public class LocomotionController : MonoBehaviour
 
     private void Update()
     {
+        // Sólo se gestiona el movimiento en el servidor
+        if (Application.platform != RuntimePlatform.LinuxServer) return;
         // Se evitan los movimientos si el juego no ha comenzado
         if (!GridManager.Instance.runningGame) return;
 

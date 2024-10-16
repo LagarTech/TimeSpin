@@ -8,9 +8,9 @@ public class MummyBehaviour : MonoBehaviour
     private LocomotionController _locomotionController;
     private AStarMind _pathController;
 
-    [SerializeField] private PlayerMovementEgipt _target; // Personaje objetivo al que va a perseguir
+    [SerializeField] private PlayerMovement _target; // Personaje objetivo al que va a perseguir
     [SerializeField] private int _numPlayers; // Número de jugadores en la escena
-    private List<PlayerMovementEgipt> _players = new List<PlayerMovementEgipt>();
+    private List<PlayerMovement> _players = new List<PlayerMovement>();
     private const float _timeToChangeTarget = 10f; // Tiempo que transcurre en el cambio de objetivos
     private float _currentTime = 0f;
 
@@ -22,8 +22,10 @@ public class MummyBehaviour : MonoBehaviour
         _pathController = GetComponent<AStarMind>();
     }
 
+    // El movimiento de la momia sólo se realizará en el servidor, se sincroniza directamente en los clientes
     private void Start()
     {
+        if (Application.platform != RuntimePlatform.LinuxServer) return;
         // Se establece un objetivo inicial
         UpdatePlayersList();
         SetTarget();
@@ -31,6 +33,7 @@ public class MummyBehaviour : MonoBehaviour
 
     private void Update()
     {
+        if (Application.platform != RuntimePlatform.LinuxServer) return;
         // Si el juego no está funcionando, no se ejecuta ninguna acción
         if (!GridManager.Instance.runningGame) return;
         _currentTime += Time.deltaTime; // Se actualiza el tiempo transcurrido
@@ -50,8 +53,6 @@ public class MummyBehaviour : MonoBehaviour
             }
             // Se toma la casilla en la que se encuentra el objetivo
             Tile targetTile = _target.GetCurrentTile();
-            // Se comprueba si se ha atrapado a algún jugador
-            // CheckPlayers();
             // Se establece un nuevo movimiento en función de lo calculado con el algoritmo de búsqueda
             _locomotionController.SetNewDirection(_pathController.GetNextMove(_currentTile, targetTile));
         }
@@ -67,9 +68,9 @@ public class MummyBehaviour : MonoBehaviour
         foreach(var player in playerObjects)
         {
             // Asegurarse que el jugador tiene el componente necesario
-            if (player.GetComponent<PlayerMovementEgipt>() != null)
+            if (player.GetComponent<PlayerMovement>() != null)
             {
-                _players.Add(player.GetComponent<PlayerMovementEgipt>()); // Añadir el jugador válido a la lista
+                _players.Add(player.GetComponent<PlayerMovement>()); // Añadir el jugador válido a la lista
             }
         }
     }
@@ -79,25 +80,11 @@ public class MummyBehaviour : MonoBehaviour
         if (_players.Count == 0) return; // Si no hay jugadores, no se asigna un objetivo
         _numPlayers = _players.Count;
         // Seleccionar un jugador aleatorio de la lista de jugadores conectados
-        PlayerMovementEgipt targetPlayer = _players[Random.Range(0, _numPlayers)];
+        PlayerMovement targetPlayer = _players[Random.Range(0, _numPlayers)];
 
         if (targetPlayer != null)
         {
             _target = targetPlayer;
-        }
-    }
-
-    private void CheckPlayers()
-    {
-        foreach(var player in _players)
-        {
-            if(_currentTile == player.GetCurrentTile())
-            {
-                player.gameObject.SetActive(false);
-                UpdatePlayersList();
-                SetTarget();
-                _currentTime = 0f; // Reiniciar el temporizador
-            }
         }
     }
 
