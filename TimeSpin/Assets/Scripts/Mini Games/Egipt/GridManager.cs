@@ -4,6 +4,7 @@ using System.Runtime.ConstrainedExecution;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GridManager : NetworkBehaviour
 {
@@ -42,6 +43,8 @@ public class GridManager : NetworkBehaviour
     // Gestión de la aparición de momias
     // Prefab de la momia
     [SerializeField] private GameObject _mummy;
+    // Posición de spawn de las momias
+    [SerializeField] private Vector3 _mummySpawnPosition;
     // Tiempo que tiene que transcurrir para que se genere una nueva momia
     private float _mummyTime = 0f;
 
@@ -53,7 +56,7 @@ public class GridManager : NetworkBehaviour
     private void Start()
     {
         // Se genera el tablero, la lógica sólo se almacena en el servidor
-        if(Application.platform == RuntimePlatform.LinuxServer)
+        if (Application.platform == RuntimePlatform.LinuxServer)
         {
             GenerateGrid();
             // Se prepara la gestión aleatoria de los pinchos en el servidor
@@ -66,12 +69,12 @@ public class GridManager : NetworkBehaviour
         if (!runningGame) return;
 
         // GESTIÓN DEL TIEMPO RESTANTE
-        if(_remainingTime > 0f)
+        if (_remainingTime > 0f)
         {
             // Disminuir el tiempo restante
             _remainingTime -= Time.deltaTime;
             // Se actualiza el temporizador sólo en el cliente
-            if(Application.platform != RuntimePlatform.LinuxServer)
+            if (Application.platform != RuntimePlatform.LinuxServer)
             {
                 UpdateTimer();
             }
@@ -92,24 +95,27 @@ public class GridManager : NetworkBehaviour
 
         // APARICIÓN DE PINCHOS
         // Esto ser realizará en el servidor, que es el que almacena la lógica, y en el cliente, para hacerlo visible
-        _spikesTime -= Time.deltaTime;
-        if(_spikesTime < 0f)
+        if (Application.platform == RuntimePlatform.LinuxServer)
         {
-            _spikesTime = 10f; // Entre apariciones se deja un tiempo de 10 segundos
-            SpawnSpikes();
+            _spikesTime -= Time.deltaTime;
+            if (_spikesTime < 0f)
+            {
+                _spikesTime = 10f; // Entre apariciones se deja un tiempo de 10 segundos
+                SpawnSpikes();
+            }
         }
 
         // GENERACIÓN DE MOMIAS
         // Únicamente en el servidor, se spawnearán directamente en el cliente
-        if(Application.platform == RuntimePlatform.LinuxServer)
+        if (Application.platform == RuntimePlatform.LinuxServer)
         {
             _mummyTime -= Time.deltaTime;
-            if(_mummyTime < 0f)
+            if (_mummyTime < 0f)
             {
                 if (IsServer)  // Solo el servidor puede spawnear objetos
                 {
                     // Instancia el objeto en el servidor
-                    GameObject _mummyObj = Instantiate(_mummy, Vector3.zero, Quaternion.identity);
+                    GameObject _mummyObj = Instantiate(_mummy, _mummySpawnPosition, Quaternion.identity);
 
                     // Lo registramos en la red para sincronizarlo con los clientes
                     _mummyObj.GetComponent<NetworkObject>().Spawn();
@@ -120,11 +126,11 @@ public class GridManager : NetworkBehaviour
 
         // CONTROL DEL NÚMERO DE JUGADORES
         // Únicamente en el servidor
-        if(Application.platform == RuntimePlatform.LinuxServer)
+        if (Application.platform == RuntimePlatform.LinuxServer)
         {
             _numPlayers = GameObject.FindGameObjectsWithTag("Player").Length;
             // Si sólo queda un jugador, se termina el juego
-            if(_numPlayers == 1)
+            if (_numPlayers == 1)
             {
                 runningGame = false;
                 GameOver();
@@ -137,15 +143,15 @@ public class GridManager : NetworkBehaviour
 
     private void GenerateGrid()
     {
-        for(int x = 0; x < COLUMNS; x++)
+        for (int x = 0; x < COLUMNS; x++)
         {
-            for(int z = 0; z < ROWS; z++)
+            for (int z = 0; z < ROWS; z++)
             {
                 // Primero se define el centro de la casilla en la que se encuentra
-                Vector3 tileCenter = new Vector3((x * tileSize) + tileSize / 2, 0, - ((z * tileSize) + tileSize / 2));
+                Vector3 tileCenter = new Vector3((x * tileSize) + tileSize / 2, 0, -((z * tileSize) + tileSize / 2));
 
                 // Se crea la casilla y se añade a la matriz
-                _gridTiles[x,z] = new Tile(x, z, tileCenter);
+                _gridTiles[x, z] = new Tile(x, z, tileCenter);
             }
         }
 
@@ -155,7 +161,7 @@ public class GridManager : NetworkBehaviour
     private void GenerateNonWalkableTiles()
     {
         // Se recorren todas las coordenadas de las casillas no caminables, para marcarlas en el tablero
-        foreach(Vector2Int tile in _nonWalkableTiles)
+        foreach (Vector2Int tile in _nonWalkableTiles)
         {
             _gridTiles[tile.x, tile.y].MakeNonWalkable();
         }
@@ -230,14 +236,14 @@ public class GridManager : NetworkBehaviour
     private void PrepareSpikesSpawn()
     {
         // Al ser un total de 10 pinchos, se genera una lista de 10 elementos
-        for(int i = 0; i < NUM_SPIKES_TILES; i++)
+        for (int i = 0; i < NUM_SPIKES_TILES; i++)
         {
             _randomSpikesSpawn.Add(i);
         }
         // Para garantizar que aparezcan de forma aleatoria, es decir, en cada partida con un orden distinto,
         // se utiliza el algoritmo de Fisher - Yates, con coste O(N)
         int n = _randomSpikesSpawn.Count;
-        for(int i = n - 1; i > 0; i--)
+        for (int i = n - 1; i > 0; i--)
         {
             int j = Random.Range(0, i + 1); // Usamos UnityEngine.Random para generar un número aleatorio
             // Intercambiar los elementos en i y j
@@ -273,9 +279,9 @@ public class GridManager : NetworkBehaviour
     }
 
     #endregion
-
     private void GameOver()
     {
-
+        // Cuando termina el juego, por el momento, se carga el siguiente minijuego
+        NetworkManager.Singleton.SceneManager.LoadScene("Maya", LoadSceneMode.Single);
     }
 }

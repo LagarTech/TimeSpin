@@ -8,7 +8,7 @@ using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 
-public class LobbyManager: MonoBehaviour
+public class LobbyManager : MonoBehaviour
 {
     public static LobbyManager instance;
 
@@ -112,190 +112,257 @@ public class LobbyManager: MonoBehaviour
     }
     #endregion
     #region Create
+    // Se utilizan corrutinas para realizar las esperas necesarias para que otras funcionen terminen de ejecutarse
     // Función asíncrona para crear la sala privada con un nombre y un número máximo de integrantes
-    public async Task CreatePrivateLobby()
+    public void CreatePrivateLobby()
     {
-        try
+        StartCoroutine(CreatePrivateLobbyCoroutine());
+    }
+
+    public IEnumerator CreatePrivateLobbyCoroutine()
+    {
+        // Se definen las propiedades de la sala
+        CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
         {
-            // Se definen las propiedades de la sala
-            CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
-            {
-                // La sala es privada, es decir, solo se puede unir mediante código
-                IsPrivate = true,
-                Player = SelectionController.instance.GetPlayer()
-            };
+            IsPrivate = true,
+            Player = SelectionController.instance.GetPlayer()
+        };
+        // Se obtiene la tarea y se espera hasta que finaliza
+        var createLobbyTask = LobbyService.Instance.CreateLobbyAsync(_lobbyName, MAX_PLAYERS, createLobbyOptions);
+        yield return new WaitUntil(() => createLobbyTask.IsCompleted);
 
-            _hostLobby = await LobbyService.Instance.CreateLobbyAsync(_lobbyName, MAX_PLAYERS, createLobbyOptions);
-            _joinedLobby = _hostLobby;
-            Debug.Log("Created Lobby! " + _hostLobby.LobbyCode);
-
-            // Una vez creada la sala, se hace una petición para iniciar un servidor de Multiplay
-            await MatchmakerManager.Instance.FirstServerJoin();
-
-            // Una vez activo, se recibe la IP y el puerto del servidor para establecer la conexión
-            string serverIP = MatchmakerManager.Instance.GetServerIP();
-            ushort serverPort = MatchmakerManager.Instance.GetServerPort();
-
-            // Se guarda dicha información en la sala
-            Dictionary<string, DataObject> lobbyData = new Dictionary<string, DataObject>
-            {
-                { "serverIP", new DataObject(DataObject.VisibilityOptions.Member, serverIP) },
-                { "serverPort", new DataObject(DataObject.VisibilityOptions.Member, serverPort.ToString()) }
-            };
-
-            // Actualizar el lobby con la IP y el puerto
-            _joinedLobby = await LobbyService.Instance.UpdateLobbyAsync(_hostLobby.Id, new UpdateLobbyOptions
-            {
-                Data = lobbyData
-            });
-
-            Debug.Log("Server information saved to lobby!");
-
-            // Se pasa el código del lobby a la UI para poder mostrarlo
-            UI_Lobby.instance.EnterLobbyCode(_joinedLobby.LobbyCode);
-
-            inLobby = true;
-
-        }
-        catch (LobbyServiceException e)
+        if (createLobbyTask.Exception != null)
         {
-            Debug.Log(e);
+            Debug.LogError("Error creating lobby: " + createLobbyTask.Exception);
+            yield break;
         }
+
+        _hostLobby = createLobbyTask.Result;
+        _joinedLobby = _hostLobby;
+        Debug.Log("Created Lobby! " + _hostLobby.LobbyCode);
+
+        // Llama a FirstServerJoin y espera a que termine
+        bool serverFound = false;
+        yield return StartCoroutine(MatchmakerManager.Instance.FirstServerJoinCoroutine((found) => serverFound = found));
+
+        if (!serverFound)
+        {
+            Debug.Log("Server not found.");
+            yield break;
+        }
+
+        // Se recibe la IP y el puerto del servidor para establecer la conexión
+        string serverIP = MatchmakerManager.Instance.GetServerIP();
+        ushort serverPort = MatchmakerManager.Instance.GetServerPort();
+
+        // Se guarda dicha información en la sala
+        Dictionary<string, DataObject> lobbyData = new Dictionary<string, DataObject>
+        {
+            { "serverIP", new DataObject(DataObject.VisibilityOptions.Member, serverIP) },
+            { "serverPort", new DataObject(DataObject.VisibilityOptions.Member, serverPort.ToString()) }
+        };
+
+        var updateLobbyTask = LobbyService.Instance.UpdateLobbyAsync(_hostLobby.Id, new UpdateLobbyOptions { Data = lobbyData });
+        yield return new WaitUntil(() => updateLobbyTask.IsCompleted);
+
+        if (updateLobbyTask.Exception != null)
+        {
+            Debug.LogError("Error updating lobby: " + updateLobbyTask.Exception);
+            yield break;
+        }
+
+        _joinedLobby = updateLobbyTask.Result;
+
+        Debug.Log("Server information saved to lobby!");
+        UI_Lobby.instance.EnterLobbyCode(_joinedLobby.LobbyCode);
+
+        inLobby = true;
     }
 
     // Función asíncrona para crear una sala públic
-    private async void CreatePublicLobby()
+    private void CreatePublicLobby()
     {
-        try
+        // Se inicia la coroutine en lugar de async
+        StartCoroutine(CreatePublicLobbyCoroutine());
+    }
+
+    public IEnumerator CreatePublicLobbyCoroutine()
+    {
+        // Se definen las propiedades de la sala
+        CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
         {
-            // Se definen las propiedades de la sala
-            CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
-            {
-                // La sala es privada, es decir, solo se puede unir mediante código
-                IsPrivate = false,
-                Player = SelectionController.instance.GetPlayer()
-            };
+            // La sala es pública
+            IsPrivate = false,
+            Player = SelectionController.instance.GetPlayer()
+        };
 
-            _hostLobby = await LobbyService.Instance.CreateLobbyAsync(_lobbyName, MAX_PLAYERS, createLobbyOptions);
-            _joinedLobby = _hostLobby;
-            Debug.Log("Created Lobby! " + _hostLobby.LobbyCode);
+        // Se espera la creación del lobby
+        var createLobbyTask = LobbyService.Instance.CreateLobbyAsync(_lobbyName, MAX_PLAYERS, createLobbyOptions);
+        yield return new WaitUntil(() => createLobbyTask.IsCompleted);
 
-            // Una vez creada la sala, se hace una petición para iniciar un servidor de Multiplay
-            await MatchmakerManager.Instance.FirstServerJoin();
+        _hostLobby = createLobbyTask.Result;
+        _joinedLobby = _hostLobby;
+        Debug.Log("Created Lobby! " + _hostLobby.LobbyCode);
 
-            // Una vez activo, se recibe la IP y el puerto del servidor para establecer la conexión
-            string serverIP = MatchmakerManager.Instance.GetServerIP();
-            ushort serverPort = MatchmakerManager.Instance.GetServerPort();
+        // Llama a FirstServerJoin y espera a que termine
+        bool serverFound = false;
+        yield return StartCoroutine(MatchmakerManager.Instance.FirstServerJoinCoroutine((found) => serverFound = found));
 
-            // Se guarda dicha información en la sala
-            Dictionary<string, DataObject> lobbyData = new Dictionary<string, DataObject>
-            {
-                { "serverIP", new DataObject(DataObject.VisibilityOptions.Member, serverIP) },
-                { "serverPort", new DataObject(DataObject.VisibilityOptions.Member, serverPort.ToString()) }
-            };
-
-            // Actualizar el lobby con la IP y el puerto
-            _joinedLobby = await LobbyService.Instance.UpdateLobbyAsync(_hostLobby.Id, new UpdateLobbyOptions
-            {
-                Data = lobbyData
-            });
-
-            Debug.Log("Server information saved to lobby!");
-
-            inLobby = true;
-        }
-        catch (LobbyServiceException e)
+        if (!serverFound)
         {
-            Debug.Log(e);
+            Debug.Log("Server not found.");
+            yield break;
         }
+
+        // Una vez activo, se recibe la IP y el puerto del servidor para establecer la conexión
+        string serverIP = MatchmakerManager.Instance.GetServerIP();
+        ushort serverPort = MatchmakerManager.Instance.GetServerPort();
+
+        // Se guarda dicha información en la sala
+        Dictionary<string, DataObject> lobbyData = new Dictionary<string, DataObject>
+    {
+        { "serverIP", new DataObject(DataObject.VisibilityOptions.Member, serverIP) },
+        { "serverPort", new DataObject(DataObject.VisibilityOptions.Member, serverPort.ToString()) }
+    };
+
+        // Se actualiza el lobby con la IP y el puerto
+        var updateLobbyTask = LobbyService.Instance.UpdateLobbyAsync(_hostLobby.Id, new UpdateLobbyOptions { Data = lobbyData });
+        yield return new WaitUntil(() => updateLobbyTask.IsCompleted);
+
+        _joinedLobby = updateLobbyTask.Result;
+        Debug.Log("Server information saved to lobby!");
+
+        inLobby = true;
     }
     #endregion
     #region Join
-    // Función asíncrona para unirse a una sala privada mediante código
-    public async Task JoinLobbyByCode(string lobbyCode)
+    public IEnumerator JoinLobbyByCodeCoroutine(string lobbyCode)
     {
-        try
+        // Se crea un jugador con las características correspondientes
+        JoinLobbyByCodeOptions options = new JoinLobbyByCodeOptions
         {
-            // Se crea un jugador con las características correspondientes
-            JoinLobbyByCodeOptions options = new JoinLobbyByCodeOptions
-            {
-                Player = SelectionController.instance.GetPlayer()
-            };
-            _joinedLobby = await Lobbies.Instance.JoinLobbyByCodeAsync(lobbyCode, options);
-            Debug.Log("Joined Lobby with code: " + lobbyCode);
-            // Una vez se una al lobby, se trata de unir al servidor, con los datos almacenados
-            // Se obtienen la IP y el servidor
-            string serverIP = _joinedLobby.Data["serverIP"].Value;
-            string serverPort = _joinedLobby.Data["serverPort"].Value;
-            // Se une al servidor
-            MultiplayManager.Instance.JoinToServer(serverIP, serverPort);
+            Player = SelectionController.instance.GetPlayer()
+        };
 
-            inLobby = true;
+        // Se espera a que la operación de unirse al lobby se complete
+        var joinLobbyTask = Lobbies.Instance.JoinLobbyByCodeAsync(lobbyCode, options);
+        yield return new WaitUntil(() => joinLobbyTask.IsCompleted);
 
-        }
-        catch (LobbyServiceException e)
+        // Si ocurrió un error
+        if (joinLobbyTask.IsFaulted)
         {
-            // Se gestionan las excepciones que pueden ocurrir, para mostrarlas como texto en la UI
-            // En caso de que el código sea erróneo
-            if (e.Reason == LobbyExceptionReason.LobbyNotFound)
+            // Recorremos las excepciones agregadas en la tarea
+            foreach (var exception in joinLobbyTask.Exception.InnerExceptions)
             {
-                Debug.Log("No se ha encontrado ninguna sala con dicho código");
+                // Verificamos si la excepción es del tipo LobbyServiceException
+                if (exception is LobbyServiceException lobbyException)
+                {
+                    // Gestión de excepciones para mostrar en la UI
+                    if (lobbyException.Reason == LobbyExceptionReason.LobbyNotFound)
+                    {
+                        Debug.Log("No se ha encontrado ninguna sala con dicho código");
+                    }
+                    else if (lobbyException.Reason == LobbyExceptionReason.LobbyFull)
+                    {
+                        Debug.Log("La sala a la que se intenta acceder está llena");
+                    }
+                }
             }
-            // En caso de que la sala ya tenga su máximo de 8 participantes
-            else if (e.Reason == LobbyExceptionReason.LobbyFull)
-            {
-                Debug.Log("La sala a la que se intenta acceder está llena");
-            }
+            yield break; // Salir de la coroutine si hay un error
         }
+
+        // Si el lobby fue encontrado
+        _joinedLobby = joinLobbyTask.Result;
+        Debug.Log("Joined Lobby with code: " + lobbyCode);
+
+        // Una vez se une al lobby, se obtienen la IP y el servidor
+        string serverIP = _joinedLobby.Data["serverIP"].Value;
+        string serverPort = _joinedLobby.Data["serverPort"].Value;
+
+        // Se une al servidor
+        MultiplayManager.Instance.JoinToServer(serverIP, serverPort);
+
+        inLobby = true;
     }
 
-    // Función asíncrona para unirse a una sala pública cualquiera
-    public async Task JoinPublicLobby()
+    public IEnumerator JoinPublicLobbyCoroutine()
     {
-        try
+        // Se crea un jugador con las características correspondientes
+        QuickJoinLobbyOptions options = new QuickJoinLobbyOptions
         {
-            // Se crea un jugador con las características correspondientes
-            QuickJoinLobbyOptions options = new QuickJoinLobbyOptions
+            Player = SelectionController.instance.GetPlayer()
+        };
+
+        // Se intenta unir a una sala disponible
+        var joinLobbyTask = LobbyService.Instance.QuickJoinLobbyAsync(options);
+        yield return new WaitUntil(() => joinLobbyTask.IsCompleted);
+
+        // Si ocurrió un error
+        if (joinLobbyTask.IsFaulted)
+        {
+            // Recorremos las excepciones agregadas en la tarea
+            foreach (var exception in joinLobbyTask.Exception.InnerExceptions)
             {
-                Player = SelectionController.instance.GetPlayer()
-            };
-            // Se intenta unir a una sala disponible
-            _joinedLobby = await LobbyService.Instance.QuickJoinLobbyAsync(options);
-            // Una vez se una al lobby, se trata de unir al servidor, con los datos almacenados
-            // Se obtienen la IP y el servidor
-            string serverIP = _joinedLobby.Data["serverIP"].Value;
-            string serverPort = _joinedLobby.Data["serverPort"].Value;
-            // Se une al servidor
-            MultiplayManager.Instance.JoinToServer(serverIP, serverPort);
-
-            inLobby = true;
-
+                // Verificamos si la excepción es del tipo LobbyServiceException
+                if (exception is LobbyServiceException)
+                {
+                    Debug.Log("No hay ninguna sala activa, se creará una nueva");
+                    CreatePublicLobby(); // Se crea una sala pública nueva
+                }
+            }
+            yield break; // Salir de la coroutine si hay un error
         }
-        catch (LobbyServiceException e)
-        {
-            // Si no lo consigue, creará una sala pública nueva
-            Debug.Log("No hay ninguna sala activa, se creará una nueva");
-            CreatePublicLobby();
-        }
+
+        // Si el lobby fue encontrado
+        _joinedLobby = joinLobbyTask.Result;
+        Debug.Log("Joined public lobby!");
+
+        // Una vez se une al lobby, se obtienen la IP y el servidor
+        string serverIP = _joinedLobby.Data["serverIP"].Value;
+        string serverPort = _joinedLobby.Data["serverPort"].Value;
+
+        // Se une al servidor
+        MultiplayManager.Instance.JoinToServer(serverIP, serverPort);
+
+        inLobby = true;
     }
     #endregion
     #region Leave
     // Con esta función, el jugador abandona la sala
-    public async Task LeaveLobby()
+    public void LeaveLobby()
     {
-        try
+        // Inicia la coroutine en lugar de usar async
+        StartCoroutine(LeaveLobbyCoroutine());
+    }
+
+    private IEnumerator LeaveLobbyCoroutine()
+    {
+        // Se realiza la petición para remover al jugador del lobby
+        var leaveLobbyTask = LobbyService.Instance.RemovePlayerAsync(_joinedLobby.Id, AuthenticationService.Instance.PlayerId);
+        yield return new WaitUntil(() => leaveLobbyTask.IsCompleted);
+
+        // Si ocurrió un error
+        if (leaveLobbyTask.IsFaulted)
         {
-            // Se limpian todas las referencias del código
-            await LobbyService.Instance.RemovePlayerAsync(_joinedLobby.Id, AuthenticationService.Instance.PlayerId);
-            Debug.Log("Jugador ha abandonado la sala");
-            _joinedLobby = null;
-            _hostLobby = null;
-            inLobby = false;
+            // Recorremos las excepciones agregadas en la tarea
+            foreach (var exception in leaveLobbyTask.Exception.InnerExceptions)
+            {
+                // Verificamos si la excepción es del tipo LobbyServiceException
+                if (exception is LobbyServiceException lobbyException)
+                {
+                    Debug.Log(lobbyException);
+                }
+            }
+            yield break; // Salir de la coroutine si hay un error
         }
-        catch (LobbyServiceException e)
-        {
-            Debug.Log(e);
-        }
+
+        // Si la tarea fue exitosa
+        Debug.Log("Jugador ha abandonado la sala");
+
+        // Se limpian todas las referencias del código
+        _joinedLobby = null;
+        _hostLobby = null;
+        inLobby = false;
     }
     #endregion
     #region Data
@@ -335,23 +402,10 @@ public class LobbyManager: MonoBehaviour
         }
     }
 
-    // Función asíncrona para listar todas las lobbies existentes
-    private async void ListLobbies()
+    // Se obtiene el código del lobby
+    public string GetLobbyCode()
     {
-        try
-        {
-            QueryResponse queryResponse = await Lobbies.Instance.QueryLobbiesAsync();
-
-            Debug.Log("Lobbies found: " + queryResponse.Results.Count);
-            foreach (Lobby lobby in queryResponse.Results)
-            {
-                Debug.Log(lobby.Name + " " + lobby.MaxPlayers);
-            }
-        }
-        catch (LobbyServiceException e)
-        {
-            Debug.Log(e);
-        }
+        return _joinedLobby.LobbyCode;
     }
     #endregion
 

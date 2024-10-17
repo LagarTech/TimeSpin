@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 [RequireComponent(typeof(LocomotionController))]
-public class MummyBehaviour : MonoBehaviour
+public class MummyBehaviour : NetworkBehaviour
 {
     private LocomotionController _locomotionController;
     private AStarMind _pathController;
@@ -26,6 +27,31 @@ public class MummyBehaviour : MonoBehaviour
     private void Start()
     {
         if (Application.platform != RuntimePlatform.LinuxServer) return;
+        // Se evitan las colisiones con el resto de momias
+        // Encuentra todos los objetos con la etiqueta "mummy"
+        GameObject[] mummies = GameObject.FindGameObjectsWithTag("mummy");
+
+        // Comprueba si hay alguna momia en la lista
+        if (mummies.Length > 0)
+        {
+            // Desactiva la colisión con cada momia encontrada
+            foreach (GameObject mummy in mummies)
+            {
+                // Asegúrate de que no se trata de la misma momia
+                if (mummy != gameObject)
+                {
+                    // Asegúrate de que ambos objetos tengan un Collider
+                    Collider thisCollider = GetComponent<SphereCollider>();
+                    Collider mummyCollider = mummy.GetComponent<SphereCollider>();
+
+                    // Verifica que ambos colliders no sean nulos antes de ignorar la colisión
+                    if (thisCollider != null && mummyCollider != null)
+                    {
+                        Physics.IgnoreCollision(thisCollider, mummyCollider);
+                    }
+                }
+            }
+        }
         // Se establece un objetivo inicial
         UpdatePlayersList();
         SetTarget();
@@ -96,6 +122,23 @@ public class MummyBehaviour : MonoBehaviour
             UpdatePlayersList();
             SetTarget();
             _currentTime = 0f; // Reiniciar el temporizador
+            // Se avisa a los clientes para que oculten al jugador
+            int clientID = collision.gameObject.GetComponent<PlayerMovement>().ownerClient;
+            HidePlayerDefeatedClientRpc(clientID);
+        }
+    }
+
+    [ClientRpc]
+    private void HidePlayerDefeatedClientRpc(int clientID)
+    {
+        GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
+        foreach (var player in playerObjects)
+        {
+            // Se busca el jugador con el ID adecuado para ocultarlo
+            if (player.GetComponent<PlayerMovement>().ownerClient == clientID)
+            {
+                player.SetActive(false);
+            }
         }
     }
 }

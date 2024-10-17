@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMovement : NetworkBehaviour
 {
+    // Dueño del jugador
+    public int ownerClient;
     private Vector3 _movementDirection = Vector3.zero;
     private float _speed = 1f;
 
@@ -26,6 +28,11 @@ public class PlayerMovement : NetworkBehaviour
     // EGIPTO
     [SerializeField] private Tile _currentTile;
     [SerializeField] private List<Vector3> _startingPositions;
+
+    private void Start()
+    {
+        ownerClient = (int)OwnerClientId - 1;
+    }
 
     private void Update()
     {
