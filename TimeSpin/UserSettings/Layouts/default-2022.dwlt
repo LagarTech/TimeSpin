@@ -119,7 +119,8 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 97
+  controlID: 16
+  draggingID: 0
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -144,7 +145,8 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 37
+  controlID: 17
+  draggingID: 0
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -169,7 +171,8 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 50}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 38
+  controlID: 18
+  draggingID: 0
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -189,8 +192,8 @@ MonoBehaviour:
     y: 0
     width: 345
     height: 602
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 201, y: 221}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 13}
   m_Panes:
   - {fileID: 13}
@@ -206,7 +209,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: GameView
+  m_Name: SceneView
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -217,12 +220,12 @@ MonoBehaviour:
     height: 602
   m_MinSize: {x: 202, y: 221}
   m_MaxSize: {x: 4002, y: 4021}
-  m_ActualView: {fileID: 12}
+  m_ActualView: {fileID: 14}
   m_Panes:
   - {fileID: 14}
   - {fileID: 12}
-  m_Selected: 1
-  m_LastSelected: 0
+  m_Selected: 0
+  m_LastSelected: 1
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -345,7 +348,7 @@ MonoBehaviour:
     m_HSlider: 0
     m_VSlider: 0
     m_IgnoreScrollWheelUntilClicked: 0
-    m_EnableMouseInput: 1
+    m_EnableMouseInput: 0
     m_EnableSliderZoomHorizontal: 0
     m_EnableSliderZoomVertical: 0
     m_UniformScale: 1
@@ -415,7 +418,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 3ca5fdff20aefdff62aefdffc6b1fdff08b2fdff20bafdff62bafdffcebdfdff18befdff12c2fdff52d5fdff38e2fdff68fdfdffaafdfdff1201feff5401feff0a0dfeff4c0dfeffbc10feff0611feff5618feff3a36feff663ffeffa43ffeffda41feff9a4bfeffdc4bfeff124efeff905ffeffb260fefff4ffffff92c70000b2c700004ec80000f0c80000
+      m_ExpandedIDs: 8ab1ffffdab1ffff4cb5ffff92b5ffff4ad8ffff9ad8ffff0cdcffff52dcffff22f3ffff72f3ffffe0f6ffff22f7fffffefafffff4ffffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -478,7 +481,7 @@ MonoBehaviour:
       collapsed: 0
       displayed: 1
       snapOffset: {x: -166, y: -26}
-      snapOffsetDelta: {x: 0, y: 0}
+      snapOffsetDelta: {x: -3, y: 0}
       snapCorner: 3
       id: Tool Settings
       index: 0
@@ -782,9 +785,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 10.624292, y: 1.049792, z: -2.4997694}
+    m_Target: {x: 5.9705844, y: 5.074226, z: -3.1730208}
     speed: 2
-    m_Value: {x: 10.624292, y: 1.049792, z: -2.4997694}
+    m_Value: {x: 5.9705844, y: 5.074226, z: -3.1730208}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -830,13 +833,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.30430797, y: 0.06281328, z: -0.020109585, w: 0.95032334}
+    m_Target: {x: 0.39705926, y: 0.0013727334, z: -0.00059359544, w: 0.9177941}
     speed: 2
-    m_Value: {x: 0.30429766, y: 0.06281116, z: -0.020108905, w: 0.95029116}
+    m_Value: {x: 0.3970584, y: 0.0013727305, z: -0.00059359416, w: 0.91779214}
   m_Size:
-    m_Target: 1.9946187
+    m_Target: 5.4931087
     speed: 2
-    m_Value: 1.9946187
+    m_Value: 5.7519464
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -906,7 +909,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scenes
+    - Assets/Scripts/Lobby & Multiplayer
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -914,16 +917,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scenes
+  - Assets/Scripts/Lobby & Multiplayer
   m_LastFoldersGridSize: -1
   m_LastProjectPath: E:\Jose\Escritorio\LagarTech\TimeSpin
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 52060000
-    m_LastClickedID: 1618
-    m_ExpandedIDs: 000000000a0600005a0600004e0700006a070000e208000000ca9a3b
+    m_SelectedIDs: f8c50000
+    m_LastClickedID: 50680
+    m_ExpandedIDs: 00000000c8780000dc78000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -951,7 +954,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 
+    m_ExpandedIDs: 00000000c8780000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
