@@ -58,6 +58,8 @@ public class StartingManager : NetworkBehaviour
                 StartGameClientRpc();
                 // Carga la escena del minijuego de Egipto y sincroniza con todos los clientes
                 NetworkManager.Singleton.SceneManager.LoadScene("Egipt", LoadSceneMode.Single);
+                // Se inicializa la lista de jugadores
+                GameSceneManager.instance.InitializePlayersList();
             }
         }
     }
@@ -80,6 +82,8 @@ public class StartingManager : NetworkBehaviour
     private void StartGameClientRpc()
     {
         Debug.Log("Comenzando minijuego...");
+        // Se inicializa la lista de jugadores
+        GameSceneManager.instance.InitializePlayersList();
     }
 
 }

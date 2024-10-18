@@ -283,5 +283,14 @@ public class GridManager : NetworkBehaviour
     {
         // Cuando termina el juego, por el momento, se carga el siguiente minijuego
         NetworkManager.Singleton.SceneManager.LoadScene("Maya", LoadSceneMode.Single);
+        // Se reactiva la lista de jugadores
+        GameSceneManager.instance.ActivePlayersList();
+    }
+
+    [ClientRpc]
+    private void GameOverClientRpc()
+    {
+        // Se reactiva la lista de jugadores
+        GameSceneManager.instance.ActivePlayersList();
     }
 }

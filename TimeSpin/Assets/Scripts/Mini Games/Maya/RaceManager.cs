@@ -50,6 +50,7 @@ public class RaceManager : MonoBehaviour
         }
     }
 
+    // Función para terminar el minijuego
     private void EndRace()
     {
         Debug.Log("La carrera ha terminado");

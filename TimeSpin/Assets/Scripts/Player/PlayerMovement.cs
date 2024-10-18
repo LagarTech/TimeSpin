@@ -27,7 +27,12 @@ public class PlayerMovement : NetworkBehaviour
     // Variables encargadas de la gestión de los minijuegos
     // EGIPTO
     [SerializeField] private Tile _currentTile;
-    [SerializeField] private List<Vector3> _startingPositions;
+    [SerializeField] private List<Vector3> _startingPositionsEgipt;
+    // MAYA
+    [SerializeField] private Rigidbody _rb;
+    [SerializeField] private bool _isGrounded = true;
+    [SerializeField] private float _jumpForce = 5f;
+    [SerializeField] private List<Vector3> _startingPositionsMaya;
 
     private void Start()
     {
@@ -86,6 +91,22 @@ public class PlayerMovement : NetworkBehaviour
                     // Envío del input al servidor
                     ChangePlayerDirectionServerRpc(_movementDirection, (int)OwnerClientId);
                     break;
+
+                case Scene.Maya:
+                    // Gestión de los controles
+                    if (Input.GetKey(KeyCode.W)) _movementDirection.z = 1f;
+                    if (Input.GetKey(KeyCode.S)) _movementDirection.z = -1f;
+                    if (Input.GetKey(KeyCode.A)) _movementDirection.x = -1f;
+                    if (Input.GetKey(KeyCode.D)) _movementDirection.x = 1f;
+                    // Envío del input al servidor
+                    ChangePlayerDirectionServerRpc(_movementDirection, (int)OwnerClientId);
+                    // Gestión del control del salto
+                    if (Input.GetKeyDown(KeyCode.Space) && _isGrounded)
+                    {
+                        _isGrounded = false;
+                        JumpPlayerServerRpc((int)OwnerClientId);
+                    }
+                    break;
             }
         }
     }
@@ -107,13 +128,28 @@ public class PlayerMovement : NetworkBehaviour
             case "Egipt":
                 _currentScene = Scene.Egipt;
                 // Se debe colocar al jugador en la posición de inicio adecuada
-                transform.position = _startingPositions[(int)OwnerClientId - 1];
+                transform.position = _startingPositionsEgipt[(int)OwnerClientId - 1];
                 break;
             case "Medieval":
                 _currentScene = Scene.Medieval;
                 break;
             case "Maya":
                 _currentScene = Scene.Maya;
+                // Se eliminan las momias del minijuego anterior en el servidor
+                if(Application.platform == RuntimePlatform.LinuxServer)
+                {
+                    DespawnMummies();
+                }
+                // Se obtiene una referencia al rigidbody
+                _rb = GetComponent<Rigidbody>();
+                // Se debe colocar al jugador en la posición de inicio adecuada
+                transform.position = _startingPositionsMaya[(int) OwnerClientId - 1];
+                // Se hace que si el personaje es del propietario, la cámara lo siga
+                if(IsOwner)
+                {
+                    GameObject mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+                    mainCamera.GetComponent<CameraFollow>().StartFollowingPlayer(gameObject);
+                }
                 break;
             case "Future":
                 _currentScene = Scene.Future;
@@ -133,5 +169,44 @@ public class PlayerMovement : NetworkBehaviour
 
     #region Egipt
     public Tile GetCurrentTile() { return _currentTile; }
+
+    private void DespawnMummies()
+    {
+        if(IsServer)
+        {
+            // Encontrar todos los objetos con la etiqueta "mummy"
+            GameObject[] mummies = GameObject.FindGameObjectsWithTag("mummy");
+
+            // Recorrer cada objeto y despawnearlo si es un NetworkObject
+            foreach (GameObject mummy in mummies)
+            {
+                NetworkObject networkObject = mummy.GetComponent<NetworkObject>();
+
+                if (networkObject != null && networkObject.IsSpawned) // Verificar si es un NetworkObject y está spawneado
+                {
+                    networkObject.Despawn(); // Despawnear el objeto de red
+                }
+            }
+        }
+    }
+    #endregion
+    #region Maya
+    [ServerRpc(RequireOwnership = false)]
+    private void JumpPlayerServerRpc(int playerId)
+    {
+        // Se comprueba primero si el jugador que se está comprobando es del que se ha recibido el input
+        if (playerId != (int)OwnerClientId) return;
+        // Se aplica una fuerza sobre el rigidbody del jugador
+        _rb.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        // Detectamos cuando el jugador está de vuelta en el suelo
+        if (collision.gameObject.CompareTag("Ground") && _currentScene == Scene.Maya)
+        {
+            _isGrounded = true;
+        }
+    }
     #endregion
 }

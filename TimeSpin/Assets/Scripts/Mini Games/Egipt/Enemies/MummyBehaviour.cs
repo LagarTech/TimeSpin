@@ -13,7 +13,7 @@ public class MummyBehaviour : NetworkBehaviour
     [SerializeField] private int _numPlayers; // Número de jugadores en la escena
     private List<PlayerMovement> _players = new List<PlayerMovement>();
     private const float _timeToChangeTarget = 10f; // Tiempo que transcurre en el cambio de objetivos
-    private float _currentTime = 0f;
+    private float _currentTime = 10f;
 
     private Tile _currentTile;
 
