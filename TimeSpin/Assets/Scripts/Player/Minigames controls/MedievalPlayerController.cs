@@ -38,10 +38,17 @@ public class MedievalPlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Sword") && carriedSword == null)
         {
-            // Recoger espada si no llevamos una
+            // Recoger la espada
             carriedSword = other.gameObject;
+
+            // Fijamos la espada como hija del jugador para que se mueva con él
             carriedSword.transform.SetParent(transform);
+
+            // Reposicionamos la espada en una posición relativa al jugador (por ejemplo, sobre la cabeza)
             carriedSword.transform.localPosition = new Vector3(0, 1, 0);
+
+            // Desactivar el Collider de la espada para que no siga siendo detectable como "Sword"
+            carriedSword.GetComponent<Collider>().enabled = false;
         }
     }
 
@@ -49,8 +56,13 @@ public class MedievalPlayerController : MonoBehaviour
     {
         if (carriedSword != null)
         {
+            // Obtener los puntos de la espada
             SwordController sword = carriedSword.GetComponent<SwordController>();
+
+            // Añadir los puntos a la puntuación del jugador
             gameManager.AddScore(playerIndex, sword.GetPoints());
+
+            // Destruir la espada (entregada)
             Destroy(carriedSword);
         }
     }
