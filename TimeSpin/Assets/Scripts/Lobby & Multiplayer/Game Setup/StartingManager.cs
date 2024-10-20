@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class StartingManager : MonoBehaviour
+public class StartingManager : NetworkBehaviour
 {
     [SerializeField] private TMP_Text _numPlayersText;
     [SerializeField] private GameObject _startGameButton;
@@ -30,7 +31,7 @@ public class StartingManager : MonoBehaviour
     private void UpdatePlayersCount()
     {
         // En el cliente, se actualiza el texto con el número de jugadores conectados
-        if (NetworkManager.Singleton.IsClient && Application.platform != RuntimePlatform.LinuxServer)
+        if (Application.platform != RuntimePlatform.LinuxServer)
         {
             if (!LobbyManager.instance.inLobby) return;
             _numPlayers = LobbyManager.instance.NUM_PLAYERS_IN_LOBBY;
@@ -51,10 +52,14 @@ public class StartingManager : MonoBehaviour
                 _numPlayers = NetworkManager.Singleton.ConnectedClients.Count;
             }
             // En el servidor, se comprueba si todos los jugadores están listos
-            if (_numPlayersReady == _numPlayers)
+            if (_numPlayersReady == _numPlayers && _numPlayers >= _requiredPlayers)
             {
                 // Se avisa a los clientes para empezar el primer minijuego
                 StartGameClientRpc();
+                // Carga la escena del minijuego de Egipto y sincroniza con todos los clientes
+                NetworkManager.Singleton.SceneManager.LoadScene("Egipt", LoadSceneMode.Single);
+                // Se inicializa la lista de jugadores
+                GameSceneManager.instance.InitializePlayersList();
             }
         }
     }
@@ -67,7 +72,6 @@ public class StartingManager : MonoBehaviour
         _isReady = true;
     }
 
-
     [ServerRpc(RequireOwnership = false)]
     private void IncrementPlayersReadyServerRpc()
     {
@@ -78,6 +82,8 @@ public class StartingManager : MonoBehaviour
     private void StartGameClientRpc()
     {
         Debug.Log("Comenzando minijuego...");
+        // Se inicializa la lista de jugadores
+        GameSceneManager.instance.InitializePlayersList();
     }
 
 }

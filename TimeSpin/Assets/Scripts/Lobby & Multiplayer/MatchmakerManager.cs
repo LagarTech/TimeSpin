@@ -76,46 +76,69 @@ public class MatchmakerManager : NetworkBehaviour
     }
 
     // Función para realizar el emparejamiento del creador de la sala con el servidor
-    public async Task FirstServerJoin()
+    // Se hace como una corrutina para evitar la instrucción Task.Delay, incompatible con WebGL
+    public IEnumerator FirstServerJoinCoroutine(System.Action<bool> onComplete)
     {
         // Se configura la petición del ticket
         CreateTicketOptions createTicketOptions = new CreateTicketOptions("JoinServerQueue");
         List<Player> players = new List<Player> { new Player(AuthenticationService.Instance.PlayerId) };
-        CreateTicketResponse createTicketResponse = await MatchmakerService.Instance.CreateTicketAsync(players, createTicketOptions);
 
-        _currentTicket = createTicketResponse.Id;
+        var createTicketTask = MatchmakerService.Instance.CreateTicketAsync(players, createTicketOptions);
+
+        yield return new WaitUntil(() => createTicketTask.IsCompleted);
+
+        if (createTicketTask.Exception != null)
+        {
+            Debug.LogError("Error creating ticket: " + createTicketTask.Exception);
+            onComplete(false);
+            yield break;
+        }
+
+        _currentTicket = createTicketTask.Result.Id;
         Debug.Log("Ticket created: " + _currentTicket);
 
         // Después, se comprueba el estado del ticket
         while (true)
         {
-            TicketStatusResponse ticketStatusResponse = await MatchmakerService.Instance.GetTicketAsync(_currentTicket);
-            // Se comprueba si su estado ha cambiado 
-            if(ticketStatusResponse.Type == typeof(MultiplayAssignment))
+            var getTicketTask = MatchmakerService.Instance.GetTicketAsync(_currentTicket);
+            yield return new WaitUntil(() => getTicketTask.IsCompleted);
+
+            if (getTicketTask.Exception != null)
             {
-                MultiplayAssignment multiplayAssignment = (MultiplayAssignment) ticketStatusResponse.Value;
-                // En función del estado que sea se hace una acción u otra
+                Debug.LogError("Error checking ticket: " + getTicketTask.Exception);
+                onComplete(false);
+                yield break;
+            }
+
+            TicketStatusResponse ticketStatusResponse = getTicketTask.Result;
+
+            if (ticketStatusResponse.Type == typeof(MultiplayAssignment))
+            {
+                MultiplayAssignment multiplayAssignment = (MultiplayAssignment)ticketStatusResponse.Value;
+
                 if (multiplayAssignment.Status == MultiplayAssignment.StatusOptions.Found)
                 {
                     UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
-                    // Se obtienen los datos de la conexión
                     _serverIP = multiplayAssignment.Ip;
                     _serverPort = ushort.Parse(multiplayAssignment.Port.ToString());
                     transport.SetConnectionData(_serverIP, _serverPort);
 
                     NetworkManager.Singleton.StartClient();
                     Debug.Log("Server found");
-                    return;
+                    onComplete(true);
+                    yield break;
                 }
                 else if (multiplayAssignment.Status == MultiplayAssignment.StatusOptions.Timeout)
                 {
                     Debug.Log("Match timeout");
-                    return;
+                    onComplete(false);
+                    yield break;
                 }
                 else if (multiplayAssignment.Status == MultiplayAssignment.StatusOptions.Failed)
                 {
                     Debug.Log("Match failed: " + multiplayAssignment.Status + "  " + multiplayAssignment.Message);
-                    return;
+                    onComplete(false);
+                    yield break;
                 }
                 else if (multiplayAssignment.Status == MultiplayAssignment.StatusOptions.InProgress)
                 {
@@ -123,7 +146,7 @@ public class MatchmakerManager : NetworkBehaviour
                 }
             }
 
-            await Task.Delay(1000);
+            yield return new WaitForSeconds(1f);
         }
     }
 

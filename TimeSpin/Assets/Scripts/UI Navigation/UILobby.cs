@@ -30,23 +30,39 @@ public class UI_Lobby : MonoBehaviour
     }
 
     // Función para crear una sala, que accede a la instancia del manejador del LobbyManager
-    public async void CreateLobbyButton()
+    public void CreateLobbyButton()
+    {
+        // Inicia la coroutine en lugar de usar async
+        StartCoroutine(CreateLobbyCoroutine());
+    }
+
+    private IEnumerator CreateLobbyCoroutine()
     {
         // Primero se espera a crear el lobby
-        await LobbyManager.instance.CreatePrivateLobby();
+        yield return StartCoroutine(LobbyManager.instance.CreatePrivateLobbyCoroutine());
+
         // Después se oculta el menú
         UIController.instance.OcultarMenu();
+
         // Tras ello se coloca el código del lobby en la interfaz
-        _lobbyCodeText.text = "Clave sala: " + _lobbyCode;
+        _lobbyCodeText.text = "Clave sala: " + LobbyManager.instance.GetLobbyCode(); // Asumiendo que hay un método para obtener el código del lobby
     }
 
     // Función para unirse a una sala, que accede a la instancia del manejador del LobbyManager
-    public async void JoinLobbyButton()
+    public void JoinLobbyButton()
+    {
+        // Inicia la coroutine en lugar de usar async
+        StartCoroutine(JoinLobbyCoroutine());
+    }
+
+    private IEnumerator JoinLobbyCoroutine()
     {
         // Primero se espera a unirse al lobby
-        await LobbyManager.instance.JoinLobbyByCode(_lobbyCode);
+        yield return StartCoroutine(LobbyManager.instance.JoinLobbyByCodeCoroutine(_lobbyCode));
+
         // Después se oculta el menú
         UIController.instance.OcultarMenu();
+
         // Tras ello se coloca el código del lobby en la interfaz
         _lobbyCodeText.text = "Clave sala: " + _lobbyCode;
     }

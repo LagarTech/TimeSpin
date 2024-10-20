@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class TrunkSpawner : MonoBehaviour
@@ -14,7 +15,8 @@ public class TrunkSpawner : MonoBehaviour
     private void Update()
     {
         if (!RaceManager.instance.runningGame) return;
-
+        // Sólo se gestiona el spawn de los troncos desde el servidor, que avisará a los clientes cuando se deba tomar uno
+        if (Application.platform != RuntimePlatform.LinuxServer) return;
         // Incrementa el temporizador basado en el tiempo real transcurrido
         _spawnTimer += Time.deltaTime;
 
@@ -35,7 +37,7 @@ public class TrunkSpawner : MonoBehaviour
         Vector3 spawnPosition = new Vector3(randomX, 2f, 58f);  // Ajusta según el escenario
         Quaternion spawnRotation = Quaternion.Euler(0, 0, 90); // Rotación en Z
 
-        // Instancia el tronco
+        // Instancia el tronco en el servidor
         GameObject newTrunk = TrunkPool.instance.GetTrunkFromPool();
 
         if (newTrunk != null)
@@ -51,6 +53,9 @@ public class TrunkSpawner : MonoBehaviour
         {
             trunkRb.AddForce(Vector3.back * 500f);
         }
+
+        // Se activa el tronco en los clientes
+        StartCoroutine(TrunkPool.instance.ActiveTrunk(newTrunk.GetComponent<NetworkObject>().NetworkObjectId));
     }
 
 }

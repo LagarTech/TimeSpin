@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class MedievalGameManager : MonoBehaviour
 {
     public GameObject[] swordPrefabs;       // Prefabs de espadas (bronce, plata, oro)
-    public Transform[] spawnPoints;         // Puntos de las espadas
+    public Transform[] spawnPoints;         // Puntos de spawns de las espadas
     public float spawnInterval = 3f;        // tiwmpo de aparición de espadas
     public float gameTime = 60f;            // Duración del minijuego
 
@@ -22,7 +22,7 @@ public class MedievalGameManager : MonoBehaviour
     void Start()
     {
         timeLeft = gameTime;
-        playerScores = new int[2];  // Asumiendo 2 jugadores para este minijuego
+        playerScores = new int[2];  // Asumiendo 2 jugadores para este minijuego 
         UpdateUI();
     }
 

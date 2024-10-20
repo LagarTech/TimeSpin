@@ -1,18 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 [RequireComponent(typeof(LocomotionController))]
-public class MummyBehaviour : MonoBehaviour
+public class MummyBehaviour : NetworkBehaviour
 {
     private LocomotionController _locomotionController;
     private AStarMind _pathController;
 
-    [SerializeField] private PlayerMovementEgipt _target; // Personaje objetivo al que va a perseguir
+    [SerializeField] private PlayerMovement _target; // Personaje objetivo al que va a perseguir
     [SerializeField] private int _numPlayers; // Número de jugadores en la escena
-    private List<PlayerMovementEgipt> _players = new List<PlayerMovementEgipt>();
+    private List<PlayerMovement> _players = new List<PlayerMovement>();
     private const float _timeToChangeTarget = 10f; // Tiempo que transcurre en el cambio de objetivos
-    private float _currentTime = 0f;
+    private float _currentTime = 10f;
 
     private Tile _currentTile;
 
@@ -22,8 +23,35 @@ public class MummyBehaviour : MonoBehaviour
         _pathController = GetComponent<AStarMind>();
     }
 
+    // El movimiento de la momia sólo se realizará en el servidor, se sincroniza directamente en los clientes
     private void Start()
     {
+        if (Application.platform != RuntimePlatform.LinuxServer) return;
+        // Se evitan las colisiones con el resto de momias
+        // Encuentra todos los objetos con la etiqueta "Momia"
+        GameObject[] mummies = GameObject.FindGameObjectsWithTag("Momia");
+
+        // Comprueba si hay alguna momia en la lista
+        if (mummies.Length > 0)
+        {
+            // Desactiva la colisión con cada momia encontrada
+            foreach (GameObject mummy in mummies)
+            {
+                // Asegúrate de que no se trata de la misma momia
+                if (mummy != gameObject)
+                {
+                    // Asegúrate de que ambos objetos tengan un Collider
+                    Collider thisCollider = GetComponent<SphereCollider>();
+                    Collider mummyCollider = mummy.GetComponent<SphereCollider>();
+
+                    // Verifica que ambos colliders no sean nulos antes de ignorar la colisión
+                    if (thisCollider != null && mummyCollider != null)
+                    {
+                        Physics.IgnoreCollision(thisCollider, mummyCollider);
+                    }
+                }
+            }
+        }
         // Se establece un objetivo inicial
         UpdatePlayersList();
         SetTarget();
@@ -31,6 +59,7 @@ public class MummyBehaviour : MonoBehaviour
 
     private void Update()
     {
+        if (Application.platform != RuntimePlatform.LinuxServer) return;
         // Si el juego no está funcionando, no se ejecuta ninguna acción
         if (!GridManager.Instance.runningGame) return;
         _currentTime += Time.deltaTime; // Se actualiza el tiempo transcurrido
@@ -50,8 +79,6 @@ public class MummyBehaviour : MonoBehaviour
             }
             // Se toma la casilla en la que se encuentra el objetivo
             Tile targetTile = _target.GetCurrentTile();
-            // Se comprueba si se ha atrapado a algún jugador
-            // CheckPlayers();
             // Se establece un nuevo movimiento en función de lo calculado con el algoritmo de búsqueda
             _locomotionController.SetNewDirection(_pathController.GetNextMove(_currentTile, targetTile));
         }
@@ -67,9 +94,9 @@ public class MummyBehaviour : MonoBehaviour
         foreach(var player in playerObjects)
         {
             // Asegurarse que el jugador tiene el componente necesario
-            if (player.GetComponent<PlayerMovementEgipt>() != null)
+            if (player.GetComponent<PlayerMovement>() != null)
             {
-                _players.Add(player.GetComponent<PlayerMovementEgipt>()); // Añadir el jugador válido a la lista
+                _players.Add(player.GetComponent<PlayerMovement>()); // Añadir el jugador válido a la lista
             }
         }
     }
@@ -79,7 +106,7 @@ public class MummyBehaviour : MonoBehaviour
         if (_players.Count == 0) return; // Si no hay jugadores, no se asigna un objetivo
         _numPlayers = _players.Count;
         // Seleccionar un jugador aleatorio de la lista de jugadores conectados
-        PlayerMovementEgipt targetPlayer = _players[Random.Range(0, _numPlayers)];
+        PlayerMovement targetPlayer = _players[Random.Range(0, _numPlayers)];
 
         if (targetPlayer != null)
         {
@@ -87,28 +114,35 @@ public class MummyBehaviour : MonoBehaviour
         }
     }
 
-    private void CheckPlayers()
-    {
-        foreach(var player in _players)
-        {
-            if(_currentTile == player.GetCurrentTile())
-            {
-                player.gameObject.SetActive(false);
-                UpdatePlayersList();
-                SetTarget();
-                _currentTime = 0f; // Reiniciar el temporizador
-            }
-        }
-    }
-
     public void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Player")
         {
-            collision.gameObject.SetActive(false);
+            // Se oculta el jugador en el servidor, sin desactivarlo por completo
+            collision.gameObject.GetComponent<PlayerMovement>().HidePlayer();
             UpdatePlayersList();
             SetTarget();
             _currentTime = 0f; // Reiniciar el temporizador
+            // Se indica al gestor que se ha atrapado a un jugador más
+            GridManager.Instance.numPlayersCaught++;
+            // Se avisa a los clientes para que oculten al jugador
+            int clientID = collision.gameObject.GetComponent<PlayerMovement>().ownerClient;
+            HidePlayerDefeatedClientRpc(clientID);
+        }
+    }
+
+    [ClientRpc]
+    private void HidePlayerDefeatedClientRpc(int clientID)
+    {
+        GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
+        foreach (var player in playerObjects)
+        {
+            PlayerMovement pMovement = player.GetComponent<PlayerMovement>();
+            // Se busca el jugador con el ID adecuado para ocultarlo
+            if (pMovement.ownerClient == clientID)
+            {
+                pMovement.HidePlayer();
+            }
         }
     }
 }
