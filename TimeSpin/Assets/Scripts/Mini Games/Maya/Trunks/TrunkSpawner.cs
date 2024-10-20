@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class TrunkSpawner : MonoBehaviour
@@ -52,6 +53,9 @@ public class TrunkSpawner : MonoBehaviour
         {
             trunkRb.AddForce(Vector3.back * 500f);
         }
+
+        // Se activa el tronco en los clientes
+        StartCoroutine(TrunkPool.instance.ActiveTrunk(newTrunk.GetComponent<NetworkObject>().NetworkObjectId));
     }
 
 }

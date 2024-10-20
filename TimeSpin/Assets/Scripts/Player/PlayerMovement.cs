@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Cinemachine;
 
 public class PlayerMovement : NetworkBehaviour
 {
@@ -148,8 +149,8 @@ public class PlayerMovement : NetworkBehaviour
                 // Se hace que si el personaje es del propietario, la cámara lo siga
                 if(IsOwner)
                 {
-                    GameObject mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
-                    mainCamera.GetComponent<CameraFollow>().StartFollowingPlayer(gameObject);
+                    GameObject.FindGameObjectWithTag("FollowCamera").GetComponent<CinemachineVirtualCamera>().Follow = transform;
+                    GameObject.FindGameObjectWithTag("FollowCamera").GetComponent<CinemachineVirtualCamera>().LookAt = transform;
                 }
                 break;
             case "Future":

@@ -1,8 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
+/*
+ * FUNCIONAMIENTO EN EL SERVIDOR -> Primero se inicializa el pool, instanciando los 15 troncos y desactivándolos
+ * Después, cada X segundos, en TrunkSpawner se genera la orden de obtener un tronco del pool, para ello se genera una posición aleatoria y se toma el primer inactivo de la lista
+ * Cada tronco gestiona su movimiento mediante TrunkMovement, además del momento en el que se tienen que desactivar
+ * FUNCIONAMIENTO EN EL CLIENTE -> Según se instancian los 15 troncos en el servidor, en red, aparecen en los clientes
+ * Estos, mediante su script, desactivan su Mesh y se auto añaden al pool
+ * Cada vez que el servidor necesita obtener un nuevo tronco del pool, indica cuál es su identificador y se lo pasa a los clientes, para que estos activen el Mesh apropiado para que se vea
+ * Si deben desaparecer, los clientes vuelven a desactivar el Mesh
+*/
 
 public class TrunkPool: NetworkBehaviour
 {
@@ -32,8 +43,6 @@ public class TrunkPool: NetworkBehaviour
         for (int i = 0; i < _poolSize; i++)
         {
             GameObject trunk = Instantiate(_trunkPrefab);
-            // Se asigna un identificador al tronco
-            trunk.GetComponent<TrunkMovement>().idTrunk = i;
 
             // Asegúrate de que el tronco tiene un NetworkObject
             NetworkObject networkObject = trunk.GetComponent<NetworkObject>();
@@ -47,10 +56,6 @@ public class TrunkPool: NetworkBehaviour
             trunk.SetActive(false); // Mantenerlo inactivo hasta que se necesite
             _pool.Add(trunk);
         }
-
-        // Una vez instanciados todos los troncos, se hace el pool en los clientes
-        CreatePoolClientRpc();
-
     }
 
     // Método para obtener un tronco del pool
@@ -61,8 +66,6 @@ public class TrunkPool: NetworkBehaviour
             if (!trunk.activeInHierarchy)
             {
                 trunk.SetActive(true);
-                // Se avisa a los clientes del id del tronco que deben activar
-                ActiveTrunkClientRpc(trunk.GetComponent<TrunkMovement>().idTrunk);
                 return trunk;
             }
         }
@@ -72,33 +75,43 @@ public class TrunkPool: NetworkBehaviour
     // Método para devolver el tronco al pool
     public void ReturnTrunkToPool(GameObject trunk)
     {
-        trunk.SetActive(false);
-    }
-
-    // Mediante esta función, todos los clientes tendrán un pool con la referencia a los troncos, para poder activarlos y desactivarlos
-    [ClientRpc]
-    private void CreatePoolClientRpc()
-    {
-        // Se buscan todos los objetos spawneados
-        GameObject[] poolList = GameObject.FindGameObjectsWithTag("Tronco");
-        // Se recorre la lista de troncos
-        foreach(var tronco in poolList)
+        // En el servidor, se desactivan los objetos del pool
+        if(Application.platform == RuntimePlatform.LinuxServer)
         {
-            // Se desactiva el tronco y se añade al pool
-            tronco.SetActive(false);
-            _pool.Add(tronco);
+            trunk.SetActive(false);
+        }
+        else
+        {
+            // En el cliente, se desactiva sólo el mesh, para no perder la referencia a ellos
+            trunk.GetComponent<TrunkMovement>().mesh.enabled = false;
         }
     }
 
-    [ClientRpc]
-    private void ActiveTrunkClientRpc(int trunkId)
+    // Función para que un tronco se añada al pool en el cliente, una vez spawnee
+    public void AddTrunkToPool(GameObject trunk)
     {
-        foreach (var trunk in _pool)
+        _pool.Add(trunk);
+    }
+
+    public IEnumerator ActiveTrunk(ulong networkObjectId)
+    {
+        // Se espera un tiempo mínimo para que los troncos se coloquen en la posición adecuada en el servidor
+        yield return new WaitForSeconds(1f);
+        // Se avisa a los clientes del id del tronco que deben activar
+        ActiveTrunkClientRpc(networkObjectId);
+    }
+
+    [ClientRpc]
+    private void ActiveTrunkClientRpc(ulong networkObjectId)
+    {
+        // Buscar el NetworkObject por su NetworkObjectId en el pool de los clientes
+        foreach(var trunk in _pool)
         {
-            // Se activa el tronco que se haya obtenido del pool en el servidor, caracterizado por el id
-            if(trunk.GetComponent<TrunkMovement>().idTrunk == trunkId)
+            TrunkMovement trunkMove = trunk.GetComponent<TrunkMovement>();
+            if (trunkMove.trunkNetworkId == (int) networkObjectId)
             {
-                trunk.SetActive(true);
+                // Se reactiva el modelo
+                trunkMove.mesh.enabled = true;
             }
         }
     }

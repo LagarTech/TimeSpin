@@ -1,19 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class TrunkMovement : MonoBehaviour
+public class TrunkMovement : NetworkBehaviour
 {
     private float _speed = 3f; // Velocidad de movimiento del tronco
     private float _rotationSpeed = 100f; // Velocidad de rotación del tronco
 
     private Rigidbody _rb;
+    public MeshRenderer mesh;
 
-    public int idTrunk; // Identificador del tronco para poder activarlo y desactivarlo
+    public int trunkNetworkId;
 
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
+        mesh = GetComponent<MeshRenderer>();
+        // Sólo se añadirán los troncos al pool manualmente en los clientes, una vez spawneen
+        if (Application.platform == RuntimePlatform.LinuxServer) return;
+        // En el cliente se almacena el identificador en red del objeto
+        trunkNetworkId = (int)NetworkObjectId;
+        TrunkPool.instance.AddTrunkToPool(gameObject);
+        mesh.enabled = false; // Después de añadirse al pool, se desactiva el modelo
     }
 
     private void Update()
