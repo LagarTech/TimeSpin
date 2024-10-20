@@ -14,6 +14,8 @@ public class GridManager : NetworkBehaviour
     public bool runningGame = true;
     // Variable que gestiona el número de jugadores
     private int _numPlayers;
+    // Variable que controlar cuántos jugadores se han pillado
+    public int numPlayersCaught = 0;
 
     // Dimensiones del tablero
     private const int COLUMNS = 13;
@@ -130,7 +132,7 @@ public class GridManager : NetworkBehaviour
         {
             _numPlayers = GameObject.FindGameObjectsWithTag("Player").Length;
             // Si sólo queda un jugador, se termina el juego
-            if (_numPlayers == 1)
+            if (_numPlayers - numPlayersCaught == 1)
             {
                 runningGame = false;
                 GameOver();
@@ -281,10 +283,12 @@ public class GridManager : NetworkBehaviour
     #endregion
     private void GameOver()
     {
+        // Se reactiva la lista de jugadores en el servidor
+        GameSceneManager.instance.ActivePlayersList();
+        // Se reactiva después en los clientes
+        GameOverClientRpc();
         // Cuando termina el juego, por el momento, se carga el siguiente minijuego
         NetworkManager.Singleton.SceneManager.LoadScene("Maya", LoadSceneMode.Single);
-        // Se reactiva la lista de jugadores
-        GameSceneManager.instance.ActivePlayersList();
     }
 
     [ClientRpc]

@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMovement : NetworkBehaviour
 {
+    // Modelo y nombre del jugador
+    [SerializeField] private GameObject _characterNamePlayer;
     // Dueño del jugador
     public int ownerClient;
     private Vector3 _movementDirection = Vector3.zero;
@@ -101,9 +103,8 @@ public class PlayerMovement : NetworkBehaviour
                     // Envío del input al servidor
                     ChangePlayerDirectionServerRpc(_movementDirection, (int)OwnerClientId);
                     // Gestión del control del salto
-                    if (Input.GetKeyDown(KeyCode.Space) && _isGrounded)
+                    if (Input.GetKeyDown(KeyCode.Space))
                     {
-                        _isGrounded = false;
                         JumpPlayerServerRpc((int)OwnerClientId);
                     }
                     break;
@@ -167,6 +168,18 @@ public class PlayerMovement : NetworkBehaviour
         _movementDirection = direction;
     }
 
+    // Esta función se utiliza para ocultar el nombre y el personaje del jugador, sin desactivarlo completamente para poder acceder a él de nuevo
+    public void HidePlayer()
+    {
+        _characterNamePlayer.SetActive(false);
+    }
+
+    // Esta función se usa para volver a mostrar los detalles del jugador
+    public void ShowPlayer()
+    {
+        _characterNamePlayer.SetActive(true);
+    }
+
     #region Egipt
     public Tile GetCurrentTile() { return _currentTile; }
 
@@ -174,8 +187,8 @@ public class PlayerMovement : NetworkBehaviour
     {
         if(IsServer)
         {
-            // Encontrar todos los objetos con la etiqueta "mummy"
-            GameObject[] mummies = GameObject.FindGameObjectsWithTag("mummy");
+            // Encontrar todos los objetos con la etiqueta "Momia"
+            GameObject[] mummies = GameObject.FindGameObjectsWithTag("Momia");
 
             // Recorrer cada objeto y despawnearlo si es un NetworkObject
             foreach (GameObject mummy in mummies)
@@ -196,7 +209,10 @@ public class PlayerMovement : NetworkBehaviour
     {
         // Se comprueba primero si el jugador que se está comprobando es del que se ha recibido el input
         if (playerId != (int)OwnerClientId) return;
+        if (!_isGrounded) return; // Si no está en el suelo, no puede saltar
         // Se aplica una fuerza sobre el rigidbody del jugador
+        // Se indica que ahora el jugador ya no está en el suelo
+        _isGrounded = false;
         _rb.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
     }
 

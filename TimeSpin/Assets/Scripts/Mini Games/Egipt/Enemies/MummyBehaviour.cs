@@ -28,8 +28,8 @@ public class MummyBehaviour : NetworkBehaviour
     {
         if (Application.platform != RuntimePlatform.LinuxServer) return;
         // Se evitan las colisiones con el resto de momias
-        // Encuentra todos los objetos con la etiqueta "mummy"
-        GameObject[] mummies = GameObject.FindGameObjectsWithTag("mummy");
+        // Encuentra todos los objetos con la etiqueta "Momia"
+        GameObject[] mummies = GameObject.FindGameObjectsWithTag("Momia");
 
         // Comprueba si hay alguna momia en la lista
         if (mummies.Length > 0)
@@ -118,10 +118,13 @@ public class MummyBehaviour : NetworkBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            collision.gameObject.SetActive(false);
+            // Se oculta el jugador en el servidor, sin desactivarlo por completo
+            collision.gameObject.GetComponent<PlayerMovement>().HidePlayer();
             UpdatePlayersList();
             SetTarget();
             _currentTime = 0f; // Reiniciar el temporizador
+            // Se indica al gestor que se ha atrapado a un jugador más
+            GridManager.Instance.numPlayersCaught++;
             // Se avisa a los clientes para que oculten al jugador
             int clientID = collision.gameObject.GetComponent<PlayerMovement>().ownerClient;
             HidePlayerDefeatedClientRpc(clientID);
@@ -134,10 +137,11 @@ public class MummyBehaviour : NetworkBehaviour
         GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
         foreach (var player in playerObjects)
         {
+            PlayerMovement pMovement = player.GetComponent<PlayerMovement>();
             // Se busca el jugador con el ID adecuado para ocultarlo
-            if (player.GetComponent<PlayerMovement>().ownerClient == clientID)
+            if (pMovement.ownerClient == clientID)
             {
-                player.SetActive(false);
+                pMovement.HidePlayer();
             }
         }
     }

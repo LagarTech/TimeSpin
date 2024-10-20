@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class RaceManager : MonoBehaviour
 {
     public static RaceManager instance;
 
-    public bool runningGame = false;
+    public bool runningGame = true;
     private List<GameObject> _players;
     private List<GameObject> _playersFinished = new List<GameObject>();
 
@@ -55,10 +56,15 @@ public class RaceManager : MonoBehaviour
     {
         Debug.Log("La carrera ha terminado");
         runningGame = false;
+        // Una vez finalizada la carrera, se pasa a la escena del siguiente minijuego, el futuro
+        TrunkPool.instance.ChangeScene();
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        // Sólo se lleva la gestión de la meta en el servidor
+        if (Application.platform != RuntimePlatform.LinuxServer) return;
+
         if(collision.gameObject.tag == "Player")
         {
             // Se indica que el jugador ha pasado la meta

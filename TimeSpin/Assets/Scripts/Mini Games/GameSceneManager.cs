@@ -29,9 +29,14 @@ public class GameSceneManager : MonoBehaviour
 
     public void ActivePlayersList()
     {
+        // Se reactivan los jugadores de la lista
         foreach(var player in _playersList)
         {
-            player.SetActive(true);
+            PlayerMovement pMovement = player.GetComponent<PlayerMovement>();
+            if (pMovement != null)
+            {
+                pMovement.ShowPlayer();
+            }
         }
     }
 }
