@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class GravityManager : MonoBehaviour
+// Este script se encarga de las inversiones en la gravedad, que se gestionarán por el servidor. La única funcionalidad que realizará el cliente es actualizar el temporizador
+public class GravityManager : NetworkBehaviour
 {
     public static GravityManager Instance;
 
     // Variable que controla el flujo del juego
-    public bool runningGame = false;
+    public bool runningGame = true;
 
     // Tiempo que se espera entre cambios de gravedad
     private const float _gravitySwitchTime = 10f;
@@ -29,6 +32,7 @@ public class GravityManager : MonoBehaviour
     private float _remainingTime = 120f; // El tiempo de juego son 2 minutos (120 segundos)
 
     private int _numPlayers = 0; // Control del número de jugadores
+    public int fallenPlayers = 0; // Número de jugadores que han caído
 
     private void Awake()
     {
@@ -44,6 +48,8 @@ public class GravityManager : MonoBehaviour
 
     private void Start()
     {
+        // La gestión del cambio de gravedad sólo se va a llevar a cabo en el servidor
+        if (Application.platform != RuntimePlatform.LinuxServer) return;
         // Se calcula el tiempo de flotación utilizando la ecuación del MRUA
         // d = d0 + v0*t + 1/2*a*t^2 -> Se parte del reposo -> d = 1/2*a*t^2
         // Despejando, se obtiene que t = sqrt(2*d/g), siendo d la distancia entre las plataformas y g la gravedad
@@ -60,21 +66,33 @@ public class GravityManager : MonoBehaviour
         {
             // Disminuir el tiempo restante
             _remainingTime -= Time.deltaTime;
-            // Se actualiza el temporizador
-            UpdateTimer();
+            // Se actualiza el temporizador, sólo en el cliente
+            if (Application.platform != RuntimePlatform.LinuxServer)
+            {
+                UpdateTimer();
+            }
         }
         else
         {
             _remainingTime = 0f;
-            // Se actualiza el temporizador
-            UpdateTimer();
+            // Se actualiza el temporizador, sólo en el cliente
+            if (Application.platform != RuntimePlatform.LinuxServer)
+            {
+                UpdateTimer();
+            }
             // Se indica que el juego ha finalizado
             runningGame = false;
-            GameOver();
+            // Se inicia el final del juego, sólo en el servidor
+            if (Application.platform == RuntimePlatform.LinuxServer)
+            {
+                GameOver();
+            }
             return;
         }
 
-        // GESTIÓN DE LA INVERSIÓN DE LA GRAVEDAD
+        // GESTIÓN DE LA INVERSIÓN DE LA GRAVEDAD, SOLO EN EL SERVIDOR
+        if (Application.platform != RuntimePlatform.LinuxServer) return;
+
         _gravityTimer += Time.deltaTime;
 
         if (_gravityTimer >= _gravitySwitchTime)
@@ -95,10 +113,10 @@ public class GravityManager : MonoBehaviour
             }
         }
 
-        // CONTROL DEL NÚMERO DE JUGADORES
+        // CONTROL DEL NÚMERO DE JUGADORES, SOLO EN EL SERVIDOR
         _numPlayers = GameObject.FindGameObjectsWithTag("Player").Length;
         // Si sólo queda un jugador, se termina el juego
-        if (_numPlayers == 1)
+        if (_numPlayers - fallenPlayers == 1)
         {
             runningGame = false;
             GameOver();
@@ -121,7 +139,8 @@ public class GravityManager : MonoBehaviour
             Physics.gravity = new Vector3(0, _gravity, 0);   // Gravedad invertida
         }
         isGravityInverted = !isGravityInverted;
-
+        // Se notifica a los clientes del cambio de gravedad
+        InvertGravityClientRpc(isGravityInverted);
     }
 
     private void StopFloating()
@@ -142,8 +161,14 @@ public class GravityManager : MonoBehaviour
 
     private void GameOver()
     {
-
+        // Por el momento, se vuelve al lobby
+        NetworkManager.Singleton.SceneManager.LoadScene("Ending", LoadSceneMode.Single);
     }
 
+    [ClientRpc]
+    private void InvertGravityClientRpc(bool gravityInverted)
+    {
+        isGravityInverted = gravityInverted;
+    }
 
 }

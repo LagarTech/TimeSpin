@@ -29,13 +29,18 @@ public class PlayerMovement : NetworkBehaviour
 
     // Variables encargadas de la gestión de los minijuegos
     // EGIPTO
-    [SerializeField] private Tile _currentTile;
+    private Tile _currentTile; // Casilla en la que se encuentra el personaje
     [SerializeField] private List<Vector3> _startingPositionsEgipt;
     // MAYA
-    [SerializeField] private Rigidbody _rb;
-    [SerializeField] private bool _isGrounded = true;
-    [SerializeField] private float _jumpForce = 5f;
+    private Rigidbody _rb;
+    private bool _isGrounded = true; // Se indica que se encuentra en el suelo
+    private float _jumpForce = 5f; // Fuerza con la que salta
     [SerializeField] private List<Vector3> _startingPositionsMaya;
+    // FUTURO
+    [SerializeField] private List<Vector3> _startingPositionsFuture;
+    [SerializeField] private bool _startedRotation = false; // Variable que controla el giro del personaje
+    private Quaternion _targetRotation; // Rotación destino
+    private bool _fallenPlayer = false;
 
     private void Start()
     {
@@ -50,8 +55,6 @@ public class PlayerMovement : NetworkBehaviour
         // El servidor procesa el movimiento del jugador, y este se sincroniza en los clientes debido al NetworkTransform
         if (NetworkManager.Singleton.IsServer)
         {
-            transform.position += _movementDirection * _speed * Time.deltaTime;
-
             // El servidor procesa distintos aspectos de la lógica de los minijuegos
             switch(_currentScene)
             {
@@ -62,7 +65,37 @@ public class PlayerMovement : NetworkBehaviour
                     Vector2Int tilePos = new Vector2Int((int)transform.position.x, -(int)transform.position.z);
                     _currentTile = GridManager.Instance.GetTile(tilePos.x, tilePos.y);
                     break;
+                case Scene.Future:                   
+                    if (_fallenPlayer) return; // Si el jugador se ha caído, no se procesa nada de la lógica
+                    // Se comprueba que el jugador no ha salido de los límites establecidos, es decir, que no se ha caído
+                    if (transform.position.y < -5f || transform.position.y > 15f)
+                    {
+                        _fallenPlayer = true;
+                        // Si se ha caído, se indica al controlador
+                        GravityManager.Instance.fallenPlayers++;
+                        HidePlayer(); // Se oculta al jugador
+                        return;
+                    }
+                    // Mientras los jugadores estén flotando, no se podrán controlar, es decir, no se aplicarán los inputs recibidos del cliente
+                    if (GravityManager.Instance.floating && !_startedRotation)
+                    {
+                        // Se indica que ha comenzado la rotación, y se calcula la rotación destino
+                        _startedRotation = true;
+                        RotatePlayerToGround();
+                        return;
+                    }
+                    else if (GravityManager.Instance.floating && _startedRotation)
+                    {
+                        // Aplicar rotación suavemente, mientras que los jugadores están flotando
+                        transform.rotation = Quaternion.RotateTowards(transform.rotation, _targetRotation, Time.deltaTime * (180 / GravityManager.Instance._floatTime));
+                        return;
+                    }
+                    // Se indica que ya se terminó la rotación
+                    _startedRotation = false;
+                    break;
             }
+            // Aplica el movimiento recibido continuamente del cliente
+            transform.position += _movementDirection * _speed * Time.deltaTime;
         }
 
         // Los clientes capturan los inputs y los envían al servidor, que actualizará la dirección de movimiento en función de ello
@@ -109,6 +142,22 @@ public class PlayerMovement : NetworkBehaviour
                         JumpPlayerServerRpc((int)OwnerClientId);
                     }
                     break;
+
+                case Scene.Future:
+                    // Se comprueba que el jugador no ha salido de los límites establecidos, es decir, que no se ha caído
+                    if (transform.position.y < -5f || transform.position.y > 15f)
+                    {
+                        HidePlayer(); // En el cliente solo se oculta al jugador
+                        return;
+                    }
+                    // Gestión de los controles
+                    if (Input.GetKey(KeyCode.W)) _movementDirection.z = 1f;
+                    if (Input.GetKey(KeyCode.S)) _movementDirection.z = -1f;
+                    if (Input.GetKey(KeyCode.A)) _movementDirection.x = -1f;
+                    if (Input.GetKey(KeyCode.D)) _movementDirection.x = 1f;
+                    // Envío del input al servidor
+                    ChangePlayerDirectionServerRpc(_movementDirection, (int)OwnerClientId);
+                    break;
             }
         }
     }
@@ -119,6 +168,7 @@ public class PlayerMovement : NetworkBehaviour
         string sceneName = SceneManager.GetActiveScene().name;
         // Si se sigue en la misma escena que antes, no se actualiza nada
         if (_previousScene == sceneName) return;
+        // Gestión de las acciones necesarias para pasar de una escena a otra
         switch(sceneName)
         {
             case "LobbyMenu":
@@ -155,6 +205,11 @@ public class PlayerMovement : NetworkBehaviour
                 break;
             case "Future":
                 _currentScene = Scene.Future;
+                // Se debe colocar al jugador en la posición de inicio adecuada
+                transform.position = _startingPositionsFuture[(int)OwnerClientId - 1];
+                // Se resetea el estado, por si acaso se necesita restaurarlo
+                _fallenPlayer = false;
+                _startedRotation = false;
                 break;
         }
         _previousScene = sceneName;
@@ -224,6 +279,13 @@ public class PlayerMovement : NetworkBehaviour
         {
             _isGrounded = true;
         }
+    }
+    #endregion
+    #region Future
+    private void RotatePlayerToGround()
+    {
+        // Calcular la rotación objetivo (180 grados en el eje X)
+        _targetRotation = Quaternion.Euler(transform.rotation.eulerAngles.x + 180 % 360, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
     }
     #endregion
 }
