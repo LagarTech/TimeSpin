@@ -65,6 +65,11 @@ public class MedievalGameManager : MonoBehaviour
     public void AddScore(int playerIndex, int points)
     {
         playerScores[playerIndex] += points;
+        // Para que la puntuación no sea negativa
+        if (playerScores[playerIndex] < 0)
+        {
+            playerScores[playerIndex] = 0;
+        }
         UpdateUI();
     }
 
