@@ -6,7 +6,7 @@ public class MedievalPlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
     public Transform basePosition;  // Posición de la base del jugador
-    private GameObject carriedSword = null;
+    public GameObject carriedSword = null;
     private MedievalGameManager gameManager;
 
     private int playerIndex;
@@ -62,8 +62,16 @@ public class MedievalPlayerController : MonoBehaviour
             // Añadir los puntos a la puntuación del jugador
             gameManager.AddScore(playerIndex, sword.GetPoints());
 
-            // Destruir la espada (entregada)
-            Destroy(carriedSword);
+            // Empezar el temporizador para que la puedan robar (10 segundos)
+            sword.StartStealTimer(this, gameManager, playerIndex);
+
+            // Liberar la espada de la "mano" del jugador, pero dejarla en el mapa
+            carriedSword.transform.SetParent(null);
+            carriedSword.transform.position = basePosition.position;  // Colocar espada en la base
+            carriedSword.GetComponent<Collider>().enabled = true;  // Habilitar el collider de nuevo
+
+            // Ya no llevamos la espada
+            carriedSword = null;
         }
     }
 }
