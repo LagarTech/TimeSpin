@@ -168,6 +168,8 @@ public class PlayerMovement : NetworkBehaviour
         string sceneName = SceneManager.GetActiveScene().name;
         // Si se sigue en la misma escena que antes, no se actualiza nada
         if (_previousScene == sceneName) return;
+        // Una vez se cambia de la primera escena, se indica que ya ha comenzado el juego
+        GameSceneManager.instance.gameStarted = true;
         // Gestión de las acciones necesarias para pasar de una escena a otra
         switch(sceneName)
         {
@@ -210,6 +212,8 @@ public class PlayerMovement : NetworkBehaviour
                 // Se resetea el estado, por si acaso se necesita restaurarlo
                 _fallenPlayer = false;
                 _startedRotation = false;
+                // Se muestra a los jugadores
+                ShowPlayer();
                 break;
         }
         _previousScene = sceneName;

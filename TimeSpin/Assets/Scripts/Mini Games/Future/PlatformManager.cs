@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class PlatformManager : NetworkBehaviour
 {
+    public static PlatformManager instance;
+
     private const int _numPlatforms = 45; // Número de plataformas
     private const int _totalDisappeared = 30; // Número de plataformas que van a desaparecer
 
@@ -23,6 +25,18 @@ public class PlatformManager : NetworkBehaviour
     // Variables para el temblor y la caída
     private float _shakeDuration = 1f; // Duración del temblor
     private float _fallDuration = 1.5f; // Duración de la caída
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
 
     private void Start()
     {
@@ -164,6 +178,48 @@ public class PlatformManager : NetworkBehaviour
         else
         {
             StartCoroutine(ShakeAndFall(_platformsUp[idPlatform]));
+        }
+    }
+
+    public void PlatformEntered(int idPlatform, bool up)
+    {
+        // Se avisa a los clientes
+        PlatformEnteredClientRpc(idPlatform, up);
+    }
+
+    [ClientRpc]
+    private void PlatformEnteredClientRpc(int id, bool up)
+    {
+        // Se buscan los objetos con la etiqueta PlataformaF
+        GameObject[] platforms = GameObject.FindGameObjectsWithTag("PlataformaF");
+        foreach (GameObject plat in platforms)
+        {
+            // Se busca en la lista de plataformas aquella con las características indicadas
+            if(plat.GetComponent<Platform>().idPlatform == id && plat.GetComponent<Platform>().isUp == up)
+            {
+                plat.GetComponent<Platform>().OnPlatformEnter();
+            }
+        }
+    }
+
+    public void PlatformExited(int idPlatform, bool up)
+    {
+        // Se avisa a los clientes
+        PlatformExitedClientRpc(idPlatform, up);
+    }
+
+    [ClientRpc]
+    private void PlatformExitedClientRpc(int id, bool up)
+    {
+        // Se buscan los objetos con la etiqueta PlataformaF
+        GameObject[] platforms = GameObject.FindGameObjectsWithTag("PlataformaF");
+        foreach (GameObject plat in platforms)
+        {
+            // Se busca en la lista de plataformas aquella con las características indicadas
+            if (plat.GetComponent<Platform>().idPlatform == id && plat.GetComponent<Platform>().isUp == up)
+            {
+                plat.GetComponent<Platform>().OnPlatformExit();
+            }
         }
     }
 

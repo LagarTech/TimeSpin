@@ -39,33 +39,43 @@ public class Platform : MonoBehaviour
 
     public void OnCollisionEnter(Collision collision)
     {
-        if (Application.platform == RuntimePlatform.LinuxServer) return;
         // Si el jugador entra en la casilla
         if (collision.gameObject.tag == "Player")
         {
-            // Se aumenta el contador de la plataforma
-            platformCount++;
-            // Se aumenta el contador de las vecinas
-            foreach (Platform platform in _neighbourPlatforms)
-            {
-                platform.platformCount++;
-            }
+            // Se avisa a los clientes de que un jugador ha pisado una plataforma
+            PlatformManager.instance.PlatformEntered(idPlatform, isUp);
+        }
+    }
+
+    public void OnPlatformEnter()
+    {
+        // Se aumenta el contador de la plataforma
+        platformCount++;
+        // Se aumenta el contador de las vecinas
+        foreach (Platform platform in _neighbourPlatforms)
+        {
+            platform.platformCount++;
         }
     }
 
     public void OnCollisionExit(Collision collision)
     {
-        if (Application.platform == RuntimePlatform.LinuxServer) return;
         // Si el jugador entra en la casilla
         if (collision.gameObject.tag == "Player")
         {
-            // Se disminuye el contador de la plataforma
-            platformCount--;
-            // Se disminuye el contador de las vecinas
-            foreach (Platform platform in _neighbourPlatforms)
-            {
-                platform.platformCount--;
-            }
+            // Se avisa a los clientes de que un jugador ha salido de una plataforma
+            PlatformManager.instance.PlatformExited(idPlatform, isUp);
+        }
+    }
+
+    public void OnPlatformExit()
+    {
+        // Se disminuye el contador de la plataforma
+        platformCount--;
+        // Se disminuye el contador de las vecinas
+        foreach (Platform platform in _neighbourPlatforms)
+        {
+            platform.platformCount--;
         }
     }
 

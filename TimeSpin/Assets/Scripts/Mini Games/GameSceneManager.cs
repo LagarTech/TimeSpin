@@ -8,6 +8,8 @@ public class GameSceneManager : MonoBehaviour
 
     [SerializeField] private GameObject[] _playersList;
 
+    public bool gameStarted = false;
+
     private void Awake()
     {
         if(instance == null)
