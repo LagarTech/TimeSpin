@@ -6,7 +6,7 @@ public class MedievalPlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
     public Transform basePosition;  // Posición de la base del jugador
-    public GameObject carriedSword = null;
+    private GameObject carriedSword = null;
     private MedievalGameManager gameManager;
 
     private int playerIndex;
@@ -33,6 +33,17 @@ public class MedievalPlayerController : MonoBehaviour
             DeliverSword();
         }
     }
+    public GameObject CarriedSword
+    {
+        get { return carriedSword; }
+    }
+
+    public void SetCarriedSword(GameObject sword)
+    {
+        carriedSword = sword;
+    }
+
+
 
     private void OnTriggerEnter(Collider other)
     {

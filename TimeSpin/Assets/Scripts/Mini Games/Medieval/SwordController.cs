@@ -40,24 +40,29 @@ public class SwordController : MonoBehaviour
         Destroy(gameObject);
     }
 
-    // Lógica para cuando otro jugador roba la espada
     private void OnTriggerEnter(Collider other)
     {
+        // Intentamos obtener el componente MedievalPlayerController del objeto con el que colisionamos
         MedievalPlayerController player = other.GetComponent<MedievalPlayerController>();
 
-        // Si otro jugador intenta robar la espada
-        if (player != null && canBeStolen && player.carriedSword == null)
+        // Comprobamos si realmente hemos colisionado con un jugador
+        if (player != null)
         {
-            // El jugador roba la espada
-            player.carriedSword = gameObject;
-            transform.SetParent(player.transform);
-            transform.localPosition = new Vector3(0, 1, 0);
+            // Si el jugador no lleva ninguna espada
+            if (player.CarriedSword == null)
+            {
+                // El jugador roba la espada
+                player.SetCarriedSword(gameObject);  // Usamos el método público para asignar la espada
+                transform.SetParent(player.transform);
+                transform.localPosition = new Vector3(0, 1, 0);
 
-            // Eliminar los puntos del jugador original (dueño de la espada)
-            gameManager.AddScore(ownerPlayerIndex, -swordPoints);
+                // Eliminar los puntos del jugador original (dueño de la espada)
+                gameManager.AddScore(ownerPlayerIndex, -swordPoints);
 
-            // El nuevo jugador la lleva para puntuar
-            canBeStolen = false;  // Ya no puede ser robada de nuevo
+                // El nuevo jugador la lleva para puntuar
+                canBeStolen = false;  // Ya no puede ser robada de nuevo
+            }
         }
     }
+
 }
