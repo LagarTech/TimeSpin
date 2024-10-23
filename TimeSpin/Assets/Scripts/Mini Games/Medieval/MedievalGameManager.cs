@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class MedievalGameManager : MonoBehaviour
 {
@@ -22,8 +23,10 @@ public class MedievalGameManager : MonoBehaviour
     void Start()
     {
         timeLeft = gameTime;
-        playerScores = new int[2];  // Asumiendo 2 jugadores para este minijuego 
+        playerScores = new int[1];  // Asumiendo 2 jugadores para este minijuego 
         UpdateUI();
+
+        StartGame(); // Inicia automáticamente el juego al cargar la escena
     }
 
     // Update is called once per frame
@@ -89,12 +92,20 @@ public class MedievalGameManager : MonoBehaviour
 
 
 
-
     void EndGame()
     {
         isGameOver = true;
         isGameActive = false;
         Debug.Log("El juego ha terminado");
+
+        // Añadir la lógica para regresar al menú principal
+        ReturnToMainMenu();
+    }
+
+    void ReturnToMainMenu()
+    {
+        // Cargar la escena del menú principal
+        SceneManager.LoadScene("MainMenu");  // Asegúrate de que la escena se llame "MainMenu"
     }
 
     public void StartGame()

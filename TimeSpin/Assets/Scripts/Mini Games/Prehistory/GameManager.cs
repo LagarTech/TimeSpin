@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -22,6 +23,8 @@ public class GameManager : MonoBehaviour
     {
         timeLeft = gameTime;
         UpdateUI();
+
+        StartGame(); // Inicia automáticamente el juego al cargar la escena
     }
 
     void Update()
@@ -68,8 +71,8 @@ public class GameManager : MonoBehaviour
     void UpdateUI()
     {
         // Tiempo restante en minutos y segundos
-        int minutes = Mathf.FloorToInt(timeLeft / 60);  
-        int seconds = Mathf.FloorToInt(timeLeft % 60);  
+        int minutes = Mathf.FloorToInt(timeLeft / 60);
+        int seconds = Mathf.FloorToInt(timeLeft % 60);
 
         // Formateo el texto 
         timeText.text = string.Format("{0:0}:{1:00}", minutes, seconds);
@@ -84,6 +87,15 @@ public class GameManager : MonoBehaviour
         isGameOver = true;
         isGameActive = false;
         Debug.Log("¡El juego ha terminado!");
+
+        // Añadir la lógica para regresar al menú principal
+        ReturnToMainMenu();
+    }
+
+    void ReturnToMainMenu()
+    {
+        // Cargar la escena del menú principal
+        SceneManager.LoadScene("LobbyMenu");  // Asegúrate de que la escena se llame "MainMenu"
     }
 
     // Método para comenzar el juego
@@ -106,4 +118,3 @@ public class GameManager : MonoBehaviour
     }
 
 }
-

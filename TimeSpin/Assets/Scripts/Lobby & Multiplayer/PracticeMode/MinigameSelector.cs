@@ -4,27 +4,43 @@ using UnityEngine.UI;
 
 public class MinigameSelector : MonoBehaviour
 {
-    public GameObject infoPanel;  // Panel donde aparecerá la información del minijuego
-    public Text infoText;         // Cuadro de texto donde se mostrará la descripción del minijuego
+    public GameObject infoPanel;  // Panel donde se mostrará la información
+    public Text infoText;         // Texto del panel donde se mostrará la descripción
+    public Button closeInfoButton; // Botón para cerrar el panel de información (la "X")
+    public GameObject Descripcion; // Panel o GameObject donde está la descripción del minijuego
 
-    // Método para cargar la escena del minijuego
+    void Start()
+    {
+        // Al iniciar, el panel de información y el botón de cerrar estarán desactivados
+        infoPanel.SetActive(true);
+        closeInfoButton.gameObject.SetActive(false);  // Ocultar el botón de cerrar al inicio
+
+        // Añadimos la función para cerrar al botón "X"
+        closeInfoButton.onClick.AddListener(HideInfo);
+    }
+
+    // Cargar la escena del minijuego seleccionado
     public void LoadMinigame(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
     }
 
-    // Método para mostrar la información del minijuego
+    // Mostrar la información del minijuego
     public void ShowInfo(string info)
     {
-        infoText.text = info;     // Cambia el texto de la info según el minijuego
-        infoPanel.SetActive(true); // Activa el panel de información
+        infoText.text = info;
+        infoPanel.SetActive(true);   // Mostrar el panel de información
+        Descripcion.SetActive(true); // Asegurarse de que la descripción esté activa
+        closeInfoButton.gameObject.SetActive(true);  // Mostrar el botón de cerrar
     }
 
-    // Método para ocultar la información
+    // Ocultar la información
     public void HideInfo()
     {
-        infoPanel.SetActive(false); // Desactiva el panel de información
+        closeInfoButton.gameObject.SetActive(false); // Ocultar el botón de cerrar
+        Descripcion.SetActive(false);                // Ocultar la descripción
     }
 }
+
 
 

@@ -231,8 +231,7 @@ public class UIController : MonoBehaviour
             Crear.SetActive(false);
             Unirse.SetActive(false);
             PracticaPanel.SetActive(false);
-            LobbyCode.SetActive(false);
-        }
+}
     }
 
     public void OcultarMenu()
