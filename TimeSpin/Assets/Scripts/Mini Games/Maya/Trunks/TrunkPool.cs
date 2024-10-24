@@ -96,7 +96,7 @@ public class TrunkPool: NetworkBehaviour
     public IEnumerator ActiveTrunk(ulong networkObjectId)
     {
         // Se espera un tiempo mínimo para que los troncos se coloquen en la posición adecuada en el servidor
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         // Se avisa a los clientes del id del tronco que deben activar
         ActiveTrunkClientRpc(networkObjectId);
     }

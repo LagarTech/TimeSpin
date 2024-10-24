@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerSetup : NetworkBehaviour
@@ -13,24 +14,35 @@ public class PlayerSetup : NetworkBehaviour
     private Dictionary<string, List<string>> _playersData;
     private int _playerID;
 
-    // Este script se encarga de mostrar el nombre y el personaje correcto del jugador
-    public override async void OnNetworkSpawn()
+
+    private void Start()
+    {
+        StartCoroutine(OnNetworkSpawnCoroutine());
+    }
+
+    // Corrutina que maneja la lógica de OnNetworkSpawn
+    private IEnumerator OnNetworkSpawnCoroutine()
     {
         // Se obtiene el identificador del jugador, para poder establecer sus datos personalizados
         _playerID = (int)OwnerClientId - 1;
+
         // Este código solo se ejecuta en el servidor
         if (Application.platform == RuntimePlatform.LinuxServer)
         {
             // Se coloca al jugador en la parte correcta de la escena
             PositionPlayer();
-            return;
-        };
+            yield break; // Sale de la corrutina si está en el servidor
+        }
+
         // Primero se obtienen los datos de los jugadores en el lobby
         // Se actualiza la referencia del lobby
-        await LobbyManager.instance.GetLobby();
+        yield return StartCoroutine(LobbyManager.instance.GetLobbyCoroutine());
+
         _playersData = LobbyManager.instance.GetPlayersInLobby();
+
         // Se establece el nombre del jugador
         NamePlayer();
+
         // Se muestra su personaje escogido
         CharacterPlayer();
     }

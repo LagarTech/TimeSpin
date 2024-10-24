@@ -79,76 +79,85 @@ public class MatchmakerManager : NetworkBehaviour
     // Se hace como una corrutina para evitar la instrucción Task.Delay, incompatible con WebGL
     public IEnumerator FirstServerJoinCoroutine(System.Action<bool> onComplete)
     {
-        // Se configura la petición del ticket
-        CreateTicketOptions createTicketOptions = new CreateTicketOptions("JoinServerQueue");
-        List<Player> players = new List<Player> { new Player(AuthenticationService.Instance.PlayerId) };
-
-        var createTicketTask = MatchmakerService.Instance.CreateTicketAsync(players, createTicketOptions);
-
-        yield return new WaitUntil(() => createTicketTask.IsCompleted);
-
-        if (createTicketTask.Exception != null)
-        {
-            Debug.LogError("Error creating ticket: " + createTicketTask.Exception);
-            onComplete(false);
-            yield break;
-        }
-
-        _currentTicket = createTicketTask.Result.Id;
-        Debug.Log("Ticket created: " + _currentTicket);
-
-        // Después, se comprueba el estado del ticket
+        // Este proceso se ejecuta hasta que se encuentra un servidor. En caso de timeout, se crea un ticket nuevo, hasta que se encuentra el server
         while (true)
         {
-            var getTicketTask = MatchmakerService.Instance.GetTicketAsync(_currentTicket);
-            yield return new WaitUntil(() => getTicketTask.IsCompleted);
+            // Se configura la petición del ticket
+            CreateTicketOptions createTicketOptions = new CreateTicketOptions("JoinServerQueue");
+            List<Player> players = new List<Player> { new Player(AuthenticationService.Instance.PlayerId) };
 
-            if (getTicketTask.Exception != null)
+            var createTicketTask = MatchmakerService.Instance.CreateTicketAsync(players, createTicketOptions);
+
+            yield return new WaitUntil(() => createTicketTask.IsCompleted);
+
+            if (createTicketTask.Exception != null)
             {
-                Debug.LogError("Error checking ticket: " + getTicketTask.Exception);
-                onComplete(false);
-                yield break;
+                Debug.LogError("Error creating ticket: " + createTicketTask.Exception);
+                yield return new WaitForSeconds(1f); // Espera antes de reintentar
+                continue; // Reintenta la creación del ticket
             }
 
-            TicketStatusResponse ticketStatusResponse = getTicketTask.Result;
+            _currentTicket = createTicketTask.Result.Id;
+            Debug.Log("Ticket created: " + _currentTicket);
 
-            if (ticketStatusResponse.Type == typeof(MultiplayAssignment))
+            // Después, se comprueba el estado del ticket
+            bool serverFound = false;
+
+            while (!serverFound)
             {
-                MultiplayAssignment multiplayAssignment = (MultiplayAssignment)ticketStatusResponse.Value;
+                var getTicketTask = MatchmakerService.Instance.GetTicketAsync(_currentTicket);
+                yield return new WaitUntil(() => getTicketTask.IsCompleted);
 
-                if (multiplayAssignment.Status == MultiplayAssignment.StatusOptions.Found)
+                if (getTicketTask.Exception != null)
                 {
-                    UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
-                    _serverIP = multiplayAssignment.Ip;
-                    _serverPort = ushort.Parse(multiplayAssignment.Port.ToString());
-                    transport.SetConnectionData(_serverIP, _serverPort);
+                    Debug.LogError("Error checking ticket: " + getTicketTask.Exception);
+                    onComplete(false);
+                    yield break; // Detener la ejecución en caso de error grave
+                }
 
-                    NetworkManager.Singleton.StartClient();
-                    Debug.Log("Server found");
-                    onComplete(true);
-                    yield break;
-                }
-                else if (multiplayAssignment.Status == MultiplayAssignment.StatusOptions.Timeout)
+                TicketStatusResponse ticketStatusResponse = getTicketTask.Result;
+
+                if (ticketStatusResponse.Type == typeof(MultiplayAssignment))
                 {
-                    Debug.Log("Match timeout");
-                    onComplete(false);
-                    yield break;
+                    MultiplayAssignment multiplayAssignment = (MultiplayAssignment)ticketStatusResponse.Value;
+
+                    if (multiplayAssignment.Status == MultiplayAssignment.StatusOptions.Found)
+                    {
+                        UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
+                        _serverIP = multiplayAssignment.Ip;
+                        _serverPort = ushort.Parse(multiplayAssignment.Port.ToString());
+                        transport.SetConnectionData(_serverIP, _serverPort);
+
+                        NetworkManager.Singleton.StartClient();
+                        Debug.Log("Server found");
+                        onComplete(true);
+                        yield break; // Servidor encontrado, salir de la función
+                    }
+                    else if (multiplayAssignment.Status == MultiplayAssignment.StatusOptions.Timeout)
+                    {
+                        Debug.Log("Match timeout, retrying...");
+                        break; // Salir del bucle interno y recrear el ticket
+                    }
+                    else if (multiplayAssignment.Status == MultiplayAssignment.StatusOptions.Failed)
+                    {
+                        Debug.Log("Match failed: " + multiplayAssignment.Status + "  " + multiplayAssignment.Message);
+                        onComplete(false);
+                        yield break; // En caso de fallo, se sale de la corrutina
+                    }
+                    else if (multiplayAssignment.Status == MultiplayAssignment.StatusOptions.InProgress)
+                    {
+                        Debug.Log("Match in progress");
+                    }
                 }
-                else if (multiplayAssignment.Status == MultiplayAssignment.StatusOptions.Failed)
-                {
-                    Debug.Log("Match failed: " + multiplayAssignment.Status + "  " + multiplayAssignment.Message);
-                    onComplete(false);
-                    yield break;
-                }
-                else if (multiplayAssignment.Status == MultiplayAssignment.StatusOptions.InProgress)
-                {
-                    Debug.Log("Match in progress");
-                }
+
+                yield return new WaitForSeconds(1f);
             }
 
+            // Espera antes de reintentar la creación del ticket
             yield return new WaitForSeconds(1f);
         }
     }
+
 
     // Función para desasignar un servidor
     private async void DeallocateServer()

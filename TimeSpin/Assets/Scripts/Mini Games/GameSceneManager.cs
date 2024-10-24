@@ -18,7 +18,7 @@ public class GameSceneManager : MonoBehaviour
         }
         else
         {
-            Destroy(this);
+            Destroy(gameObject);
         }
         // Se hace que el objeto navegue entre escenas y no se destruya
         DontDestroyOnLoad(this);

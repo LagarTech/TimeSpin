@@ -27,7 +27,9 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private Scene _currentScene = Scene.Lobby; // Se comienza en 
     private string _previousScene = "LobbyMenu"; // Se guarda una referencia a la escena en el instante anterior, para comprobar si se ha llevado a cabo algún cambio
 
-    // Variables encargadas de la gestión de los minijuegos
+    // Variables encargadas de la gestión de los minijuegos y el lobby
+    // LOBBY
+    [SerializeField] private List<Vector3> _startingPositionsLobby;
     // EGIPTO
     private Tile _currentTile; // Casilla en la que se encuentra el personaje
     [SerializeField] private List<Vector3> _startingPositionsEgipt;
@@ -175,6 +177,20 @@ public class PlayerMovement : NetworkBehaviour
         {
             case "LobbyMenu":
                 _currentScene = Scene.Lobby;
+                // Se coloca al jugador en la posición de inicio adecuada
+                transform.position = _startingPositionsLobby[(int)OwnerClientId - 1];
+                // Se resetea la rotación
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+                // Se restaura la gravedad
+                Physics.gravity = new Vector3(0, -9.81f, 0);
+                // Se vuelve a mostrar el código del lobby
+                if(Application.platform != RuntimePlatform.LinuxServer)
+                {
+                    Debug.Log(LobbyManager.instance.GetLobbyCode());
+                    UI_Lobby.instance.ShowLobbyCode(LobbyManager.instance.GetLobbyCode());
+                }
+                // Se muestra a los jugadores
+                ShowPlayer();
                 break;
             case "Prehistory":
                 _currentScene = Scene.Prehistory;
@@ -214,6 +230,11 @@ public class PlayerMovement : NetworkBehaviour
                 _startedRotation = false;
                 // Se muestra a los jugadores
                 ShowPlayer();
+                // Se eliminan los troncos del minijuego anterior en el servidor
+                if (Application.platform == RuntimePlatform.LinuxServer)
+                {
+                    DespawnTrunks();
+                }
                 break;
         }
         _previousScene = sceneName;
@@ -284,6 +305,27 @@ public class PlayerMovement : NetworkBehaviour
             _isGrounded = true;
         }
     }
+
+    private void DespawnTrunks()
+    {
+        if (IsServer)
+        {
+            // Encontrar todos los objetos con la etiqueta "Tronco"
+            GameObject[] trunks = GameObject.FindGameObjectsWithTag("Tronco");
+
+            // Recorrer cada objeto y despawnearlo si es un NetworkObject
+            foreach (GameObject trunk in trunks)
+            {
+                NetworkObject networkObject = trunk.GetComponent<NetworkObject>();
+
+                if (networkObject != null && networkObject.IsSpawned) // Verificar si es un NetworkObject y está spawneado
+                {
+                    networkObject.Despawn(); // Despawnear el objeto de red
+                }
+            }
+        }
+    }
+
     #endregion
     #region Future
     private void RotatePlayerToGround()

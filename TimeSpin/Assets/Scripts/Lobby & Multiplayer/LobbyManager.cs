@@ -14,6 +14,7 @@ public class LobbyManager : MonoBehaviour
 
     private Lobby _hostLobby; // Referencia a la sala creada (difiere de null sólo en el caso del host)
     private Lobby _joinedLobby; // Referencia a la sala a la que se ha unido
+    private string _lobbyCode;
     public bool inLobby = false;
     // Nombre para la sala
     private string _lobbyName = "TimeSpin";
@@ -27,25 +28,35 @@ public class LobbyManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+        // Se hace que el objeto navegue entre escenas y no se destruya
+        DontDestroyOnLoad(this);
     }
 
     private async void Start()
     {
         // Este código solo se ejecuta en el cliente
         if (Application.platform == RuntimePlatform.LinuxServer) return;
-
-        // Se inicializan los servicios de Unity
-        await UnityServices.InitializeAsync();
-        // Se hace un registro anónimo
-        // Se crea un evento para comprobar que se realiza dicho registro
-        AuthenticationService.Instance.SignedIn += () =>
+        // Si el juego ya ha comenzado, no se vuelve a hacer un registro
+        if (!GameSceneManager.instance.gameStarted)
         {
-            Debug.Log("Signed in " + AuthenticationService.Instance.PlayerId);
-        };
-        await AuthenticationService.Instance.SignInAnonymouslyAsync();
-        // Mediante esta corrutina, se actualiza cada cierto tiempo el estado del lobby, para tener siempre la información correcta (por si alguien se conecta o desconecta)
-        StartCoroutine(UpdateLobby());
+            // Se inicializan los servicios de Unity
+            await UnityServices.InitializeAsync();
+            // Se hace un registro anónimo
+            // Se crea un evento para comprobar que se realiza dicho registro
+            AuthenticationService.Instance.SignedIn += () =>
+            {
+                Debug.Log("Signed in " + AuthenticationService.Instance.PlayerId);
+            };
+            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        }
     }
 
     private void Update()
@@ -55,22 +66,31 @@ public class LobbyManager : MonoBehaviour
         // Si estamos unidos a un lobby, cada cierto tiempo se la mandan pulsaciones
         if (_hostLobby != null)
         {
-            HandleLobbyHeartbeat();
+            StartCoroutine(HandleLobbyHeartbeatCoroutine());
         }
     }
 
     #region Updates
     // Esta función se utiliza para enviar un mensaje al lobby cada 15 segundos, para evitar que la sala desaparezca por inactividad
-    private async void HandleLobbyHeartbeat()
+    private IEnumerator HandleLobbyHeartbeatCoroutine()
     {
         if (_hostLobby != null)
         {
             _heartBeatLobbyTimer += Time.deltaTime;
-            // Si se supera el tiempo umbral sin enviar un mensaje, este se manda
+
+            // Si se supera el tiempo umbral, se envía el heartbeat
             if (_heartBeatLobbyTimer > MAX_HEARTBEAT_TIMER)
             {
                 _heartBeatLobbyTimer = 0;
-                await LobbyService.Instance.SendHeartbeatPingAsync(_hostLobby.Id);
+                var sendHeartbeatTask = LobbyService.Instance.SendHeartbeatPingAsync(_hostLobby.Id);
+
+                // Espera hasta que la tarea esté completa
+                yield return new WaitUntil(() => sendHeartbeatTask.IsCompleted);
+
+                if (sendHeartbeatTask.Exception != null)
+                {
+                    Debug.LogError("Error sending heartbeat: " + sendHeartbeatTask.Exception);
+                }
             }
         }
     }
@@ -80,15 +100,14 @@ public class LobbyManager : MonoBehaviour
     {
         while (true)
         {
-            // Cada dos segundos, se actualiza el estado del lobby
+            // Espera dos segundos antes de actualizar el estado del lobby
             yield return new WaitForSeconds(2f);
 
             if (_joinedLobby != null)
             {
-                // Se crea la tarea encargada de obtener el Lobby
-                var tarea = GetLobby();
-                // Mediante un delegado, se espera a que la tarea finalice para continuar
-                yield return new WaitUntil(() => tarea.IsCompleted);
+                // Llama a la corrutina para obtener el lobby actualizado
+                yield return StartCoroutine(GetLobbyCoroutine());
+
                 // Se actualiza el número de jugadores en la sala
                 if (_joinedLobby != null)
                 {
@@ -97,29 +116,31 @@ public class LobbyManager : MonoBehaviour
             }
         }
     }
-    public async Task GetLobby()
+
+    public IEnumerator GetLobbyCoroutine()
     {
-        try
+        // Se obtiene la tarea para obtener la sala actualizada
+        var getLobbyTask = Lobbies.Instance.GetLobbyAsync(_joinedLobby.Id);
+
+        // Se espera hasta que la tarea esté completa
+        yield return new WaitUntil(() => getLobbyTask.IsCompleted);
+
+        // Se gestiona la excepción en caso de que ocurra
+        if (getLobbyTask.Exception != null)
         {
-            // Mediante el ID de la sala, se obtiene una referencia actualizada
-            Lobby lobbyActualizado = await Lobbies.Instance.GetLobbyAsync(_joinedLobby.Id);
-            _joinedLobby = lobbyActualizado;
+            Debug.LogError("Error fetching lobby: " + getLobbyTask.Exception);
+            yield break; // Salimos de la corrutina en caso de error
         }
-        catch (LobbyServiceException e)
-        {
-            Debug.Log(e);
-        }
+
+        // Si todo va bien, se actualiza la referencia al lobby
+        _joinedLobby = getLobbyTask.Result;
     }
     #endregion
     #region Create
     // Se utilizan corrutinas para realizar las esperas necesarias para que otras funcionen terminen de ejecutarse
     // Función asíncrona para crear la sala privada con un nombre y un número máximo de integrantes
-    public void CreatePrivateLobby()
-    {
-        StartCoroutine(CreatePrivateLobbyCoroutine());
-    }
 
-    public IEnumerator CreatePrivateLobbyCoroutine()
+    public IEnumerator CreatePrivateLobbyCoroutine(System.Action<bool> onComplete)
     {
         // Se definen las propiedades de la sala
         CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
@@ -134,12 +155,14 @@ public class LobbyManager : MonoBehaviour
         if (createLobbyTask.Exception != null)
         {
             Debug.LogError("Error creating lobby: " + createLobbyTask.Exception);
+            onComplete(false); // Indicar fallo en la creación del lobby
             yield break;
         }
 
         _hostLobby = createLobbyTask.Result;
         _joinedLobby = _hostLobby;
         Debug.Log("Created Lobby! " + _hostLobby.LobbyCode);
+        _lobbyCode = _joinedLobby.LobbyCode;
 
         // Llama a FirstServerJoin y espera a que termine
         bool serverFound = false;
@@ -148,6 +171,7 @@ public class LobbyManager : MonoBehaviour
         if (!serverFound)
         {
             Debug.Log("Server not found.");
+            onComplete(false); // Indicar fallo si no se encuentra servidor
             yield break;
         }
 
@@ -157,10 +181,10 @@ public class LobbyManager : MonoBehaviour
 
         // Se guarda dicha información en la sala
         Dictionary<string, DataObject> lobbyData = new Dictionary<string, DataObject>
-        {
-            { "serverIP", new DataObject(DataObject.VisibilityOptions.Member, serverIP) },
-            { "serverPort", new DataObject(DataObject.VisibilityOptions.Member, serverPort.ToString()) }
-        };
+    {
+        { "serverIP", new DataObject(DataObject.VisibilityOptions.Member, serverIP) },
+        { "serverPort", new DataObject(DataObject.VisibilityOptions.Member, serverPort.ToString()) }
+    };
 
         var updateLobbyTask = LobbyService.Instance.UpdateLobbyAsync(_hostLobby.Id, new UpdateLobbyOptions { Data = lobbyData });
         yield return new WaitUntil(() => updateLobbyTask.IsCompleted);
@@ -168,6 +192,7 @@ public class LobbyManager : MonoBehaviour
         if (updateLobbyTask.Exception != null)
         {
             Debug.LogError("Error updating lobby: " + updateLobbyTask.Exception);
+            onComplete(false); // Indicar fallo si no se puede actualizar el lobby
             yield break;
         }
 
@@ -177,13 +202,11 @@ public class LobbyManager : MonoBehaviour
         UI_Lobby.instance.EnterLobbyCode(_joinedLobby.LobbyCode);
 
         inLobby = true;
-    }
+        onComplete(true); // Indicar éxito
 
-    // Función asíncrona para crear una sala públic
-    private void CreatePublicLobby()
-    {
-        // Se inicia la coroutine en lugar de async
-        StartCoroutine(CreatePublicLobbyCoroutine());
+        // Se comienza a actualizar el estado del lobby
+        // Mediante esta corrutina, se actualiza cada cierto tiempo el estado del lobby, para tener siempre la información correcta (por si alguien se conecta o desconecta)
+        StartCoroutine(UpdateLobby());
     }
 
     public IEnumerator CreatePublicLobbyCoroutine()
@@ -202,6 +225,7 @@ public class LobbyManager : MonoBehaviour
 
         _hostLobby = createLobbyTask.Result;
         _joinedLobby = _hostLobby;
+        _lobbyCode = _joinedLobby.LobbyCode;
         Debug.Log("Created Lobby! " + _hostLobby.LobbyCode);
 
         // Llama a FirstServerJoin y espera a que termine
@@ -233,10 +257,14 @@ public class LobbyManager : MonoBehaviour
         Debug.Log("Server information saved to lobby!");
 
         inLobby = true;
+
+        // Se comienza a actualizar el estado del lobby
+        // Mediante esta corrutina, se actualiza cada cierto tiempo el estado del lobby, para tener siempre la información correcta (por si alguien se conecta o desconecta)
+        StartCoroutine(UpdateLobby());
     }
     #endregion
     #region Join
-    public IEnumerator JoinLobbyByCodeCoroutine(string lobbyCode)
+    public IEnumerator JoinLobbyByCodeCoroutine(string lobbyCode, System.Action<bool> onComplete)
     {
         // Se crea un jugador con las características correspondientes
         JoinLobbyByCodeOptions options = new JoinLobbyByCodeOptions
@@ -268,14 +296,16 @@ public class LobbyManager : MonoBehaviour
                     }
                 }
             }
+            onComplete(false); // Indicar fallo si ocurre un error
             yield break; // Salir de la coroutine si hay un error
         }
 
         // Si el lobby fue encontrado
         _joinedLobby = joinLobbyTask.Result;
+        _lobbyCode = _joinedLobby.LobbyCode;
         Debug.Log("Joined Lobby with code: " + lobbyCode);
 
-        // Una vez se une al lobby, se obtienen la IP y el servidor
+        // Una vez se une al lobby, se obtienen la IP y el puerto del servidor
         string serverIP = _joinedLobby.Data["serverIP"].Value;
         string serverPort = _joinedLobby.Data["serverPort"].Value;
 
@@ -283,7 +313,13 @@ public class LobbyManager : MonoBehaviour
         MultiplayManager.Instance.JoinToServer(serverIP, serverPort);
 
         inLobby = true;
+        onComplete(true); // Indicar éxito
+
+        // Se comienza a actualizar el estado del lobby
+        // Mediante esta corrutina, se actualiza cada cierto tiempo el estado del lobby, para tener siempre la información correcta (por si alguien se conecta o desconecta)
+        StartCoroutine(UpdateLobby());
     }
+
 
     public IEnumerator JoinPublicLobbyCoroutine()
     {
@@ -307,7 +343,7 @@ public class LobbyManager : MonoBehaviour
                 if (exception is LobbyServiceException)
                 {
                     Debug.Log("No hay ninguna sala activa, se creará una nueva");
-                    CreatePublicLobby(); // Se crea una sala pública nueva
+                    StartCoroutine(CreatePublicLobbyCoroutine()); // Se crea una sala pública nueva
                 }
             }
             yield break; // Salir de la coroutine si hay un error
@@ -315,6 +351,7 @@ public class LobbyManager : MonoBehaviour
 
         // Si el lobby fue encontrado
         _joinedLobby = joinLobbyTask.Result;
+        _lobbyCode = _joinedLobby.LobbyCode;
         Debug.Log("Joined public lobby!");
 
         // Una vez se une al lobby, se obtienen la IP y el servidor
@@ -325,6 +362,10 @@ public class LobbyManager : MonoBehaviour
         MultiplayManager.Instance.JoinToServer(serverIP, serverPort);
 
         inLobby = true;
+
+        // Se comienza a actualizar el estado del lobby
+        // Mediante esta corrutina, se actualiza cada cierto tiempo el estado del lobby, para tener siempre la información correcta (por si alguien se conecta o desconecta)
+        StartCoroutine(UpdateLobby());
     }
     #endregion
     #region Leave
@@ -405,7 +446,7 @@ public class LobbyManager : MonoBehaviour
     // Se obtiene el código del lobby
     public string GetLobbyCode()
     {
-        return _joinedLobby.LobbyCode;
+        return _lobbyCode;
     }
     #endregion
 

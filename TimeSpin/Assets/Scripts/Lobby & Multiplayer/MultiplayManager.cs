@@ -21,11 +21,16 @@ public class MultiplayManager : MonoBehaviour
         }
         else
         {
-            Destroy(this);
+            Destroy(gameObject);
         }
+
+        // Si se está en el servidor, se hace que este objeto pase entre escenas, para que no se reinicie al volver al lobby
+        #if UNITY_SERVER
+        DontDestroyOnLoad(this);
+        #endif
     }
 
-    #if UNITY_SERVER
+#if UNITY_SERVER
     private IServerQueryHandler _serverQueryHandler; // Variable para el manejador del servidor
 
     private async void Start()
@@ -66,7 +71,7 @@ public class MultiplayManager : MonoBehaviour
             }
         }
     }
-    #endif
+#endif
 
     // Esta función se utiliza para conectar a los clientes con el servidor
     public void JoinToServer(string IP, string port)
