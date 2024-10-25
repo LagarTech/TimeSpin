@@ -348,8 +348,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66dbb6b284ec95c49a50e2edfca20063, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 50
-  basePosition: {fileID: 611667395}
+  moveSpeed: 2500
 --- !u!1001 &74229134
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1419,7 +1418,7 @@ GameObject:
   - component: {fileID: 611667396}
   m_Layer: 0
   m_Name: Base1
-  m_TagString: Untagged
+  m_TagString: Base
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1454,11 +1453,11 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &611667397
@@ -1893,16 +1892,14 @@ MonoBehaviour:
   - {fileID: 7766455181804108521, guid: b1e51a370314d024c91e31f1d7b0e8cd, type: 3}
   - {fileID: 7127867417404485052, guid: 222d9acd729ccd14a94c1388581c0bd2, type: 3}
   - {fileID: 5384234712512094000, guid: ccf3464337f22e64eb1eeae3ddf55b5b, type: 3}
-  spawnPoints:
-  - {fileID: 1579011101}
-  spawnInterval: 2
+  spawnArea: {fileID: 1579011097}
+  spawnInterval: 3
   gameTime: 60
+  baseZone: {fileID: 611667395}
   isGameOver: 0
   isGameActive: 0
   timeText: {fileID: 1836695955}
-  playerScoreTexts:
-  - {fileID: 817367034}
-  - {fileID: 1208325006}
+  scoreText: {fileID: 817367034}
 --- !u!1001 &1008822651
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1981,85 +1978,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8922718990692563880, guid: d27859cafa5ae1d458ca2797eda240b1, type: 3}
   m_PrefabInstance: {fileID: 1008822651}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1208325005
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1208325008}
-  - component: {fileID: 1208325007}
-  - component: {fileID: 1208325006}
-  m_Layer: 0
-  m_Name: PointsText1 (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1208325006
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1208325005}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
-    m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
-    m_Alignment: 0
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: 
---- !u!222 &1208325007
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1208325005}
-  m_CullTransparentMesh: 1
---- !u!224 &1208325008
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1208325005}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2123774851}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 455, y: 259}
-  m_SizeDelta: {x: 160, y: 30}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1254290843
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3011,7 +2929,6 @@ RectTransform:
   m_Children:
   - {fileID: 405821793}
   - {fileID: 817367032}
-  - {fileID: 1208325008}
   m_Father: {fileID: 906631510}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}

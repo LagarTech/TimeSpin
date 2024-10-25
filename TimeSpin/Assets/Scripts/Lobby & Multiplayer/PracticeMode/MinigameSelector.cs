@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -5,7 +6,7 @@ using UnityEngine.UI;
 public class MinigameSelector : MonoBehaviour
 {
     public GameObject infoPanel;  // Panel donde se mostrará la información
-    public Text infoText;         // Texto del panel donde se mostrará la descripción
+    public TMP_Text infoText;         // Texto del panel donde se mostrará la descripción
     public Button closeInfoButton; // Botón para cerrar el panel de información (la "X")
     public GameObject Descripcion; // Panel o GameObject donde está la descripción del minijuego
 

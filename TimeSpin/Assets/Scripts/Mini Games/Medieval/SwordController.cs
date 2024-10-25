@@ -1,68 +1,40 @@
-using System.Collections;
 using UnityEngine;
 
 public class SwordController : MonoBehaviour
 {
-    public int swordPoints;  // Valor de la espada (bronce, plata, oro)
+    public int swordPoints;  // Valor de la espada (por ejemplo, 10 puntos para bronce, 20 para plata)
 
-    private bool canBeStolen = true;  // Indica si la espada puede ser robada
-    private MedievalGameManager gameManager;
-    private int ownerPlayerIndex;     // Índice del jugador que ha entregado la espada en base
+    private MedievalGameManager gameManager;  // Referencia al GameManager
 
-    // Devuelve los puntos de la espada
-    public int GetPoints()
+    void Start()
     {
-        return swordPoints;
-    }
-
-    // Comienza el temporizador para permitir que la roben durante 10 segundos
-    public void StartStealTimer(MedievalPlayerController player, MedievalGameManager gameManager, int playerIndex)
-    {
-        this.gameManager = gameManager;
-        this.ownerPlayerIndex = playerIndex;
-
-        // Empezamos el temporizador de 10 segundos
-        StartCoroutine(StealWindow());
-    }
-
-    // Corutina que espera 10 segundos antes de eliminar la espada
-    private IEnumerator StealWindow()
-    {
-        canBeStolen = true;
-
-        // Espera 10 segundos
-        yield return new WaitForSeconds(10f);
-
-        // Después de los 10 segundos, la espada ya no puede ser robada
-        canBeStolen = false;
-
-        // Eliminar la espada definitivamente del mapa
-        Destroy(gameObject);
+        // Asigna automáticamente el GameManager al inicio
+        gameManager = FindObjectOfType<MedievalGameManager>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        // Intentamos obtener el componente MedievalPlayerController del objeto con el que colisionamos
+        // Detecta si colisiona con el jugador
         MedievalPlayerController player = other.GetComponent<MedievalPlayerController>();
 
-        // Comprobamos si realmente hemos colisionado con un jugador
-        if (player != null)
+        // Comprueba si realmente hemos colisionado con el jugador y si no lleva una espada
+        if (player != null && player.CarriedSword == null)
         {
-            // Si el jugador no lleva ninguna espada
-            if (player.CarriedSword == null)
-            {
-                // El jugador roba la espada
-                player.SetCarriedSword(gameObject);  // Usamos el método público para asignar la espada
-                transform.SetParent(player.transform);
-                transform.localPosition = new Vector3(0, 1, 0);
-
-                // Eliminar los puntos del jugador original (dueño de la espada)
-                gameManager.AddScore(ownerPlayerIndex, -swordPoints);
-
-                // El nuevo jugador la lleva para puntuar
-                canBeStolen = false;  // Ya no puede ser robada de nuevo
-            }
+            // Asigna esta espada al jugador
+            player.SetCarriedSword(gameObject);
+            transform.SetParent(player.transform);
+            transform.localPosition = new Vector3(0, 1, 0);  // Ajusta la posición para que "lleve" la espada
         }
     }
 
+    // Método que se llama cuando el jugador entrega la espada en la base
+    public void DeliverSword()
+    {
+        // Suma los puntos al jugador
+        gameManager.AddScore(swordPoints);
+
+        // Destruye la espada después de la entrega
+        Destroy(gameObject);
+    }
 }
+
