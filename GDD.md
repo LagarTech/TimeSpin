@@ -38,24 +38,31 @@ Por último, se lanza la versión Gold Master del producto con todos los errores
 
 Cabe destacar que el juego es free to play y para que se mantenga vivo a lo largo de 2 años se pretende incluir cada 3 o 4 meses una serie de DLCs en los que se introducen nuevos minijuegos para evitar que los 5 primeros se vuelvan repetitivos y la gente abandone el juego. Además de esto, se incluyen de forma más frecuente nuevos atuendos y vestimentas que se pueden adquirir mediante micropagos en la tienda del juego, de esta forma también se incita a jugar a los jugadores y no aburrirse.
 - **Información de usuarios**: ¿Quién es?
+  
 El público objetivo que se espera que tenga este videojuego es muy variado, puesto que la edad mínima que se recomienda para jugar es de tres años. Además de esto, gracias a su temática familiar y competitiva, se pretende captar a gente de todas las edades. Este perfil objetivo es a nivel nacional, puesto que el juego solo está disponible en este idioma. 
 
 ¿Qué quiere?
+
 A día de hoy es difícil saber lo que quieren los jugadores, es por ello que TimeSpin ofrece dos tipos de experiencias a los usuarios, ya sea entretenimiento casual, si solo se quiere jugar unas partidas por mero entretenimiento o competitivo, las partidas se juegan con un mayor grado de concentración para poder obtener un mayor número de puntos para el ranking general.
 
 ¿Aficiones?
+
 En cuanto a las aficiones de los jugadores que componen el público objetivo destacan los juegos multijugador online en los que se puede competir con otros jugadores, además, destaca el gusto y el atractivo en los últimos años de los juegos free to play.
 
 ¿Situación?
+
 La situación de los jugadores objetivos se espera que sean estudiantes y no estudiantes de hasta unos 21 años, puesto que son el rango de jugadores que más tiempo tienen y pasan jugando videojuegos. Además, se quiere que sean de este rango para fomentar su aprendizaje.
 
 ¿Cómo es?
+
 Como se menciona en apartados anteriores, es difícil saber cómo son los jugadores que van a jugar este videojuego, debido al amplio rango de edad que se ofrece y las distintas opciones y sensaciones que ofrece el juego, es por ello que se centra el foco de atención en los jugadores entre 15 y 20 años que son los que más tiempo dedican a los videojuegos.
 
 ¿Actividad?
+
 La actividad de los jugadores de este rango de edad generalmente es de un grado alto.
 
 ¿Qué necesita?
+
 Los usuarios siempre necesitan un videojuego con alto nivel de accesibilidad, unos controles sencillos, que el juego funcione correctamente y carezca de bugs y errores, una interfaz fácil de utilizar a la vez que llamativa, una jugabilidad sencilla y atractiva.
 
 - **Mapa de empatía**: Un mapa de empatía ayuda al equipo a ponerse en la piel de su cliente para entender sus deseos y cómo podría querer utilizar su producto.
@@ -133,10 +140,15 @@ En este tercer apartado se procede a explicar y detallar información sobre los 
 - **El equipo humano**: LagarTech es una empresa que se compone de 5 miembros cuya función varía dentro de esta empresa. Los miembros son los siguientes:
 
 -**José María Soriano**: Es el director principal del proyecto, se encarga principalmente de programar la mayor parte del juego y de que el equipo trabaje de forma correcta.
+
 -**Jacobo Sánchez García**: Junto a José, se encarga de ciertas partes de programación dentro de este videojuego.
+
 -**Juan Coronado Gómez**: Diseñador de los niveles, mecánicas, experiencia del jugador y sistema de puntuaciones dentro del juego. Además, ayuda a José y a Jacobo en algunas de las partes de programación.
+
 -**Luis Fernando Rodríguez**: Es el que se encarga de toda la parte de modelado en 3D, ya sea personajes, ítems, enemigos, mapas etc. También se encarga de la propia texturización de los elementos que se nombran anteriormente.
+
 -**Santiago Rubio Montero**: Es el artista principal, el que plasma y conceptualiza en 2D las ideas escritas por Juan para que posteriormente Luis lo haga en 3D. Posee una gran destreza con programas como Adobe Photoshop. También se encarga de toda la parte de marketing y redes sociales de la empresa.
+
 - **Estimación temporal del desarrollo**: La estimación temporal para el desarrollo del juego se divide en varias partes y la planificación es la siguiente:
 En un primer lugar se realiza un primer lanzamiento de una versión prototipo de nuestro videojuego, con el fin de que los jugadores lo prueben y nosotros recibamos feedback. Este lanzamiento está previsto para realizarse el día 27/10/2024.
 Después de la versión prototipo, se prevé un lanzamiento de la versión beta de nuestro juego para el día 19/11/2024. Está versión del juego es una versión bastante próxima a lo que es el juego final, pero se utiliza para encontrar algunos bugs todavía existentes en el videojuego y así pulirlos de cara al lanzamiento del juego final.
@@ -379,7 +391,9 @@ Futuro: Escenarios futuristas llenos de luces neón y elementos flotantes, en un
 ![Caja](Diseño/ImagenesGDD/Práctica.png)
 ### UX del juego
 ![Caja](Diseño/ImagenesGDD/UXJuego.png)
+
 - **Diagrama de flujo**:
+
 ![Caja](Diseño/ImagenesGDD/DiagramadeFlujo.jpg)
 ## 9. Hoja de ruta del desarrollo
 - **Hito 1**: Como se menciona en el apartado del roadmap, este primer hito del videojuego se compone del desarrollo y publicación de una versión prototipo del videojuego. Esta versión es una versión reducida que no incluye todas las funcionalidades pero que sí es una versión jugable. El objetivo de la publicación de esta versión es obtener una primera impresión acerca del videojuego y encontrar bugs y errores una vez los jugadores comiencen a jugar el juego. El desarrollo de esta versión comienza a mediados de septiembre y la publicación de esta se produce el día 27/10/2024.
