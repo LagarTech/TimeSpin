@@ -1,4 +1,7 @@
 # Game Design Document - TimeSpin
+
+![Caja](Diseño/ImagenesGDD/Caratula.jpg)
+
 ## 1. Introducción
 - **Descripción breve del concepto**: El juego que se explica en el siguiente documento se llama TimeSpin y es un juego diferente en cuanto al enfoque que se le da y la accesibilidad que tiene. En este videojuego se mezcla la competitividad junto con el aprendizaje, ya que a la vez que se juega, se van conociendo datos y curiosidades de las distintas épocas históricas en las que se desarrolla el juego. En cuanto a las épocas, son las siguientes:
 Prehistoria
