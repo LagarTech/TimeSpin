@@ -115,21 +115,22 @@ Crowdfunding, micro transacciones y descargas de plataformas oficiales.
 - **Tipo de modelo de monetización**: Para este juego se opta por utilizar uno de los modelos de monetización que más impacto está teniendo en los últimos años como es el F2P (Free to play). El juego se publica en varias páginas de empresas distribuidoras para que los jugadores puedan acceder al contenido de manera gratuita. Para complementar este modelo y aumentar los beneficios que se obtienen, se añade un modelo de PWYW (donación) para que los jugadores puedan donar el dinero que se considere necesario a los desarrolladores. Los jugadores no se ven obligados a hacer una donación para seguir jugando al juego, si no que, si se quiere colaborar de alguna manera con el estudio, se puede hacer de esta forma. Además de las donaciones, como se menciona en el Roadmap, para que se mejore el juego se incluyen DLCs (Downloadable Content) a lo largo de un tiempo de 2 años. También se utiliza el modelo de micro transacciones, para ello se añaden distintos trajes de pago con los que se puede personalizar el atuendo del personaje. Cabe destacar que la compra de estos trajes no otorga ningún tipo de potenciación a los jugadores que los posean. Además, en el juego aparecen distintos anuncios publicitarios con los que se obtiene beneficio si los jugadores clican y acceden al contenido que se muestra o simplemente por incluir esos anuncios dentro del juego. Este último modelo se conoce como modelo de publicidad (ADS). Por último, se pretende llamar la atención de distintas instituciones como centros educativos, editoriales o bibliotecas para que utilicen el juego como forma de enseñar a los alumnos.
 
 - **Tablas de productos y costes**: A continuación, se muestra una tabla con los distintos productos que se ofrecen dentro del juego junto con sus precios.
-  | Producto        | Descripción                                                                                   | Precio          | 
-|-------------|---------------------------------------------------------------------------------------------------|-----------------------|
-| Juego completo   | Todo el contenido del juego, con los 5 minijuegos iniciales y la posibilidad de jugar el juego sin ningún límite | 0.00€  | 
-| Trajes de personalización       | Skins para personalizar y vestir el personaje de distinta manera a otros jugadores | desde 4.99€  |
-| DLC | Contenido descargable adicional que incluye 3 minijuegos más                                            | 9.99€  |
+| Producto                | Descripción                                                                                                       | Precio      |
+|-------------------------|-------------------------------------------------------------------------------------------------------------------|-------------|
+| Juego completo          | Todo el contenido del juego, con los 5 minijuegos iniciales y la posibilidad de jugar el juego sin ningún límite | 0.00€      |
+| Trajes de personalización | Skins para personalizar y vestir el personaje de distinta manera a otros jugadores                              | desde 4.99€ |
+| DLC                     | Contenido descargable adicional que incluye 3 minijuegos más                                                      | 9.99€      |
+
 
 ## 4. Planificacion y costes
 En este tercer apartado se procede a explicar y detallar información sobre los miembros del equipo y el papel que desempeña cada uno de ellos en la empresa. Además, se explican los costes que va a tener la empresa a lo largo del desarrollo del juego y el tiempo que se estima necesario para el desarrollo del juego.
 - **El equipo humano**: LagarTech es una empresa que se compone de 5 miembros cuya función varía dentro de esta empresa. Los miembros son los siguientes:
 
-José María Soriano: Es el director principal del proyecto, se encarga principalmente de programar la mayor parte del juego y de que el equipo trabaje de forma correcta.
-Jacobo Sánchez García: Junto a José, se encarga de ciertas partes de programación dentro de este videojuego.
-Juan Coronado Gómez: Diseñador de los niveles, mecánicas, experiencia del jugador y sistema de puntuaciones dentro del juego. Además, ayuda a José y a Jacobo en algunas de las partes de programación.
-Luis Fernando Rodríguez: Es el que se encarga de toda la parte de modelado en 3D, ya sea personajes, ítems, enemigos, mapas etc. También se encarga de la propia texturización de los elementos que se nombran anteriormente.
-Santiago Rubio Montero: Es el artista principal, el que plasma y conceptualiza en 2D las ideas escritas por Juan para que posteriormente Luis lo haga en 3D. Posee una gran destreza con programas como Adobe Photoshop. También se encarga de toda la parte de marketing y redes sociales de la empresa.
+-José María Soriano: Es el director principal del proyecto, se encarga principalmente de programar la mayor parte del juego y de que el equipo trabaje de forma correcta.
+-Jacobo Sánchez García: Junto a José, se encarga de ciertas partes de programación dentro de este videojuego.
+-Juan Coronado Gómez: Diseñador de los niveles, mecánicas, experiencia del jugador y sistema de puntuaciones dentro del juego. Además, ayuda a José y a Jacobo en algunas de las partes de programación.
+-Luis Fernando Rodríguez: Es el que se encarga de toda la parte de modelado en 3D, ya sea personajes, ítems, enemigos, mapas etc. También se encarga de la propia texturización de los elementos que se nombran anteriormente.
+-Santiago Rubio Montero: Es el artista principal, el que plasma y conceptualiza en 2D las ideas escritas por Juan para que posteriormente Luis lo haga en 3D. Posee una gran destreza con programas como Adobe Photoshop. También se encarga de toda la parte de marketing y redes sociales de la empresa.
 - **Estimación temporal del desarrollo**: La estimación temporal para el desarrollo del juego se divide en varias partes y la planificación es la siguiente:
 En un primer lugar se realiza un primer lanzamiento de una versión prototipo de nuestro videojuego, con el fin de que los jugadores lo prueben y nosotros recibamos feedback. Este lanzamiento está previsto para realizarse el día 27/10/2024.
 Después de la versión prototipo, se prevé un lanzamiento de la versión beta de nuestro juego para el día 19/11/2024. Está versión del juego es una versión bastante próxima a lo que es el juego final, pero se utiliza para encontrar algunos bugs todavía existentes en el videojuego y así pulirlos de cara al lanzamiento del juego final.
@@ -235,55 +236,89 @@ En la siguiente imagen se muestra la distribución de las casillas en cada una d
 - **Niveles y misiones**:	En este apartado no se tienen misiones, si no que se tienen logros con los que se desbloquean skins y curiosidades acerca de las épocas históricas dentro del juego. Las curiosidades son 40 (8 por cada época) y son las siguientes:
 
 Prehistoria 
-Duración extensa: La prehistoria es el período más largo de la historia humana, abarcando desde la aparición de los primeros homínidos hace unos 2,5 millones de años hasta la invención de la escritura, hace unos 5.000 años.
+-Duración extensa: La prehistoria es el período más largo de la historia humana, abarcando desde la aparición de los primeros homínidos hace unos 2,5 millones de años hasta la invención de la escritura, hace unos 5.000 años.
 
-El fuego: El dominio del fuego fue uno de los avances más importantes. Se cree que los Homo erectus comenzaron a usarlo hace aproximadamente 1,5 millones de años, lo que les permitió cocinar alimentos, protegerse del frío y defenderse de depredadores.
+-El fuego: El dominio del fuego fue uno de los avances más importantes. Se cree que los Homo erectus comenzaron a usarlo hace aproximadamente 1,5 millones de años, lo que les permitió cocinar alimentos, protegerse del frío y defenderse de depredadores.
 
-Primeros instrumentos musicales: Se han encontrado flautas de hueso con más de 40.000 años de antigüedad, lo que sugiere que los seres humanos prehistóricos ya disfrutaban de la música mucho antes de la creación de la escritura.
+-Primeros instrumentos musicales: Se han encontrado flautas de hueso con más de 40.000 años de antigüedad, lo que sugiere que los seres humanos prehistóricos ya disfrutaban de la música mucho antes de la creación de la escritura.
 
-Pinturas rupestres: Las primeras formas de arte incluyen las pinturas rupestres, algunas de las más famosas se encuentran en las cuevas de Lascaux, en Francia, con una antigüedad de más de 17.000 años. Estas imágenes muestran escenas de caza y animales de la época.
+-Pinturas rupestres: Las primeras formas de arte incluyen las pinturas rupestres, algunas de las más famosas se encuentran en las cuevas de Lascaux, en Francia, con una antigüedad de más de 17.000 años. Estas imágenes muestran escenas de caza y animales de la época.
 
-Herramientas de piedra: Los humanos prehistóricos fabricaban herramientas principalmente de piedra. Las más antiguas encontradas tienen unos 3,3 millones de años y fueron utilizadas por los primeros homínidos para cortar, raspar y perforar.
-Domesticación de animales: La domesticación de animales fue un avance clave en la prehistoria. El perro fue uno de los primeros animales domesticados, hace unos 15.000 años, probablemente como compañero en la caza. Otros animales como ovejas, cabras y vacas fueron domesticados más tarde, facilitando la vida sedentaria y el desarrollo de la agricultura.
-El descubrimiento de Ötzi: Ötzi, también conocido como el "Hombre de los hielos", es una momia natural de 5.300 años encontrada en los Alpes en 1991. Es uno de los cuerpos humanos prehistóricos mejor conservados, lo que ha permitido obtener mucha información sobre la vida en esa época, desde su vestimenta hasta sus tatuajes.
-Primeros asentamientos: Durante el Neolítico (hace unos 10.000 años), los humanos comenzaron a formar los primeros asentamientos permanentes, gracias al desarrollo de la agricultura. Jericó, en la actual Cisjordania, es una de las ciudades más antiguas conocidas, con más de 11.000 años de antigüedad.
+-Herramientas de piedra: Los humanos prehistóricos fabricaban herramientas principalmente de piedra. Las más antiguas encontradas tienen unos 3,3 millones de años y fueron utilizadas por los primeros homínidos para cortar, raspar y perforar.
+
+-Domesticación de animales: La domesticación de animales fue un avance clave en la prehistoria. El perro fue uno de los primeros animales domesticados, hace unos 15.000 años, probablemente como compañero en la caza. Otros animales como ovejas, cabras y vacas fueron domesticados más tarde, facilitando la vida sedentaria y el desarrollo de la agricultura.
+
+-El descubrimiento de Ötzi: Ötzi, también conocido como el "Hombre de los hielos", es una momia natural de 5.300 años encontrada en los Alpes en 1991. Es uno de los cuerpos humanos prehistóricos mejor conservados, lo que ha permitido obtener mucha información sobre la vida en esa época, desde su vestimenta hasta sus tatuajes.
+
+-Primeros asentamientos: Durante el Neolítico (hace unos 10.000 años), los humanos comenzaron a formar los primeros asentamientos permanentes, gracias al desarrollo de la agricultura. Jericó, en la actual Cisjordania, es una de las ciudades más antiguas conocidas, con más de 11.000 años de antigüedad.
 
 Egipto
-Pirámides alineadas con las estrellas: Las pirámides de Giza, especialmente la Gran Pirámide, están alineadas con la constelación de Orión. Se cree que los egipcios hicieron esto porque asociaban a Orión con Osiris, el dios de la muerte y la vida después de la muerte.
-Escritura jeroglífica: Los antiguos egipcios desarrollaron los jeroglíficos, un sistema de escritura que utilizaba símbolos y pictogramas. Era utilizado tanto para inscripciones en monumentos como para textos religiosos, y estaba reservado para usos ceremoniales y de prestigio.
-Gatos sagrados: Los gatos eran considerados animales sagrados en el Antiguo Egipto. Se asociaban con la diosa Bastet, la diosa de la protección, el hogar y la fertilidad. Los egipcios protegían y veneraban a los gatos, y matar uno era un crimen muy grave.
-Faraones tanto hombres como mujeres: Aunque la mayoría de los faraones fueron hombres, hubo algunas mujeres que gobernaron, como la famosa Hatshepsut, una de las reinas más poderosas, y Cleopatra, la última faraona de Egipto antes de su conquista por Roma.
-El maquillaje de los ojos: Tanto hombres como mujeres usaban maquillaje en los ojos, especialmente delineador negro conocido como "kohl". No solo lo usaban por razones estéticas, sino también por razones prácticas: ayudaba a proteger los ojos del sol y las infecciones.
-Calendario egipcio: Los antiguos egipcios desarrollaron un calendario basado en el ciclo de inundación del río Nilo. Tenía 365 días, divididos en 12 meses de 30 días cada uno, con cinco días adicionales al final del año, lo que se parece mucho al calendario actual.
-Mujeres con derechos: Las mujeres en el Antiguo Egipto disfrutaban de muchos derechos en comparación con otras civilizaciones de la época. Podían poseer propiedades, divorciarse, heredar bienes y participar en acuerdos legales. Sin embargo, los hombres ocupaban generalmente los puestos de mayor autoridad.
-Proceso de momificación: Los egipcios perfeccionaron el arte de la momificación, creyendo que preservando el cuerpo físico aseguraban una vida eterna en el más allá. Los órganos internos eran extraídos y conservados en vasos canopos, mientras que el cuerpo era tratado con sales para evitar la descomposición y envuelto en lino.
+-Pirámides alineadas con las estrellas: Las pirámides de Giza, especialmente la Gran Pirámide, están alineadas con la constelación de Orión. Se cree que los egipcios hicieron esto porque asociaban a Orión con Osiris, el dios de la muerte y la vida después de la muerte.
+
+-Escritura jeroglífica: Los antiguos egipcios desarrollaron los jeroglíficos, un sistema de escritura que utilizaba símbolos y pictogramas. Era utilizado tanto para inscripciones en monumentos como para textos religiosos, y estaba reservado para usos ceremoniales y de prestigio.
+
+-Gatos sagrados: Los gatos eran considerados animales sagrados en el Antiguo Egipto. Se asociaban con la diosa Bastet, la diosa de la protección, el hogar y la fertilidad. Los egipcios protegían y veneraban a los gatos, y matar uno era un crimen muy grave.
+
+-Faraones tanto hombres como mujeres: Aunque la mayoría de los faraones fueron hombres, hubo algunas mujeres que gobernaron, como la famosa Hatshepsut, una de las reinas más poderosas, y Cleopatra, la última faraona de Egipto antes de su conquista por Roma.
+
+-El maquillaje de los ojos: Tanto hombres como mujeres usaban maquillaje en los ojos, especialmente delineador negro conocido como "kohl". No solo lo usaban por razones estéticas, sino también por razones prácticas: ayudaba a proteger los ojos del sol y las infecciones.
+
+-Calendario egipcio: Los antiguos egipcios desarrollaron un calendario basado en el ciclo de inundación del río Nilo. Tenía 365 días, divididos en 12 meses de 30 días cada uno, con cinco días adicionales al final del año, lo que se parece mucho al calendario actual.
+
+-Mujeres con derechos: Las mujeres en el Antiguo Egipto disfrutaban de muchos derechos en comparación con otras civilizaciones de la época. Podían poseer propiedades, divorciarse, heredar bienes y participar en acuerdos legales. Sin embargo, los hombres ocupaban generalmente los puestos de mayor autoridad.
+
+-Proceso de momificación: Los egipcios perfeccionaron el arte de la momificación, creyendo que preservando el cuerpo físico aseguraban una vida eterna en el más allá. Los órganos internos eran extraídos y conservados en vasos canopos, mientras que el cuerpo era tratado con sales para evitar la descomposición y envuelto en lino.
+
 Medievo
-Caballeros y torneos: Los caballeros medievales no solo luchaban en guerras, sino que también participaban en torneos de justas. Estos eventos eran competiciones donde los caballeros mostraban sus habilidades con lanzas, espadas y otras armas, en parte por entretenimiento y en parte para ganar prestigio.
-La Peste Negra: La Peste Negra fue una de las pandemias más devastadoras de la historia, matando entre 30% y 60% de la población europea entre 1347 y 1351. La enfermedad, propagada por pulgas en ratas, cambió profundamente la sociedad, llevando a cambios en la economía y la mentalidad religiosa.
-Las Cruzadas: Durante la Edad Media, se organizaron una serie de guerras conocidas como las Cruzadas (del siglo XI al XIII). El objetivo principal era recuperar Tierra Santa del control musulmán, pero también involucraron intereses políticos, económicos y religiosos, generando vastas interacciones entre Oriente y Occidente.
-Las ciudades amuralladas: Muchas ciudades medievales estaban rodeadas de enormes murallas para protegerse de los ataques. Ejemplos de ciudades medievales con murallas que aún existen incluyen Carcasona (Francia) y Ávila (España), donde las fortificaciones eran tanto defensivas como símbolos de poder.
+-Caballeros y torneos: Los caballeros medievales no solo luchaban en guerras, sino que también participaban en torneos de justas. Estos eventos eran competiciones donde los caballeros mostraban sus habilidades con lanzas, espadas y otras armas, en parte por entretenimiento y en parte para ganar prestigio.
+
+-La Peste Negra: La Peste Negra fue una de las pandemias más devastadoras de la historia, matando entre 30% y 60% de la población europea entre 1347 y 1351. La enfermedad, propagada por pulgas en ratas, cambió profundamente la sociedad, llevando a cambios en la economía y la mentalidad religiosa.
+
+-Las Cruzadas: Durante la Edad Media, se organizaron una serie de guerras conocidas como las Cruzadas (del siglo XI al XIII). El objetivo principal era recuperar Tierra Santa del control musulmán, pero también involucraron intereses políticos, económicos y religiosos, generando vastas interacciones entre Oriente y Occidente.
+
+-Las ciudades amuralladas: Muchas ciudades medievales estaban rodeadas de enormes murallas para protegerse de los ataques. Ejemplos de ciudades medievales con murallas que aún existen incluyen Carcasona (Francia) y Ávila (España), donde las fortificaciones eran tanto defensivas como símbolos de poder.
 Mujeres en el medievo: Aunque la vida de la mujer medieval solía estar subordinada a la de los hombres, algunas mujeres lograron destacarse en el ámbito político, religioso o intelectual. Un ejemplo famoso es Juana de Arco, quien lideró ejércitos franceses en la Guerra de los Cien Años y se convirtió en una heroína nacional.
-Los castillos: Los castillos no eran solo residencias nobles, sino también fortalezas militares. Servían para defender territorios y a sus habitantes durante las invasiones, y contaban con gruesos muros, torres de vigilancia, fosos y puentes levadizos. Con el tiempo, se convirtieron también en símbolos de estatus y poder.
-El sistema feudal: La sociedad medieval se organizaba en torno al feudalismo, un sistema donde los reyes concedían tierras a los nobles a cambio de lealtad y servicios militares. Los campesinos, a menudo siervos, trabajaban estas tierras a cambio de protección, viviendo bajo el control de un señor feudal.
-Los gremios: En las ciudades medievales, los gremios eran asociaciones de artesanos y comerciantes que regulaban las profesiones. Controlaban la calidad de los productos, establecían precios y organizaban la formación de aprendices. Los gremios fueron esenciales para el desarrollo económico urbano.
+
+-Los castillos: Los castillos no eran solo residencias nobles, sino también fortalezas militares. Servían para defender territorios y a sus habitantes durante las invasiones, y contaban con gruesos muros, torres de vigilancia, fosos y puentes levadizos. Con el tiempo, se convirtieron también en símbolos de estatus y poder.
+
+-El sistema feudal: La sociedad medieval se organizaba en torno al feudalismo, un sistema donde los reyes concedían tierras a los nobles a cambio de lealtad y servicios militares. Los campesinos, a menudo siervos, trabajaban estas tierras a cambio de protección, viviendo bajo el control de un señor feudal.
+
+-Los gremios: En las ciudades medievales, los gremios eran asociaciones de artesanos y comerciantes que regulaban las profesiones. Controlaban la calidad de los productos, establecían precios y organizaban la formación de aprendices. Los gremios fueron esenciales para el desarrollo económico urbano.
+
 Maya
-Calendario avanzado: Los mayas desarrollaron un calendario muy preciso, basado en ciclos astronómicos. Tenían varios calendarios, incluyendo el "Tzolk'in" (de 260 días) y el "Haab'" (de 365 días). También usaron la Cuenta Larga, un sistema que marcaba grandes ciclos de tiempo, y que generó la famosa "profecía" del fin del mundo en 2012, que fue malinterpretada.
-Pirámides escalonadas: Al igual que los antiguos egipcios, los mayas construyeron impresionantes pirámides, aunque sus pirámides eran escalonadas y servían como templos. La más famosa es la Pirámide de Kukulkán en Chichén Itzá, que también funciona como un calendario solar: durante los equinoccios, la sombra proyecta la forma de una serpiente que "desciende" por la pirámide.
-Escritura jeroglífica: Los mayas desarrollaron una de las pocas escrituras mesoamericanas que fue completamente descifrada. Su sistema de escritura era logográfico, con símbolos que representaban sonidos y palabras completas. Los códices mayas, hechos de corteza de árbol, eran libros plegables donde se registraban eventos históricos y religiosos.
-Conocimientos astronómicos: Los mayas eran expertos en astronomía y seguían con precisión los movimientos del sol, la luna, Venus y otros cuerpos celestes. Estos conocimientos eran fundamentales para sus rituales y calendarios, y construyeron observatorios para estudiar el cielo, como el de Uxmal y el Caracol en Chichén Itzá.
-Sacrificios humanos: Los mayas realizaban sacrificios humanos como parte de sus rituales religiosos. Creían que los dioses necesitaban ser alimentados con sangre para mantener el equilibrio cósmico. Aunque no fue una práctica tan masiva como en otras culturas mesoamericanas, como los aztecas, era común en momentos importantes, como la dedicación de templos.
+-Calendario avanzado: Los mayas desarrollaron un calendario muy preciso, basado en ciclos astronómicos. Tenían varios calendarios, incluyendo el "Tzolk'in" (de 260 días) y el "Haab'" (de 365 días). También usaron la Cuenta Larga, un sistema que marcaba grandes ciclos de tiempo, y que generó la famosa "profecía" del fin del mundo en 2012, que fue malinterpretada.
+
+-Pirámides escalonadas: Al igual que los antiguos egipcios, los mayas construyeron impresionantes pirámides, aunque sus pirámides eran escalonadas y servían como templos. La más famosa es la Pirámide de Kukulkán en Chichén Itzá, que también funciona como un calendario solar: durante los equinoccios, la sombra proyecta la forma de una serpiente que "desciende" por la pirámide.
+
+-Escritura jeroglífica: Los mayas desarrollaron una de las pocas escrituras mesoamericanas que fue completamente descifrada. Su sistema de escritura era logográfico, con símbolos que representaban sonidos y palabras completas. Los códices mayas, hechos de corteza de árbol, eran libros plegables donde se registraban eventos históricos y religiosos.
+
+-Conocimientos astronómicos: Los mayas eran expertos en astronomía y seguían con precisión los movimientos del sol, la luna, Venus y otros cuerpos celestes. Estos conocimientos eran fundamentales para sus rituales y calendarios, y construyeron observatorios para estudiar el cielo, como el de Uxmal y el Caracol en Chichén Itzá.
+
+-Sacrificios humanos: Los mayas realizaban sacrificios humanos como parte de sus rituales religiosos. Creían que los dioses necesitaban ser alimentados con sangre para mantener el equilibrio cósmico. Aunque no fue una práctica tan masiva como en otras culturas mesoamericanas, como los aztecas, era común en momentos importantes, como la dedicación de templos.
+
 Juego de pelota: Los mayas jugaban a un deporte ritual llamado pok-ta-pok, que consistía en golpear una pelota de caucho usando solo las caderas, antebrazos o muslos, tratando de pasarla a través de un aro de piedra vertical. Este juego no solo era una actividad deportiva, sino también tenía un profundo significado religioso y simbólico.
-Ingeniería hidráulica: Los mayas desarrollaron avanzados sistemas hidráulicos para gestionar el agua en sus ciudades. En sitios como Tikal, construyeron grandes reservorios para almacenar agua de lluvia y canales para distribuirla. Esto fue crucial en las regiones donde la disponibilidad de agua era limitada durante ciertos periodos del año.
-Abandono de las ciudades: Una de las grandes incógnitas sobre los mayas es por qué abandonaron muchas de sus grandes ciudades en el siglo IX. Aunque no se sabe con certeza, las teorías incluyen una combinación de factores como el agotamiento de los recursos naturales, sequías prolongadas, conflictos internos y la presión de otras civilizaciones vecinas.
+
+-Ingeniería hidráulica: Los mayas desarrollaron avanzados sistemas hidráulicos para gestionar el agua en sus ciudades. En sitios como Tikal, construyeron grandes reservorios para almacenar agua de lluvia y canales para distribuirla. Esto fue crucial en las regiones donde la disponibilidad de agua era limitada durante ciertos periodos del año.
+
+-Abandono de las ciudades: Una de las grandes incógnitas sobre los mayas es por qué abandonaron muchas de sus grandes ciudades en el siglo IX. Aunque no se sabe con certeza, las teorías incluyen una combinación de factores como el agotamiento de los recursos naturales, sequías prolongadas, conflictos internos y la presión de otras civilizaciones vecinas.
+
 Futurista
-Coches voladores: Uno de los grandes deseos para el futuro es que los coches pueden volar y que no utilicen ningún tipo de combustible.
-Carreras espaciales: Otro de los deseos humanos es poder hacer carreras por todo el espacio.
-Vida en otros planetas: Hoy en día se intenta buscar otros planetas con las condiciones óptimas para seguir viviendo.
-Alienígenas: ¿Existen realmente? Posiblemente nunca lo sepamos a ciencia cierta, pero hay gente que afirma haber visto alguno.
-Inteligencia artificial y robots: Desde los años 50, los futuristas predijeron que los robots serían parte de la vida diaria, ayudando con tareas domésticas y trabajando en fábricas. Aunque la robótica ha avanzado mucho, estamos comenzando a ver aplicaciones prácticas de la IA y robots como asistentes virtuales, pero la visión de "robots humanoides" sigue en desarrollo.
-Ciudades: Los futuristas imaginaron que las ciudades serían verticales, con enormes rascacielos, transporte elevado y sistemas automatizados. Si bien muchas ciudades han crecido verticalmente y adoptado tecnologías avanzadas, aún estamos lejos de las ciudades completamente automatizadas o autosuficientes que se visualizaban.
-Automatización del hogar: En los años 50 y 60, se pensaba que el futuro traería hogares totalmente automatizados. Las cocinas robóticas, los electrodomésticos inteligentes y los sistemas de control remoto fueron ideas futuristas que poco a poco se están cumpliendo con las casas inteligentes de hoy.
-Tecnología de comunicación: En el futurismo del siglo XX, se soñaba con dispositivos que permitirían comunicarse instantáneamente desde cualquier parte del mundo. Hoy en día, estos "futurismos" son una realidad con los teléfonos inteligentes, internet y videollamadas, tecnologías que han transformado la forma en que interactuamos globalmente.
+-Coches voladores: Uno de los grandes deseos para el futuro es que los coches pueden volar y que no utilicen ningún tipo de combustible.
+
+-Carreras espaciales: Otro de los deseos humanos es poder hacer carreras por todo el espacio.
+
+-Vida en otros planetas: Hoy en día se intenta buscar otros planetas con las condiciones óptimas para seguir viviendo.
+
+-Alienígenas: ¿Existen realmente? Posiblemente nunca lo sepamos a ciencia cierta, pero hay gente que afirma haber visto alguno.
+
+-Inteligencia artificial y robots: Desde los años 50, los futuristas predijeron que los robots serían parte de la vida diaria, ayudando con tareas domésticas y trabajando en fábricas. Aunque la robótica ha avanzado mucho, estamos comenzando a ver aplicaciones prácticas de la IA y robots como asistentes virtuales, pero la visión de "robots humanoides" sigue en desarrollo.
+
+-Ciudades: Los futuristas imaginaron que las ciudades serían verticales, con enormes rascacielos, transporte elevado y sistemas automatizados. Si bien muchas ciudades han crecido verticalmente y adoptado tecnologías avanzadas, aún estamos lejos de las ciudades completamente automatizadas o autosuficientes que se visualizaban.
+
+-Automatización del hogar: En los años 50 y 60, se pensaba que el futuro traería hogares totalmente automatizados. Las cocinas robóticas, los electrodomésticos inteligentes y los sistemas de control remoto fueron ideas futuristas que poco a poco se están cumpliendo con las casas inteligentes de hoy.
+
+-Tecnología de comunicación: En el futurismo del siglo XX, se soñaba con dispositivos que permitirían comunicarse instantáneamente desde cualquier parte del mundo. Hoy en día, estos "futurismos" son una realidad con los teléfonos inteligentes, internet y videollamadas, tecnologías que han transformado la forma en que interactuamos globalmente.
+
 Estas curiosidades se desbloquean a la vez que se consiguen victorias y grandes puntuaciones en las pruebas de los minijuegos.
 Por otra parte, se disponen de 12 skins diferentes, un traje dorado y otro plateado que son de pago, y 2 trajes distintos por cada época histórica, uno versión masculina y otro femenina. Estos 10 últimos trajes se desbloquean una vez se consiguen 25 victorias en cada minijuego. Por ejemplo, para desbloquear la skin de la prehistoria, se debe ganar 25 veces en el minijuego de la prehistoria y así con todos los trajes y épocas históricas.
 
@@ -308,13 +343,13 @@ La trama se enfoca en la competencia feroz entre los estudiantes, quienes luchan
 El arte es uno de los apartados más importantes de este videojuego, puesto que es en uno de los aspectos a los que más tiempo se le dedica, al ser todos los concepts y modelados de elaboración propia. Además, el apartado de arte es muy importante para nuestra empresa, puesto que, para nosotros, el arte es un sello de identidad y una forma de marcar de manera positiva los videojuegos que se crean.
 - **Estética general del juego**: La estética general que se utiliza para el desarrollo de TimeSpin es una estética simple que se combina con un estilo Cartoon y caricatura en 3D. El juego tiene un parecido a ciertos juegos Idle Tycoon. Se opta por este tipo de arte y estética puesto que se quiere que el juego sea colorido y llamativo, ya que es para todas las edades y no se pretende producir ningún tipo de sensación tenebrosa a gente menor y niños pequeños. Aquí algunos diseños del juego:
 ### Diseño de personaje
-![Caja](Diseño/ImagenesGDD/Diseño.png)
+![Caja](Diseño/ImagenesGDD/Diseño.jpg)
 
 ### Diseño de mapas de minijuegos
-![Caja](Diseño/ImagenesGDD/Mapas.png)
+![Caja](Diseño/ImagenesGDD/Mapas.jpg)
 
 ### Diseño de vestimentas
-![Caja](Diseño/ImagenesGDD/Vestimentas.png)
+![Caja](Diseño/ImagenesGDD/Vestimentas.jpg)
 
 ### Diseño de props
 ![Caja](Diseño/ImagenesGDD/Props.png)
@@ -329,7 +364,7 @@ Futuro: Escenarios futuristas llenos de luces neón y elementos flotantes, en un
 ## 8. Interfaz
 - **Diseños básicos de los menús**:
 ### Interfaz de configuración
-![Caja](Diseño/ImagenesGDD/PauseMenu.png)
+![Caja](Diseño/ImagenesGDD/Interfaz.png)
 ### Menú principal
 ![Caja](Diseño/ImagenesGDD/MenuPrincipal.png)
 ### Menú de pausa
