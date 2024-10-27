@@ -353,7 +353,7 @@ El arte es uno de los apartados más importantes de este videojuego, puesto que 
 ![Caja](Diseño/ImagenesGDD/Vestimentas.jpg)
 
 ### Diseño de props
-![Caja](Diseño/ImagenesGDD/Props.png)
+![Caja](Diseño/ImagenesGDD/Props.jpg)
 - **Apartado visual**: Como se menciona en apartados anteriores, dentro de TimeSpin se presta mucha atención al apartado visual, con el fin de elaborar un estilo propio y definido que atraiga a mucha gente de todas las edades, pero que no se rechace por ser demasiado infantil. Es por ello por lo que se utilizan los siguientes colores para los distintos entornos que representan distintos períodos históricos, desde la Prehistoria hasta un futuro distópico, pero todos comparten un enfoque visual coherente:
 Prehistoria: Tonalidades terrosas y verdes, con dinosaurios y fauna caricaturesca, además de paisajes rocosos.
 Egipto: Colores cálidos como dorados y ocres, con pirámides, tumbas llenas de jeroglíficos, y criaturas como momias dibujadas de manera amigable pero amenazante.
@@ -365,9 +365,9 @@ Futuro: Escenarios futuristas llenos de luces neón y elementos flotantes, en un
 ## 8. Interfaz
 - **Diseños básicos de los menús**:
 ### Interfaz de configuración
-![Caja](Diseño/ImagenesGDD/Interfaz.png)
+![Caja](Diseño/ImagenesGDD/Interfaz.jpg)
 ### Menú principal
-![Caja](Diseño/ImagenesGDD/MenuPrincipal.png)
+![Caja](Diseño/ImagenesGDD/MenuPrincipal.jpg)
 ### Menú de pausa
 ![Caja](Diseño/ImagenesGDD/PauseMenu.png)
 ### Interfaz de voto de minijuego
@@ -375,7 +375,7 @@ Futuro: Escenarios futuristas llenos de luces neón y elementos flotantes, en un
 ### UX del juego
 ![Caja](Diseño/ImagenesGDD/UXJuego.png)
 - **Diagrama de flujo**:
-![Caja](Diseño/ImagenesGDD/DiagramadeFlujo.png)
+![Caja](Diseño/ImagenesGDD/DiagramadeFlujo.jpg)
 ## 9. Hoja de ruta del desarrollo
 - **Hito 1**: Como se menciona en el apartado del roadmap, este primer hito del videojuego se compone del desarrollo y publicación de una versión prototipo del videojuego. Esta versión es una versión reducida que no incluye todas las funcionalidades pero que sí es una versión jugable. El objetivo de la publicación de esta versión es obtener una primera impresión acerca del videojuego y encontrar bugs y errores una vez los jugadores comiencen a jugar el juego. El desarrollo de esta versión comienza a mediados de septiembre y la publicación de esta se produce el día 27/10/2024.
 - **Hito 2**: Se lanza el día 19/11/2024
