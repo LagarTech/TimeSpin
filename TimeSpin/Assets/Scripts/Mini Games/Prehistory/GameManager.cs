@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
         timeLeft = gameTime;
         UpdateUI();
 
+        GameSceneManager.instance.practiceStarted = true;
+
         StartGame(); // Inicia autom?ticamente el juego al cargar la escena
     }
 

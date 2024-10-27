@@ -27,14 +27,14 @@ public class UI_Controller : MonoBehaviour
     public GameObject Volver;
     public GameObject LobbyCode;
 
-    public Button avanzarButton;      // Botón para avanzar en la cinemática
-    public Button jugar;              // Botón para jugar
-    public Button creditos;           // Botón para pantalla de créditos
-    public Button configuracion;      // Botón para pantalla de configuración
+    public Button avanzarButton;      // Bot?n para avanzar en la cinem?tica
+    public Button jugar;              // Bot?n para jugar
+    public Button creditos;           // Bot?n para pantalla de cr?ditos
+    public Button configuracion;      // Bot?n para pantalla de configuraci?n
     public Button practica;
     public InputField nombreInputField; // InputField para el nombre del jugador
 
-    private bool nombreFijado = false; // Controla si el nombre ya está fijado
+    private bool nombreFijado = false; // Controla si el nombre ya est? fijado
 
     private void Awake()
     {
@@ -50,12 +50,12 @@ public class UI_Controller : MonoBehaviour
 
     void Start()
     {
-        if (Application.platform == RuntimePlatform.LinuxServer) return; // Evita la ejecución en el servidor
+        if (Application.platform == RuntimePlatform.LinuxServer) return; // Evita la ejecuci?n en el servidor
 
         if (GameSceneManager.instance.gameStarted)
         {
             // Si ya ha comenzado el juego, es decir, se vuelve de nuevo a la escena tras ya haber estado, no se necesitan mostrar todas las pantallas previas
-            // Por lo tanto, sólo se necesita la interfaz de la propia lobby
+            // Por lo tanto, s?lo se necesita la interfaz de la propia lobby
             Desarrollador.SetActive(false);
             Cinematica.SetActive(false);
             Menu.SetActive(false);
@@ -75,9 +75,34 @@ public class UI_Controller : MonoBehaviour
             configuracion.onClick.AddListener(OnConfiguracionButtonClicked);
             practica.onClick.AddListener(OnPracticaButtonClicked);
         }
-        else
+        else if (GameSceneManager.instance.practiceStarted)
         {
-            // Al inicio, mostramos solo la imagen del desarrollador y ocultamos lo demás
+            // Si ya ha comenzado el juego, es decir, se vuelve de nuevo a la escena tras ya haber estado, no se necesitan mostrar todas las pantallas previas
+            // Por lo tanto, s?lo se necesita la interfaz de la propia lobby
+            Desarrollador.SetActive(false);
+            Cinematica.SetActive(false);
+            Menu.SetActive(false);
+            Crear.SetActive(false);
+            Unirse.SetActive(false);
+            LobbyCode.SetActive(false);
+            PracticaPanel.SetActive(true);
+            ConfiguracionPanel.SetActive(false);
+            CreditosPanel.SetActive(false);
+            Volver.SetActive(false);
+            Nombre.SetActive(false);
+
+            GameSceneManager.instance.practiceStarted = false;
+
+            // Se agregan los eventos a los botones asociados
+            avanzarButton.onClick.AddListener(OnAvanzarButtonClicked);
+            jugar.onClick.AddListener(OnJugarButtonClicked);
+            creditos.onClick.AddListener(OnCreditosButtonClicked);
+            configuracion.onClick.AddListener(OnConfiguracionButtonClicked);
+            practica.onClick.AddListener(OnPracticaButtonClicked);
+        }
+        else 
+        {
+            // Al inicio, mostramos solo la imagen del desarrollador y ocultamos lo dem?s
             Desarrollador.SetActive(true);
 
             Cinematica.SetActive(false);
@@ -94,19 +119,19 @@ public class UI_Controller : MonoBehaviour
             // Corrutina que espera 4 segundos antes de cambiar la visibilidad
             StartCoroutine(ShowCinematicAfterDelay(4.0f));
 
-            // Agregar el listener para el botón avanzar
+            // Agregar el listener para el bot?n avanzar
             avanzarButton.onClick.AddListener(OnAvanzarButtonClicked);
 
-            // Agregar el listener para el botón jugar
+            // Agregar el listener para el bot?n jugar
             jugar.onClick.AddListener(OnJugarButtonClicked);
 
-            // Agregar el listener para el botón de créditos
+            // Agregar el listener para el bot?n de cr?ditos
             creditos.onClick.AddListener(OnCreditosButtonClicked);
 
-            // Agregar el listener para el botón de configuración
+            // Agregar el listener para el bot?n de configuraci?n
             configuracion.onClick.AddListener(OnConfiguracionButtonClicked);
 
-            // Agregar el listener para el botón de práctica
+            // Agregar el listener para el bot?n de pr?ctica
             practica.onClick.AddListener(OnPracticaButtonClicked);
         }
     }
@@ -119,14 +144,14 @@ public class UI_Controller : MonoBehaviour
         // Oculta la imagen de desarrollador
         Desarrollador.SetActive(false);
 
-        // Muestra la cinemática
+        // Muestra la cinem?tica
         Cinematica.SetActive(true);
     }
 
-    // Método que se ejecutará cuando se pulse el botón de avanzar
+    // M?todo que se ejecutar? cuando se pulse el bot?n de avanzar
     void OnAvanzarButtonClicked()
     {
-        // Ocultar la cinemática y el UILobby
+        // Ocultar la cinem?tica y el UILobby
         Cinematica.SetActive(false);
 
         // Mostrar el lobby
@@ -136,14 +161,14 @@ public class UI_Controller : MonoBehaviour
 
     void OnJugarButtonClicked()
     {
-        // Bloquear el InputField para que no se pueda modificar más
+        // Bloquear el InputField para que no se pueda modificar m?s
         if (!nombreFijado && !string.IsNullOrEmpty(nombreInputField.text))
         {
             nombreFijado = true;
             nombreInputField.interactable = false; // Desactiva el InputField
         }
 
-        // Ocultar la cinemática y el menu
+        // Ocultar la cinem?tica y el menu
         Creditos.SetActive(false);
         Configuracion.SetActive(false);
         Practica.SetActive(false);
@@ -161,7 +186,7 @@ public class UI_Controller : MonoBehaviour
 
     void OnPracticaButtonClicked()
     {
-        // Ocultar la cinemática y el menu
+        // Ocultar la cinem?tica y el menu
         Menu.SetActive(false);
         Crear.SetActive(false);
         Unirse.SetActive(false);
@@ -174,7 +199,7 @@ public class UI_Controller : MonoBehaviour
 
     void OnCreditosButtonClicked()
     {
-        // Ocultar la cinemática y el menu
+        // Ocultar la cinem?tica y el menu
         Menu.SetActive(false);
         Crear.SetActive(false);
         Unirse.SetActive(false);
@@ -187,7 +212,7 @@ public class UI_Controller : MonoBehaviour
 
     void OnConfiguracionButtonClicked()
     {
-        // Ocultar la cinemática y el menu
+        // Ocultar la cinem?tica y el menu
         Menu.SetActive(false);
         Crear.SetActive(false);
         Unirse.SetActive(false);
@@ -200,7 +225,7 @@ public class UI_Controller : MonoBehaviour
 
     public void OnVolverButtonClicked()
     {
-        // Ocultar la cinemática y el menu
+        // Ocultar la cinem?tica y el menu
         if (CreditosPanel.active)
         {
             Menu.SetActive(true);

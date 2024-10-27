@@ -7,19 +7,19 @@ public class MedievalGameManager : MonoBehaviour
 {
     public GameObject[] swordPrefabs;       // Prefabs de espadas (bronce, plata, oro)
     public GameObject spawnArea;            // Donde aparecen las espadas
-    public float spawnInterval = 3f;        // Eiwmpo de aparición de espadas
-    public float gameTime = 60f;            // Duración del minijuego
+    public float spawnInterval = 3f;        // Eiwmpo de aparici?n de espadas
+    public float gameTime = 60f;            // Duraci?n del minijuego
     public Transform baseZone;              // Donde el jugador lleva la espada
 
     private float timeLeft;
     private float spawnTimer;
 
     public bool isGameOver = false;
-    public bool isGameActive = false;      // Controla si el juego está activo
+    public bool isGameActive = false;      // Controla si el juego est? activo
 
     public Text timeText;
-    public Text scoreText;         // UI de la puntuación de los jugadores
-    private int score;                      // Puntuación de los jugadores
+    public Text scoreText;         // UI de la puntuaci?n de los jugadores
+    private int score;                      // Puntuaci?n de los jugadores
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +27,9 @@ public class MedievalGameManager : MonoBehaviour
         timeLeft = gameTime;
         UpdateUI();
 
-        StartGame(); // Inicia automáticamente el juego al cargar la escena
+        GameSceneManager.instance.practiceStarted = true;
+
+        StartGame(); // Inicia autom?ticamente el juego al cargar la escena
     }
 
     // Update is called once per frame
@@ -59,21 +61,21 @@ public class MedievalGameManager : MonoBehaviour
     //Spawn espadas
     void SpawnRandomSword()
     {
-        int swordIndex = Random.Range(0, swordPrefabs.Length);  // Selección de una espada aleatoria
+        int swordIndex = Random.Range(0, swordPrefabs.Length);  // Selecci?n de una espada aleatoria
 
-        // Instancia la espada en una posición aleatoria dentro del área de spawn
+        // Instancia la espada en una posici?n aleatoria dentro del ?rea de spawn
         Instantiate(swordPrefabs[swordIndex], GetRandomSpawnPosition(), Quaternion.identity);
     }
 
     Vector3 GetRandomSpawnPosition()
     {
-        // Obtiene el MeshRenderer del área de spawn para determinar su tamaño
+        // Obtiene el MeshRenderer del ?rea de spawn para determinar su tama?o
         MeshRenderer meshRenderer = spawnArea.GetComponent<MeshRenderer>();
         if (meshRenderer != null)
         {
             Vector3 size = meshRenderer.bounds.size;
             Vector3 center = meshRenderer.bounds.center;
-            // Genera una posición aleatoria dentro del área del plano
+            // Genera una posici?n aleatoria dentro del ?rea del plano
             float x = Random.Range(center.x - size.x / 2, center.x + size.x / 2);
             float z = Random.Range(center.z - size.z / 2, center.z + size.z / 2);
             return new Vector3(x, 0, z); // Asumiendo que Y=0 es el suelo
@@ -94,7 +96,7 @@ public class MedievalGameManager : MonoBehaviour
 
     void UpdateUI()
     {
-        // Verificar que el tiempo y la puntuación son válidos
+        // Verificar que el tiempo y la puntuaci?n son v?lidos
         if (timeText != null && scoreText != null)
         {
             // Tiempo restante en minutos y segundos
@@ -104,12 +106,12 @@ public class MedievalGameManager : MonoBehaviour
             // Formateo el texto 
             timeText.text = string.Format("{0:0}:{1:00}", minutes, seconds);
 
-            // Puntuación
-            scoreText.text = "Puntuación: " + score;
+            // Puntuaci?n
+            scoreText.text = "Puntuaci?n: " + score;
         }
         else
         {
-            Debug.LogError("Los objetos UI no están asignados correctamente.");
+            Debug.LogError("Los objetos UI no est?n asignados correctamente.");
         }
     }
 
@@ -127,7 +129,7 @@ public class MedievalGameManager : MonoBehaviour
 
     void ReturnToMainMenu()
     {
-        // Cargar la escena del menú principal
+        // Cargar la escena del men? principal
         SceneManager.LoadScene("LobbyMenu");  
     }
 
@@ -136,7 +138,7 @@ public class MedievalGameManager : MonoBehaviour
         isGameActive = true;
         isGameOver = false;
         timeLeft = gameTime;   // Reiniciar el tiempo
-        score = 0;             // Reiniciar la puntuación
+        score = 0;             // Reiniciar la puntuaci?n
         UpdateUI();            // Actualizar la interfaz
     }
 }
