@@ -48,6 +48,8 @@ public class SelectionController : MonoBehaviour
         };
     }
 
+    public int GetCharacterSelected() { return _selectedCharacter; }
+    public string GetName() { return _namePlayer; }
 
 
 }

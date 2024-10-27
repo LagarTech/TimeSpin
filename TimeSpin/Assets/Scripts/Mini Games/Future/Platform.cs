@@ -10,14 +10,19 @@ public class Platform : MonoBehaviour
     public int platformCount = 0;
     private bool _isHighlighted = false;
 
+    public int idPlatform;
+    public bool isUp;
+
     private void Start()
     {
+        if (Application.platform == RuntimePlatform.LinuxServer) return;
         _meshRenderer = GetComponent<MeshRenderer>();
         _meshRenderer.enabled = false; // Se desactiva el componente por defecto
     }
 
     private void Update()
     {
+        if (Application.platform == RuntimePlatform.LinuxServer) return;
         // Si hay jugadores en la plataforma y no está iluminada
         if (platformCount > 0 && !_isHighlighted)
         {
@@ -35,15 +40,21 @@ public class Platform : MonoBehaviour
     public void OnCollisionEnter(Collision collision)
     {
         // Si el jugador entra en la casilla
-        if(collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player")
         {
-            // Se aumenta el contador de la plataforma
-            platformCount++;
-            // Se aumenta el contador de las vecinas
-            foreach (Platform platform in _neighbourPlatforms)
-            {
-                platform.platformCount++;
-            }
+            // Se avisa a los clientes de que un jugador ha pisado una plataforma
+            PlatformManager.instance.PlatformEntered(idPlatform, isUp);
+        }
+    }
+
+    public void OnPlatformEnter()
+    {
+        // Se aumenta el contador de la plataforma
+        platformCount++;
+        // Se aumenta el contador de las vecinas
+        foreach (Platform platform in _neighbourPlatforms)
+        {
+            platform.platformCount++;
         }
     }
 
@@ -52,13 +63,19 @@ public class Platform : MonoBehaviour
         // Si el jugador entra en la casilla
         if (collision.gameObject.tag == "Player")
         {
-            // Se disminuye el contador de la plataforma
-            platformCount--;
-            // Se disminuye el contador de las vecinas
-            foreach (Platform platform in _neighbourPlatforms)
-            {
-                platform.platformCount--;
-            }
+            // Se avisa a los clientes de que un jugador ha salido de una plataforma
+            PlatformManager.instance.PlatformExited(idPlatform, isUp);
+        }
+    }
+
+    public void OnPlatformExit()
+    {
+        // Se disminuye el contador de la plataforma
+        platformCount--;
+        // Se disminuye el contador de las vecinas
+        foreach (Platform platform in _neighbourPlatforms)
+        {
+            platform.platformCount--;
         }
     }
 
@@ -74,6 +91,7 @@ public class Platform : MonoBehaviour
 
     public void FallPlatform()
     {
+        if (Application.platform == RuntimePlatform.LinuxServer) return;
         // Se disminuye el contador de la plataforma
         platformCount = 0;
         // Se disminuye el contador de las vecinas

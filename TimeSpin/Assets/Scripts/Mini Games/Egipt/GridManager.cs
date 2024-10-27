@@ -11,7 +11,7 @@ public class GridManager : NetworkBehaviour
     public static GridManager Instance;
 
     // Variable que controla el flujo del juego
-    public bool runningGame = true;
+    public bool runningGame = false;
     // Variable que gestiona el número de jugadores
     private int _numPlayers;
     // Variable que controlar cuántos jugadores se han pillado

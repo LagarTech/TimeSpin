@@ -1,69 +1,50 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MedievalPlayerController : MonoBehaviour
 {
-    public float moveSpeed = 5f;
-    public Transform basePosition;  // Posición de la base del jugador
-    private GameObject carriedSword = null;
-    private MedievalGameManager gameManager;
+    public float moveSpeed = 5f;          // Velocidad de movimiento
+    public GameObject CarriedSword { get; private set; }
 
-    private int playerIndex;
+    private Rigidbody rb;
 
     void Start()
     {
-        gameManager = GameObject.Find("GameManager").GetComponent<MedievalGameManager>();
+        rb = GetComponent<Rigidbody>();
     }
 
     void Update()
     {
-        if (!gameManager.IsGameActive() || gameManager.IsGameOver())
-            return;
+        MovePlayer();
+    }
 
-        // Movimiento del jugador
-        float moveX = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
-        float moveZ = Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime;
+    private void MovePlayer()
+    {
+        // Obtén las entradas de movimiento
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        float moveVertical = Input.GetAxis("Vertical");
 
-        transform.Translate(new Vector3(moveX, 0, moveZ));
+        // Calcula el movimiento en función de la velocidad
+        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical) * moveSpeed * Time.deltaTime;
 
-        // Entregar espada en la base
-        if (carriedSword != null && Vector3.Distance(transform.position, basePosition.position) < 2f)
-        {
-            DeliverSword();
-        }
+        // Aplica el movimiento al Rigidbody para mover al jugador
+        rb.MovePosition(transform.position + movement);
+    }
+
+    // Método para asignar la espada al jugador
+    public void SetCarriedSword(GameObject sword)
+    {
+        CarriedSword = sword;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Sword") && carriedSword == null)
+        // Detecta si el jugador está en la base
+        if (other.CompareTag("Base") && CarriedSword != null)
         {
-            // Recoger la espada
-            carriedSword = other.gameObject;
-
-            // Fijamos la espada como hija del jugador para que se mueva con él
-            carriedSword.transform.SetParent(transform);
-
-            // Reposicionamos la espada en una posición relativa al jugador (por ejemplo, sobre la cabeza)
-            carriedSword.transform.localPosition = new Vector3(0, 1, 0);
-
-            // Desactivar el Collider de la espada para que no siga siendo detectable como "Sword"
-            carriedSword.GetComponent<Collider>().enabled = false;
-        }
-    }
-
-    void DeliverSword()
-    {
-        if (carriedSword != null)
-        {
-            // Obtener los puntos de la espada
-            SwordController sword = carriedSword.GetComponent<SwordController>();
-
-            // Añadir los puntos a la puntuación del jugador
-            gameManager.AddScore(playerIndex, sword.GetPoints());
-
-            // Destruir la espada (entregada)
-            Destroy(carriedSword);
+            // Llama a DeliverSword() de SwordController y elimina la espada del jugador
+            CarriedSword.GetComponent<SwordController>().DeliverSword();
+            CarriedSword = null;
         }
     }
 }
+

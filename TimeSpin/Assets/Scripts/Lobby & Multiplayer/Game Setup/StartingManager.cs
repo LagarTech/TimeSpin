@@ -30,38 +30,44 @@ public class StartingManager : NetworkBehaviour
 
     private void UpdatePlayersCount()
     {
-        // En el cliente, se actualiza el texto con el número de jugadores conectados
-        if (Application.platform != RuntimePlatform.LinuxServer)
+
+        if (Application.platform != RuntimePlatform.LinuxServer) return;
+        // En el servidor se calcula el número de jugadores que hay, y se informa al cliente
+        if (NetworkManager.Singleton.IsServer)
         {
-            if (!LobbyManager.instance.inLobby) return;
-            _numPlayers = LobbyManager.instance.NUM_PLAYERS_IN_LOBBY;
-            if(_numPlayers >= _requiredPlayers)
-            {
-                _startGameButton.SetActive(true);
-            }
-            else
-            {
-                _startGameButton.SetActive(false);
-            }
-             _numPlayersText.text = _numPlayers.ToString() + "/4";
+            _numPlayers = NetworkManager.Singleton.ConnectedClients.Count;
+            UpdatePlayerCountClientRpc(_numPlayers);
+        }
+        // En el servidor, se comprueba si todos los jugadores están listos
+        if (_numPlayersReady == _numPlayers && _numPlayers >= _requiredPlayers)
+        {
+            // Se avisa a los clientes para empezar el primer minijuego
+            StartGameClientRpc();
+            // Carga la escena del minijuego de Egipto y sincroniza con todos los clientes
+            NetworkManager.Singleton.SceneManager.LoadScene("Egipt", LoadSceneMode.Single);
+            // Se inicializa la lista de jugadores
+            GameSceneManager.instance.InitializePlayersList();
+        }
+
+    }
+
+    [ClientRpc]
+    private void UpdatePlayerCountClientRpc(int playerCount)
+    {
+        if (!LobbyManager.instance.inLobby) return;
+        _numPlayers = playerCount;
+
+        if (_numPlayers >= _requiredPlayers)
+        {
+            _startGameButton.SetActive(true);
         }
         else
         {
-            if(NetworkManager.Singleton.IsServer)
-            {
-                _numPlayers = NetworkManager.Singleton.ConnectedClients.Count;
-            }
-            // En el servidor, se comprueba si todos los jugadores están listos
-            if (_numPlayersReady == _numPlayers && _numPlayers >= _requiredPlayers)
-            {
-                // Se avisa a los clientes para empezar el primer minijuego
-                StartGameClientRpc();
-                // Carga la escena del minijuego de Egipto y sincroniza con todos los clientes
-                NetworkManager.Singleton.SceneManager.LoadScene("Egipt", LoadSceneMode.Single);
-                // Se inicializa la lista de jugadores
-                GameSceneManager.instance.InitializePlayersList();
-            }
+            _startGameButton.SetActive(false);
         }
+
+        // Actualiza el texto con la cuenta de jugadores
+        _numPlayersText.text = _numPlayers.ToString() + "/4";
     }
 
     public void PlayerReady()

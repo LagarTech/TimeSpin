@@ -1445,7 +1445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1769465553
+  GlobalObjectIdHash: 2765586497
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -1595,24 +1595,27 @@ MonoBehaviour:
   _characterNamePlayer: {fileID: 228684260957079276}
   ownerClient: 0
   _currentScene: 0
-  _currentTile:
-    xTile: 0
-    zTile: 0
-    tileCenterPos: {x: 0, y: 0, z: 0}
-    isWalkable: 0
+  _startingPositionsLobby:
+  - {x: -3, y: 1, z: 2}
+  - {x: -3, y: 1, z: -2}
+  - {x: 3, y: 1, z: 2}
+  - {x: 3, y: 1, z: -2}
   _startingPositionsEgipt:
   - {x: 0.5, y: 0.5, z: -0.5}
   - {x: 0.5, y: 0.5, z: -8.5}
   - {x: 12.5, y: 0.5, z: -0.5}
   - {x: 12.5, y: 0.5, z: -8.5}
-  _rb: {fileID: 0}
-  _isGrounded: 1
-  _jumpForce: 5
   _startingPositionsMaya:
   - {x: -3, y: 0.7, z: 2}
   - {x: -1, y: 0.7, z: 2}
   - {x: 1, y: 0.7, z: 2}
   - {x: 3, y: 0.7, z: 2}
+  _startingPositionsFuture:
+  - {x: 1.5, y: 0.7, z: -2.75}
+  - {x: 1.5, y: 0.7, z: -6.25}
+  - {x: 10.65, y: 0.7, z: -2.75}
+  - {x: 10.65, y: 0.7, z: -6.25}
+  _startedRotation: 0
 --- !u!1 &7595886194814359533
 GameObject:
   m_ObjectHideFlags: 0

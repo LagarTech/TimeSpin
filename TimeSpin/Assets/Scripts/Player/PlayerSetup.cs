@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerSetup : NetworkBehaviour
@@ -10,44 +11,49 @@ public class PlayerSetup : NetworkBehaviour
     [SerializeField] private TMP_Text _playerName; // Nombre del jugador
     [SerializeField] private List<Vector3> _spawnPositionList; // Lista de posiciones donde comienza el jugador
 
-    private Dictionary<string, List<string>> _playersData;
-    private int _playerID;
+    public int playerID;
 
-    // Este script se encarga de mostrar el nombre y el personaje correcto del jugador
-    public override async void OnNetworkSpawn()
+
+    private void Start()
+    {
+        SetupPlayer();
+    }
+
+    private void SetupPlayer()
     {
         // Se obtiene el identificador del jugador, para poder establecer sus datos personalizados
-        _playerID = (int)OwnerClientId - 1;
+        playerID = (int)OwnerClientId - 1;
+
         // Este código solo se ejecuta en el servidor
         if (Application.platform == RuntimePlatform.LinuxServer)
         {
             // Se coloca al jugador en la parte correcta de la escena
             PositionPlayer();
-            return;
-        };
-        // Primero se obtienen los datos de los jugadores en el lobby
-        // Se actualiza la referencia del lobby
-        await LobbyManager.instance.GetLobby();
-        _playersData = LobbyManager.instance.GetPlayersInLobby();
-        // Se establece el nombre del jugador
-        NamePlayer();
-        // Se muestra su personaje escogido
-        CharacterPlayer();
+        }
+
+        if(IsOwner)
+        {
+            // Se almacenan los datos del jugador en el registro
+            PlayerRegister.instance.RegisterPlayerServerRpc(SelectionController.instance.GetCharacterSelected(), SelectionController.instance.GetName());
+        }
+        else
+        {
+            // Se establecen las características de los personajes que ya estén spawneados en red
+            PlayerRegister.instance.GetPlayerServerRpc(playerID);
+        }
     }
 
     private void PositionPlayer()
     {
-        transform.position = _spawnPositionList[_playerID];
+        transform.position = _spawnPositionList[playerID];
     }
 
-    private void NamePlayer()
+    public void NamePlayer(string name)
     {
-        _playersData.TryGetValue("Names", out List<string> playerNames);
-        _playerName.text = playerNames[_playerID];
-        LobbyManager.instance.PrintPlayers();
+        _playerName.text = name;
     }
 
-    private void CharacterPlayer()
+    public void CharacterPlayer(int characterSelected)
     {
         // Por si acaso, primero se ocultan todos los modelos de la lista
         foreach (GameObject p in _characterList)
@@ -55,10 +61,7 @@ public class PlayerSetup : NetworkBehaviour
             p.SetActive(false);
         }
         // Después, se obtiene el personaje que se debe visibilizar
-        _playersData.TryGetValue("Characters", out List<string> playerCharacters);
-        int characterSelected = int.Parse(playerCharacters[_playerID]);
         _characterList[characterSelected].SetActive(true);
     }
-
    
 }

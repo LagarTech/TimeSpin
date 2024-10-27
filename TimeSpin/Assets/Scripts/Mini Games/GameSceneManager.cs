@@ -8,6 +8,8 @@ public class GameSceneManager : MonoBehaviour
 
     [SerializeField] private GameObject[] _playersList;
 
+    public bool gameStarted = false;
+
     private void Awake()
     {
         if(instance == null)
@@ -16,7 +18,7 @@ public class GameSceneManager : MonoBehaviour
         }
         else
         {
-            Destroy(this);
+            Destroy(gameObject);
         }
         // Se hace que el objeto navegue entre escenas y no se destruya
         DontDestroyOnLoad(this);
