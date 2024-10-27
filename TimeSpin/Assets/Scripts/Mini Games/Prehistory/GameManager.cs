@@ -6,17 +6,17 @@ public class GameManager : MonoBehaviour
 {
     public GameObject[] dinosaurPrefabs;  // Prefabs de los dinosaurios
     public Transform[] holes;             // Posiciones de los agujeros
-    public float spawnInterval = 2f;      // Intervalo de aparición
-    public float gameTime = 60f;          // Duración del juego
+    public float spawnInterval = 2f;      // Intervalo de aparici?n
+    public float gameTime = 60f;          // Duraci?n del juego
 
     private float timeLeft;
     private float spawnTimer;
 
     public bool isGameOver = false;      // Controla si el juego ha terminado
-    public bool isGameActive = false;    // Controla si el juego está activo
+    public bool isGameActive = false;    // Controla si el juego est? activo
 
     public Text timeText;                 // UI del tiempo
-    public Text scoreText;                // UI de la puntuación
+    public Text scoreText;                // UI de la puntuaci?n
     private int score;
 
     void Start()
@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
         timeLeft = gameTime;
         UpdateUI();
 
-        StartGame(); // Inicia automáticamente el juego al cargar la escena
+        StartGame(); // Inicia autom?ticamente el juego al cargar la escena
     }
 
     void Update()
@@ -56,8 +56,8 @@ public class GameManager : MonoBehaviour
 
     void SpawnRandomDinosaur()
     {
-        int holeIndex = Random.Range(0, holes.Length);  // Selección de un agujero aleatorio
-        int dinoIndex = Random.Range(0, dinosaurPrefabs.Length);  // Selección de un dinosaurio aleatorio
+        int holeIndex = Random.Range(0, holes.Length);  // Selecci?n de un agujero aleatorio
+        int dinoIndex = Random.Range(0, dinosaurPrefabs.Length);  // Selecci?n de un dinosaurio aleatorio
 
         Instantiate(dinosaurPrefabs[dinoIndex], holes[holeIndex].position, Quaternion.identity);
     }
@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
         timeText.text = string.Format("{0:0}:{1:00}", minutes, seconds);
 
         //Puntuacion
-        scoreText.text = "Puntuación: " + score;
+        scoreText.text = "Puntuaci?n: " + score;
     }
 
     // Detengo el juego cuando se acabe el tiempo
@@ -86,25 +86,25 @@ public class GameManager : MonoBehaviour
     {
         isGameOver = true;
         isGameActive = false;
-        Debug.Log("¡El juego ha terminado!");
+        Debug.Log("?El juego ha terminado!");
 
-        // Añadir la lógica para regresar al menú principal
+        // A?adir la l?gica para regresar al men? principal
         ReturnToMainMenu();
     }
 
     void ReturnToMainMenu()
     {
-        // Cargar la escena del menú principal
-        SceneManager.LoadScene("LobbyMenu");  // Asegúrate de que la escena se llame "MainMenu"
+        // Cargar la escena del men? principal
+        SceneManager.LoadScene("LobbyMenu"); 
     }
 
-    // Método para comenzar el juego
+    // M?todo para comenzar el juego
     public void StartGame()
     {
         isGameActive = true;
         isGameOver = false;
         timeLeft = gameTime;   // Reiniciar el tiempo
-        score = 0;             // Reiniciar la puntuación
+        score = 0;             // Reiniciar la puntuaci?n
         UpdateUI();            // Actualizar la interfaz
     }
     public bool IsGameOver()

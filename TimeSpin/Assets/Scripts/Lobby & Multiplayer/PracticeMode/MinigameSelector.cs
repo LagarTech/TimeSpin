@@ -5,41 +5,42 @@ using UnityEngine.UI;
 
 public class MinigameSelector : MonoBehaviour
 {
-    public GameObject infoPanel;  // Panel donde se mostrará la información
-    public TMP_Text infoText;         // Texto del panel donde se mostrará la descripción
-    public Button closeInfoButton; // Botón para cerrar el panel de información (la "X")
-    public GameObject Descripcion; // Panel o GameObject donde está la descripción del minijuego
+    public GameObject infoPanel;  // Panel donde se mostrar? la informaci?n
+    public TMP_Text infoText;         // Texto del panel donde se mostrar? la descripci?n
+    public Button closeInfoButton; // Bot?n para cerrar el panel de informaci?n (la "X")
+    public GameObject Descripcion; // Panel o GameObject donde est? la descripci?n del minijuego
 
     void Start()
     {
-        // Al iniciar, el panel de información y el botón de cerrar estarán desactivados
+        // Al iniciar, el panel de informaci?n y el bot?n de cerrar estar?n desactivados
         infoPanel.SetActive(true);
-        closeInfoButton.gameObject.SetActive(false);  // Ocultar el botón de cerrar al inicio
+        closeInfoButton.gameObject.SetActive(false);  // Ocultar el bot?n de cerrar al inicio
 
-        // Añadimos la función para cerrar al botón "X"
+        // A?adimos la funci?n para cerrar al bot?n "X"
         closeInfoButton.onClick.AddListener(HideInfo);
     }
 
     // Cargar la escena del minijuego seleccionado
     public void LoadMinigame(string sceneName)
     {
+        PlayerPrefs.SetInt("GoToSpecificPanel", 1);
         SceneManager.LoadScene(sceneName);
     }
 
-    // Mostrar la información del minijuego
+    // Mostrar la informaci?n del minijuego
     public void ShowInfo(string info)
     {
         infoText.text = info;
-        infoPanel.SetActive(true);   // Mostrar el panel de información
-        Descripcion.SetActive(true); // Asegurarse de que la descripción esté activa
-        closeInfoButton.gameObject.SetActive(true);  // Mostrar el botón de cerrar
+        infoPanel.SetActive(true);   // Mostrar el panel de informaci?n
+        Descripcion.SetActive(true); // Asegurarse de que la descripci?n est? activa
+        closeInfoButton.gameObject.SetActive(true);  // Mostrar el bot?n de cerrar
     }
 
-    // Ocultar la información
+    // Ocultar la informaci?n
     public void HideInfo()
     {
-        closeInfoButton.gameObject.SetActive(false); // Ocultar el botón de cerrar
-        Descripcion.SetActive(false);                // Ocultar la descripción
+        closeInfoButton.gameObject.SetActive(false); // Ocultar el bot?n de cerrar
+        Descripcion.SetActive(false);                // Ocultar la descripci?n
     }
 }
 
