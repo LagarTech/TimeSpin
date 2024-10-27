@@ -121,6 +121,7 @@ public class PlayerMovement : NetworkBehaviour
                     break;
 
                 case Scene.Egipt:
+                    if (!GridManager.Instance.runningGame) return;
                     // Gestión de los controles
                     if (Input.GetKey(KeyCode.W)) _movementDirection.z = 1f;
                     if (Input.GetKey(KeyCode.S)) _movementDirection.z = -1f;
@@ -131,6 +132,7 @@ public class PlayerMovement : NetworkBehaviour
                     break;
 
                 case Scene.Maya:
+                    if (!RaceManager.instance.runningGame) return;
                     // Gestión de los controles
                     if (Input.GetKey(KeyCode.W)) _movementDirection.z = 1f;
                     if (Input.GetKey(KeyCode.S)) _movementDirection.z = -1f;
@@ -146,6 +148,7 @@ public class PlayerMovement : NetworkBehaviour
                     break;
 
                 case Scene.Future:
+                    if (!GravityManager.Instance.runningGame) return;
                     // Se comprueba que el jugador no ha salido de los límites establecidos, es decir, que no se ha caído
                     if (transform.position.y < -5f || transform.position.y > 15f)
                     {
@@ -237,6 +240,8 @@ public class PlayerMovement : NetworkBehaviour
                 }
                 break;
         }
+        // Se inicia la pantalla de carga
+        StartCoroutine(LoadingScreenManager.instance.LoadingScreenCoroutine(sceneName));
         _previousScene = sceneName;
     }
 

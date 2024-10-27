@@ -8,7 +8,7 @@ public class RaceManager : MonoBehaviour
 {
     public static RaceManager instance;
 
-    public bool runningGame = true;
+    public bool runningGame = false;
     private List<GameObject> _players;
     private List<GameObject> _playersFinished = new List<GameObject>();
 

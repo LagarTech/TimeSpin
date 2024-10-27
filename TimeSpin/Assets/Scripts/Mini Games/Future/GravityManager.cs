@@ -11,7 +11,7 @@ public class GravityManager : NetworkBehaviour
     public static GravityManager Instance;
 
     // Variable que controla el flujo del juego
-    public bool runningGame = true;
+    public bool runningGame = false;
 
     // Tiempo que se espera entre cambios de gravedad
     private const float _gravitySwitchTime = 10f;

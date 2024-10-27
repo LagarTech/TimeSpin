@@ -8,7 +8,7 @@ using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 
-public class LobbyManager : MonoBehaviour
+public class LobbyManager : NetworkBehaviour
 {
     public static LobbyManager instance;
 
@@ -37,7 +37,7 @@ public class LobbyManager : MonoBehaviour
             Destroy(this);
         }
         // Se hace que el objeto navegue entre escenas y no se destruya
-        DontDestroyOnLoad(this);
+        DontDestroyOnLoad(gameObject);
     }
 
     private async void Start()
@@ -95,28 +95,6 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
-    // Función para actualizar continuamente el lobby
-    private IEnumerator UpdateLobby()
-    {
-        while (true)
-        {
-            // Espera dos segundos antes de actualizar el estado del lobby
-            yield return new WaitForSeconds(2f);
-
-            if (_joinedLobby != null)
-            {
-                // Llama a la corrutina para obtener el lobby actualizado
-                yield return StartCoroutine(GetLobbyCoroutine());
-
-                // Se actualiza el número de jugadores en la sala
-                if (_joinedLobby != null)
-                {
-                    NUM_PLAYERS_IN_LOBBY = _joinedLobby.Players.Count;
-                }
-            }
-        }
-    }
-
     public IEnumerator GetLobbyCoroutine()
     {
         // Se obtiene la tarea para obtener la sala actualizada
@@ -135,6 +113,7 @@ public class LobbyManager : MonoBehaviour
         // Si todo va bien, se actualiza la referencia al lobby
         _joinedLobby = getLobbyTask.Result;
     }
+
     #endregion
     #region Create
     // Se utilizan corrutinas para realizar las esperas necesarias para que otras funcionen terminen de ejecutarse
@@ -164,9 +143,11 @@ public class LobbyManager : MonoBehaviour
         Debug.Log("Created Lobby! " + _hostLobby.LobbyCode);
         _lobbyCode = _joinedLobby.LobbyCode;
 
+
         // Llama a FirstServerJoin y espera a que termine
         bool serverFound = false;
         yield return StartCoroutine(MatchmakerManager.Instance.FirstServerJoinCoroutine((found) => serverFound = found));
+
 
         if (!serverFound)
         {
@@ -203,10 +184,6 @@ public class LobbyManager : MonoBehaviour
 
         inLobby = true;
         onComplete(true); // Indicar éxito
-
-        // Se comienza a actualizar el estado del lobby
-        // Mediante esta corrutina, se actualiza cada cierto tiempo el estado del lobby, para tener siempre la información correcta (por si alguien se conecta o desconecta)
-        StartCoroutine(UpdateLobby());
     }
 
     public IEnumerator CreatePublicLobbyCoroutine()
@@ -228,6 +205,7 @@ public class LobbyManager : MonoBehaviour
         _lobbyCode = _joinedLobby.LobbyCode;
         Debug.Log("Created Lobby! " + _hostLobby.LobbyCode);
 
+
         // Llama a FirstServerJoin y espera a que termine
         bool serverFound = false;
         yield return StartCoroutine(MatchmakerManager.Instance.FirstServerJoinCoroutine((found) => serverFound = found));
@@ -244,10 +222,10 @@ public class LobbyManager : MonoBehaviour
 
         // Se guarda dicha información en la sala
         Dictionary<string, DataObject> lobbyData = new Dictionary<string, DataObject>
-    {
-        { "serverIP", new DataObject(DataObject.VisibilityOptions.Member, serverIP) },
-        { "serverPort", new DataObject(DataObject.VisibilityOptions.Member, serverPort.ToString()) }
-    };
+        {
+            { "serverIP", new DataObject(DataObject.VisibilityOptions.Member, serverIP) },
+            { "serverPort", new DataObject(DataObject.VisibilityOptions.Member, serverPort.ToString()) }
+        };
 
         // Se actualiza el lobby con la IP y el puerto
         var updateLobbyTask = LobbyService.Instance.UpdateLobbyAsync(_hostLobby.Id, new UpdateLobbyOptions { Data = lobbyData });
@@ -258,9 +236,6 @@ public class LobbyManager : MonoBehaviour
 
         inLobby = true;
 
-        // Se comienza a actualizar el estado del lobby
-        // Mediante esta corrutina, se actualiza cada cierto tiempo el estado del lobby, para tener siempre la información correcta (por si alguien se conecta o desconecta)
-        StartCoroutine(UpdateLobby());
     }
     #endregion
     #region Join
@@ -315,9 +290,6 @@ public class LobbyManager : MonoBehaviour
         inLobby = true;
         onComplete(true); // Indicar éxito
 
-        // Se comienza a actualizar el estado del lobby
-        // Mediante esta corrutina, se actualiza cada cierto tiempo el estado del lobby, para tener siempre la información correcta (por si alguien se conecta o desconecta)
-        StartCoroutine(UpdateLobby());
     }
 
 
@@ -363,9 +335,6 @@ public class LobbyManager : MonoBehaviour
 
         inLobby = true;
 
-        // Se comienza a actualizar el estado del lobby
-        // Mediante esta corrutina, se actualiza cada cierto tiempo el estado del lobby, para tener siempre la información correcta (por si alguien se conecta o desconecta)
-        StartCoroutine(UpdateLobby());
     }
     #endregion
     #region Leave
@@ -407,41 +376,6 @@ public class LobbyManager : MonoBehaviour
     }
     #endregion
     #region Data
-
-    // Función para obtener los datos de los jugadores en el lobby y poder mostrarlos
-    public Dictionary<string, List<string>> GetPlayersInLobby()
-    {
-        // Se crea un diccionario de listas de strings, para almacenar los nombres y los personajes escogidos por los jugadores
-        Dictionary<string, List<string>> dataPlayers = new Dictionary<string, List<string>>();
-        // Se crea la lista de personajes y se van añadiendo los personajes elegidos de cada uno de los jugadores
-        List<string> personajes = new List<string>();
-        foreach (Player p in _joinedLobby.Players)
-        {
-            personajes.Add(p.Data["Character"].Value);
-        }
-        // Se añade la lista al diccionario
-        dataPlayers.Add("Characters", personajes);
-        // Se crea la lista de nombres y se van añadiendo los nombres de cada uno de los jugadores
-        List<string> nombres = new List<string>();
-        foreach (Player p in _joinedLobby.Players)
-        {
-            nombres.Add(p.Data["Name"].Value);
-        }
-        // Se añade la lista al diccionario
-        dataPlayers.Add("Names", nombres);
-
-        return dataPlayers;
-    }
-
-    // Se obtienen los jugadores del lobby y se muestran por pantalla
-    public void PrintPlayers()
-    {
-        Debug.Log("Players in lobby ------ ");
-        foreach (Player p in _joinedLobby.Players)
-        {
-            Debug.Log(p.Id + " " + p.Data["Name"].Value + " " + p.Data["Character"].Value);
-        }
-    }
 
     // Se obtiene el código del lobby
     public string GetLobbyCode()
