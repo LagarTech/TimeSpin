@@ -15,9 +15,13 @@ Por último, este juego se publica para todo tipo de públicos y de edades, con 
 - **Roadmap-2 años vista**: Un roadmap de un producto es una herramienta visual que describe los hitos clave, características y objetivos a lo largo del tiempo para el desarrollo de un producto. En este caso, lo primero que se hace es definir unos objetivos generales que se pretenden alcanzar con este producto. Los objetivos son los siguientes:
 
 Conseguir un juego que mezcle competir con aprender.
+
 Atraer a nuevo público a los videojuegos.
+
 Conseguir que escuelas o institutos incluyan TimeSpin dentro de sus técnicas de enseñanza.
+
 Competir con los demás videojuegos del sector.
+
 Conseguir alrededor de 10000 ventas del juego.
 
 En segundo lugar, se divide la publicación del videojuego en 3:
@@ -68,8 +72,9 @@ Los usuarios siempre necesitan un videojuego con alto nivel de accesibilidad, un
 | **¿Qué frustraciones tienen?**     | Miedo a una jugabilidad monótona y falta de rejugabilidad. Frustración por falta de variedad, dificultad para ganar, y no tener un nivel máximo que refleje su progreso y logros.                                          |
 
 - **Caja de herramientas**: Una caja de herramientas de un modelo de negocio se refiere a un conjunto de recursos, técnicas y estrategias que una empresa puede usar para desarrollar, ejecutar y optimizar su modelo de negocio. Estas herramientas ayudan a definir cómo una empresa crea, entrega y captura valor, cubriendo aspectos clave como la propuesta de valor, la estructura de costos, los canales de distribución, las relaciones con clientes y las fuentes de ingresos.
-### Mapa de Egipto
+### Caja de herramientas
 ![Caja](Diseño/ImagenesGDD/Caja.jpg)
+
 Esta imagen representa la caja de herramientas que se asocia a la empresa LagarTech. En ella, se destacan 4 bloques principales, nuestra empresa, las distribuidoras, los jugadores y los influencers y las redes sociales.
 
 Las relaciones entre ellas son las siguientes:
@@ -220,9 +225,9 @@ Prehistoria: En este minijuego, la mecánica principal es moverse y golpear a lo
 Egipto: El segundo minijuego está ambientado en la época egipcia, en él, los jugadores se encuentran atrapados en una pirámide llena de momias y trampas. La duración de este minijuego es de 2 minutos y la mecánica principal es la supervivencia, el jugador que más tiempo aguante sin ser atrapado por una momia gana. El tablero se compone de 13 columnas y 9 filas de celdas cuadradas, algunas caminables y otras no. A medida que va transcurriendo el tiempo de juego, a partir de los 20 segundos, cada 10 segundos aparecen pinchos en una de las 10 casillas predefinidas del mapa, que cierran el paso de los jugadores y las momias. Además, cada 30 segundos se genera un enemigo más, haciendo que aumente la dificultad progresivamente.
 En la siguiente imagen se puede observar la planificación del mapa, con las zonas de obstáculos, las casillas con trampa, el lugar de generación de los enemigos y la posición de inicio de los jugadores.
 ### Mapa de Egipto
-![Caja](LagarTech/Diseño/ImagenesGDD/Egipto.jpg)
+![Caja](Diseño/ImagenesGDD/Egipto.jpg)
 
-Medieval: En este tercer minijuego los jugadores se ubican dentro del patio de un castillo. En este patio cuadrangular, se dispone de un espacio dedicado para cada jugador que se sitúa en cada uno de los lados del mapa, siendo la mecánica principal ir al centro del patio para recoger espadas de distintos materiales consiguiendo de esta manera puntos. Para obtener los puntos se deben depositar los objetos en cada uno de los espacios dedicados que se mencionan anteriormente. Los objetos para recoger son espadas, de bronce 1 punto, de plata 2 puntos y de oro 5 puntos. Solo se puede coger un objeto a la vez. Los puntos se otorgan a medida que se introducen los objetos en el recinto de cada jugador, la prueba dura 1 minuto. Dentro del mapa también se introducen obstáculos, como pueden ser carros de mercadillo antiguos o barriles para aumentar el nivel de la prueba.
+Medieval: En este tercer minijuego el jugador se ubica dentro del patio de un castillo. En este patio cuadrangular, se dispone de un espacio dedicado para el jugador que se sitúa en un lado del mapa, siendo la mecánica principal ir por el patio para recoger espadas de distintos materiales consiguiendo de esta manera puntos. Para obtener los puntos se deben depositar los objetos en el espacio dedicado que se mencionan anteriormente. Los objetos para recoger son espadas, de bronce 1 punto, de plata 2 puntos y de oro 5 puntos. Solo se puede coger un objeto a la vez. Los puntos se otorgan a medida que se introducen los objetos en el recinto del jugador, la prueba dura 1 minuto. Dentro del mapa también se introducen obstáculos, como pueden ser carros de mercadillo antiguos o barriles para aumentar el nivel de la prueba.
 
 Maya: Este minijuego se desarrolla en una jungla típica de la época Maya, siendo la mecánica principal correr una carrera entre todos los jugadores. Tendrán que ir sorteando distintos obstáculos, que les entorpecen el paso: una serie de troncos que ocupan 4/9 del ancho del escenario y los empujan hacia atrás y unos hoyos que harán que se caigan y pierdan tiempo en reaparecer. Los jugadores podrán utilizar el salto, siendo esta mecánica única en este minijuego, para evitar los obstáculos.
 
