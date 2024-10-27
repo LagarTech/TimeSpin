@@ -49,7 +49,9 @@ public class MultiplayManager : MonoBehaviour
             if (serverConfig.AllocationId != string.Empty)
             {
                 // Se establece la conexión
-                NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData("0.0.0.0", serverConfig.Port, "0.0.0.0");
+                UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
+                // transport.SetServerSecrets(SecureParameters.MyGameServerCertificate, SecureParameters.MyGameServerPrivateKey);
+                transport.SetConnectionData("0.0.0.0", serverConfig.Port, "0.0.0.0");
                 NetworkManager.Singleton.StartServer();
                 // Se indica que el servidor está listo para que los jugadores se puedan unir
                 await MultiplayService.Instance.ReadyServerForPlayersAsync();

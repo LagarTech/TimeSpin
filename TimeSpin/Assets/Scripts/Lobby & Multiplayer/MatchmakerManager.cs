@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Unity.Collections;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
+using Unity.Networking.Transport;
+using Unity.Networking.Transport.Relay;
 using Unity.Services.Authentication;
 using Unity.Services.Matchmaker;
 using Unity.Services.Matchmaker.Models;
@@ -127,7 +129,7 @@ public class MatchmakerManager : NetworkBehaviour
                         _serverIP = multiplayAssignment.Ip;
                         _serverPort = ushort.Parse(multiplayAssignment.Port.ToString());
                         transport.SetConnectionData(_serverIP, _serverPort);
-
+                        // transport.SetClientSecrets(SecureParameters.ServerCommonName, SecureParameters.MyGameClientCA); // Credenciales de seguridad de la red
                         NetworkManager.Singleton.StartClient();
                         Debug.Log("Server found");
                         onComplete(true);
