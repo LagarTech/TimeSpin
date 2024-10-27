@@ -1,4 +1,7 @@
 # Game Design Document - TimeSpin
+
+![Caja](Diseño/ImagenesGDD/Caratula.jpg)
+
 ## 1. Introducción
 - **Descripción breve del concepto**: El juego que se explica en el siguiente documento se llama TimeSpin y es un juego diferente en cuanto al enfoque que se le da y la accesibilidad que tiene. En este videojuego se mezcla la competitividad junto con el aprendizaje, ya que a la vez que se juega, se van conociendo datos y curiosidades de las distintas épocas históricas en las que se desarrolla el juego. En cuanto a las épocas, son las siguientes:
 Prehistoria
@@ -15,9 +18,13 @@ Por último, este juego se publica para todo tipo de públicos y de edades, con 
 - **Roadmap-2 años vista**: Un roadmap de un producto es una herramienta visual que describe los hitos clave, características y objetivos a lo largo del tiempo para el desarrollo de un producto. En este caso, lo primero que se hace es definir unos objetivos generales que se pretenden alcanzar con este producto. Los objetivos son los siguientes:
 
 Conseguir un juego que mezcle competir con aprender.
+
 Atraer a nuevo público a los videojuegos.
+
 Conseguir que escuelas o institutos incluyan TimeSpin dentro de sus técnicas de enseñanza.
+
 Competir con los demás videojuegos del sector.
+
 Conseguir alrededor de 10000 ventas del juego.
 
 En segundo lugar, se divide la publicación del videojuego en 3:
@@ -34,24 +41,31 @@ Por último, se lanza la versión Gold Master del producto con todos los errores
 
 Cabe destacar que el juego es free to play y para que se mantenga vivo a lo largo de 2 años se pretende incluir cada 3 o 4 meses una serie de DLCs en los que se introducen nuevos minijuegos para evitar que los 5 primeros se vuelvan repetitivos y la gente abandone el juego. Además de esto, se incluyen de forma más frecuente nuevos atuendos y vestimentas que se pueden adquirir mediante micropagos en la tienda del juego, de esta forma también se incita a jugar a los jugadores y no aburrirse.
 - **Información de usuarios**: ¿Quién es?
+  
 El público objetivo que se espera que tenga este videojuego es muy variado, puesto que la edad mínima que se recomienda para jugar es de tres años. Además de esto, gracias a su temática familiar y competitiva, se pretende captar a gente de todas las edades. Este perfil objetivo es a nivel nacional, puesto que el juego solo está disponible en este idioma. 
 
 ¿Qué quiere?
+
 A día de hoy es difícil saber lo que quieren los jugadores, es por ello que TimeSpin ofrece dos tipos de experiencias a los usuarios, ya sea entretenimiento casual, si solo se quiere jugar unas partidas por mero entretenimiento o competitivo, las partidas se juegan con un mayor grado de concentración para poder obtener un mayor número de puntos para el ranking general.
 
 ¿Aficiones?
+
 En cuanto a las aficiones de los jugadores que componen el público objetivo destacan los juegos multijugador online en los que se puede competir con otros jugadores, además, destaca el gusto y el atractivo en los últimos años de los juegos free to play.
 
 ¿Situación?
+
 La situación de los jugadores objetivos se espera que sean estudiantes y no estudiantes de hasta unos 21 años, puesto que son el rango de jugadores que más tiempo tienen y pasan jugando videojuegos. Además, se quiere que sean de este rango para fomentar su aprendizaje.
 
 ¿Cómo es?
+
 Como se menciona en apartados anteriores, es difícil saber cómo son los jugadores que van a jugar este videojuego, debido al amplio rango de edad que se ofrece y las distintas opciones y sensaciones que ofrece el juego, es por ello que se centra el foco de atención en los jugadores entre 15 y 20 años que son los que más tiempo dedican a los videojuegos.
 
 ¿Actividad?
+
 La actividad de los jugadores de este rango de edad generalmente es de un grado alto.
 
 ¿Qué necesita?
+
 Los usuarios siempre necesitan un videojuego con alto nivel de accesibilidad, unos controles sencillos, que el juego funcione correctamente y carezca de bugs y errores, una interfaz fácil de utilizar a la vez que llamativa, una jugabilidad sencilla y atractiva.
 
 - **Mapa de empatía**: Un mapa de empatía ayuda al equipo a ponerse en la piel de su cliente para entender sus deseos y cómo podría querer utilizar su producto.
@@ -68,8 +82,9 @@ Los usuarios siempre necesitan un videojuego con alto nivel de accesibilidad, un
 | **¿Qué frustraciones tienen?**     | Miedo a una jugabilidad monótona y falta de rejugabilidad. Frustración por falta de variedad, dificultad para ganar, y no tener un nivel máximo que refleje su progreso y logros.                                          |
 
 - **Caja de herramientas**: Una caja de herramientas de un modelo de negocio se refiere a un conjunto de recursos, técnicas y estrategias que una empresa puede usar para desarrollar, ejecutar y optimizar su modelo de negocio. Estas herramientas ayudan a definir cómo una empresa crea, entrega y captura valor, cubriendo aspectos clave como la propuesta de valor, la estructura de costos, los canales de distribución, las relaciones con clientes y las fuentes de ingresos.
-### Mapa de Egipto
-![Caja](Diseño/ImagenesGDD/Caja.png)
+### Caja de herramientas
+![Caja](Diseño/ImagenesGDD/Caja.jpg)
+
 Esta imagen representa la caja de herramientas que se asocia a la empresa LagarTech. En ella, se destacan 4 bloques principales, nuestra empresa, las distribuidoras, los jugadores y los influencers y las redes sociales.
 
 Las relaciones entre ellas son las siguientes:
@@ -128,10 +143,15 @@ En este tercer apartado se procede a explicar y detallar información sobre los 
 - **El equipo humano**: LagarTech es una empresa que se compone de 5 miembros cuya función varía dentro de esta empresa. Los miembros son los siguientes:
 
 -**José María Soriano**: Es el director principal del proyecto, se encarga principalmente de programar la mayor parte del juego y de que el equipo trabaje de forma correcta.
+
 -**Jacobo Sánchez García**: Junto a José, se encarga de ciertas partes de programación dentro de este videojuego.
+
 -**Juan Coronado Gómez**: Diseñador de los niveles, mecánicas, experiencia del jugador y sistema de puntuaciones dentro del juego. Además, ayuda a José y a Jacobo en algunas de las partes de programación.
+
 -**Luis Fernando Rodríguez**: Es el que se encarga de toda la parte de modelado en 3D, ya sea personajes, ítems, enemigos, mapas etc. También se encarga de la propia texturización de los elementos que se nombran anteriormente.
+
 -**Santiago Rubio Montero**: Es el artista principal, el que plasma y conceptualiza en 2D las ideas escritas por Juan para que posteriormente Luis lo haga en 3D. Posee una gran destreza con programas como Adobe Photoshop. También se encarga de toda la parte de marketing y redes sociales de la empresa.
+
 - **Estimación temporal del desarrollo**: La estimación temporal para el desarrollo del juego se divide en varias partes y la planificación es la siguiente:
 En un primer lugar se realiza un primer lanzamiento de una versión prototipo de nuestro videojuego, con el fin de que los jugadores lo prueben y nosotros recibamos feedback. Este lanzamiento está previsto para realizarse el día 27/10/2024.
 Después de la versión prototipo, se prevé un lanzamiento de la versión beta de nuestro juego para el día 19/11/2024. Está versión del juego es una versión bastante próxima a lo que es el juego final, pero se utiliza para encontrar algunos bugs todavía existentes en el videojuego y así pulirlos de cara al lanzamiento del juego final.
@@ -220,9 +240,9 @@ Prehistoria: En este minijuego, la mecánica principal es moverse y golpear a lo
 Egipto: El segundo minijuego está ambientado en la época egipcia, en él, los jugadores se encuentran atrapados en una pirámide llena de momias y trampas. La duración de este minijuego es de 2 minutos y la mecánica principal es la supervivencia, el jugador que más tiempo aguante sin ser atrapado por una momia gana. El tablero se compone de 13 columnas y 9 filas de celdas cuadradas, algunas caminables y otras no. A medida que va transcurriendo el tiempo de juego, a partir de los 20 segundos, cada 10 segundos aparecen pinchos en una de las 10 casillas predefinidas del mapa, que cierran el paso de los jugadores y las momias. Además, cada 30 segundos se genera un enemigo más, haciendo que aumente la dificultad progresivamente.
 En la siguiente imagen se puede observar la planificación del mapa, con las zonas de obstáculos, las casillas con trampa, el lugar de generación de los enemigos y la posición de inicio de los jugadores.
 ### Mapa de Egipto
-![Caja](LagarTech/Diseño/ImagenesGDD/Egipto.png)
+![Caja](Diseño/ImagenesGDD/Egipto.jpg)
 
-Medieval: En este tercer minijuego los jugadores se ubican dentro del patio de un castillo. En este patio cuadrangular, se dispone de un espacio dedicado para cada jugador que se sitúa en cada uno de los lados del mapa, siendo la mecánica principal ir al centro del patio para recoger espadas de distintos materiales consiguiendo de esta manera puntos. Para obtener los puntos se deben depositar los objetos en cada uno de los espacios dedicados que se mencionan anteriormente. Los objetos para recoger son espadas, de bronce 1 punto, de plata 2 puntos y de oro 5 puntos. Solo se puede coger un objeto a la vez. Los puntos se otorgan a medida que se introducen los objetos en el recinto de cada jugador, la prueba dura 1 minuto. Dentro del mapa también se introducen obstáculos, como pueden ser carros de mercadillo antiguos o barriles para aumentar el nivel de la prueba.
+Medieval: En este tercer minijuego el jugador se ubica dentro del patio de un castillo. En este patio cuadrangular, se dispone de un espacio dedicado para el jugador que se sitúa en un lado del mapa, siendo la mecánica principal ir por el patio para recoger espadas de distintos materiales consiguiendo de esta manera puntos. Para obtener los puntos se deben depositar los objetos en el espacio dedicado que se mencionan anteriormente. Los objetos para recoger son espadas, de bronce 1 punto, de plata 2 puntos y de oro 5 puntos. Solo se puede coger un objeto a la vez. Los puntos se otorgan a medida que se introducen los objetos en el recinto del jugador, la prueba dura 1 minuto. Dentro del mapa también se introducen obstáculos, como pueden ser carros de mercadillo antiguos o barriles para aumentar el nivel de la prueba.
 
 Maya: Este minijuego se desarrolla en una jungla típica de la época Maya, siendo la mecánica principal correr una carrera entre todos los jugadores. Tendrán que ir sorteando distintos obstáculos, que les entorpecen el paso: una serie de troncos que ocupan 4/9 del ancho del escenario y los empujan hacia atrás y unos hoyos que harán que se caigan y pierdan tiempo en reaparecer. Los jugadores podrán utilizar el salto, siendo esta mecánica única en este minijuego, para evitar los obstáculos.
 
@@ -232,7 +252,7 @@ También se añade una dificultad adicional, que es que todo el tablero permanec
 En la siguiente imagen se muestra la distribución de las casillas en cada una de las plataformas, apareciendo con una cruz las posiciones de aparición de los personajes.
 
 ### Mapa futurista
-![Caja](Diseño/ImagenesGDD/Futurista.png)
+![Caja](Diseño/ImagenesGDD/Futurista.jpg)
 - **Controles**: Con los controles se pretende que sean de lo más sencillo posible, es por eso que se opta que los únicos controles que se encuentran en este videojuego son, movimiento típico WASD, saltar con la barra espaciadora, el clic del ratón para golpear y la tecla P para menú de pausa. Luego para moverse por los distintos menús e interfaces se utiliza el movimiento del ratón. Por último, el nombre de cada jugador se introduce por teclado. Esto con respecto a los controles para ordenador. Para dispositivos móviles y tabletas se optan por unos controles táctiles digitales que aparecen en la propia pantalla, un joystick para mover el jugador y distintos botones para clicar con el dedo y moverse por los distintos menús e interfaces.
 - **Niveles y misiones**:	En este apartado no se tienen misiones, si no que se tienen logros con los que se desbloquean skins y curiosidades acerca de las épocas históricas dentro del juego. Las curiosidades son 40 (8 por cada época) y son las siguientes:
 
@@ -374,7 +394,9 @@ Futuro: Escenarios futuristas llenos de luces neón y elementos flotantes, en un
 ![Caja](Diseño/ImagenesGDD/Práctica.png)
 ### UX del juego
 ![Caja](Diseño/ImagenesGDD/UXJuego.png)
+
 - **Diagrama de flujo**:
+
 ![Caja](Diseño/ImagenesGDD/DiagramadeFlujo.jpg)
 ## 9. Hoja de ruta del desarrollo
 - **Hito 1**: Como se menciona en el apartado del roadmap, este primer hito del videojuego se compone del desarrollo y publicación de una versión prototipo del videojuego. Esta versión es una versión reducida que no incluye todas las funcionalidades pero que sí es una versión jugable. El objetivo de la publicación de esta versión es obtener una primera impresión acerca del videojuego y encontrar bugs y errores una vez los jugadores comiencen a jugar el juego. El desarrollo de esta versión comienza a mediados de septiembre y la publicación de esta se produce el día 27/10/2024.
