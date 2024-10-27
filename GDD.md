@@ -69,7 +69,7 @@ Los usuarios siempre necesitan un videojuego con alto nivel de accesibilidad, un
 
 - **Caja de herramientas**: Una caja de herramientas de un modelo de negocio se refiere a un conjunto de recursos, técnicas y estrategias que una empresa puede usar para desarrollar, ejecutar y optimizar su modelo de negocio. Estas herramientas ayudan a definir cómo una empresa crea, entrega y captura valor, cubriendo aspectos clave como la propuesta de valor, la estructura de costos, los canales de distribución, las relaciones con clientes y las fuentes de ingresos.
 ### Mapa de Egipto
-![Caja](Diseño/ImagenesGDD/Caja.png)
+![Caja](Diseño/ImagenesGDD/Caja.jpg)
 Esta imagen representa la caja de herramientas que se asocia a la empresa LagarTech. En ella, se destacan 4 bloques principales, nuestra empresa, las distribuidoras, los jugadores y los influencers y las redes sociales.
 
 Las relaciones entre ellas son las siguientes:
@@ -220,7 +220,7 @@ Prehistoria: En este minijuego, la mecánica principal es moverse y golpear a lo
 Egipto: El segundo minijuego está ambientado en la época egipcia, en él, los jugadores se encuentran atrapados en una pirámide llena de momias y trampas. La duración de este minijuego es de 2 minutos y la mecánica principal es la supervivencia, el jugador que más tiempo aguante sin ser atrapado por una momia gana. El tablero se compone de 13 columnas y 9 filas de celdas cuadradas, algunas caminables y otras no. A medida que va transcurriendo el tiempo de juego, a partir de los 20 segundos, cada 10 segundos aparecen pinchos en una de las 10 casillas predefinidas del mapa, que cierran el paso de los jugadores y las momias. Además, cada 30 segundos se genera un enemigo más, haciendo que aumente la dificultad progresivamente.
 En la siguiente imagen se puede observar la planificación del mapa, con las zonas de obstáculos, las casillas con trampa, el lugar de generación de los enemigos y la posición de inicio de los jugadores.
 ### Mapa de Egipto
-![Caja](LagarTech/Diseño/ImagenesGDD/Egipto.png)
+![Caja](LagarTech/Diseño/ImagenesGDD/Egipto.jpg)
 
 Medieval: En este tercer minijuego los jugadores se ubican dentro del patio de un castillo. En este patio cuadrangular, se dispone de un espacio dedicado para cada jugador que se sitúa en cada uno de los lados del mapa, siendo la mecánica principal ir al centro del patio para recoger espadas de distintos materiales consiguiendo de esta manera puntos. Para obtener los puntos se deben depositar los objetos en cada uno de los espacios dedicados que se mencionan anteriormente. Los objetos para recoger son espadas, de bronce 1 punto, de plata 2 puntos y de oro 5 puntos. Solo se puede coger un objeto a la vez. Los puntos se otorgan a medida que se introducen los objetos en el recinto de cada jugador, la prueba dura 1 minuto. Dentro del mapa también se introducen obstáculos, como pueden ser carros de mercadillo antiguos o barriles para aumentar el nivel de la prueba.
 
@@ -232,7 +232,7 @@ También se añade una dificultad adicional, que es que todo el tablero permanec
 En la siguiente imagen se muestra la distribución de las casillas en cada una de las plataformas, apareciendo con una cruz las posiciones de aparición de los personajes.
 
 ### Mapa futurista
-![Caja](Diseño/ImagenesGDD/Futurista.png)
+![Caja](Diseño/ImagenesGDD/Futurista.jpg)
 - **Controles**: Con los controles se pretende que sean de lo más sencillo posible, es por eso que se opta que los únicos controles que se encuentran en este videojuego son, movimiento típico WASD, saltar con la barra espaciadora, el clic del ratón para golpear y la tecla P para menú de pausa. Luego para moverse por los distintos menús e interfaces se utiliza el movimiento del ratón. Por último, el nombre de cada jugador se introduce por teclado. Esto con respecto a los controles para ordenador. Para dispositivos móviles y tabletas se optan por unos controles táctiles digitales que aparecen en la propia pantalla, un joystick para mover el jugador y distintos botones para clicar con el dedo y moverse por los distintos menús e interfaces.
 - **Niveles y misiones**:	En este apartado no se tienen misiones, si no que se tienen logros con los que se desbloquean skins y curiosidades acerca de las épocas históricas dentro del juego. Las curiosidades son 40 (8 por cada época) y son las siguientes:
 
