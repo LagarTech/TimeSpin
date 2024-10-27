@@ -2863,8 +2863,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b7ab7079f0956d46a2015f145c5a8cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultPanel: {fileID: 677601184}
-  specificPanel: {fileID: 722483071}
   inLobby: 0
   NUM_PLAYERS_IN_LOBBY: 0
 --- !u!114 &438531875
@@ -6817,6 +6815,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playersList: []
   gameStarted: 0
+  practiceStarted: 0
 --- !u!4 &1026729337
 Transform:
   m_ObjectHideFlags: 0
@@ -12792,7 +12791,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1050238173}
+      - m_Target: {fileID: 1178649777}
         m_TargetAssemblyTypeName: MinigameSelector, Assembly-CSharp
         m_MethodName: HideInfo
         m_Mode: 1

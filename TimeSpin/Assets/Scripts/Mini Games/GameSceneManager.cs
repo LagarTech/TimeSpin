@@ -9,6 +9,7 @@ public class GameSceneManager : MonoBehaviour
     [SerializeField] private GameObject[] _playersList;
 
     public bool gameStarted = false;
+    public bool practiceStarted = false;
 
     private void Awake()
     {

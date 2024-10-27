@@ -23,7 +23,7 @@ public class LoadingScreenManager : NetworkBehaviour
 
     public IEnumerator LoadingScreenCoroutine(string startedScene)
     {
-        // Se busca la pantalla de carga en la escena, sólo en los clientes
+        // Se busca la pantalla de carga en la escena, s?lo en los clientes
         if (Application.platform != RuntimePlatform.LinuxServer)
         {
             GameObject loadingScreen = GameObject.FindGameObjectWithTag("PantallaCarga");
@@ -36,10 +36,10 @@ public class LoadingScreenManager : NetworkBehaviour
         }
         else
         {
-            // La lógica de espera se ejecuta en el servidor
-            // Se esperan 5 segundos, para dar tiempo a la colocación de cada escena
+            // La l?gica de espera se ejecuta en el servidor
+            // Se esperan 5 segundos, para dar tiempo a la colocaci?n de cada escena
             yield return new WaitForSeconds(5f);
-            // Una vez hecho esto, en función de la escena a la que se ha transicionado, se activa el minijuego adecuado y se avisa a los clientes
+            // Una vez hecho esto, en funci?n de la escena a la que se ha transicionado, se activa el minijuego adecuado y se avisa a los clientes
             switch (startedScene)
             {
                 case "LobbyMenu":
@@ -49,18 +49,18 @@ public class LoadingScreenManager : NetworkBehaviour
                     StartPrehistoryClientRpc();
                     break;
                 case "Egipt":
-                    GridManager.Instance.runningGame = true; // Se inicia la lógica del juego en el servidor
+                    GridManager.Instance.runningGame = true; // Se inicia la l?gica del juego en el servidor
                     StartEgiptClientRpc();
                     break;
                 case "Medieval":
                     StartMedievalClientRpc();
                     break;
                 case "Maya":
-                    RaceManager.instance.runningGame = true; // Se inicia la lógica del juego en el servidor
+                    RaceManager.instance.runningGame = true; // Se inicia la l?gica del juego en el servidor
                     StartMayaClientRpc();
                     break;
                 case "Future":
-                    GravityManager.Instance.runningGame = true; // Se inicia la lógica del juego en el servidor
+                    GravityManager.Instance.runningGame = true; // Se inicia la l?gica del juego en el servidor
                     StartFutureClientRpc();
                     break;
             }
