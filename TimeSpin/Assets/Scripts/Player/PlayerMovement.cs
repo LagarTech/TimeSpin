@@ -47,6 +47,10 @@ public class PlayerMovement : NetworkBehaviour
     private void Start()
     {
         ownerClient = (int)OwnerClientId - 1;
+        if(IsOwner)
+        {
+            SelectionTable.Instance.SetPlayer(gameObject); // Se referencia al player desde la mesa para calcular su distancia
+        }
     }
 
     private void Update()
@@ -194,6 +198,21 @@ public class PlayerMovement : NetworkBehaviour
                 }
                 // Se muestra a los jugadores
                 ShowPlayer();
+                // Se eliminan las momias del minijuego anterior en el servidor
+                if (Application.platform == RuntimePlatform.LinuxServer)
+                {
+                    DespawnMummies();
+                }
+                // Se eliminan los troncos del minijuego anterior en el servidor
+                if (Application.platform == RuntimePlatform.LinuxServer)
+                {
+                    DespawnTrunks();
+                }
+                // Se asocia a la mesa de elecciones
+                if (IsOwner)
+                {
+                    SelectionTable.Instance.SetPlayer(gameObject);
+                }
                 break;
             case "Prehistory":
                 _currentScene = Scene.Prehistory;
@@ -208,11 +227,6 @@ public class PlayerMovement : NetworkBehaviour
                 break;
             case "Maya":
                 _currentScene = Scene.Maya;
-                // Se eliminan las momias del minijuego anterior en el servidor
-                if(Application.platform == RuntimePlatform.LinuxServer)
-                {
-                    DespawnMummies();
-                }
                 // Se obtiene una referencia al rigidbody
                 _rb = GetComponent<Rigidbody>();
                 // Se debe colocar al jugador en la posición de inicio adecuada
@@ -233,11 +247,6 @@ public class PlayerMovement : NetworkBehaviour
                 _startedRotation = false;
                 // Se muestra a los jugadores
                 ShowPlayer();
-                // Se eliminan los troncos del minijuego anterior en el servidor
-                if (Application.platform == RuntimePlatform.LinuxServer)
-                {
-                    DespawnTrunks();
-                }
                 break;
         }
         // Se inicia la pantalla de carga
@@ -275,6 +284,7 @@ public class PlayerMovement : NetworkBehaviour
         {
             // Encontrar todos los objetos con la etiqueta "Momia"
             GameObject[] mummies = GameObject.FindGameObjectsWithTag("Momia");
+            if (mummies.Length == 0) return;
 
             // Recorrer cada objeto y despawnearlo si es un NetworkObject
             foreach (GameObject mummy in mummies)
@@ -317,6 +327,7 @@ public class PlayerMovement : NetworkBehaviour
         {
             // Encontrar todos los objetos con la etiqueta "Tronco"
             GameObject[] trunks = GameObject.FindGameObjectsWithTag("Tronco");
+            if (trunks.Length == 0) return;
 
             // Recorrer cada objeto y despawnearlo si es un NetworkObject
             foreach (GameObject trunk in trunks)

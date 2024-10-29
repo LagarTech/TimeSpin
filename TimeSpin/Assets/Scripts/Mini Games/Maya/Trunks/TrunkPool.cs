@@ -116,9 +116,4 @@ public class TrunkPool: NetworkBehaviour
         }
     }
 
-    public void ChangeScene()
-    {
-        NetworkManager.Singleton.SceneManager.LoadScene("Future", LoadSceneMode.Single);
-    }
-
 }

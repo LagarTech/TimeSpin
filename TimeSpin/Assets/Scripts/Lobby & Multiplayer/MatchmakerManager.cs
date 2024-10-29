@@ -85,7 +85,7 @@ public class MatchmakerManager : NetworkBehaviour
         while (true)
         {
             // Se configura la petición del ticket
-            CreateTicketOptions createTicketOptions = new CreateTicketOptions("JoinServerQueue");
+            CreateTicketOptions createTicketOptions = new CreateTicketOptions("BetaQueue");
             List<Player> players = new List<Player> { new Player(AuthenticationService.Instance.PlayerId) };
 
             var createTicketTask = MatchmakerService.Instance.CreateTicketAsync(players, createTicketOptions);

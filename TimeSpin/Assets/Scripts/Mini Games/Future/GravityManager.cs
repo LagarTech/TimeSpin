@@ -161,8 +161,8 @@ public class GravityManager : NetworkBehaviour
 
     private void GameOver()
     {
-        // Por el momento, se vuelve al lobby
-        NetworkManager.Singleton.SceneManager.LoadScene("LobbyMenu", LoadSceneMode.Single);
+        // Se comienza la transición
+        StartCoroutine(LoadingScreenManager.instance.ServerSceneTransition("LobbyMenu"));
     }
 
     [ClientRpc]

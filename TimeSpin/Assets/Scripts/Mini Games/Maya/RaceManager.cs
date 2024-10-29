@@ -56,8 +56,8 @@ public class RaceManager : MonoBehaviour
     {
         Debug.Log("La carrera ha terminado");
         runningGame = false;
-        // Una vez finalizada la carrera, se pasa a la escena del siguiente minijuego, el futuro
-        TrunkPool.instance.ChangeScene();
+        // Se inicia la transición
+        StartCoroutine(LoadingScreenManager.instance.ServerSceneTransition("LobbyMenu"));
     }
 
     private void OnCollisionEnter(Collision collision)
