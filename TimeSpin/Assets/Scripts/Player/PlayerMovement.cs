@@ -14,6 +14,15 @@ public class PlayerMovement : NetworkBehaviour
     private Vector3 _movementDirection = Vector3.zero;
     private float _speed = 1f;
 
+    // Puntuación del jugador
+    public int currentPoints = 0;
+    // Puntos a sumar
+    public int pointsToAdd = 0;
+    // Variable que indica si el jugador ha sido eliminado
+    public bool isDefeated = false;
+    // Variable que indica el puesto del jugador en el minijuego
+    public int currentPosition = 0;
+
     // Control de la escena en la que se encuentra el jugador
     private enum Scene
     {
@@ -267,12 +276,14 @@ public class PlayerMovement : NetworkBehaviour
     public void HidePlayer()
     {
         _characterNamePlayer.SetActive(false);
+        isDefeated = true;
     }
 
     // Esta función se usa para volver a mostrar los detalles del jugador
     public void ShowPlayer()
     {
         _characterNamePlayer.SetActive(true);
+        isDefeated = false;
     }
 
     #region Egipt

@@ -128,6 +128,8 @@ public class MummyBehaviour : NetworkBehaviour
             // Se avisa a los clientes para que oculten al jugador
             int clientID = collision.gameObject.GetComponent<PlayerMovement>().ownerClient;
             HidePlayerDefeatedClientRpc(clientID);
+            // Se añade al jugador eliminado a la lista
+            GameSceneManager.instance.defeatedPlayers.Add(collision.gameObject.GetComponent<PlayerMovement>());
         }
     }
 

@@ -128,8 +128,9 @@ public class StartingManager : NetworkBehaviour
         if (_numPlayersReady == _numPlayers && _numPlayers >= _requiredPlayers)
         {
             // Comienza la transición
-            // StartCoroutine(LoadingScreenManager.instance.ServerSceneTransition("Egipt"));
             // Se indica que todos los jugadores están listos y que comienza el proceso de votación
+            // Se inicializa la lista de jugadores para tener una referencia a cada uno entre escenas
+            GameSceneManager.instance.InitializePlayersList();
             startedSelection = true;
             StartSelectionClientRpc();
         }

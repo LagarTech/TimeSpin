@@ -7353,8 +7353,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1026729337}
-  - component: {fileID: 1026729336}
   - component: {fileID: 1026729339}
+  - component: {fileID: 1026729336}
   - component: {fileID: 1026729338}
   m_Layer: 0
   m_Name: '@SceneGameManager'
@@ -7376,6 +7376,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playersList: []
+  orderedPlayers: []
+  defeatedPlayers: []
+  finishedPlayers: []
+  fixedPointsGames: 0f0000000b0000000700000003000000
   gameStarted: 0
   practiceStarted: 0
   allGamesPlayed: 0
