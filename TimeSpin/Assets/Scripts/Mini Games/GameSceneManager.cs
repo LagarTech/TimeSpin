@@ -136,15 +136,15 @@ public class GameSceneManager : NetworkBehaviour
         // Con esta función se tendrán a los jugadores ordenados de la misma forma que en el servidor, para mostrarlos por pantalla en el panel de puntuaciones
         // Se guardan además los puntos para añadir y la posición concreta en la que han quedado
         GameObject[] _playersList = GameObject.FindGameObjectsWithTag("Player");
-        for(int i = 0; i< _playersList.Length; i++)
+        for(int i = 0; i< orderedPlayersId.Length; i++)
         {
-            for(int j = 0; j< orderedPlayersId.Length; j++)
+            for(int j = 0; j< _playersList.Length; j++)
             {
-                if (_playersList[i].GetComponent<PlayerMovement>().ownerClient == orderedPlayersId[i])
+                if (_playersList[j].GetComponent<PlayerMovement>().ownerClient == orderedPlayersId[i])
                 {
-                    orderedPlayers.Add(_playersList[i].GetComponent<PlayerMovement>());
-                    _playersList[i].GetComponent<PlayerMovement>().currentPosition = positionPlayers[i];
-                    _playersList[i].GetComponent<PlayerMovement>().pointsToAdd = positionPlayers[i];
+                    orderedPlayers.Add(_playersList[j].GetComponent<PlayerMovement>());
+                    _playersList[j].GetComponent<PlayerMovement>().currentPosition = positionPlayers[i];
+                    _playersList[j].GetComponent<PlayerMovement>().pointsToAdd = positionPlayers[i];
                 }
             }
         }

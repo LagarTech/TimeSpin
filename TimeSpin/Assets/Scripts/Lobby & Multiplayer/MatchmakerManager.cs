@@ -128,8 +128,8 @@ public class MatchmakerManager : NetworkBehaviour
                         UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
                         _serverIP = multiplayAssignment.Ip;
                         _serverPort = ushort.Parse(multiplayAssignment.Port.ToString());
+                        transport.SetClientSecrets(SecureParameters.ServerCommonName, SecureParameters.MyGameClientCA); // Credenciales de seguridad de la red
                         transport.SetConnectionData(_serverIP, _serverPort);
-                        // transport.SetClientSecrets(SecureParameters.ServerCommonName, SecureParameters.MyGameClientCA); // Credenciales de seguridad de la red
                         NetworkManager.Singleton.StartClient();
                         Debug.Log("Server found");
                         onComplete(true);

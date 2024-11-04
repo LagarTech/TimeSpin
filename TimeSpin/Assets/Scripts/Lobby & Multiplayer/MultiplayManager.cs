@@ -50,7 +50,7 @@ public class MultiplayManager : MonoBehaviour
             {
                 // Se establece la conexión
                 UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
-                // transport.SetServerSecrets(SecureParameters.MyGameServerCertificate, SecureParameters.MyGameServerPrivateKey);
+                transport.SetServerSecrets(SecureParameters.MyGameServerCertificate, SecureParameters.MyGameServerPrivateKey);
                 transport.SetConnectionData("0.0.0.0", serverConfig.Port, "0.0.0.0");
                 NetworkManager.Singleton.StartServer();
                 // Se indica que el servidor está listo para que los jugadores se puedan unir
