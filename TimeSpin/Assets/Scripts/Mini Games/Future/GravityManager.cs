@@ -161,6 +161,10 @@ public class GravityManager : NetworkBehaviour
 
     private void GameOver()
     {
+        // Se calculan las puntuaciones y las posiciones de los jugadores en base a los resultados
+        GameSceneManager.instance.GameOverEgiptFuture();
+        // Se reactiva la lista de jugadores en el servidor
+        GameSceneManager.instance.ActivePlayersList();
         // Se comienza la transición
         StartCoroutine(LoadingScreenManager.instance.ServerSceneTransition("LobbyMenu"));
     }

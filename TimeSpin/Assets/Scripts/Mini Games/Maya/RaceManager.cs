@@ -69,6 +69,10 @@ public class RaceManager : MonoBehaviour
         {
             // Se indica que el jugador ha pasado la meta
             PlayerReachedFinishLine(collision.gameObject);
+            // Se coloca al jugador en la lista de finalizados
+            GameSceneManager.instance.finishedPlayers.Add(collision.gameObject.GetComponent<PlayerMovement>());
+            // Se indica al jugador que ha terminado
+            collision.gameObject.GetComponent<PlayerMovement>().goalReached = true;
         }
     }
 }

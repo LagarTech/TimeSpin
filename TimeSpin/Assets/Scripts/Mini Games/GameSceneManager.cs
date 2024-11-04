@@ -108,9 +108,41 @@ public class GameSceneManager : NetworkBehaviour
         // Se asignan las puntuaciones en función del puesto y del número de jugadores que hubiera
         foreach(var player in orderedPlayers)
         {
-            player.pointsToAdd = MAX_PLAYERS - _numPlayers + player.currentPosition - 1;
+            player.pointsToAdd = fixedPointsGames[MAX_PLAYERS - _numPlayers + player.currentPosition - 1];
         }
 
+        // Se prepara la información para pasarla a los clientes
+        SetClientGameOverData();
+
+    }
+
+    public void GameOverMaya()
+    {
+        // Se establecen las posiciones y puntuaciones de los jugadores en función del orden en el que hayan llegado a la meta
+        for(int i = 0; i < finishedPlayers.Count; i++)
+        {
+            finishedPlayers[i].currentPosition = i + 1;
+            finishedPlayers[i].currentPoints = fixedPointsGames[MAX_PLAYERS - _numPlayers + finishedPlayers[i].currentPosition - 1];
+            orderedPlayers.Add(finishedPlayers[i]); // Se añade a la lista ordenada
+        }
+        // Se establece la puntuación del jugador último, el que no ha llegado a la meta
+        foreach(var player in _playersList)
+        {
+            if(!player.GetComponent<PlayerMovement>().goalReached)
+            {
+                player.GetComponent<PlayerMovement>().currentPosition = finishedPlayers.Count + 1; // Última posición
+                player.GetComponent<PlayerMovement>().currentPoints = fixedPointsGames[3]; // Peor puntuación
+                orderedPlayers.Add(player.GetComponent<PlayerMovement>());
+            }
+        }
+
+        // Se preparan los datos para pasarlos a los clientes
+        SetClientGameOverData();
+
+    }
+
+    private void SetClientGameOverData()
+    {
         // Toda esta información está procesada en el servidor, al cliente es necesario pasarle:
         // - El orden de los OwnerClientId en base a los orderedPlayers
         // - La posición de cada uno de ellos
@@ -119,7 +151,7 @@ public class GameSceneManager : NetworkBehaviour
         int[] positionPlayers = new int[orderedPlayers.Count];
         int[] pointsPlayers = new int[orderedPlayers.Count];
 
-        for(int i = 0; i<orderedPlayers.Count; i++)
+        for (int i = 0; i < orderedPlayers.Count; i++)
         {
             orderedPlayersId[i] = orderedPlayers[i].ownerClient;
             positionPlayers[i] = orderedPlayers[i].currentPosition;
@@ -144,7 +176,7 @@ public class GameSceneManager : NetworkBehaviour
                 {
                     orderedPlayers.Add(_playersList[j].GetComponent<PlayerMovement>());
                     _playersList[j].GetComponent<PlayerMovement>().currentPosition = positionPlayers[i];
-                    _playersList[j].GetComponent<PlayerMovement>().pointsToAdd = positionPlayers[i];
+                    _playersList[j].GetComponent<PlayerMovement>().pointsToAdd = pointsPlayers[i];
                 }
             }
         }

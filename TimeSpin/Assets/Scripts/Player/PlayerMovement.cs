@@ -20,6 +20,8 @@ public class PlayerMovement : NetworkBehaviour
     public int pointsToAdd = 0;
     // Variable que indica si el jugador ha sido eliminado
     public bool isDefeated = false;
+    // Variable que indica si el jugador ha llegado a la meta
+    public bool goalReached = false;
     // Variable que indica el puesto del jugador en el minijuego
     public int currentPosition = 0;
 
@@ -222,6 +224,8 @@ public class PlayerMovement : NetworkBehaviour
                 {
                     SelectionTable.Instance.SetPlayer(gameObject);
                 }
+                // Se restaura su estado de carrera
+                goalReached = false;
                 break;
             case "Prehistory":
                 _currentScene = Scene.Prehistory;
