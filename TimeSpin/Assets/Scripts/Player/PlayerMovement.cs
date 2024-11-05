@@ -8,7 +8,7 @@ using Cinemachine;
 public class PlayerMovement : NetworkBehaviour
 {
     // Modelo y nombre del jugador
-    [SerializeField] private GameObject _characterNamePlayer;
+    public GameObject characterNamePlayer;
     // Dueño del jugador
     public int ownerClient;
     private Vector3 _movementDirection = Vector3.zero;
@@ -262,8 +262,11 @@ public class PlayerMovement : NetworkBehaviour
                 ShowPlayer();
                 break;
         }
-        // Se inicia la pantalla de carga
-        StartCoroutine(LoadingScreenManager.instance.LoadingScreenCoroutine(sceneName));
+        // Se inicia la pantalla de carga, sólo el dueño del jugador principal y en el servidor
+        if(IsOwner || Application.platform == RuntimePlatform.LinuxServer)
+        {
+            StartCoroutine(LoadingScreenManager.instance.LoadingScreenCoroutine(sceneName));
+        }
         _previousScene = sceneName;
     }
 
@@ -279,14 +282,14 @@ public class PlayerMovement : NetworkBehaviour
     // Esta función se utiliza para ocultar el nombre y el personaje del jugador, sin desactivarlo completamente para poder acceder a él de nuevo
     public void HidePlayer()
     {
-        _characterNamePlayer.SetActive(false);
+        characterNamePlayer.SetActive(false);
         isDefeated = true;
     }
 
     // Esta función se usa para volver a mostrar los detalles del jugador
     public void ShowPlayer()
     {
-        _characterNamePlayer.SetActive(true);
+        characterNamePlayer.SetActive(true);
         isDefeated = false;
     }
 

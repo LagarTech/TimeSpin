@@ -894,7 +894,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Jugador 1
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1580,6 +1580,7 @@ MonoBehaviour:
   - {x: -3, y: 1, z: -2}
   - {x: 3, y: 1, z: 2}
   - {x: 3, y: 1, z: -2}
+  playerID: 0
 --- !u!114 &6990557072774723652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1592,8 +1593,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a5ce332259c1fd47b33037133c84f3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterNamePlayer: {fileID: 228684260957079276}
+  characterNamePlayer: {fileID: 228684260957079276}
   ownerClient: 0
+  currentPoints: 0
+  pointsToAdd: 0
+  isDefeated: 0
+  goalReached: 0
+  currentPosition: 0
   _currentScene: 0
   _startingPositionsLobby:
   - {x: -3, y: 1, z: 2}

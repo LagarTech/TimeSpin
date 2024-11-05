@@ -26,7 +26,7 @@ public class LoadingScreenManager : NetworkBehaviour
 
     public IEnumerator LoadingScreenCoroutine(string startedScene)
     {
-        // Se busca la pantalla de carga en la escena, solo en los clientes
+        // Se busca la pantalla de carga y puntuaciones en la escena, solo en los clientes
         if (Application.platform != RuntimePlatform.LinuxServer)
         {
             GameSceneManager.instance.ActivePlayersList();
@@ -89,6 +89,64 @@ public class LoadingScreenManager : NetworkBehaviour
                     break;
             }
         }
+    }
+
+    private IEnumerator ScoresPanelTransitionCoroutine()
+    {
+        // Se busca el objeto con la pantalla de carga para activarlo
+        GameObject loadingScreen = GameObject.FindGameObjectWithTag("PantallaPuntuaciones");
+        // Se activa el objeto con la pantalla de carga
+        foreach (Transform child in loadingScreen.transform)
+        {
+            child.gameObject.SetActive(true);
+        }
+        // Se obtienen los textos de las posiciones y de las puntuaciones, para poder actualizarlos en función de los resultados del minijuego
+        GameObject[] positionTextGOs = GameObject.FindGameObjectsWithTag("Puesto");
+        List<TMP_Text> _positionTexts = new List<TMP_Text>();
+        foreach (var text in positionTextGOs)
+        {
+            _positionTexts.Add(text.GetComponent<TMP_Text>());
+        }
+        GameObject[] scoreTextGOs = GameObject.FindGameObjectsWithTag("Puntuacion");
+        List<TMP_Text> _scoreTexts = new List<TMP_Text>();
+        foreach (var text in scoreTextGOs)
+        {
+            _scoreTexts.Add(text.GetComponent<TMP_Text>());
+        }
+        // Se mostrarán los datos de los jugadores según el orden de clasificación
+        for (int i = 0; i < GameSceneManager.instance.orderedPlayers.Count; i++)
+        {
+            _positionTexts[i].text = GameSceneManager.instance.orderedPlayers[i].currentPosition.ToString() + "º - " +
+                GameSceneManager.instance.orderedPlayers[i].characterNamePlayer.GetComponentInChildren<TMP_Text>().text; // Se obtiene el nombre del jugador 
+            int totalPoints = GameSceneManager.instance.orderedPlayers[i].currentPoints + GameSceneManager.instance.orderedPlayers[i].pointsToAdd; // Se calculan los puntos totales que tendrá el jugador tras sumar los del minijuego actual
+            _scoreTexts[i].text = GameSceneManager.instance.orderedPlayers[i].currentPoints.ToString() + " + " + GameSceneManager.instance.orderedPlayers[i].pointsToAdd.ToString() + " = " + totalPoints.ToString();
+            // Se actualizan finalmente las puntuaciones del jugador, después de mostrar el estado anterior por pantalla
+            GameSceneManager.instance.orderedPlayers[i].currentPoints = totalPoints;
+            GameSceneManager.instance.orderedPlayers[i].pointsToAdd = 0;
+        }
+        // Una vez actualizados los textos, se gestiona su aparición fundida
+        List<TMP_Text> _scorePanelTexts = new List<TMP_Text>();
+        // Se añaden los títulos
+        GameObject[] titleTextGO = GameObject.FindGameObjectsWithTag("TituloPuntuacion");
+        foreach (var title in titleTextGO)
+        {
+            _scorePanelTexts.Add(title.GetComponent<TMP_Text>());
+        }
+        // Se añaden los textos de las puntuaciones y las posiciones
+        foreach (var text in _positionTexts)
+        {
+            _scorePanelTexts.Add(text);
+        }
+        foreach (var text in _scoreTexts)
+        {
+            _scorePanelTexts.Add(text);
+        }
+        // Se obtiene el fondo
+        Image background = GameObject.FindGameObjectWithTag("FondoPuntuaciones").GetComponent<Image>();
+        // Fade in (aparecer)
+        yield return Fade(background, _scorePanelTexts, 1f, 0f, 1f); // De 0 (invisible) a 1 (visible)
+        yield return new WaitForSeconds(10f); // Espera 10 segundos mostrando las puntuaciones
+        yield return FinalFade();
     }
 
     private IEnumerator Fade(Image image, List<TMP_Text> texts, float startAlphaImage, float startAlphaTexts, float endAlpha, float duration = 0.5f)
@@ -164,10 +222,25 @@ public class LoadingScreenManager : NetworkBehaviour
 
     public IEnumerator ServerSceneTransition(string sceneName)
     {
-        // Avisa a los clientes para que realicen el fundido
+        // Avisa a los clientes para que realicen la transición
         SceneTransitionClientRpc();
-        // Espera 0.5 segundos para que se realice el fundido en los clientes
-        yield return new WaitForSeconds(0.5f);
+        // Si se encuentra en la escena de menú, sólo se hace el fundido
+        if (SceneManager.GetActiveScene().name == "LobbyMenu")
+        {
+            yield return new WaitForSeconds(0.5f);
+        }
+        else
+        {
+            // Si se trata de algún minijuego, se realiza completo
+            // Actualiza las puntuaciones de los jugadores
+            foreach (var player in GameSceneManager.instance.orderedPlayers)
+            {
+                player.currentPoints += player.pointsToAdd;
+                player.pointsToAdd = 0;
+            }
+            // Espera 0.5 segundos para que se realice el fundido en los clientes, después de esperar 11 segundos para que se muestren las puntuaciones y permanezcan 10 segundos 
+            yield return new WaitForSeconds(11f);
+        }
         // Carga la siguiente escena
         NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
@@ -175,8 +248,16 @@ public class LoadingScreenManager : NetworkBehaviour
     [ClientRpc]
     public void SceneTransitionClientRpc()
     {
-        // Se inicia el fundido a negro de la escena
-        StartCoroutine(FinalFade());
+        if (SceneManager.GetActiveScene().name == "LobbyMenu")
+        {
+            // Se hace el fundido hacia un minijuego desde el lobby
+            StartCoroutine(FinalFade());
+        }
+        else
+        {
+            // Se inicia el proceso de mostrar las puntuaciones y el fundido a la pantalla de carga
+            StartCoroutine(ScoresPanelTransitionCoroutine());
+        }
     }
 
 
