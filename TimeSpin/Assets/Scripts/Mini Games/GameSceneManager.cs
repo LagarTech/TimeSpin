@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -180,7 +181,52 @@ public class GameSceneManager : NetworkBehaviour
                 }
             }
         }
+    }
 
+    // Estructura y comparador para mostrar el ranking en el lobby
+    struct PlayerScore
+    {
+        public string playerName;
+        public int playerScore;
+    }
 
+    class PlayerScoreComparer : IComparer<PlayerScore>
+    {
+        public int Compare(PlayerScore x, PlayerScore y)
+        {
+            // Ordena de mayor a menor por playerScore
+            return y.playerScore.CompareTo(x.playerScore);
+        }
+    }
+
+    public void UpdateLobbyRanking()
+    {
+        _playersList = GameObject.FindGameObjectsWithTag("Player");
+        List<PlayerScore> ranking = new List<PlayerScore>(_playersList.Length);
+        foreach(var player in _playersList)
+        {
+            // Se guardan los puntos y el nombre de cada jugador, se almacena en la lista
+            PlayerMovement playerData = player.GetComponent<PlayerMovement>();
+            PlayerScore playerRanking = new PlayerScore();
+            playerRanking.playerName = playerData.characterNamePlayer.GetComponentInChildren<TMP_Text>().text;
+            playerRanking.playerScore = playerData.currentPoints;
+            ranking.Add(playerRanking);
+        }
+        // Se ordena la lista
+        ranking.Sort(new PlayerScoreComparer());
+
+        // Se buscan los objetos de texto para almacenar el ranking
+        GameObject[] rankingGO = GameObject.FindGameObjectsWithTag("RankingLobby");
+        // Se almacenan los componentes de text
+        List<TMP_Text> rankingTexts= new List<TMP_Text>();
+        foreach(var text in rankingGO)
+        {
+            rankingTexts.Add(text.GetComponent<TMP_Text>());
+        }
+        // Se muestran las puntuaciones ordenadas
+        for(int i = 0; i < ranking.Count; i++)
+        {
+            rankingTexts[i].text = (i+1).ToString() + "º - " + ranking[i].playerName + " : " + ranking[i].playerScore.ToString() + " pts.";
+        }
     }
 }
