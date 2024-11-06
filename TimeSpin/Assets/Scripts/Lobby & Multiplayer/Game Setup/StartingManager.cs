@@ -20,6 +20,7 @@ public class StartingManager : NetworkBehaviour
     [SerializeField] private GameObject _selectionServerButton;
     [SerializeField] private GameObject _selectionMenu;
     [SerializeField] private GameObject _waitingSelectionText;
+    [SerializeField] private GameObject _rankingPanel;
 
     [SerializeField] private List<Button> _gamesButtons;
 
@@ -71,6 +72,8 @@ public class StartingManager : NetworkBehaviour
                 _waitingPlayersText.SetActive(false);
                 _informationText.SetActive(false);
                 _lobbyCodeText.SetActive(false);
+                _rankingPanel.SetActive(true);
+                GameSceneManager.instance.UpdateLobbyRanking();
             }
             _startGameButton.SetActive(false);
             _information2Text.SetActive(false);
@@ -83,7 +86,6 @@ public class StartingManager : NetworkBehaviour
 
     private void Update()
     {
-        if (startedSelection) return;
         UpdatePlayersCount();
     }
 
@@ -122,6 +124,7 @@ public class StartingManager : NetworkBehaviour
         if (NetworkManager.Singleton.IsServer)
         {
             _numPlayers = NetworkManager.Singleton.ConnectedClients.Count;
+            if (startedSelection) return;
             UpdatePlayerCountClientRpc(_numPlayers);
         }
         // En el servidor, se comprueba si todos los jugadores están listos
@@ -184,6 +187,8 @@ public class StartingManager : NetworkBehaviour
         _informationText.SetActive(false);
         _information2Text.SetActive(false);
         _lobbyCodeText.SetActive(false);
+        _rankingPanel.SetActive(true);
+        GameSceneManager.instance.UpdateLobbyRanking();
     }
 
     public void ChooseGame(int game)
