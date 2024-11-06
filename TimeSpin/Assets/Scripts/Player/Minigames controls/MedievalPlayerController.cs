@@ -2,14 +2,17 @@ using UnityEngine;
 
 public class MedievalPlayerController : MonoBehaviour
 {
-    public float moveSpeed = 5f;          // Velocidad de movimiento
+    public float moveSpeed = 5f;                    // Velocidad de movimiento
     public GameObject CarriedSword { get; private set; }
+    public int playerIndex;                         // Índice del jugador (0 a 3)
 
     private Rigidbody rb;
+    private MedievalGameManager gameManager;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        gameManager = FindObjectOfType<MedievalGameManager>();
     }
 
     void Update()
@@ -19,9 +22,10 @@ public class MedievalPlayerController : MonoBehaviour
 
     private void MovePlayer()
     {
-        // Obtén las entradas de movimiento
+        //Movimiento
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
+
 
         // Calcula el movimiento en función de la velocidad
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical) * moveSpeed * Time.deltaTime;
@@ -38,13 +42,14 @@ public class MedievalPlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // Detecta si el jugador está en la base
-        if (other.CompareTag("Base") && CarriedSword != null)
+        // Verifica si el jugador ha entrado en su propia base
+        if (CarriedSword != null && other.transform == gameManager.playerBases[playerIndex])
         {
             // Llama a DeliverSword() de SwordController y elimina la espada del jugador
-            CarriedSword.GetComponent<SwordController>().DeliverSword();
+            CarriedSword.GetComponent<SwordController>().DeliverSword(playerIndex);
             CarriedSword = null;
         }
     }
 }
+
 
