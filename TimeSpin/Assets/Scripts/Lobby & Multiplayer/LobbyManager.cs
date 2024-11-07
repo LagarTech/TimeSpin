@@ -2,10 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
+using Unity.Networking.Transport.Relay;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
+using Unity.Services.Relay;
+using Unity.Services.Relay.Models;
 using UnityEngine;
 
 public class LobbyManager : NetworkBehaviour
@@ -121,6 +125,7 @@ public class LobbyManager : NetworkBehaviour
 
     public IEnumerator CreatePrivateLobbyCoroutine(System.Action<bool> onComplete)
     {
+        /*
         // Se definen las propiedades de la sala
         CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
         {
@@ -142,7 +147,7 @@ public class LobbyManager : NetworkBehaviour
         _joinedLobby = _hostLobby;
         Debug.Log("Created Lobby! " + _hostLobby.LobbyCode);
         _lobbyCode = _joinedLobby.LobbyCode;
-
+        */
 
         // Llama a FirstServerJoin y espera a que termine
         bool serverFound = false;
@@ -158,14 +163,63 @@ public class LobbyManager : NetworkBehaviour
 
         // Se recibe la IP y el puerto del servidor para establecer la conexión
         string serverIP = MatchmakerManager.Instance.GetServerIP();
-        ushort serverPort = MatchmakerManager.Instance.GetServerPort();
+        string serverPort = MatchmakerManager.Instance.GetServerPort().ToString();
 
+        // Se utilizan la IP y el puerto para buscar el Lobby creado por el servidor y obtener el código Relay
+        // Se obtiene la lista de lobbies activas y se filtran
+        QueryLobbiesOptions queryLobbyOptions = new QueryLobbiesOptions
+        {
+            Filters = new List<QueryFilter>
+            {
+                new QueryFilter(field: QueryFilter.FieldOptions.S1,
+                                op: QueryFilter.OpOptions.EQ,
+                                value: serverIP),
+                new QueryFilter(field: QueryFilter.FieldOptions.S2,
+                                op: QueryFilter.OpOptions.EQ,
+                                value: serverPort)
+            }
+        };
+
+        var listLobbiesTask = Lobbies.Instance.QueryLobbiesAsync(queryLobbyOptions);
+        yield return new WaitUntil(() => listLobbiesTask.IsCompleted);
+        QueryResponse queryResponse = listLobbiesTask.Result;
+
+        // Desde que se crea la Lobby en el servidor, se retrasa una cantidad pequeña de tiempo hasta que la búsqueda la detecta
+        // Por lo tanto, se repite el proceso cada segundo hasta que se encuentra
+
+        while (queryResponse.Results.Count == 0)
+        {
+            yield return new WaitForSeconds(1f);
+            listLobbiesTask = Lobbies.Instance.QueryLobbiesAsync(queryLobbyOptions);
+            yield return new WaitUntil(() => listLobbiesTask.IsCompleted);
+            queryResponse = listLobbiesTask.Result;
+        }
+
+        // Sólo se obtendrá un Lobby con las características dadas
+        Lobby lobbyServer = queryResponse.Results[0];
+        // Se obtiene el código para unirse al servidor Relay
+        lobbyServer.Data.TryGetValue("joinCode", out DataObject code);
+        _lobbyCode = code.Value;
+
+        // Finalmente se establece la conexión con el servidor Relay utilizando el código obtenido
+        // Se obtiene una referencia de la ubicación reservada
+        var joinAllocationTask = RelayService.Instance.JoinAllocationAsync(_lobbyCode);
+        yield return new WaitUntil(() => joinAllocationTask.IsCompleted);
+        JoinAllocation joinAllocation = joinAllocationTask.Result;
+        // Se obtiene la información del servidor, utilizando la localización reservada
+        RelayServerData relayServerData = new RelayServerData(joinAllocation, "wss");
+        // Se establece dicha información en el protocolo de transporte
+        NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
+        // Se comienza el juego como cliente
+        NetworkManager.Singleton.StartClient();
+
+        /*
         // Se guarda dicha información en la sala
         Dictionary<string, DataObject> lobbyData = new Dictionary<string, DataObject>
-    {
-        { "serverIP", new DataObject(DataObject.VisibilityOptions.Member, serverIP) },
-        { "serverPort", new DataObject(DataObject.VisibilityOptions.Member, serverPort.ToString()) }
-    };
+        {
+            { "serverIP", new DataObject(DataObject.VisibilityOptions.Member, serverIP) },
+            { "serverPort", new DataObject(DataObject.VisibilityOptions.Member, serverPort.ToString()) }
+        };
 
         var updateLobbyTask = LobbyService.Instance.UpdateLobbyAsync(_hostLobby.Id, new UpdateLobbyOptions { Data = lobbyData });
         yield return new WaitUntil(() => updateLobbyTask.IsCompleted);
@@ -178,9 +232,9 @@ public class LobbyManager : NetworkBehaviour
         }
 
         _joinedLobby = updateLobbyTask.Result;
+        */
 
-        Debug.Log("Server information saved to lobby!");
-        UI_Lobby.instance.EnterLobbyCode(_joinedLobby.LobbyCode);
+        UI_Lobby.instance.EnterLobbyCode(_lobbyCode);
 
         inLobby = true;
         onComplete(true); // Indicar éxito

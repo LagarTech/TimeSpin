@@ -22,6 +22,7 @@ public class PlayerRegister : NetworkBehaviour
     // REGISTRO DE JUGADORES
     // Lista que almacena la información de los jugadores que se unen al Lobby
     [SerializeField] private List<PlayerData> _joinedPlayers = new List<PlayerData>();
+    public int numPlayers = 0;
     // Indice de los jugadores
     private int _playerID = 0;
 
@@ -33,6 +34,7 @@ public class PlayerRegister : NetworkBehaviour
         PlayerData newPlayer = new PlayerData(character, name, _playerID);
         _joinedPlayers.Add(newPlayer);
         _playerID++;
+        numPlayers++;
         // Se muestran dichos datos en las partidas de los clientes
         SetupPlayerClientRpc(newPlayer.ClientId, newPlayer.PlayerName, newPlayer.CharacterSelected);
     }

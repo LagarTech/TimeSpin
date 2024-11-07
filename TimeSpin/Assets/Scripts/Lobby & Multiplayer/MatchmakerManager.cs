@@ -125,12 +125,12 @@ public class MatchmakerManager : NetworkBehaviour
 
                     if (multiplayAssignment.Status == MultiplayAssignment.StatusOptions.Found)
                     {
-                        UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
+                        // UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
                         _serverIP = multiplayAssignment.Ip;
                         _serverPort = ushort.Parse(multiplayAssignment.Port.ToString());
-                        transport.SetClientSecrets(SecureParameters.ServerCommonName, SecureParameters.MyGameClientCA); // Credenciales de seguridad de la red
-                        transport.SetConnectionData(_serverIP, _serverPort);
-                        NetworkManager.Singleton.StartClient();
+                        // transport.SetClientSecrets(SecureParameters.ServerCommonName, SecureParameters.MyGameClientCA); // Credenciales de seguridad de la red
+                        // transport.SetConnectionData(_serverIP, _serverPort);
+                        // NetworkManager.Singleton.StartClient();
                         Debug.Log("Server found");
                         onComplete(true);
                         yield break; // Servidor encontrado, salir de la función

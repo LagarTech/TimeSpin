@@ -63,10 +63,10 @@ public class StartingManager : NetworkBehaviour
         }
         else
         {
-            startedSelection = true;
             // Se prepara la UI para un regreso a la escena
             if (GameSceneManager.instance.gameStarted)
             {
+                startedSelection = true;
                 _startedSelectionText.SetActive(true);
                 _numPlayersText.text = "";
                 _waitingPlayersText.SetActive(false);
@@ -123,7 +123,7 @@ public class StartingManager : NetworkBehaviour
         // En el servidor se calcula el número de jugadores que hay, y se informa al cliente
         if (NetworkManager.Singleton.IsServer)
         {
-            _numPlayers = NetworkManager.Singleton.ConnectedClients.Count;
+            _numPlayers = PlayerRegister.instance.numPlayers;
             if (startedSelection) return;
             UpdatePlayerCountClientRpc(_numPlayers);
         }
@@ -143,7 +143,6 @@ public class StartingManager : NetworkBehaviour
     [ClientRpc]
     private void UpdatePlayerCountClientRpc(int playerCount)
     {
-        if (!LobbyManager.instance.inLobby) return;
         _numPlayers = playerCount;
 
         if (_numPlayers >= _requiredPlayers)
