@@ -1,6 +1,6 @@
 Using pre-set license
 Built from '2022.3/staging' branch; Version is '2022.3.46f1 (8e9b8558c41a) revision 9345925'; Using compiler version '192829333'; Build Type 'Release'
-OS: 'Windows 10  (10.0.19045) 64bit ProfessionalWorkstation' Language: 'es' Physical Memory: 65433 MB
+OS: 'Windows 11  (10.0.22631) 64bit Core' Language: 'es' Physical Memory: 16225 MB
 BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 1
 
 COMMAND LINE ARGUMENTS:
@@ -11,13 +11,13 @@ C:\Program Files\Unity\Hub\Editor\2022.3.46f1\Editor\Unity.exe
 -name
 AssetImportWorker0
 -projectPath
-E:/Jose/Escritorio/LagarTech/TimeSpin
+C:/Users/ccrj_/Documents/UNI/CUARTO/WEB/TimeSpin/TimeSpin
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-52284
-Successfully changed project path to: E:/Jose/Escritorio/LagarTech/TimeSpin
-E:/Jose/Escritorio/LagarTech/TimeSpin
+62363
+Successfully changed project path to: C:/Users/ccrj_/Documents/UNI/CUARTO/WEB/TimeSpin/TimeSpin
+C:/Users/ccrj_/Documents/UNI/CUARTO/WEB/TimeSpin/TimeSpin
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
     "memorysetup-bucket-allocator-granularity=16"
     "memorysetup-bucket-allocator-bucket-count=8"
@@ -49,71 +49,67 @@ E:/Jose/Escritorio/LagarTech/TimeSpin
     "memorysetup-temp-allocator-size-cloud-worker=32768"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Player connection [8804]  Target information:
+Player connection [10160]  Target information:
 
-Player connection [8804]  * "[IP] 192.168.1.70 [Port] 0 [Flags] 2 [Guid] 850727960 [EditorId] 850727960 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-SE4AHMJ) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+Player connection [10160]  * "[IP] 192.168.1.60 [Port] 0 [Flags] 2 [Guid] 2304631265 [EditorId] 2304631265 [Version] 1048832 [Id] WindowsEditor(7,PC_Jaco) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
 
-Player connection [8804] Host joined multi-casting on [225.0.0.222:54997]...
-Player connection [8804] Host joined alternative multi-casting on [225.0.0.222:34997]...
-[PhysX] Initialized MultithreadedTaskDispatcher with 24 workers.
-Refreshing native plugins compatible for Editor in 12.94 ms, found 3 plugins.
+Player connection [10160] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [10160] Host joined alternative multi-casting on [225.0.0.222:34997]...
+[PhysX] Initialized MultithreadedTaskDispatcher with 20 workers.
+Refreshing native plugins compatible for Editor in 11.99 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2022.3.46f1 (8e9b8558c41a)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2022.3.46f1/Editor/Data/Resources/UnitySubsystems
-[Subsystems] Discovering subsystems at path E:/Jose/Escritorio/LagarTech/TimeSpin/Assets
+[Subsystems] Discovering subsystems at path C:/Users/ccrj_/Documents/UNI/CUARTO/WEB/TimeSpin/TimeSpin/Assets
 GfxDevice: creating device client; threaded=0; jobified=0
 Direct3D:
     Version:  Direct3D 11.0 [level 11.1]
-    Renderer: NVIDIA GeForce RTX 3080 (ID=0x2216)
+    Renderer: NVIDIA GeForce RTX 3070 (ID=0x2488)
     Vendor:   NVIDIA
-    VRAM:     10053 MB
+    VRAM:     8018 MB
     Driver:   32.0.15.6094
 Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2022.3.46f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2022.3.46f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/2022.3.46f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56592
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56304
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
-Register platform support module: C:/Program Files/Unity/Hub/Editor/2022.3.46f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2022.3.46f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Register platform support module: C:/Program Files/Unity/Hub/Editor/2022.3.46f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
-Registered in 0.011634 seconds.
-- Loaded All Assemblies, in  0.268 seconds
-Native extension for LinuxStandalone target not found
+Registered in 0.004179 seconds.
+- Loaded All Assemblies, in  0.238 seconds
 Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.199 seconds
-Domain Reload Profiling: 463ms
-	BeginReloadAssembly (84ms)
+- Finished resetting the current domain, in  0.185 seconds
+Domain Reload Profiling: 421ms
+	BeginReloadAssembly (78ms)
 		ExecutionOrderSort (0ms)
 		DisableScriptedObjects (0ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
 		CreateAndSetChildDomain (1ms)
-	RebuildCommonClasses (25ms)
+	RebuildCommonClasses (22ms)
 	RebuildNativeTypeToScriptingClass (7ms)
-	initialDomainReloadingComplete (55ms)
-	LoadAllAssembliesAndSetupDomain (93ms)
-		LoadAssemblies (80ms)
+	initialDomainReloadingComplete (39ms)
+	LoadAllAssembliesAndSetupDomain (90ms)
+		LoadAssemblies (77ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (92ms)
-			TypeCache.Refresh (91ms)
-				TypeCache.ScanAssembly (82ms)
+		AnalyzeDomain (89ms)
+			TypeCache.Refresh (88ms)
+				TypeCache.ScanAssembly (79ms)
 			ScanForSourceGeneratedMonoScriptInfo (0ms)
 			ResolveRequiredComponents (0ms)
-	FinalizeReload (199ms)
+	FinalizeReload (185ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (166ms)
+		SetupLoadedEditorAssemblies (153ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (13ms)
+			InitializePlatformSupportModulesInManaged (7ms)
 			SetLoadedEditorAssemblies (5ms)
 			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (2ms)
-			ProcessInitializeOnLoadAttributes (111ms)
-			ProcessInitializeOnLoadMethodAttributes (36ms)
+			BeforeProcessingInitializeOnLoad (1ms)
+			ProcessInitializeOnLoadAttributes (107ms)
+			ProcessInitializeOnLoadMethodAttributes (32ms)
 			AfterProcessingInitializeOnLoad (0ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
@@ -123,10 +119,8 @@ Worker process is ready to serve import requests
 Caller must complete domain reload
 Begin MonoManager ReloadAssembly
 Symbol file LoadedFromMemory is not a mono symbol file
-- Loaded All Assemblies, in  0.611 seconds
-Native extension for LinuxStandalone target not found
+- Loaded All Assemblies, in  0.631 seconds
 Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
 System.Exception: Error! Visual Scripting: couldn't find visual scripting package
   at Unity.VisualScripting.PackageVersionUtility.get_version () [0x00043] in .\Library\PackageCache\com.unity.visualscripting@1.9.4\Editor\VisualScripting.Core\Utilities\PackageVersionUtility.cs:31 
   at Unity.VisualScripting.BoltCoreManifest.get_version () [0x00000] in .\Library\PackageCache\com.unity.visualscripting@1.9.4\Editor\VisualScripting.Core\Plugin\BoltCoreManifest.cs:11 
@@ -149,50 +143,51 @@ Package Manager log level set to [2]
 [Package Manager] UpmClient::Send -- Unable to send message (not connected to UPM process).
 [Package Manager] Cannot connect to Unity Package Manager local server
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.862 seconds
-Domain Reload Profiling: 1469ms
-	BeginReloadAssembly (115ms)
+- Finished resetting the current domain, in  0.759 seconds
+Domain Reload Profiling: 1387ms
+	BeginReloadAssembly (101ms)
 		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (4ms)
+		DisableScriptedObjects (3ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (14ms)
-	RebuildCommonClasses (23ms)
-	RebuildNativeTypeToScriptingClass (7ms)
-	initialDomainReloadingComplete (56ms)
-	LoadAllAssembliesAndSetupDomain (406ms)
-		LoadAssemblies (279ms)
+		CreateAndSetChildDomain (13ms)
+	RebuildCommonClasses (21ms)
+	RebuildNativeTypeToScriptingClass (6ms)
+	initialDomainReloadingComplete (50ms)
+	LoadAllAssembliesAndSetupDomain (449ms)
+		LoadAssemblies (311ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (195ms)
-			TypeCache.Refresh (164ms)
-				TypeCache.ScanAssembly (148ms)
-			ScanForSourceGeneratedMonoScriptInfo (26ms)
+		AnalyzeDomain (198ms)
+			TypeCache.Refresh (171ms)
+				TypeCache.ScanAssembly (156ms)
+			ScanForSourceGeneratedMonoScriptInfo (21ms)
 			ResolveRequiredComponents (5ms)
-	FinalizeReload (862ms)
+	FinalizeReload (759ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (752ms)
+		SetupLoadedEditorAssemblies (659ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (11ms)
+			InitializePlatformSupportModulesInManaged (4ms)
 			SetLoadedEditorAssemblies (4ms)
 			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (86ms)
-			ProcessInitializeOnLoadAttributes (593ms)
-			ProcessInitializeOnLoadMethodAttributes (45ms)
-			AfterProcessingInitializeOnLoad (13ms)
-			EditorAssembliesLoaded (0ms)
+			BeforeProcessingInitializeOnLoad (71ms)
+			ProcessInitializeOnLoadAttributes (528ms)
+			ProcessInitializeOnLoadMethodAttributes (44ms)
+			AfterProcessingInitializeOnLoad (5ms)
+			EditorAssembliesLoaded (2ms)
 		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (4ms)
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.06 seconds
-Refreshing native plugins compatible for Editor in 4.41 ms, found 3 plugins.
+		AwakeInstancesAfterBackupRestoration (5ms)
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.03 seconds
+Refreshing native plugins compatible for Editor in 4.79 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 6588 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 57 unused Assets / (1.9 MB). Loaded Objects now: 7032.
-Memory consumption went from 212.5 MB to 210.6 MB.
-Total: 11.242000 ms (FindLiveObjects: 0.418500 ms CreateObjectMapping: 0.403200 ms MarkObjects: 9.956500 ms  DeleteObjects: 0.462800 ms)
+Unloading 6587 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 57 unused Assets / (1.9 MB). Loaded Objects now: 7031.
+Memory consumption went from 235.3 MB to 233.5 MB.
+Total: 9.271300 ms (FindLiveObjects: 0.319100 ms CreateObjectMapping: 0.185100 ms MarkObjects: 8.506600 ms  DeleteObjects: 0.259600 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
   custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
   custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
   custom:CustomObjectIndexerAttribute: 9a22284fe3817be447336de3de66b15e -> 
@@ -205,180 +200,83 @@ AssetImportParameters requested are different than current active one (requested
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
   custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
-Received Prepare
-Caller must complete domain reload
-Begin MonoManager ReloadAssembly
-Symbol file LoadedFromMemory is not a mono symbol file
-- Loaded All Assemblies, in  0.496 seconds
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-System.Exception: Error! Visual Scripting: couldn't find visual scripting package
-  at Unity.VisualScripting.PackageVersionUtility.get_version () [0x00043] in .\Library\PackageCache\com.unity.visualscripting@1.9.4\Editor\VisualScripting.Core\Utilities\PackageVersionUtility.cs:31 
-  at Unity.VisualScripting.BoltCoreManifest.get_version () [0x00000] in .\Library\PackageCache\com.unity.visualscripting@1.9.4\Editor\VisualScripting.Core\Plugin\BoltCoreManifest.cs:11 
-  at Unity.VisualScripting.PluginManifest.get_currentVersion () [0x00000] in .\Library\PackageCache\com.unity.visualscripting@1.9.4\Editor\VisualScripting.Core\Plugins\PluginManifest.cs:33 
-  at Unity.VisualScripting.PluginManifest.get_versionMismatch () [0x00000] in .\Library\PackageCache\com.unity.visualscripting@1.9.4\Editor\VisualScripting.Core\Plugins\PluginManifest.cs:48 
-  at Unity.VisualScripting.PluginContainer.Initialize () [0x00525] in .\Library\PackageCache\com.unity.visualscripting@1.9.4\Editor\VisualScripting.Core\Plugins\PluginContainer.cs:208 
-  at Unity.VisualScripting.PluginContainer.InitializeOnLoad () [0x00009] in .\Library\PackageCache\com.unity.visualscripting@1.9.4\Editor\VisualScripting.Core\Plugins\PluginContainer.cs:32 
-  at Unity.VisualScripting.VSUsageUtility.DoInitializeOnLoadCalls () [0x00034] in .\Library\PackageCache\com.unity.visualscripting@1.9.4\Editor\VisualScripting.Core\Utilities\VSUsageUtility.cs:76 
-  at Unity.VisualScripting.VSUsageUtility.set_isVisualScriptingUsed (System.Boolean value) [0x0002c] in .\Library\PackageCache\com.unity.visualscripting@1.9.4\Editor\VisualScripting.Core\Utilities\VSUsageUtility.cs:114 
-  at Unity.VisualScripting.VSUsageUtility.CheckAndSetIsVisualScriptingUsed () [0x0000d] in .\Library\PackageCache\com.unity.visualscripting@1.9.4\Editor\VisualScripting.Core\Utilities\VSUsageUtility.cs:33 
-  at Unity.VisualScripting.VSUsageUtility..cctor () [0x00000] in .\Library\PackageCache\com.unity.visualscripting@1.9.4\Editor\VisualScripting.Core\Utilities\VSUsageUtility.cs:22 
-UnityEngine.StackTraceUtility:ExtractStackTrace ()
-UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
-UnityEngine.Logger:Log (UnityEngine.LogType,object)
-UnityEngine.Debug:LogError (object)
-UnityEditor.EditorAssemblies:ProcessInitializeOnLoadAttributes (System.Type[])
-
-[Package Manager] Server::EnsureServerProcessIsRunning -- launch failed, reason: Unity was launched with the -noUpm command-line argument
-[Package Manager] UpmClient::Send -- Unable to send message (not connected to UPM process).
-[Package Manager] Cannot connect to Unity Package Manager local server
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  1.371 seconds
-Domain Reload Profiling: 1862ms
-	BeginReloadAssembly (158ms)
-		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (3ms)
-		BackupInstance (0ms)
-		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (40ms)
-	RebuildCommonClasses (23ms)
-	RebuildNativeTypeToScriptingClass (8ms)
-	initialDomainReloadingComplete (50ms)
-	LoadAllAssembliesAndSetupDomain (250ms)
-		LoadAssemblies (297ms)
-		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (30ms)
-			TypeCache.Refresh (17ms)
-				TypeCache.ScanAssembly (10ms)
-			ScanForSourceGeneratedMonoScriptInfo (7ms)
-			ResolveRequiredComponents (5ms)
-	FinalizeReload (1372ms)
-		ReleaseScriptCaches (0ms)
-		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (620ms)
-			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (15ms)
-			SetLoadedEditorAssemblies (4ms)
-			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (89ms)
-			ProcessInitializeOnLoadAttributes (453ms)
-			ProcessInitializeOnLoadMethodAttributes (45ms)
-			AfterProcessingInitializeOnLoad (13ms)
-			EditorAssembliesLoaded (0ms)
-		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (5ms)
-Script is not up to date after domain reload: guid(7d5ca71a29e23184397a0ecaefdce95a) path("Assets/Scripts/Lobby & Multiplayer/MultiplayManager.cs") state(2)
-Refreshing native plugins compatible for Editor in 5.21 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 6683 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 40 unused Assets / (1.8 MB). Loaded Objects now: 7194.
-Memory consumption went from 221.8 MB to 220.0 MB.
-Total: 9.710100 ms (FindLiveObjects: 0.384900 ms CreateObjectMapping: 0.147400 ms MarkObjects: 8.851600 ms  DeleteObjects: 0.325400 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:scripting/monoscript/fileName/BaselibQosRunner.cs: 76fcd5decb3c7ed2fb934c1ad21161a4 -> 
-  custom:scripting/monoscript/fileName/QosDiscoveryApi.cs: 1c3ed6ad92e7283517666004b1f9ca4e -> 
-  custom:scripting/monoscript/fileName/ResponseMeta.cs: c76f5bf23c4dc9a2583116c9cb3d7544 -> 
-  custom:scripting/monoscript/fileName/IRelayServiceSDKConfiguration.cs: 59e9d6615c10822e082d4ec91abdd0ef -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:scripting/monoscript/fileName/EngineStateHelper.cs: 541f6055a7947459f380318e4d3ffb8f -> 976d0acbed26e39f21d331df75344f54
-  custom:scripting/monoscript/fileName/ResponseHandler.cs: f9b7aa7308ebef6a158e55627c3a38ba -> 2b28e9e073f5b337ae294cd12c558e0a
-  custom:scripting/monoscript/fileName/QosJob.cs: 9a96ccd42ec72bdf8714d28773b03f56 -> 
-  custom:scripting/monoscript/fileName/HttpClientResponse.cs: ea04ea954287057a98a1c648d93fc2f4 -> d1aee2dd4d1f1bed93570ea5155e0402
-  custom:scripting/monoscript/fileName/AsyncOpRetry.cs: a4e75cfbe11d0347601c26a75a0c3f58 -> 199d15718b9dfa977d7ddc01073715cc
-  custom:scripting/monoscript/fileName/JoinAllocationAllOf.cs: 59f9a90c102419e9d511b6c3e2ab455a -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:scripting/monoscript/fileName/NetworkManagerRelayIntegration.cs: a5fb9e55be9b5aa3cfe45c6f08e9012a -> 
-  custom:scripting/monoscript/fileName/AllocationData.cs: 0e23da529fa655e0386cacbee1dbf82d -> 
-  custom:scripting/monoscript/fileName/KeyValuePair.cs: e3b7ba66431ee9828aaa36e41523a9ae -> 49a521e67f118ae5e4c5f3150d72fbcd
-  custom:scripting/monoscript/fileName/BaseApiClient.cs: 79e4eaaa7a06e6ed871c69d4e564505c -> a041f333a8d67b97a99ad1aaba6e2e0f
-  custom:scripting/monoscript/fileName/QosServiceProvider.cs: 78f5aa39dfddb9d221bc1782281e569a -> 
-  custom:scripting/monoscript/fileName/IHttpClient.cs: 01f4455036a544086149278efb0932ab -> b0fceb25420a65e95e87f71add6be6fd
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:scripting/monoscript/fileName/QosResponse.cs: 884e437d4b67f33b705aba910007a73c -> 
-  custom:scripting/precompiled-assembly-types:Unity.Netcode.Editor: 1766f66dcaf5d435e78517ca63934b1e -> 9d44292b90eb337f146aebe5651e704d
-  custom:scripting/monoscript/fileName/DeserializationSettings.cs: 965c07a1a76ec039ae2563e06318fb01 -> 8b2b8039acab12d47bbaec685338803f
-  custom:scripting/precompiled-assembly-types:Unity.Services.QoS: b4df2f772a83d80b79fd223c861aff72 -> 
-  custom:scripting/monoscript/fileName/NetworkEndPoint.cs: 356af77a6880ae6fc3d5ba220b50b441 -> 
-  custom:scripting/monoscript/fileName/UnityServicesExtensions.cs: 33dbfce43e0ef30dfbdd0d7336d3ee88 -> 
-  custom:scripting/monoscript/fileName/Allocation.cs: fbb53d1f56a2670f47714961d29dc4e6 -> 
-  custom:scripting/monoscript/fileName/ApiErrorsExtenders.cs: 51557120889ead7d0e0c4e2c30dd89f3 -> 
-  custom:scripting/monoscript/fileName/GameObjectFactory.cs: 37fa971fdea1b6cccdf60b3d4430a89e -> 123e79afd4c4b8bcce0336cde262eb91
-  custom:scripting/monoscript/fileName/QosServersList.cs: 141c3bf011b7bcd1c28c62d2d63d9fe3 -> 
-  custom:scripting/monoscript/fileName/RelayAllocationsApi.cs: d1e70142bf4e17af18967f090b4161f1 -> 
-  custom:CustomObjectIndexerAttribute: 9a22284fe3817be447336de3de66b15e -> 
-  custom:scripting/monoscript/fileName/ThreadHelper.cs: cf53669e685656d280e6d4cf103109b0 -> 15f7a77ab42d22473d9118a5079dd1dd
-  custom:scripting/monoscript/fileName/ErrorResponseBody.cs: f0b3052a36dc7713ca9b7704c0374bb8 -> f947cf573b870ea7f1113a44ec53a83c
-  custom:scripting/monoscript/fileName/IQosJob.cs: e3b4a79f13e8e58fe235af0e84124675 -> 
-  custom:scripting/monoscript/fileName/TaskSchedulerWebGL.cs: 790a89c9fabe60576b4b569472e02528 -> fb7fb88349f0f7c8fd7d0df402058ae1
-  custom:scripting/monoscript/fileName/RelayServiceSdk.cs: 2b558f628042c5dd1ed99f406b3daef3 -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:scripting/monoscript/fileName/IQosRunner.cs: e7457f1accdef27c154316b04ce90c80 -> 
-  custom:scripting/monoscript/fileName/JsonObjectConverter.cs: 6f09c450af3f99e2f47ea2a0812a4596 -> 07e3b9750eecba56823aa4372a13f1e0
-  custom:scripting/monoscript/fileName/UnityWebRequestHelpers.cs: b2dcf4a58a92146b7309519193baa819 -> dbe904c1d4e507f0f6ffdd70565daff8
-  custom:scripting/monoscript/fileName/IDeserializable.cs: 46a26e27fdcd5a93d8c41439a72afb1f -> 2768a5878deaa11dd9b79893a52f7d51
-  custom:scripting/monoscript/fileName/StatusCodePolicyConfig.cs: 469dcdf538da169dfdb857f0985a2508 -> 5d95e6478838e9b47f6c121e0dd14d25
-  custom:scripting/monoscript/fileName/HttpClient.cs: e639aa329f8b0601f4218fa6bf5fcb54 -> b39976840f292f5602be863dbd282fc0
-  custom:scripting/monoscript/fileName/WrappedRelayService.cs: e36fefd6c2002ae633f91328d88d1cfc -> 
-  custom:scripting/monoscript/fileName/RetryPolicy.cs: 336e324b5a446f38d5b48f0d3024b8d9 -> 538446e53118f297dd4f28aa07b6b141
-  custom:scripting/monoscript/fileName/RegionsData.cs: 3d90359e6792142e8c8bc51a685370fb -> 
-  custom:scripting/monoscript/fileName/QosPackageInitializer.cs: 2fb80ff560fc3ed4cfcfe3415ddeb3da -> 
-  custom:scripting/monoscript/fileName/RelayServiceProvider.cs: ce09f84cffe305ff7ebb514faf184a34 -> 
-  custom:scripting/monoscript/fileName/QosAnnotatedResult.cs: 0ee33587351d82656457e0dd6dc50c44 -> 
-  custom:scripting/monoscript/fileName/IsolatedJsonConvert.cs: fc11bbcab77022ef71eeab928b7f6464 -> d5da4532a5d2f90a8ee07bbb51c5d352
-  custom:scripting/monoscript/fileName/JoinRequest.cs: 5b64c1405e3c77ce78b7a0b3f428e9f9 -> 
-  custom:scripting/monoscript/fileName/TaskScheduler.cs: 97be35f7dd2fb4e36f70fb4b2ba87ece -> 4e510ee02b18c2eefc80aad362fffc69
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:scripting/monoscript/fileName/RelayServerEndpoint.cs: 1b62fa70e86bcc4e60030f11c822f5e5 -> 
-  custom:scripting/monoscript/fileName/QosServer.cs: 573cb17e20028ad8e605801667a3ad6e -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:scripting/monoscript/fileName/JoinCodeData.cs: 6007cebf6f77fde290646fcccb6159c9 -> 
-  custom:scripting/monoscript/fileName/QosServiceServer.cs: 3ad99e1f510212149d9bc9bef62c66b6 -> 
-  custom:scripting/monoscript/fileName/RetryPolicyConfig.cs: 08b0951f38b68228c63fef3f33926d03 -> 23c99c489662325c87098eb6c37cfa0f
-  custom:SearchIndexIgnoredProperties: e643bd26f0fe6173181afceb89e7c659 -> 
-  custom:scripting/monoscript/fileName/JoinCodeRequest.cs: 30db0e84f8deb1edc6175888f7b23bc7 -> 
-  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
-  custom:scripting/monoscript/fileName/QosResults.cs: 789268ab536a8ab10db2c2cc9449b05b -> 
-  custom:scripting/monoscript/fileName/RelayIOneOf.cs: b11da7d9a9ce04f570bf2db31e484fb1 -> 
-  custom:scripting/monoscript/fileName/AllocateResponseBody.cs: c78311abcb7ac027be60201bc7d223f4 -> 
-  custom:scripting/monoscript/fileName/TaskSchedulerThreaded.cs: af32dc1fd7f4bbc890b8dec517f79832 -> bdbdc28dbb6a14105ab2661949046b3c
-  custom:scripting/monoscript/fileName/InternalQosServer.cs: 2c9a426d74cf2072680b2b26efb0d660 -> 
-  custom:scripting/monoscript/fileName/AllocationRequest.cs: a206b75e788c7bade16d17e6b15514a1 -> 
-  custom:scripting/monoscript/fileName/Region.cs: 28dbfdecc9d1b4d6a41f30f6173dc677 -> 
-  custom:scripting/monoscript/fileName/Responses.cs: e92035712543825f94d7c0b36cc17f06 -> 43de18815ab085d0fdcb772a938a7d8f
-  custom:scripting/monoscript/fileName/JoinCodeResponseBody.cs: a3d3c170a8a7dd4778de59e486fddd8d -> 
-  custom:scripting/monoscript/fileName/QosServerAnnotations.cs: 19355e072042f0ab2b9b5b550f377165 -> 
-  custom:scripting/monoscript/fileName/RegionsResponseBody.cs: 14c5c88c38707a579c2267b49d28def3 -> 
-  custom:scripting/monoscript/fileName/QosDiscoveryIOneOf.cs: 8d5d80286eea3c38164cf300f6881e52 -> 
-  custom:scripting/precompiled-assembly-types:Unity.Services.Relay: f5d77551bd5aea3eca4e322eea1494c5 -> 
-  custom:scripting/monoscript/fileName/QosDiscoveryApiRequests.cs: 1d7071d3817aa0c9c56ffa1ab341e7a4 -> 
-  custom:scripting/monoscript/fileName/ResponseDeserializationException.cs: 2e5fef8a7115ee4750884c768bdbab82 -> 941907ee9164c22c7e5bc290af0110e0
-  custom:scripting/monoscript/fileName/JoinResponseBody.cs: 74c23d0379c6c070c619e0739737f2f0 -> 
-  custom:scripting/monoscript/fileName/RelayServer.cs: 179da3372ffc8742858e2f78a4593217 -> 
-  custom:scripting/monoscript/fileName/WrappedQosService.cs: 4e7e15975e91d482ed230a608869ef91 -> 
-  custom:scripting/monoscript/fileName/RelayService.cs: 7660a6aeb0d7dc1f7989fcb41687bbbe -> 
-  custom:scripting/monoscript/fileName/JoinData.cs: c9ba89e358b26f9cb23365d913e3e291 -> 
-  custom:scripting/monoscript/fileName/UcgQosServer.cs: 7408d3ab8c0ed10336cef2a9873cbd33 -> 
-  custom:scripting/monoscript/fileName/QosRequest.cs: 2b125754405d66b4aedcfbf7b82fb196 -> 
-  custom:scripting/monoscript/fileName/QosServersResponseBody.cs: 3582d1821583f2286208ca72c6a3e9cd -> 
-  custom:scripting/monoscript/fileName/IRelayService.cs: 8a62effc5f80d1d3bd78a37dd3a3817d -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:scripting/monoscript/fileName/JoinAllocation.cs: 68a4bbad7251ca5164d99d4e69b72afb -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:scripting/monoscript/fileName/QosServiceServersList.cs: 90c2459a2f32d3012a159356158271e2 -> 
-  custom:scripting/monoscript/fileName/QosHelper.cs: 11e298316071903e2afa7f2a5f7907b6 -> 
-  custom:scripting/monoscript/fileName/RelayAllocationsApiRequests.cs: 3c9c687f5cae5dc669bed0416d95ffb7 -> 
-  custom:scripting/monoscript/fileName/Configuration.cs: d1d15b9190f044e5f8a674e5bcecbd75 -> a589a94dfd5e05f90e9c15c29aa05595
-  custom:scripting/monoscript/fileName/InternalQosResult.cs: da5d9f3bbb5d45b4d70294df515cf6df -> 
-  custom:scripting/monoscript/fileName/DeserializationException.cs: 99281a3b4069f0b6192c09dc9d506ac9 -> ddc4f67c723d27dc51fbe463ff6dfc1f
-  custom:scripting/monoscript/fileName/QosService.cs: fceb3e30dcd5128b6dfeacd0a30d82d6 -> 
-  custom:scripting/monoscript/fileName/JsonObject.cs: 3a755ef2608920a8f75c8804b054f7d8 -> 42ae31025a1fd0d8d51f4b96c57232fc
-  custom:scripting/monoscript/fileName/ResponseLinks.cs: 0da602a800ce8b9da01bfa54c7d266a9 -> 
-  custom:scripting/monoscript/fileName/HttpException.cs: 1be44fed12d54a69c591d95a9cbb7885 -> 88fec8f23126bc526ad4885af71e2f3b
-  custom:scripting/monoscript/fileName/RelayServiceException.cs: eb6276a057b77ec9cf9a9e1221dfe7c6 -> 
-  custom:scripting/monoscript/fileName/IRetryPolicy.cs: 82005e5544914926ea30335031ac5997 -> d3362154acda39283e969bee08ee31e8
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:scripting/monoscript/fileName/QosServiceServersResponseBody.cs: 3026d8daf494d7eccdd4f2c3164fc085 -> 
-  custom:scripting/monoscript/fileName/JsonHelpers.cs: 102d6d64c80576b4facbd37efa285698 -> 9e1898b46f06ec8647b122184da4c74c
+Received Import Request.
+  Time since last request: 180781.490937 seconds.
+  path: Assets/Scripts/Mini Games
+  artifactKey: Guid(6b19991e965b03c47a541f73b653d71f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/Mini Games using Guid(6b19991e965b03c47a541f73b653d71f) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 20 workers.
+ -> (artifact id: '919e78f6e30041afdc58cb03d4ccd567') in 0.001947 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Scripts/Mini Games/Medieval
+  artifactKey: Guid(b8b3eadb27dd1bc43b5b7e7326700ad8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/Mini Games/Medieval using Guid(b8b3eadb27dd1bc43b5b7e7326700ad8) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 20 workers.
+ -> (artifact id: '180e818ee86111772400d4faf12b0809') in 0.000309 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 181.909120 seconds.
+  path: Assets/Scripts/Mini Games/Medieval/MedievalGameManager.cs
+  artifactKey: Guid(a3261059814acb544acfedd692bb6083) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/Mini Games/Medieval/MedievalGameManager.cs using Guid(a3261059814acb544acfedd692bb6083) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 20 workers.
+ -> (artifact id: 'f1549700b227479975fc59b5ea924bd6') in 0.000483 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 23.747377 seconds.
+  path: Assets/Scripts/Mini Games/Medieval/SwordController.cs
+  artifactKey: Guid(47ce1f47d2d37384c839810849cb7377) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/Mini Games/Medieval/SwordController.cs using Guid(47ce1f47d2d37384c839810849cb7377) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 20 workers.
+ -> (artifact id: '5beef1c3e461ff387c111df7fdcbd14e') in 0.000394 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 10088.550608 seconds.
+  path: Assets/Scripts/Mini Games/Medieval/SwordController.cs
+  artifactKey: Guid(47ce1f47d2d37384c839810849cb7377) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/Mini Games/Medieval/SwordController.cs using Guid(47ce1f47d2d37384c839810849cb7377) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 20 workers.
+ -> (artifact id: '699a05fe8d22380406a895ed3377dcdf') in 0.000755 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 231.041732 seconds.
+  path: Assets/Scenes/Medieval.unity
+  artifactKey: Guid(7fdc415ee52f2b641b038cddc35f37eb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/Medieval.unity using Guid(7fdc415ee52f2b641b038cddc35f37eb) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 20 workers.
+ -> (artifact id: '79ae88f8c7d45cf683ff8c9f11f7c404') in 0.000589 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 1225.675371 seconds.
+  path: Assets/Scripts/Mini Games/Medieval/MedievalGameManager.cs
+  artifactKey: Guid(a3261059814acb544acfedd692bb6083) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/Mini Games/Medieval/MedievalGameManager.cs using Guid(a3261059814acb544acfedd692bb6083) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 20 workers.
+ -> (artifact id: '5cefc32b92012f4cc739bfefefd39945') in 0.001284 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 19.651129 seconds.
+  path: Assets/Scenes/Egipt.unity
+  artifactKey: Guid(7d2c909555ef5b14dae383441ff22368) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/Egipt.unity using Guid(7d2c909555ef5b14dae383441ff22368) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 20 workers.
+ -> (artifact id: '80620803bb64c3604e1582360e8c51b0') in 0.000581 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 3.360033 seconds.
+  path: Assets/Scenes/Medieval.unity
+  artifactKey: Guid(7fdc415ee52f2b641b038cddc35f37eb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/Medieval.unity using Guid(7fdc415ee52f2b641b038cddc35f37eb) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 20 workers.
+ -> (artifact id: 'c88362286689fcde470083e34bcb211a') in 0.000642 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0

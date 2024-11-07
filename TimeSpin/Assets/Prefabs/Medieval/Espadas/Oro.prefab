@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2743332790897997966}
   - component: {fileID: 3223338201083354205}
   - component: {fileID: 2744495307440789556}
-  - component: {fileID: 1050986547216395402}
+  - component: {fileID: -3845822022186963733}
   m_Layer: 0
   m_Name: Oro
   m_TagString: Sword
@@ -108,7 +108,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &1050986547216395402
+--- !u!114 &-3845822022186963733
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -120,4 +120,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47ce1f47d2d37384c839810849cb7377, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  swordHoldTime: 5
   swordPoints: 5
