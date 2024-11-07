@@ -1900,6 +1900,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _joinedPlayers: []
+  numPlayers: 0
 --- !u!1 &349343189
 GameObject:
   m_ObjectHideFlags: 0
@@ -2673,7 +2674,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1848314985}
         m_TargetAssemblyTypeName: UI_Lobby, Assembly-CSharp
-        m_MethodName: JoinLobbyButton
+        m_MethodName: JoinGameButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9609,7 +9610,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1848314985}
         m_TargetAssemblyTypeName: UI_Lobby, Assembly-CSharp
-        m_MethodName: CreateLobbyButton
+        m_MethodName: CreateGameButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

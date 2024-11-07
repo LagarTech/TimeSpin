@@ -33,21 +33,21 @@ public class UI_Lobby : MonoBehaviour
         _lobbyCode = lobbyCode;
     }
 
-    // Función para crear una sala, que accede a la instancia del manejador del LobbyManager
-    public void CreateLobbyButton()
+    // Función para crear una sala para jugar una partida
+    public void CreateGameButton()
     {
         // Inicia la coroutine en lugar de usar async
-        StartCoroutine(CreateLobbyCoroutine());
+        StartCoroutine(CreateGameCoroutine());
     }
 
-    private IEnumerator CreateLobbyCoroutine()
+    private IEnumerator CreateGameCoroutine()
     {
         HideMessages();
         _waitingMessage.SetActive(true); // Se muestra el mensaje de espera
         bool lobbyCreated = false;
 
-        // Primero se espera a crear el lobby
-        yield return StartCoroutine(LobbyManager.instance.CreatePrivateLobbyCoroutine((success) => lobbyCreated = success));
+        // Primero se espera a que se asigne a un servidor, y establezca la conexión
+        yield return StartCoroutine(LobbyManager.instance.CreatePrivateGameCoroutine((success) => lobbyCreated = success));
 
         _waitingMessage.SetActive(true); // Se oculta el mensaje de espera
 
@@ -67,19 +67,19 @@ public class UI_Lobby : MonoBehaviour
     }
 
     // Función para unirse a una sala, que accede a la instancia del manejador del LobbyManager
-    public void JoinLobbyButton()
+    public void JoinGameButton()
     {
         // Inicia la coroutine en lugar de usar async
-        StartCoroutine(JoinLobbyCoroutine());
+        StartCoroutine(JoinGameCoroutine());
     }
 
-    private IEnumerator JoinLobbyCoroutine()
+    private IEnumerator JoinGameCoroutine()
     {
         HideMessages();
         bool success = false;
 
         // Primero se espera a unirse al lobby y se almacena el resultado en `success`
-        yield return StartCoroutine(LobbyManager.instance.JoinLobbyByCodeCoroutine(_lobbyCode, (result) => success = result));
+        yield return StartCoroutine(LobbyManager.instance.JoinGameByCodeCoroutine(_lobbyCode, (result) => success = result));
 
         // Si no se pudo unir al lobby, se detiene el proceso
         if (!success)
