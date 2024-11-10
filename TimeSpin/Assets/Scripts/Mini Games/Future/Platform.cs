@@ -15,14 +15,12 @@ public class Platform : MonoBehaviour
 
     private void Start()
     {
-        if (Application.platform == RuntimePlatform.LinuxServer) return;
         _meshRenderer = GetComponent<MeshRenderer>();
         _meshRenderer.enabled = false; // Se desactiva el componente por defecto
     }
 
     private void Update()
     {
-        if (Application.platform == RuntimePlatform.LinuxServer) return;
         // Si hay jugadores en la plataforma y no está iluminada
         if (platformCount > 0 && !_isHighlighted)
         {
@@ -42,8 +40,8 @@ public class Platform : MonoBehaviour
         // Si el jugador entra en la casilla
         if (collision.gameObject.tag == "Player")
         {
-            // Se avisa a los clientes de que un jugador ha pisado una plataforma
-            PlatformManager.instance.PlatformEntered(idPlatform, isUp);
+            // Se activan las plataformas vecinas
+            OnPlatformEnter();
         }
     }
 
@@ -63,8 +61,8 @@ public class Platform : MonoBehaviour
         // Si el jugador entra en la casilla
         if (collision.gameObject.tag == "Player")
         {
-            // Se avisa a los clientes de que un jugador ha salido de una plataforma
-            PlatformManager.instance.PlatformExited(idPlatform, isUp);
+            // Se desactivan las plataformas vecinas
+            OnPlatformExit();
         }
     }
 
@@ -91,7 +89,6 @@ public class Platform : MonoBehaviour
 
     public void FallPlatform()
     {
-        if (Application.platform == RuntimePlatform.LinuxServer) return;
         // Se disminuye el contador de la plataforma
         platformCount = 0;
         // Se disminuye el contador de las vecinas
@@ -103,9 +100,5 @@ public class Platform : MonoBehaviour
             }
         }
     }
-
-
-
-
 
 }

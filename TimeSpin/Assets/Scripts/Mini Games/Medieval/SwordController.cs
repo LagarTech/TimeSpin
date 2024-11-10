@@ -3,23 +3,16 @@ using System.Collections;
 
 public class SwordController : MonoBehaviour
 {
-    public float swordHoldTime = 5f;  // Tiempo que la espada se mantiene en la base
-    private bool isHeldAtBase = false;
-    private int lastPlayerIndex = -1;
-    public int swordPoints = 0;
-    private MedievalGameManager gameManager;
+    private const float SWORD_HOLD_TIME = 5f;  // Tiempo que la espada se mantiene en la base
+    private bool _isHeldAtBase = false; // Se indica si la espada está en la base
+    [SerializeField] private int _swordPoints = 0; // Puntos que se otorgan al llevar la espada a la base
 
-
-    private void Start()
-    {
-        gameManager = FindObjectOfType<MedievalGameManager>();
-    }
 
     private void OnTriggerEnter(Collider other)
     {
-        MedievalPlayerController player = other.GetComponent<MedievalPlayerController>();
-
-        if (player != null && player.CarriedSword == null && !isHeldAtBase)
+        PlayerMovement player = other.GetComponent<PlayerMovement>();
+        // Si el jugador entra en contacto con una espada, este la toma consigo
+        if (player != null && player.carriedSword == null && !_isHeldAtBase)
         {
             player.SetCarriedSword(gameObject);
             transform.SetParent(player.transform);
@@ -27,43 +20,30 @@ public class SwordController : MonoBehaviour
         }
     }
 
-    public void DeliverSword(int playerIndex)
+    public void DeliverSword()
     {
-        if (isHeldAtBase) return;  // No hacer nada si ya está siendo retenida
+        if (_isHeldAtBase) return;  // No hacer nada si ya está siendo retenida
 
-        isHeldAtBase = true;
-        lastPlayerIndex = playerIndex;
+        _isHeldAtBase = true; // Se indica que la espada ha sido depositada en la base
 
         // Mueve la espada a la base del jugador
-        transform.position = gameManager.playerBases[playerIndex].position;
-        transform.parent = gameManager.playerBases[playerIndex]; // Fija la espada en la base
+        transform.position = MedievalGameManager.Instance.basePlayer.position;
+        transform.parent = MedievalGameManager.Instance.basePlayer; // Fija la espada en la base
 
         // Inicia la corutina para mantener la espada en la base
-        StartCoroutine(HoldSwordAtBase(playerIndex));
+        StartCoroutine(HoldSwordAtBase());
 
     }
-    private IEnumerator HoldSwordAtBase(int playerIndex)
+    private IEnumerator HoldSwordAtBase()
     {
         // Espera 5 segundos mientras la espada está en la base
-        yield return new WaitForSeconds(swordHoldTime);
+        yield return new WaitForSeconds(SWORD_HOLD_TIME);
 
-        // Si nadie la ha robado en ese tiempo, otorga puntos al jugador y elimina la espada
-        if (isHeldAtBase)
+        // Si da tiempo a que un personaje la recoja, otorga puntos al jugador y elimina la espada
+        if (_isHeldAtBase)
         {
-            gameManager.AddScore(playerIndex, swordPoints); // Agrega puntos al jugador
+            MedievalGameManager.Instance.AddScore(_swordPoints); // Agrega puntos al jugador
             Destroy(gameObject);  // Elimina la espada del juego
-        }
-    }
-
-    public void StealSword()
-    {
-        if (isHeldAtBase)
-        {
-            isHeldAtBase = false;
-            lastPlayerIndex = -1;
-
-            // Despega la espada de la base para que pueda ser llevada por otro jugador
-            transform.parent = null;
         }
     }
 

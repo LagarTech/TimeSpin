@@ -2,20 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.ConstrainedExecution;
 using TMPro;
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GridManager : NetworkBehaviour
+public class GridManager : MonoBehaviour
 {
     public static GridManager Instance;
 
     // Variable que controla el flujo del juego
     public bool runningGame = false;
-    // Variable que gestiona el número de jugadores
-    private int _numPlayers;
-    // Variable que controlar cuántos jugadores se han pillado
-    public int numPlayersCaught = 0;
 
     // Dimensiones del tablero
     private const int COLUMNS = 13;
@@ -29,6 +24,7 @@ public class GridManager : NetworkBehaviour
     // Temporizador del juego
     [SerializeField] private TMP_Text _timerText;
     private float _remainingTime = 120f; // El tiempo de juego son 2 minutos (120 segundos)
+    private float _survivedTime = 0f;
 
     // Gestión de la aparición aleatoria de pinchos
     // Lista de todas las casillas con pinchos
@@ -57,13 +53,10 @@ public class GridManager : NetworkBehaviour
 
     private void Start()
     {
-        // Se genera el tablero, la lógica sólo se almacena en el servidor
-        if (Application.platform == RuntimePlatform.LinuxServer)
-        {
-            GenerateGrid();
-            // Se prepara la gestión aleatoria de los pinchos en el servidor
-            PrepareSpikesSpawn();
-        }
+        // Se genera el tablero
+        GenerateGrid();
+        // Se prepara la gestión aleatoria de los pinchos 
+        PrepareSpikesSpawn();
     }
 
     private void Update()
@@ -73,70 +66,38 @@ public class GridManager : NetworkBehaviour
         // GESTIÓN DEL TIEMPO RESTANTE
         if (_remainingTime > 0f)
         {
+            // Aumentar el tiempo sobrevivido
+            _survivedTime+= Time.deltaTime;
             // Disminuir el tiempo restante
             _remainingTime -= Time.deltaTime;
-            // Se actualiza el temporizador sólo en el cliente
-            if (Application.platform != RuntimePlatform.LinuxServer)
-            {
-                UpdateTimer();
-            }
+            // Se actualiza el temporizador
+            UpdateTimer();
         }
         else
         {
             _remainingTime = 0f;
-            // Se actualiza el temporizador sólo en el cliente
-            if (Application.platform != RuntimePlatform.LinuxServer)
-            {
-                UpdateTimer();
-            }
-            // Se indica que el juego ha finalizado
-            runningGame = false;
+            // Se actualiza el temporizador
+            UpdateTimer();
+            // Se finaliza el minijuego
             GameOver();
             return;
         }
 
         // APARICIÓN DE PINCHOS
-        // Esto ser realizará en el servidor, que es el que almacena la lógica, y en el cliente, para hacerlo visible
-        if (Application.platform == RuntimePlatform.LinuxServer)
+        _spikesTime -= Time.deltaTime;
+        if (_spikesTime < 0f)
         {
-            _spikesTime -= Time.deltaTime;
-            if (_spikesTime < 0f)
-            {
-                _spikesTime = 10f; // Entre apariciones se deja un tiempo de 10 segundos
-                SpawnSpikes();
-            }
+            _spikesTime = 10f; // Entre apariciones se deja un tiempo de 10 segundos
+            SpawnSpikes();
         }
 
         // GENERACIÓN DE MOMIAS
-        // Únicamente en el servidor, se spawnearán directamente en el cliente
-        if (Application.platform == RuntimePlatform.LinuxServer)
+        _mummyTime -= Time.deltaTime;
+        if (_mummyTime < 0f)
         {
-            _mummyTime -= Time.deltaTime;
-            if (_mummyTime < 0f)
-            {
-                if (IsServer)  // Solo el servidor puede spawnear objetos
-                {
-                    // Instancia el objeto en el servidor
-                    GameObject _mummyObj = Instantiate(_mummy, _mummySpawnPosition, Quaternion.identity);
-
-                    // Lo registramos en la red para sincronizarlo con los clientes
-                    _mummyObj.GetComponent<NetworkObject>().Spawn();
-                    _mummyTime = 30f;
-                }
-            }
-        }
-
-        // CONTROL DEL NÚMERO DE JUGADORES
-        // Únicamente en el servidor
-        if (Application.platform == RuntimePlatform.LinuxServer)
-        {
-            _numPlayers = GameObject.FindGameObjectsWithTag("Player").Length;
-            // Si sólo queda un jugador, se termina el juego
-            if (_numPlayers - numPlayersCaught == 1)
-            {
-                runningGame = false;
-                GameOver();
-            }
+            // Instancia el objeto
+            Instantiate(_mummy, _mummySpawnPosition, Quaternion.identity);
+            _mummyTime = 90f;
         }
 
     }
@@ -257,7 +218,6 @@ public class GridManager : NetworkBehaviour
 
     private void SpawnSpikes()
     {
-        // Primero se realiza la lógica en el servidor
         int randomSpike = _randomSpikesSpawn[_numSpikes];
         // Se activan los pinchos de la casilla que toque según el orden aleatorio
         _spikesList[randomSpike].SetActive(true);
@@ -269,26 +229,18 @@ public class GridManager : NetworkBehaviour
         GetTile((int)spikesTilePos.x, (int)spikesTilePos.y).MakeNonWalkable();
         // Se indica que se ha generado una casilla más con pinchos
         _numSpikes++;
-        // Una vez hecho, se activan los pinchos en los clientes
-        SpawnSpikesClientRpc(randomSpike);
-    }
-
-    [ClientRpc]
-    private void SpawnSpikesClientRpc(int idSpike)
-    {
-        // Se hace visible en los clientes la trampa que toque, en base a lo realizado en el servidor
-        _spikesList[idSpike].SetActive(true);
+        // Una vez hecho, se activan los pinchos
+        _spikesList[randomSpike].SetActive(true);
     }
 
     #endregion
-    private void GameOver()
+    public void GameOver()
     {
-        // Se calculan las puntuaciones y las posiciones de los jugadores en base a los resultados
-        GameSceneManager.instance.GameOverEgiptFuture();
-        // Se reactiva la lista de jugadores en el servidor
-        GameSceneManager.instance.ActivePlayersList();
-        // Se comienza la transición
-        StartCoroutine(LoadingScreenManager.instance.ServerSceneTransition("LobbyMenu"));
+        if (!runningGame) return;
+        // Se indica que ha terminado el juego
+        runningGame = false;
+        // Se calcula la puntuación del jugador en base a los resultados
+        GameSceneManager.instance.GameOverEgiptFuture(_survivedTime, true);
     }
 
 }

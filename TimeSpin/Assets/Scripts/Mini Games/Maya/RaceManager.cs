@@ -9,8 +9,7 @@ public class RaceManager : MonoBehaviour
     public static RaceManager instance;
 
     public bool runningGame = false;
-    private List<GameObject> _players;
-    private List<GameObject> _playersFinished = new List<GameObject>();
+    private float _timer = 0f;
 
     private void Awake()
     {
@@ -24,55 +23,29 @@ public class RaceManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void Update()
     {
-        _players = GameObject.FindGameObjectsWithTag("Player").ToList();
-    }
-
-    private void PlayerReachedFinishLine(GameObject player)
-    {
-        // Se actualiza la lista de jugadores, por si acaso alguno se ha desconectado
-        _players = GameObject.FindGameObjectsWithTag("Player").ToList();
-        if (!_playersFinished.Contains(player))
+        if(runningGame)
         {
-            _playersFinished.Add(player); // Añade al jugador que ha llegado a la meta
-            CheckEndOfRace(); // Verifica si la carrera debe terminar
-        }
-    }
-
-    private void CheckEndOfRace()
-    {
-        // Se calcula cuántos jugadores quedan por llegar a la meta
-        int remainingPlayers = _players.Count - _playersFinished.Count;
-
-        if (remainingPlayers <= 1)
-        {
-            EndRace();
+            // Se contabiliza el tiempo que se tarda en terminar la carrera
+            _timer += Time.deltaTime;
         }
     }
 
     // Función para terminar el minijuego
     private void EndRace()
     {
-        Debug.Log("La carrera ha terminado");
         runningGame = false;
         // Se inicia la transición
-        StartCoroutine(LoadingScreenManager.instance.ServerSceneTransition("LobbyMenu"));
+        GameSceneManager.instance.GameOverMaya(_timer);
     }
 
+    // Se comprueba si el jugador ha pasado la meta
     private void OnCollisionEnter(Collision collision)
     {
-        // Sólo se lleva la gestión de la meta en el servidor
-        if (Application.platform != RuntimePlatform.LinuxServer) return;
-
         if(collision.gameObject.tag == "Player")
         {
-            // Se indica que el jugador ha pasado la meta
-            PlayerReachedFinishLine(collision.gameObject);
-            // Se coloca al jugador en la lista de finalizados
-            GameSceneManager.instance.finishedPlayers.Add(collision.gameObject.GetComponent<PlayerMovement>());
-            // Se indica al jugador que ha terminado
-            collision.gameObject.GetComponent<PlayerMovement>().goalReached = true;
+            EndRace();
         }
     }
 }

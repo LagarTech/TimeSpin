@@ -1,34 +1,62 @@
+using Cinemachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using TMPro;
-using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class GameSceneManager : NetworkBehaviour
+public class GameSceneManager : MonoBehaviour
 {
     public static GameSceneManager instance;
-
-    [SerializeField] private GameObject[] _playersList;
-    private int _numPlayers;
-    // Control de las puntuaciones de cada minijuego
-    public List<PlayerMovement> orderedPlayers; // Lista para ordenar a los jugadores en función de los resultados
-    public List<PlayerMovement> defeatedPlayers; // Lista para colocar los jugadores eliminados (EGIPTO Y FUTURO)
-    public List<PlayerMovement> finishedPlayers; // Lista para colocar los jugadores que terminen la carrera (MAYA)
-    // Puntuaciones fijas para los minijuegos de carrera o supervivencia
-    public List<int> fixedPointsGames;
-    private const int MAX_PLAYERS = 4;
 
     public bool gameStarted = false;
     public bool practiceStarted = false;
 
     private const int NUM_GAMES = 5;
-    private bool[] _playedGames; // Lista en la que se va a marcar los minijuegos que se van jugando, para que no se puedan repetir
+    [SerializeField] private bool[] _playedGames = new bool[NUM_GAMES]; // Lista en la que se va a marcar los minijuegos que se van jugando, para que no se puedan repetir
     private int _numPlayedGames = 0; // Contador que maneja el número de minijuegos que ya se han jugado
     public bool allGamesPlayed = false; // Variable que gestiona cuándo termina la partida, al jugar los 5 minijuegos
+    // Cálculo de puntuaciones de los minijuegos Egipto y Futuro
+    const float MAX_SURVIVED_TIME = 120f;
+    const int MAX_POINTS_EG_FT = 50;
+    // Cálculo de puntuaciones del minijuego Maya
+    const float MIN_RACE_TIME = 50f;
+    const float MAX_RACE_TIME = 100f;
+    const int MAX_POINTS_MY = 50;
+    // Se almacenan los resultados de los juegos y los puntos asociados para mostrarlos al final
+    [SerializeField] private int[] _resultsGames = new int[NUM_GAMES];
+    [SerializeField] private int[] _pointsGames = new int[NUM_GAMES];
+
+    public int totalPoints = 0;
+
+    // Gestión de las escenas
+    // Control de la escena en la que se encuentra el jugador
+    private enum Scene
+    {
+        Lobby,
+        Prehistory,
+        Egipt,
+        Medieval,
+        Maya,
+        Future
+    }
+
+    private string _previousScene = ""; // Se guarda una referencia a la escena en el instante anterior, para comprobar si se ha llevado a cabo algún cambio
+
+    public GameObject playerPrefab;
+    public Vector3 startingPositionLobby;
+    [SerializeField] private Vector3 _startingPositionPrehistory;
+    [SerializeField] private Vector3 _startingPositionEgipt;
+    [SerializeField] private Vector3 _startingPositionMedieval;
+    [SerializeField] private Vector3 _startingPositionMaya;
+    [SerializeField] private Vector3 _startingPositionFuture;
+
 
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
@@ -40,32 +68,96 @@ public class GameSceneManager : NetworkBehaviour
         DontDestroyOnLoad(this);
     }
 
-    private void Start()
+    private void Update()
     {
-        if (Application.platform != RuntimePlatform.LinuxServer) return;
-        _playedGames = new bool[NUM_GAMES]; // Se inicializa la lista para los 5 minijuegos
-        for(int i = 0; i < NUM_GAMES; i++)
+        GetCurrentScene();
+    }
+
+    private void GetCurrentScene()
+    {
+        // Se obtiene el nombre de la escena
+        string sceneName = SceneManager.GetActiveScene().name;
+        // Si se sigue en la misma escena que antes, no se actualiza nada
+        if (_previousScene == sceneName) return;
+        // Gestión de las acciones necesarias para pasar de una escena a otra
+        switch (sceneName)
         {
-            _playedGames[i] = false; // Se indica que ningún minijuego se ha jugado por el momento
+            case "LobbyMenu":
+                // Se restaura la gravedad
+                Physics.gravity = new Vector3(0, -9.81f, 0);
+                // Se instancia al jugador en la posición de inicio adecuada
+                if(gameStarted)
+                {
+                    Instantiate(playerPrefab, startingPositionLobby, Quaternion.identity);
+                }
+                // Se eliminan las momias del minijuego anterior
+                DespawnMummies();
+                // Se eliminan los troncos del minijuego anterior
+                DespawnTrunks();
+                break;
+            case "Prehistory":
+                // Una vez se cambia de la primera escena, se indica que ya ha comenzado el juego
+                gameStarted = true;
+                // Se instancia al jugador en la posición de inicio adecuada
+                Instantiate(playerPrefab, _startingPositionPrehistory, Quaternion.identity);
+                break;
+            case "Egipt":
+                // Una vez se cambia de la primera escena, se indica que ya ha comenzado el juego
+                gameStarted = true;
+                // Se instancia al jugador en la posición de inicio adecuada
+                Instantiate(playerPrefab, _startingPositionEgipt, Quaternion.identity);
+                break;
+            case "Medieval":
+                // Una vez se cambia de la primera escena, se indica que ya ha comenzado el juego
+                gameStarted = true;
+                // Se instancia al jugador en la posición de inicio adecuada
+                Instantiate(playerPrefab, _startingPositionMedieval, Quaternion.identity);
+                break;
+            case "Maya":
+                // Una vez se cambia de la primera escena, se indica que ya ha comenzado el juego
+                gameStarted = true;
+                // Se instancia al jugador en la posición de inicio adecuada
+                Transform _playerTransform = Instantiate(playerPrefab, _startingPositionMaya, Quaternion.identity).transform;
+                // Se hace que si el personaje es del propietario, la cámara lo siga
+                GameObject.FindGameObjectWithTag("FollowCamera").GetComponent<CinemachineVirtualCamera>().Follow = _playerTransform;
+                GameObject.FindGameObjectWithTag("FollowCamera").GetComponent<CinemachineVirtualCamera>().LookAt = _playerTransform;
+                break;
+            case "Future":
+                // Una vez se cambia de la primera escena, se indica que ya ha comenzado el juego
+                gameStarted = true;
+                // Se instancia al jugador en la posición de inicio adecuada
+                Instantiate(playerPrefab, _startingPositionFuture, Quaternion.identity);
+                break;
+        }
+        if (_previousScene != "")
+        {
+            // Se inicia la pantalla de carga en la escena a la que se haya transicionado
+            StartCoroutine(LoadingScreenManager.instance.LoadingScreenCoroutine(sceneName));
+        }
+        _previousScene = sceneName;
+    }
+
+    private void DespawnMummies()
+    {
+        // Encontrar todos los objetos con la etiqueta "Momia"
+        GameObject[] mummies = GameObject.FindGameObjectsWithTag("Momia");
+        if (mummies.Length == 0) return;
+        // Recorrer cada objeto y destruirlo
+        foreach (GameObject mummy in mummies)
+        {
+            Destroy(mummy);
         }
     }
 
-    public void InitializePlayersList()
+    private void DespawnTrunks()
     {
-        _playersList = GameObject.FindGameObjectsWithTag("Player");
-        _numPlayers = _playersList.Length;
-    }
-
-    public void ActivePlayersList()
-    {
-        // Se reactivan los jugadores de la lista
-        foreach(var player in _playersList)
+        // Encontrar todos los objetos con la etiqueta "Tronco"
+        GameObject[] trunks = GameObject.FindGameObjectsWithTag("Tronco");
+        if (trunks.Length == 0) return;
+        // Recorrer cada objeto y despawnearlo si es un NetworkObject
+        foreach (GameObject trunk in trunks)
         {
-            PlayerMovement pMovement = player.GetComponent<PlayerMovement>();
-            if (pMovement != null)
-            {
-                pMovement.ShowPlayer();
-            }
+            Destroy(trunk);
         }
     }
 
@@ -73,160 +165,96 @@ public class GameSceneManager : NetworkBehaviour
     {
         _playedGames[gameID] = true; // Se marca el juego como ya escogido
         _numPlayedGames++; // Se incrementa el número de minijuegos jugados
-        if(_numPlayedGames == NUM_GAMES)
+        if (_numPlayedGames == NUM_GAMES)
         {
             allGamesPlayed = true; // Si se han jugado todos, se indica para poder terminar el juego
         }
     }
 
     public bool[] GetPlayedGames() { return _playedGames; }
-    
+
     // GESTIÓN DE LAS PUNTUACIONES DE LOS MINIJUEGOS
-    public void GameOverEgiptFuture()
+    public void GameOverEgiptFuture(float survivedTime, bool egipt)
     {
-        // Primero se indica que aquellos jugadores que no han sido eliminados han quedado en el primer puesto
-        int numPlayersNonDefeated = 0;
-        foreach(var player in _playersList)
+        // La puntuación máxima para estos minijuegos es de 50 puntos, si se aguantan los dos minutos
+        // Se aplica la relación de proporcionalidad
+        int resultPoints = (int)(MAX_POINTS_EG_FT * survivedTime / MAX_SURVIVED_TIME);
+        totalPoints += resultPoints;
+        // Se almacena el resultado en una lista
+        bool isRecord = false;
+        if (egipt)
         {
-            PlayerMovement playerMovement = player.GetComponent<PlayerMovement>();
-            if (playerMovement != null)
-            {
-                if(!playerMovement.isDefeated)
-                {
-                    playerMovement.currentPosition = 1; // La posición de aquellos que no han sido eliminados será 1º
-                    numPlayersNonDefeated++; // Se indica que hay un jugador más que no ha sido derrotado, para empezar a contar las posiciones correctamente de aquellos que sí
-                    orderedPlayers.Add(playerMovement);
-                }
-            }
-        }
-        // Se establecen las posiciones de los jugadores eliminados (desde el final de la lista)
-        for(int i = defeatedPlayers.Count - 1; i >= 0; i--)
-        {
-            defeatedPlayers[i].currentPosition = numPlayersNonDefeated + 1;
-            numPlayersNonDefeated++;
-            orderedPlayers.Add(defeatedPlayers[i]);
-        }
-        // Se asignan las puntuaciones en función del puesto y del número de jugadores que hubiera
-        foreach(var player in orderedPlayers)
-        {
-            player.pointsToAdd = fixedPointsGames[MAX_PLAYERS - _numPlayers + player.currentPosition - 1];
-        }
+            _resultsGames[1] = (int)survivedTime;
+            _pointsGames[1] = resultPoints;
+            // Se comprueba si es récord
 
-        // Se prepara la información para pasarla a los clientes
-        SetClientGameOverData();
+        }
+        else
+        {
+            _resultsGames[4] = (int)survivedTime;
+            _pointsGames[4] = resultPoints;
+            // Se comprueba si es récord
 
+        }
+        // Se pasa dicha información a la pantalla de puntuaciones para mostrarlo
+        LoadingScreenManager.instance.SceneToLobbyTransition("LobbyMenu", (int)survivedTime, resultPoints, isRecord);
     }
 
-    public void GameOverMaya()
+    public void GameOverMaya(float raceTime)
     {
-        // Se establecen las posiciones y puntuaciones de los jugadores en función del orden en el que hayan llegado a la meta
-        for(int i = 0; i < finishedPlayers.Count; i++)
+        // La puntuación máxima para estos minijuegos es de 50 puntos, si se tardan 50 segundos o menos
+        int resultPoints = 0;
+        if (raceTime <= MIN_RACE_TIME)
         {
-            finishedPlayers[i].currentPosition = i + 1;
-            finishedPlayers[i].currentPoints = fixedPointsGames[MAX_PLAYERS - _numPlayers + finishedPlayers[i].currentPosition - 1];
-            orderedPlayers.Add(finishedPlayers[i]); // Se añade a la lista ordenada
+            resultPoints = MAX_POINTS_MY;
         }
-        // Se establece la puntuación del jugador último, el que no ha llegado a la meta
-        foreach(var player in _playersList)
+        else if (raceTime > MIN_RACE_TIME && raceTime <= MAX_RACE_TIME)
         {
-            if(!player.GetComponent<PlayerMovement>().goalReached)
-            {
-                player.GetComponent<PlayerMovement>().currentPosition = finishedPlayers.Count + 1; // Última posición
-                player.GetComponent<PlayerMovement>().currentPoints = fixedPointsGames[3]; // Peor puntuación
-                orderedPlayers.Add(player.GetComponent<PlayerMovement>());
-            }
+            resultPoints = (int) (MAX_RACE_TIME - raceTime);
         }
+        else
+        {
+            resultPoints = 0;
+        }
+        // Se suman los puntos acumulados
+        totalPoints+= resultPoints;
 
-        // Se preparan los datos para pasarlos a los clientes
-        SetClientGameOverData();
+        // Se almacena el resultado en la lista
+        _resultsGames[3] = (int)raceTime;
+        _pointsGames[3] = resultPoints;
 
+        // Se comprueba si es record
+        bool isRecord = false;
+
+        // Se pasa dicha información a la pantalla de puntuaciones para mostrarlo
+        LoadingScreenManager.instance.SceneToLobbyTransition("LobbyMenu", (int)raceTime, resultPoints, isRecord);
     }
 
-    private void SetClientGameOverData()
+    public void GameOverPrehistoryMedieval(int points, int numDefeated, bool prehistory)
     {
-        // Toda esta información está procesada en el servidor, al cliente es necesario pasarle:
-        // - El orden de los OwnerClientId en base a los orderedPlayers
-        // - La posición de cada uno de ellos
-        // - Los puntos a sumar de cada uno de ellos
-        int[] orderedPlayersId = new int[orderedPlayers.Count];
-        int[] positionPlayers = new int[orderedPlayers.Count];
-        int[] pointsPlayers = new int[orderedPlayers.Count];
+        // La puntuación de estos minijuegos viene determinada por la propia partida
+        int resultPoints = points;
+        totalPoints += resultPoints; // Se suman los puntos al total
 
-        for (int i = 0; i < orderedPlayers.Count; i++)
+        // Como resultado, se tomará el número de espadas cogidas y el número de dinosaurios derrotados
+        bool isRecord = false;
+
+        if(prehistory)
         {
-            orderedPlayersId[i] = orderedPlayers[i].ownerClient;
-            positionPlayers[i] = orderedPlayers[i].currentPosition;
-            pointsPlayers[i] = orderedPlayers[i].pointsToAdd;
+            _resultsGames[0] = numDefeated;
+            _pointsGames[0] = resultPoints;
+            // Se comprueba si es record
+        }
+        else
+        {
+            _resultsGames[1] = numDefeated;
+            _pointsGames[1] = resultPoints;
+            // Se comprueba si es record
         }
 
-        UpdateGameOverStatsClientRpc(orderedPlayersId, positionPlayers, pointsPlayers);
+        // Se pasa dicha información a la pantalla de puntuaciones para mostrarlo
+        LoadingScreenManager.instance.SceneToLobbyTransition("LobbyMenu", numDefeated, resultPoints, isRecord);
     }
 
-    [ClientRpc]
-    public void UpdateGameOverStatsClientRpc(int[] orderedPlayersId, int[] positionPlayers, int[] pointsPlayers)
-    {
-        Debug.Log("Calculando puntuaciones...");
-        // Con esta función se tendrán a los jugadores ordenados de la misma forma que en el servidor, para mostrarlos por pantalla en el panel de puntuaciones
-        // Se guardan además los puntos para añadir y la posición concreta en la que han quedado
-        GameObject[] _playersList = GameObject.FindGameObjectsWithTag("Player");
-        for(int i = 0; i< orderedPlayersId.Length; i++)
-        {
-            for(int j = 0; j< _playersList.Length; j++)
-            {
-                if (_playersList[j].GetComponent<PlayerMovement>().ownerClient == orderedPlayersId[i])
-                {
-                    orderedPlayers.Add(_playersList[j].GetComponent<PlayerMovement>());
-                    _playersList[j].GetComponent<PlayerMovement>().currentPosition = positionPlayers[i];
-                    _playersList[j].GetComponent<PlayerMovement>().pointsToAdd = pointsPlayers[i];
-                }
-            }
-        }
-    }
 
-    // Estructura y comparador para mostrar el ranking en el lobby
-    struct PlayerScore
-    {
-        public string playerName;
-        public int playerScore;
-    }
-
-    class PlayerScoreComparer : IComparer<PlayerScore>
-    {
-        public int Compare(PlayerScore x, PlayerScore y)
-        {
-            // Ordena de mayor a menor por playerScore
-            return y.playerScore.CompareTo(x.playerScore);
-        }
-    }
-
-    public void UpdateLobbyRanking()
-    {
-        _playersList = GameObject.FindGameObjectsWithTag("Player");
-        List<PlayerScore> ranking = new List<PlayerScore>(_playersList.Length);
-        foreach(var player in _playersList)
-        {
-            // Se guardan los puntos y el nombre de cada jugador, se almacena en la lista
-            PlayerMovement playerData = player.GetComponent<PlayerMovement>();
-            PlayerScore playerRanking = new PlayerScore();
-            playerRanking.playerName = playerData.characterNamePlayer.GetComponentInChildren<TMP_Text>().text;
-            playerRanking.playerScore = playerData.currentPoints;
-            ranking.Add(playerRanking);
-        }
-        // Se ordena la lista
-        ranking.Sort(new PlayerScoreComparer());
-
-        // Se buscan los objetos de texto para almacenar el ranking
-        GameObject[] rankingGO = GameObject.FindGameObjectsWithTag("RankingLobby");
-        // Se almacenan los componentes de text
-        List<TMP_Text> rankingTexts= new List<TMP_Text>();
-        foreach(var text in rankingGO)
-        {
-            rankingTexts.Add(text.GetComponent<TMP_Text>());
-        }
-        // Se muestran las puntuaciones ordenadas
-        for(int i = 0; i < ranking.Count; i++)
-        {
-            rankingTexts[i].text = (i+1).ToString() + "º - " + ranking[i].playerName + " : " + ranking[i].playerScore.ToString() + " pts.";
-        }
-    }
 }

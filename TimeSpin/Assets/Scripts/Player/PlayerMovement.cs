@@ -1,29 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Cinemachine;
 
-public class PlayerMovement : NetworkBehaviour
+public class PlayerMovement : MonoBehaviour
 {
-    // Modelo y nombre del jugador
+    // Modelo del jugador
     public GameObject characterNamePlayer;
-    // Dueño del jugador
-    public int ownerClient;
+    // Dirección y velocidad de movimiento
     private Vector3 _movementDirection = Vector3.zero;
     private float _speed = 1f;
-
-    // Puntuación del jugador
-    public int currentPoints = 0;
-    // Puntos a sumar
-    public int pointsToAdd = 0;
-    // Variable que indica si el jugador ha sido eliminado
-    public bool isDefeated = false;
-    // Variable que indica si el jugador ha llegado a la meta
-    public bool goalReached = false;
-    // Variable que indica el puesto del jugador en el minijuego
-    public int currentPosition = 0;
 
     // Control de la escena en la que se encuentra el jugador
     private enum Scene
@@ -36,293 +23,175 @@ public class PlayerMovement : NetworkBehaviour
         Future
     }
     [SerializeField] private Scene _currentScene = Scene.Lobby; // Se comienza en 
-    private string _previousScene = "LobbyMenu"; // Se guarda una referencia a la escena en el instante anterior, para comprobar si se ha llevado a cabo algún cambio
 
-    // Variables encargadas de la gestión de los minijuegos y el lobby
-    // LOBBY
-    [SerializeField] private List<Vector3> _startingPositionsLobby;
+    // Variables encargadas de la gestión de los minijuegos
     // EGIPTO
     private Tile _currentTile; // Casilla en la que se encuentra el personaje
-    [SerializeField] private List<Vector3> _startingPositionsEgipt;
+    // MEDIEVAL
+    public GameObject carriedSword;
     // MAYA
     private Rigidbody _rb;
     private bool _isGrounded = true; // Se indica que se encuentra en el suelo
     private float _jumpForce = 5f; // Fuerza con la que salta
-    [SerializeField] private List<Vector3> _startingPositionsMaya;
     // FUTURO
-    [SerializeField] private List<Vector3> _startingPositionsFuture;
     [SerializeField] private bool _startedRotation = false; // Variable que controla el giro del personaje
     private Quaternion _targetRotation; // Rotación destino
-    private bool _fallenPlayer = false;
 
     private void Start()
     {
-        ownerClient = (int)OwnerClientId - 1;
-        if(IsOwner)
+        _rb = GetComponent<Rigidbody>();
+        // Se establece la escena actual
+        // Se obtiene el nombre de la escena
+        string sceneName = SceneManager.GetActiveScene().name;
+        // Gestión de las acciones necesarias para pasar de una escena a otra
+        switch (sceneName)
         {
-            SelectionTable.Instance.SetPlayer(gameObject); // Se referencia al player desde la mesa para calcular su distancia
+            case "LobbyMenu": _currentScene = Scene.Lobby; break;
+            case "Prehistory": _currentScene = Scene.Prehistory; break;
+            case "Egipt": _currentScene = Scene.Egipt; break;
+            case "Medieval": _currentScene = Scene.Medieval; break;
+            case "Maya": _currentScene = Scene.Maya; break;
+            case "Future": _currentScene = Scene.Future; break;
         }
     }
 
     private void Update()
     {
-        // Se obtiene la información acerca de la escena en la que se encuentra el jugador
-        GetCurrentScene();
-
-        // El servidor procesa el movimiento del jugador, y este se sincroniza en los clientes debido al NetworkTransform
-        if (NetworkManager.Singleton.IsServer)
+        _movementDirection = Vector3.zero;
+        // En función del escenario en el que se encuentre el jugador, se realizan una serie de acciones y se procesa una lógica diferente
+        switch (_currentScene)
         {
-            // El servidor procesa distintos aspectos de la lógica de los minijuegos
-            switch(_currentScene)
-            {
-                case Scene.Egipt:
-                    // En el minijuego de Egipto, se necesita conocer la casilla en la que se encuentra el jugador
-                    // Para que el agente enemigo pueda realizar la búsqueda
-                    // Para ello, se truncan los valores de su posición en los ejes x y z. A este último se le cambia el signo
-                    Vector2Int tilePos = new Vector2Int((int)transform.position.x, -(int)transform.position.z);
-                    _currentTile = GridManager.Instance.GetTile(tilePos.x, tilePos.y);
-                    break;
-                case Scene.Future:                   
-                    if (_fallenPlayer) return; // Si el jugador se ha caído, no se procesa nada de la lógica
-                    // Se comprueba que el jugador no ha salido de los límites establecidos, es decir, que no se ha caído
-                    if (transform.position.y < -5f || transform.position.y > 15f)
-                    {
-                        _fallenPlayer = true;
-                        // Si se ha caído, se indica al controlador
-                        GravityManager.Instance.fallenPlayers++;
-                        HidePlayer(); // Se oculta al jugador
-                        return;
-                    }
-                    // Mientras los jugadores estén flotando, no se podrán controlar, es decir, no se aplicarán los inputs recibidos del cliente
-                    if (GravityManager.Instance.floating && !_startedRotation)
-                    {
-                        // Se indica que ha comenzado la rotación, y se calcula la rotación destino
-                        _startedRotation = true;
-                        RotatePlayerToGround();
-                        return;
-                    }
-                    else if (GravityManager.Instance.floating && _startedRotation)
-                    {
-                        // Aplicar rotación suavemente, mientras que los jugadores están flotando
-                        transform.rotation = Quaternion.RotateTowards(transform.rotation, _targetRotation, Time.deltaTime * (180 / GravityManager.Instance._floatTime));
-                        return;
-                    }
-                    // Se indica que ya se terminó la rotación
-                    _startedRotation = false;
-                    break;
-            }
-            // Aplica el movimiento recibido continuamente del cliente
-            transform.position += _movementDirection * _speed * Time.deltaTime;
-        }
-
-        // Los clientes capturan los inputs y los envían al servidor, que actualizará la dirección de movimiento en función de ello
-        else
-        {
-            // Sólo se capturan los inputs del propietario del jugador
-            if (!IsOwner) return;
-
-            _movementDirection = Vector3.zero;
-            // En función del escenario en el que se encuentre el jugador, se realizan una serie de acciones
-            switch(_currentScene)
-            {
-                case Scene.Lobby:
-                    // Gestión de los controles
-                    if (Input.GetKey(KeyCode.W)) _movementDirection.z = 1f;
-                    if (Input.GetKey(KeyCode.S)) _movementDirection.z = -1f;
-                    if (Input.GetKey(KeyCode.A)) _movementDirection.x = -1f;
-                    if (Input.GetKey(KeyCode.D)) _movementDirection.x = 1f;
-                    // Envío del input al servidor
-                    ChangePlayerDirectionServerRpc(_movementDirection, (int)OwnerClientId);
-                    break;
-
-                case Scene.Egipt:
-                    if (!GridManager.Instance.runningGame) return;
-                    // Gestión de los controles
-                    if (Input.GetKey(KeyCode.W)) _movementDirection.z = 1f;
-                    if (Input.GetKey(KeyCode.S)) _movementDirection.z = -1f;
-                    if (Input.GetKey(KeyCode.A)) _movementDirection.x = -1f;
-                    if (Input.GetKey(KeyCode.D)) _movementDirection.x = 1f;
-                    // Envío del input al servidor
-                    ChangePlayerDirectionServerRpc(_movementDirection, (int)OwnerClientId);
-                    break;
-
-                case Scene.Maya:
-                    if (!RaceManager.instance.runningGame) return;
-                    // Gestión de los controles
-                    if (Input.GetKey(KeyCode.W)) _movementDirection.z = 1f;
-                    if (Input.GetKey(KeyCode.S)) _movementDirection.z = -1f;
-                    if (Input.GetKey(KeyCode.A)) _movementDirection.x = -1f;
-                    if (Input.GetKey(KeyCode.D)) _movementDirection.x = 1f;
-                    // Envío del input al servidor
-                    ChangePlayerDirectionServerRpc(_movementDirection, (int)OwnerClientId);
-                    // Gestión del control del salto
-                    if (Input.GetKeyDown(KeyCode.Space))
-                    {
-                        JumpPlayerServerRpc((int)OwnerClientId);
-                    }
-                    break;
-
-                case Scene.Future:
-                    if (!GravityManager.Instance.runningGame) return;
-                    // Se comprueba que el jugador no ha salido de los límites establecidos, es decir, que no se ha caído
-                    if (transform.position.y < -5f || transform.position.y > 15f)
-                    {
-                        HidePlayer(); // En el cliente solo se oculta al jugador
-                        return;
-                    }
-                    // Gestión de los controles
-                    if (Input.GetKey(KeyCode.W)) _movementDirection.z = 1f;
-                    if (Input.GetKey(KeyCode.S)) _movementDirection.z = -1f;
-                    if (Input.GetKey(KeyCode.A)) _movementDirection.x = -1f;
-                    if (Input.GetKey(KeyCode.D)) _movementDirection.x = 1f;
-                    // Envío del input al servidor
-                    ChangePlayerDirectionServerRpc(_movementDirection, (int)OwnerClientId);
-                    break;
-            }
-        }
-    }
-
-    private void GetCurrentScene()
-    {
-        // Se obtiene el nombre de la escena
-        string sceneName = SceneManager.GetActiveScene().name;
-        // Si se sigue en la misma escena que antes, no se actualiza nada
-        if (_previousScene == sceneName) return;
-        // Una vez se cambia de la primera escena, se indica que ya ha comenzado el juego
-        GameSceneManager.instance.gameStarted = true;
-        // Gestión de las acciones necesarias para pasar de una escena a otra
-        switch(sceneName)
-        {
-            case "LobbyMenu":
-                _currentScene = Scene.Lobby;
-                // Se coloca al jugador en la posición de inicio adecuada
-                transform.position = _startingPositionsLobby[(int)OwnerClientId - 1];
-                // Se resetea la rotación
-                transform.rotation = Quaternion.Euler(0, 0, 0);
-                // Se restaura la gravedad
-                Physics.gravity = new Vector3(0, -9.81f, 0);
-                // Se vuelve a mostrar el código del lobby
-                if(Application.platform != RuntimePlatform.LinuxServer)
-                {
-                    Debug.Log(LobbyManager.instance.GetLobbyCode());
-                    UI_Lobby.instance.ShowLobbyCode(LobbyManager.instance.GetLobbyCode());
-                }
-                // Se muestra a los jugadores
-                ShowPlayer();
-                // Se eliminan las momias del minijuego anterior en el servidor
-                if (Application.platform == RuntimePlatform.LinuxServer)
-                {
-                    DespawnMummies();
-                }
-                // Se eliminan los troncos del minijuego anterior en el servidor
-                if (Application.platform == RuntimePlatform.LinuxServer)
-                {
-                    DespawnTrunks();
-                }
-                // Se asocia a la mesa de elecciones
-                if (IsOwner)
-                {
-                    SelectionTable.Instance.SetPlayer(gameObject);
-                }
-                // Se restaura su estado de carrera
-                goalReached = false;
+            case Scene.Lobby:
+                // Gestión de los controles
+                if (Input.GetKey(KeyCode.W)) _movementDirection.z = 1f;
+                if (Input.GetKey(KeyCode.S)) _movementDirection.z = -1f;
+                if (Input.GetKey(KeyCode.A)) _movementDirection.x = -1f;
+                if (Input.GetKey(KeyCode.D)) _movementDirection.x = 1f;
                 break;
-            case "Prehistory":
-                _currentScene = Scene.Prehistory;
+
+            case Scene.Prehistory:
+                // Si el minijuego no ha comenzado, no se ejecuta ninguna acción
+                if (!PrehistoryManager.Instance.runningGame) return;
+                // Gestión de los controles
+                if (Input.GetKey(KeyCode.W)) _movementDirection.z = 1f;
+                if (Input.GetKey(KeyCode.S)) _movementDirection.z = -1f;
+                if (Input.GetKey(KeyCode.A)) _movementDirection.x = -1f;
+                if (Input.GetKey(KeyCode.D)) _movementDirection.x = 1f;
                 break;
-            case "Egipt":
-                _currentScene = Scene.Egipt;
-                // Se debe colocar al jugador en la posición de inicio adecuada
-                transform.position = _startingPositionsEgipt[(int)OwnerClientId - 1];
+
+            case Scene.Egipt:
+                // Si el minijuego no ha comenzado, no se ejecuta ninguna acción
+                if (!GridManager.Instance.runningGame) return;
+                // En el minijuego de Egipto, se necesita conocer la casilla en la que se encuentra el jugador
+                // Para que el agente enemigo pueda realizar la búsqueda
+                // Para ello, se truncan los valores de su posición en los ejes x y z. A este último se le cambia el signo
+                Vector2Int tilePos = new Vector2Int((int)transform.position.x, -(int)transform.position.z);
+                _currentTile = GridManager.Instance.GetTile(tilePos.x, tilePos.y);
+                // Gestión de los controles
+                if (Input.GetKey(KeyCode.W)) _movementDirection.z = 1f;
+                if (Input.GetKey(KeyCode.S)) _movementDirection.z = -1f;
+                if (Input.GetKey(KeyCode.A)) _movementDirection.x = -1f;
+                if (Input.GetKey(KeyCode.D)) _movementDirection.x = 1f;
                 break;
-            case "Medieval":
-                _currentScene = Scene.Medieval;
+
+            case Scene.Medieval:
+                // Si el minijuego no ha comenzado, no se ejecuta ninguna acción
+                if (!MedievalGameManager.Instance.runningGame) return;
+                // Gestión de los controles
+                if (Input.GetKey(KeyCode.W)) _movementDirection.z = 1f;
+                if (Input.GetKey(KeyCode.S)) _movementDirection.z = -1f;
+                if (Input.GetKey(KeyCode.A)) _movementDirection.x = -1f;
+                if (Input.GetKey(KeyCode.D)) _movementDirection.x = 1f;
                 break;
-            case "Maya":
-                _currentScene = Scene.Maya;
-                // Se obtiene una referencia al rigidbody
-                _rb = GetComponent<Rigidbody>();
-                // Se debe colocar al jugador en la posición de inicio adecuada
-                transform.position = _startingPositionsMaya[(int) OwnerClientId - 1];
-                // Se hace que si el personaje es del propietario, la cámara lo siga
-                if(IsOwner)
+
+            case Scene.Maya:
+                if (!RaceManager.instance.runningGame) return;
+                // Gestión de los controles
+                if (Input.GetKey(KeyCode.W)) _movementDirection.z = 1f;
+                if (Input.GetKey(KeyCode.S)) _movementDirection.z = -1f;
+                if (Input.GetKey(KeyCode.A)) _movementDirection.x = -1f;
+                if (Input.GetKey(KeyCode.D)) _movementDirection.x = 1f;
+                // Gestión del control del salto
+                if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    GameObject.FindGameObjectWithTag("FollowCamera").GetComponent<CinemachineVirtualCamera>().Follow = transform;
-                    GameObject.FindGameObjectWithTag("FollowCamera").GetComponent<CinemachineVirtualCamera>().LookAt = transform;
+                    Jump();
                 }
                 break;
-            case "Future":
-                _currentScene = Scene.Future;
-                // Se debe colocar al jugador en la posición de inicio adecuada
-                transform.position = _startingPositionsFuture[(int)OwnerClientId - 1];
-                // Se resetea el estado, por si acaso se necesita restaurarlo
-                _fallenPlayer = false;
+
+            case Scene.Future:
+                if (!GravityManager.Instance.runningGame) return;
+                // Se comprueba que el jugador no ha salido de los límites establecidos, es decir, que no se ha caído
+                if (transform.position.y < -5f || transform.position.y > 15f)
+                {
+                    // Si se ha caído, se indica al controlador
+                    GravityManager.Instance.GameOver();
+                    return;
+                }
+                // Mientras los jugadores estén flotando, no se podrán controlar, es decir, no se aplicarán los controles
+                if (GravityManager.Instance.floating && !_startedRotation)
+                {
+                    // Se indica que ha comenzado la rotación, y se calcula la rotación destino
+                    _startedRotation = true;
+                    RotatePlayerToGround();
+                    return;
+                }
+                else if (GravityManager.Instance.floating && _startedRotation)
+                {
+                    // Aplicar rotación suavemente, mientras que los jugadores están flotando
+                    transform.rotation = Quaternion.RotateTowards(transform.rotation, _targetRotation, Time.deltaTime * (180 / GravityManager.Instance._floatTime));
+                    return;
+                }
+                // Se indica que ya se terminó la rotación
                 _startedRotation = false;
-                // Se muestra a los jugadores
-                ShowPlayer();
+                // Gestión de los controles
+                if (Input.GetKey(KeyCode.W)) _movementDirection.z = 1f;
+                if (Input.GetKey(KeyCode.S)) _movementDirection.z = -1f;
+                if (Input.GetKey(KeyCode.A)) _movementDirection.x = -1f;
+                if (Input.GetKey(KeyCode.D)) _movementDirection.x = 1f;
                 break;
         }
-        // Se inicia la pantalla de carga, sólo el dueño del jugador principal y en el servidor
-        if(IsOwner || Application.platform == RuntimePlatform.LinuxServer)
-        {
-            StartCoroutine(LoadingScreenManager.instance.LoadingScreenCoroutine(sceneName));
-        }
-        _previousScene = sceneName;
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    private void ChangePlayerDirectionServerRpc(Vector3 direction, int playerId)
-    {
-        // Se comprueba primero si el jugador que se está comprobando es del que se ha recibido el input
-        if (playerId != (int)OwnerClientId) return;
-        // Se modifica la dirección de movimiento del jugador en el servidor
-        _movementDirection = direction;
+        transform.position += _movementDirection * _speed * Time.deltaTime;
     }
 
     // Esta función se utiliza para ocultar el nombre y el personaje del jugador, sin desactivarlo completamente para poder acceder a él de nuevo
     public void HidePlayer()
     {
         characterNamePlayer.SetActive(false);
-        isDefeated = true;
     }
 
     // Esta función se usa para volver a mostrar los detalles del jugador
     public void ShowPlayer()
     {
         characterNamePlayer.SetActive(true);
-        isDefeated = false;
     }
 
     #region Egipt
     public Tile GetCurrentTile() { return _currentTile; }
 
-    private void DespawnMummies()
+    #endregion
+
+    #region Medieval
+    public void SetCarriedSword(GameObject sword)
     {
-        if(IsServer)
+        carriedSword = sword;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // Si el jugador entra a su base y lleva una espada
+        if(carriedSword != null && other.gameObject.tag == "Base")
         {
-            // Encontrar todos los objetos con la etiqueta "Momia"
-            GameObject[] mummies = GameObject.FindGameObjectsWithTag("Momia");
-            if (mummies.Length == 0) return;
-
-            // Recorrer cada objeto y despawnearlo si es un NetworkObject
-            foreach (GameObject mummy in mummies)
-            {
-                NetworkObject networkObject = mummy.GetComponent<NetworkObject>();
-
-                if (networkObject != null && networkObject.IsSpawned) // Verificar si es un NetworkObject y está spawneado
-                {
-                    networkObject.Despawn(); // Despawnear el objeto de red
-                }
-            }
+            // El jugador deja de llevar la espada
+            carriedSword = null;
+            // La deja en la base
+            carriedSword.GetComponent<SwordController>().DeliverSword();
         }
     }
+
     #endregion
     #region Maya
-    [ServerRpc(RequireOwnership = false)]
-    private void JumpPlayerServerRpc(int playerId)
+    private void Jump()
     {
-        // Se comprueba primero si el jugador que se está comprobando es del que se ha recibido el input
-        if (playerId != (int)OwnerClientId) return;
         if (!_isGrounded) return; // Si no está en el suelo, no puede saltar
         // Se aplica una fuerza sobre el rigidbody del jugador
         // Se indica que ahora el jugador ya no está en el suelo
@@ -336,27 +205,6 @@ public class PlayerMovement : NetworkBehaviour
         if (collision.gameObject.CompareTag("Ground") && _currentScene == Scene.Maya)
         {
             _isGrounded = true;
-        }
-    }
-
-    private void DespawnTrunks()
-    {
-        if (IsServer)
-        {
-            // Encontrar todos los objetos con la etiqueta "Tronco"
-            GameObject[] trunks = GameObject.FindGameObjectsWithTag("Tronco");
-            if (trunks.Length == 0) return;
-
-            // Recorrer cada objeto y despawnearlo si es un NetworkObject
-            foreach (GameObject trunk in trunks)
-            {
-                NetworkObject networkObject = trunk.GetComponent<NetworkObject>();
-
-                if (networkObject != null && networkObject.IsSpawned) // Verificar si es un NetworkObject y está spawneado
-                {
-                    networkObject.Despawn(); // Despawnear el objeto de red
-                }
-            }
         }
     }
 

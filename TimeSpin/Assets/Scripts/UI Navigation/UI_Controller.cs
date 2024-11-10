@@ -6,6 +6,8 @@ public class UI_Controller : MonoBehaviour
 {
     public static UI_Controller instance;
 
+    public Image Fundido;
+
     public GameObject Desarrollador;  // Imagen desarrollador
     public GameObject Cinematica;     // Cinematica
     public GameObject Menu;           // Menu principal
@@ -22,10 +24,7 @@ public class UI_Controller : MonoBehaviour
     public GameObject Der;
     public GameObject Izq;
     public GameObject Jugar;
-    public GameObject Crear;
-    public GameObject Unirse;
     public GameObject Volver;
-    public GameObject LobbyCode;
 
     public Button avanzarButton;      // Bot?n para avanzar en la cinem?tica
     public Button jugar;              // Bot?n para jugar
@@ -34,7 +33,8 @@ public class UI_Controller : MonoBehaviour
     public Button practica;
     public InputField nombreInputField; // InputField para el nombre del jugador
 
-    private bool nombreFijado = false; // Controla si el nombre ya est? fijado
+    public GameObject playerPrefab;
+
 
     private void Awake()
     {
@@ -50,8 +50,6 @@ public class UI_Controller : MonoBehaviour
 
     void Start()
     {
-        if (Application.platform == RuntimePlatform.LinuxServer) return; // Evita la ejecuci?n en el servidor
-
         if (GameSceneManager.instance.gameStarted)
         {
             // Si ya ha comenzado el juego, es decir, se vuelve de nuevo a la escena tras ya haber estado, no se necesitan mostrar todas las pantallas previas
@@ -59,9 +57,6 @@ public class UI_Controller : MonoBehaviour
             Desarrollador.SetActive(false);
             Cinematica.SetActive(false);
             Menu.SetActive(false);
-            Crear.SetActive(false);
-            Unirse.SetActive(false);
-            LobbyCode.SetActive(false);
             PracticaPanel.SetActive(false);
             ConfiguracionPanel.SetActive(false);
             CreditosPanel.SetActive(false);
@@ -82,9 +77,6 @@ public class UI_Controller : MonoBehaviour
             Desarrollador.SetActive(false);
             Cinematica.SetActive(false);
             Menu.SetActive(false);
-            Crear.SetActive(false);
-            Unirse.SetActive(false);
-            LobbyCode.SetActive(false);
             PracticaPanel.SetActive(true);
             ConfiguracionPanel.SetActive(false);
             CreditosPanel.SetActive(false);
@@ -102,14 +94,15 @@ public class UI_Controller : MonoBehaviour
         }
         else 
         {
+            // Se oculta el alfa del fundido
+            Color color = Fundido.color;
+            color.a = 0f;
+            Fundido.color = color;
             // Al inicio, mostramos solo la imagen del desarrollador y ocultamos lo dem?s
             Desarrollador.SetActive(true);
 
             Cinematica.SetActive(false);
             Menu.SetActive(false);
-            Crear.SetActive(false);
-            Unirse.SetActive(false);
-            LobbyCode.SetActive(false);
             PracticaPanel.SetActive(false);
             ConfiguracionPanel.SetActive(false);
             CreditosPanel.SetActive(false);
@@ -161,37 +154,25 @@ public class UI_Controller : MonoBehaviour
 
     void OnJugarButtonClicked()
     {
-        // Bloquear el InputField para que no se pueda modificar m?s
-        if (!nombreFijado && !string.IsNullOrEmpty(nombreInputField.text))
-        {
-            nombreFijado = true;
-            nombreInputField.interactable = false; // Desactiva el InputField
-        }
-
-        // Ocultar la cinem?tica y el menu
-        Creditos.SetActive(false);
-        Configuracion.SetActive(false);
-        Practica.SetActive(false);
-        Jugar.SetActive(false);
-        Der.SetActive(false);
-        Izq.SetActive(false);
-
-        // Mostrar el lobby
-        Nombre.SetActive(true);
-        Crear.SetActive(true);
-        Unirse.SetActive(true);
-        Volver.SetActive(true);
-        LobbyCode.SetActive(true);
+        // Función para ocultar el menú y pasar al lobby, mejor poner una pantalla de carga
+        // Se activa el panel del fundido
+        Image background = GameObject.FindGameObjectWithTag("Fundido").GetComponent<Image>();
+        Color color = background.color;
+        color.a = 1;
+        background.color = color;
+        // Se mostrará la pantalla de carga unos segundos y después, se mostrará la escena del lobby del museo
+        StartCoroutine(LoadingScreenManager.instance.LoadingScreenCoroutine(""));
+        // Se instancia al jugador
+        Instantiate(playerPrefab, GameSceneManager.instance.startingPositionLobby, Quaternion.identity);
+        // Se oculta el menú
+        Menu.SetActive(false);
     }
 
     void OnPracticaButtonClicked()
     {
         // Ocultar la cinem?tica y el menu
         Menu.SetActive(false);
-        Crear.SetActive(false);
-        Unirse.SetActive(false);
         Nombre.SetActive(false);
-        LobbyCode.SetActive(false);
 
         // Mostrar el lobby
         PracticaPanel.SetActive(true);
@@ -201,10 +182,7 @@ public class UI_Controller : MonoBehaviour
     {
         // Ocultar la cinem?tica y el menu
         Menu.SetActive(false);
-        Crear.SetActive(false);
-        Unirse.SetActive(false);
         Nombre.SetActive(false);
-        LobbyCode.SetActive(false);
 
         // Mostrar el lobby
         CreditosPanel.SetActive(true);
@@ -214,10 +192,7 @@ public class UI_Controller : MonoBehaviour
     {
         // Ocultar la cinem?tica y el menu
         Menu.SetActive(false);
-        Crear.SetActive(false);
-        Unirse.SetActive(false);
         Nombre.SetActive(false);
-        LobbyCode.SetActive(false);
 
         // Mostrar el lobby
         ConfiguracionPanel.SetActive(true);
@@ -232,9 +207,6 @@ public class UI_Controller : MonoBehaviour
             Nombre.SetActive(true);
 
             ConfiguracionPanel.SetActive(false);
-            Crear.SetActive(false);
-            Unirse.SetActive(false);
-            LobbyCode.SetActive(false);
             PracticaPanel.SetActive(false);
             CreditosPanel.SetActive(false);
         }
@@ -245,34 +217,8 @@ public class UI_Controller : MonoBehaviour
             Nombre.SetActive(true);
 
             CreditosPanel.SetActive(false);
-            Crear.SetActive(false);
-            Unirse.SetActive(false);
-            LobbyCode.SetActive(false);
             PracticaPanel.SetActive(false);
             ConfiguracionPanel.SetActive(false);
-        }
-
-        if (Crear.active)
-        {
-            Menu.SetActive(true);
-            Nombre.SetActive(true);
-            Der.SetActive(true);
-            Izq.SetActive(true);
-            Jugar.SetActive(true);
-            Practica.SetActive(true);
-            Configuracion.SetActive(true);
-            Creditos.SetActive(true);
-            nombreInputField.interactable = true;
-
-            Volver.SetActive(false);
-            ConfiguracionPanel.SetActive(false);
-            CreditosPanel.SetActive(false);
-            PracticaPanel.SetActive(false);
-            Crear.SetActive(false);
-            Unirse.SetActive(false);
-            LobbyCode.SetActive(false);
-
-            UI_Lobby.instance.HideMessages();
         }
 
         if (PracticaPanel.active)
@@ -282,8 +228,6 @@ public class UI_Controller : MonoBehaviour
 
             ConfiguracionPanel.SetActive(false);
             CreditosPanel.SetActive(false);
-            Crear.SetActive(false);
-            Unirse.SetActive(false);
             PracticaPanel.SetActive(false);
         }
     }

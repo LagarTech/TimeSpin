@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Netcode;
 using UnityEngine;
 
-public class PlatformManager : NetworkBehaviour
+public class PlatformManager : MonoBehaviour
 {
     public static PlatformManager instance;
 
@@ -40,18 +39,13 @@ public class PlatformManager : NetworkBehaviour
 
     private void Start()
     {
-        // La lógica de generación del orden de caída de las plataformas se gestionará en el servidor, y cuando se necesite que caigan una a una, se avisará al cliente
-        // de cuál sea, para que lo haga también
-        if (Application.platform != RuntimePlatform.LinuxServer) return;
+        // Lógica de generación del orden de caída de las plataformas
         PreparePlatformsFall();
     }
 
     // Update is called once per frame
     void Update()
     {
-        // La caída de las casillas se controla en el servidor 
-        if (Application.platform != RuntimePlatform.LinuxServer) return;
-
         if (!GravityManager.Instance.runningGame) return;
         // Solo continuar si aún no han desaparecido todas las plataformas
         if (_numDisappeared < _totalDisappeared)
@@ -72,15 +66,11 @@ public class PlatformManager : NetworkBehaviour
                 // Desaparecer una plataforma de abajo
                 int index = _platformsDownShuffledIndex[_numDisappeared];
                 // Comienza la secuencia de caída
-                // Primero se notifica al cliente
-                FallPlatformClientRpc(index, false);
                 StartCoroutine(ShakeAndFall(_platformsDown[index]));
 
                 // Desaparecer una plataforma de arriba
                 index = _platformsUpShuffledIndex[_numDisappeared];
                 // Comienza la secuencia de caída
-                // Primero se notifica al cliente
-                FallPlatformClientRpc(index, true);
                 StartCoroutine(ShakeAndFall(_platformsUp[index]));
 
                 _numDisappeared++; // Incrementar el contador de plataformas desaparecidas
@@ -159,68 +149,13 @@ public class PlatformManager : NetworkBehaviour
             yield return null;
         }
 
-        // Se apaga la plataforma, sólo en el cliente
-        if(Application.platform != RuntimePlatform.LinuxServer)
-        {
-            platform.GetComponentInChildren<Platform>().FallPlatform();
-        }
+        // Se apaga la plataforma, sólo en el cliente    
+        platform.GetComponentInChildren<Platform>().FallPlatform();
+        
         // Desactivar la plataforma tras la caída
         platform.SetActive(false);
     }
 
-    [ClientRpc]
-    private void FallPlatformClientRpc(int idPlatform, bool up)
-    {
-        if(!up)
-        {
-            StartCoroutine(ShakeAndFall(_platformsDown[idPlatform]));
-        }
-        else
-        {
-            StartCoroutine(ShakeAndFall(_platformsUp[idPlatform]));
-        }
-    }
 
-    public void PlatformEntered(int idPlatform, bool up)
-    {
-        // Se avisa a los clientes
-        PlatformEnteredClientRpc(idPlatform, up);
-    }
-
-    [ClientRpc]
-    private void PlatformEnteredClientRpc(int id, bool up)
-    {
-        // Se buscan los objetos con la etiqueta PlataformaF
-        GameObject[] platforms = GameObject.FindGameObjectsWithTag("PlataformaF");
-        foreach (GameObject plat in platforms)
-        {
-            // Se busca en la lista de plataformas aquella con las características indicadas
-            if(plat.GetComponent<Platform>().idPlatform == id && plat.GetComponent<Platform>().isUp == up)
-            {
-                plat.GetComponent<Platform>().OnPlatformEnter();
-            }
-        }
-    }
-
-    public void PlatformExited(int idPlatform, bool up)
-    {
-        // Se avisa a los clientes
-        PlatformExitedClientRpc(idPlatform, up);
-    }
-
-    [ClientRpc]
-    private void PlatformExitedClientRpc(int id, bool up)
-    {
-        // Se buscan los objetos con la etiqueta PlataformaF
-        GameObject[] platforms = GameObject.FindGameObjectsWithTag("PlataformaF");
-        foreach (GameObject plat in platforms)
-        {
-            // Se busca en la lista de plataformas aquella con las características indicadas
-            if (plat.GetComponent<Platform>().idPlatform == id && plat.GetComponent<Platform>().isUp == up)
-            {
-                plat.GetComponent<Platform>().OnPlatformExit();
-            }
-        }
-    }
 
 }

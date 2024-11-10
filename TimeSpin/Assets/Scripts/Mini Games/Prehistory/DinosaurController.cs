@@ -1,85 +1,122 @@
+using System.Collections;
 using UnityEngine;
 
 public class DinosaurController : MonoBehaviour
 {
-    public int points;               // Puntos del dinosaurio
-    public float visibleTime = 1.5f; // Tiempo que estará visible
-    private float timer;
-    public string dinosaurType;         // Tipo de dinosaurio (Normal, Velociraptor, TRex)
+    [SerializeField] private int _dinosaurPoints; // Puntos que aporta el dinosaurio
+    [SerializeField] private float _visibleTime = 1.5f; // Tiempo que estará visible
+    [SerializeField] private float _timer;
+    [SerializeField] private string _dinosaurType; // Tipo de dinosaurio (Normal, Velociraptor, TRex)
 
-    public Transform player;         // Referencia al jugador
-    public float hitDistance = 2.0f; // Distancia mínima para golpear al dinosaurio
+    private Vector3 _player; // Referencia al jugador
+    private const float MAX_HIT_DISTANCE = 5.0f; // Distancia mínima para golpear al dinosaurio
 
-    private int hitCount = 0;           // Cuenta los clicks (para el T-Rex)
-    public int requiredHits = 1;        // Golpes minimos para matar al dinosaurio (1 por defecto)
+    private int _hitCount = 0; // Cuenta los clicks (para el T-Rex)
+    private int _requiredHits = 1; // Golpes minimos para matar al dinosaurio (1 por defecto)
 
-    private GameManager gameManager;
+    public int holeIndex; // Índice del agujero ocupado
+
+    private Vector3 _initialPosition;
+    private const float RISE_AMOUNT = 0.7f;
+    private const float RISE_DURATION = 0.5f; // Duración de la animación de aparición
+    private const float DISAPPEAR_DURATION = 0.5f; // Duración de la animación de desaparición
+
+    private bool _isHit = false;
 
     void Start()
     {
-        gameManager = GameObject.Find("GameManager")?.GetComponent<GameManager>();
-
         // Si el dinosaurio es un T-Rex, necesita dos golpes
-        if (dinosaurType == "TRex")
+        if (_dinosaurType == "T-Rex")
         {
-            requiredHits = 2;
+            _requiredHits = 2;
         }
 
-        // Encontramos al jugador en la escena, por si no lo hemos asignado manualmente en el inspector
-        if (player == null)
-        {
-            player = GameObject.FindGameObjectWithTag("Player").transform;
-        }
+        // Se busca una referencia a la posición del jugador
+        _player = GameObject.FindGameObjectWithTag("Player").transform.position;       
     }
 
     void Update()
     {
         // Si el juego no ha empezado o ha terminado, que no se pueda hacer nada
-        if (!gameManager.IsGameActive() || gameManager.IsGameOver())
+        if (!PrehistoryManager.Instance.runningGame) return;
+        _timer += Time.deltaTime;
+        if (_timer >= _visibleTime)
         {
-            return;
-        }
-
-        timer += Time.deltaTime;
-        if (timer >= visibleTime)
-        {
-            Destroy(gameObject);  // Se elimina después de un tiempo
+            // Se desaparece el dinosaurio
+            HideDinosaur();
         }
     }
 
     void OnMouseDown()
     {
         // Comprobar si el jugador esta cerca para pincharle
-        float distanceToPlayer = Vector3.Distance(player.position, transform.position);
+        float distanceToPlayer = Vector3.Distance(_player, transform.position);
 
-        if (distanceToPlayer <= hitDistance)
+        if (distanceToPlayer <= MAX_HIT_DISTANCE)
         {
-            // El jugador esta cerca, lo golpea 
+            // Si el jugador está cerca, lo golpea
             HitDinosaur();
         }
-        else
+    }
+
+    // Función que anima la aparición del dinosaurio del agujero
+    public IEnumerator AppearAnimation()
+    {
+        _initialPosition = transform.position;
+        Vector3 targetPosition = _initialPosition + Vector3.up * RISE_AMOUNT;
+        float elapsedTime = 0;
+
+        while (elapsedTime < RISE_DURATION)
         {
-            // el jugador esta lejos
-            Debug.Log("Estás demasiado lejos para golpear el dinosaurio.");
+            transform.position = Vector3.Lerp(_initialPosition, targetPosition, elapsedTime / RISE_DURATION);
+            elapsedTime += Time.deltaTime;
+            yield return null;
         }
+
+        transform.position = targetPosition;
     }
 
     void HitDinosaur()
     {
-        hitCount++;
-
-        if (hitCount >= requiredHits)
+        // Se aumenta el contador de golpes
+        _hitCount++;
+        if (_hitCount >= _requiredHits && !_isHit)
         {
-            // Se suman los puntos al pinchar el dinosaurio
-            GameObject gameManager = GameObject.Find("GameManager");
-            gameManager.GetComponent<GameManager>().AddScore(points);
+            _isHit = true;
+            // Se suman los puntos al golpear el dinosaurio
+            PrehistoryManager.Instance.AddScore(_dinosaurPoints);
+            // Se desaparece el dinosaurio
+            HideDinosaur();
+        }
+    }
 
-            Destroy(gameObject);
-        }
-        else
+    private void HideDinosaur()
+    {
+        _hitCount = 0; // Reiniciar el contador de golpes
+        _timer = 0; // Reiniciar el temporizador
+        StartCoroutine(DisappearAnimation());
+    }
+
+    private IEnumerator DisappearAnimation()
+    {
+        Vector3 startPosition = transform.position;
+        Vector3 targetPosition = _initialPosition; // La posición original hacia la cual descenderá
+        float elapsedTime = 0;
+
+        while (elapsedTime < DISAPPEAR_DURATION)
         {
-            Debug.Log("El TRex ha sido golpeado, pero aún necesita más golpes.");
+            transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / DISAPPEAR_DURATION);
+            elapsedTime += Time.deltaTime;
+            yield return null;
         }
+
+        transform.position = targetPosition;
+
+        _isHit = false;
+        // Se indica que se desocupa su agujero
+        PrehistoryManager.Instance.ReleaseHole(holeIndex);
+        // Una vez finalizada la animación, se devuelve el dinosaurio al pool
+        DinosaurPool.Instance.ReturnDinosaur(gameObject);
     }
 }
 

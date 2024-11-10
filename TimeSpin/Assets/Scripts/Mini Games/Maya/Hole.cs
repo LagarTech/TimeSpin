@@ -11,12 +11,11 @@ public class Hole : MonoBehaviour
     {
         if (other.CompareTag("Player")) // Asegúrate de que el jugador tiene la etiqueta "Player"
         {
-            if (Application.platform != RuntimePlatform.LinuxServer) return;
             StartCoroutine(RespawnPlayer(other.transform));
         }
     }
 
-    // La función de respawn sólo se realiza en el servidor, porque en el cliente se sincroniza directamente
+
     private IEnumerator RespawnPlayer(Transform player)
     {
         // Desactiva la colisión entre el jugador y el terreno
@@ -30,7 +29,6 @@ public class Hole : MonoBehaviour
 
         // Simula el tiempo de reaparición
         yield return new WaitForSeconds(_respawnDelay * 2 / 3);
-
 
         // Reposiciona al jugador un poco atrás del agujero
         Vector3 respawnPosition = transform.position + _respawnOffset;

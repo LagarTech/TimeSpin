@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 // Este script se encarga de las inversiones en la gravedad, que se gestionarán por el servidor. La única funcionalidad que realizará el cliente es actualizar el temporizador
-public class GravityManager : NetworkBehaviour
+public class GravityManager : MonoBehaviour
 {
     public static GravityManager Instance;
 
@@ -30,9 +29,8 @@ public class GravityManager : NetworkBehaviour
     // Temporizador del juego
     [SerializeField] private TMP_Text _timerText;
     private float _remainingTime = 120f; // El tiempo de juego son 2 minutos (120 segundos)
+    private float _survivedTime = 0f;
 
-    private int _numPlayers = 0; // Control del número de jugadores
-    public int fallenPlayers = 0; // Número de jugadores que han caído
 
     private void Awake()
     {
@@ -48,8 +46,6 @@ public class GravityManager : NetworkBehaviour
 
     private void Start()
     {
-        // La gestión del cambio de gravedad sólo se va a llevar a cabo en el servidor
-        if (Application.platform != RuntimePlatform.LinuxServer) return;
         // Se calcula el tiempo de flotación utilizando la ecuación del MRUA
         // d = d0 + v0*t + 1/2*a*t^2 -> Se parte del reposo -> d = 1/2*a*t^2
         // Despejando, se obtiene que t = sqrt(2*d/g), siendo d la distancia entre las plataformas y g la gravedad
@@ -64,35 +60,25 @@ public class GravityManager : NetworkBehaviour
         // GESTIÓN DEL TIEMPO RESTANTE
         if (_remainingTime > 0f)
         {
+            // Aumentar el tiempo de supervivencia
+            _survivedTime += Time.deltaTime;
             // Disminuir el tiempo restante
             _remainingTime -= Time.deltaTime;
-            // Se actualiza el temporizador, sólo en el cliente
-            if (Application.platform != RuntimePlatform.LinuxServer)
-            {
-                UpdateTimer();
-            }
+            // Se actualiza el temporizador
+            UpdateTimer();
+            
         }
         else
         {
             _remainingTime = 0f;
-            // Se actualiza el temporizador, sólo en el cliente
-            if (Application.platform != RuntimePlatform.LinuxServer)
-            {
-                UpdateTimer();
-            }
-            // Se indica que el juego ha finalizado
-            runningGame = false;
-            // Se inicia el final del juego, sólo en el servidor
-            if (Application.platform == RuntimePlatform.LinuxServer)
-            {
-                GameOver();
-            }
+            // Se actualiza el temporizador
+            UpdateTimer();
+            // Se inicia el final del juego
+            GameOver();     
             return;
         }
 
-        // GESTIÓN DE LA INVERSIÓN DE LA GRAVEDAD, SOLO EN EL SERVIDOR
-        if (Application.platform != RuntimePlatform.LinuxServer) return;
-
+        // GESTIÓN DE LA INVERSIÓN DE LA GRAVEDAD
         _gravityTimer += Time.deltaTime;
 
         if (_gravityTimer >= _gravitySwitchTime)
@@ -113,14 +99,6 @@ public class GravityManager : NetworkBehaviour
             }
         }
 
-        // CONTROL DEL NÚMERO DE JUGADORES, SOLO EN EL SERVIDOR
-        _numPlayers = GameObject.FindGameObjectsWithTag("Player").Length;
-        // Si sólo queda un jugador, se termina el juego
-        if (_numPlayers - fallenPlayers == 1)
-        {
-            runningGame = false;
-            GameOver();
-        }
     }
 
     private void StartFloating()
@@ -139,8 +117,6 @@ public class GravityManager : NetworkBehaviour
             Physics.gravity = new Vector3(0, _gravity, 0);   // Gravedad invertida
         }
         isGravityInverted = !isGravityInverted;
-        // Se notifica a los clientes del cambio de gravedad
-        InvertGravityClientRpc(isGravityInverted);
     }
 
     private void StopFloating()
@@ -159,20 +135,14 @@ public class GravityManager : NetworkBehaviour
         _timerText.text = string.Format("{0:00}:{1:00}", displayMinutes, displaySeconds);
     }
 
-    private void GameOver()
+    public void GameOver()
     {
-        // Se calculan las puntuaciones y las posiciones de los jugadores en base a los resultados
-        GameSceneManager.instance.GameOverEgiptFuture();
-        // Se reactiva la lista de jugadores en el servidor
-        GameSceneManager.instance.ActivePlayersList();
-        // Se comienza la transición
-        StartCoroutine(LoadingScreenManager.instance.ServerSceneTransition("LobbyMenu"));
-    }
-
-    [ClientRpc]
-    private void InvertGravityClientRpc(bool gravityInverted)
-    {
-        isGravityInverted = gravityInverted;
+        // Se indica que el juego ha finalizado
+        runningGame = false;
+        // Se restaura la gravedad
+        Physics.gravity = new Vector3(0, -9.81f, 0);
+        // Se calcula la puntuación del jugador en base al resultado
+        GameSceneManager.instance.GameOverEgiptFuture(_survivedTime, false);
     }
 
 }
