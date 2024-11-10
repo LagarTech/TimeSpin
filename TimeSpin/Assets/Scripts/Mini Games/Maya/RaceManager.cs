@@ -35,6 +35,7 @@ public class RaceManager : MonoBehaviour
     // Función para terminar el minijuego
     private void EndRace()
     {
+        if (!runningGame) return;
         runningGame = false;
         // Se inicia la transición
         GameSceneManager.instance.GameOverMaya(_timer);

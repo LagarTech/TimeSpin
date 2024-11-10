@@ -1252,7 +1252,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1917768498752922192}
@@ -1322,10 +1322,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterNamePlayer: {fileID: 228684260957079276}
   _currentScene: 0
-  _startingPositionLobby: {x: -3, y: 1, z: 2}
-  _startingPositionEgipt: {x: 0.5, y: 1, z: -0.5}
-  _startingPositionMaya: {x: 0, y: 0, z: 0}
-  _startingPositionFuture: {x: 6, y: 1, z: -3.5}
+  carriedSword: {fileID: 0}
   _startedRotation: 0
 --- !u!114 &7272773993452262603
 MonoBehaviour:
@@ -1355,7 +1352,6 @@ MonoBehaviour:
   - {fileID: 8812500181363222701}
   - {fileID: 6506002124891821783}
   _playerName: 
-  _spawnPosition: {x: -3, y: 1, z: 2}
 --- !u!1 &7595886194814359533
 GameObject:
   m_ObjectHideFlags: 0

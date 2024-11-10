@@ -27,7 +27,7 @@ public class TrunkMovement : MonoBehaviour
         transform.position += Vector3.back * _speed * Time.deltaTime;
 
         // Rota el tronco sobre su eje X
-        transform.Rotate(Vector3.up, _rotationSpeed * Time.deltaTime);
+        transform.Rotate(Vector3.forward, _rotationSpeed * Time.deltaTime);
 
 
         // Verifica si el tronco ha caído fuera del área, tanto en el cliente como en el servidor, para poder ocultarlo en ambos

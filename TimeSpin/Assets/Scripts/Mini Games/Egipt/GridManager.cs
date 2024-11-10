@@ -96,7 +96,7 @@ public class GridManager : MonoBehaviour
         if (_mummyTime < 0f)
         {
             // Instancia el objeto
-            Instantiate(_mummy, _mummySpawnPosition, Quaternion.identity);
+            Instantiate(_mummy, _mummySpawnPosition, Quaternion.Euler(-90f, 0f, 0f));
             _mummyTime = 90f;
         }
 

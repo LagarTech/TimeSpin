@@ -104,8 +104,8 @@ public class GameSceneManager : MonoBehaviour
             case "Egipt":
                 // Una vez se cambia de la primera escena, se indica que ya ha comenzado el juego
                 gameStarted = true;
-                // Se instancia al jugador en la posición de inicio adecuada
-                Instantiate(playerPrefab, _startingPositionEgipt, Quaternion.identity);
+                // Se instancia al jugador en la posición de inicio adecuada con la escala adecuada
+                Instantiate(playerPrefab, _startingPositionEgipt, Quaternion.identity).transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
                 break;
             case "Medieval":
                 // Una vez se cambia de la primera escena, se indica que ya ha comenzado el juego
@@ -118,9 +118,12 @@ public class GameSceneManager : MonoBehaviour
                 gameStarted = true;
                 // Se instancia al jugador en la posición de inicio adecuada
                 Transform _playerTransform = Instantiate(playerPrefab, _startingPositionMaya, Quaternion.identity).transform;
+                // Se modifica la escala del personaje
+                _playerTransform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
                 // Se hace que si el personaje es del propietario, la cámara lo siga
                 GameObject.FindGameObjectWithTag("FollowCamera").GetComponent<CinemachineVirtualCamera>().Follow = _playerTransform;
                 GameObject.FindGameObjectWithTag("FollowCamera").GetComponent<CinemachineVirtualCamera>().LookAt = _playerTransform;
+               
                 break;
             case "Future":
                 // Una vez se cambia de la primera escena, se indica que ya ha comenzado el juego

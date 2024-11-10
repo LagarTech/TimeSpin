@@ -8,12 +8,12 @@ public class SelectionTable : MonoBehaviour
     public static SelectionTable Instance;
 
     private Transform _playerTransform;
-    private const int MAX_DISTANCE = 2;
+    [SerializeField] private int MAX_DISTANCE = 5;
 
     // Control del movimiento de cámara hacia la mesa
     private Camera _mainCamera;
-    private float _zoomSpeed = 1.25f;
-    private float _rotationSpeed = 0.7f;
+    private float _zoomSpeed = 1.75f;
+    private float _rotationSpeed = 1.25f;
     [SerializeField] private bool _isZooming = false;
     [SerializeField] private bool _isReturning = false;
 
@@ -26,6 +26,8 @@ public class SelectionTable : MonoBehaviour
 
     // Canvas de elección de minijuego
     [SerializeField] private CanvasGroup _gameSelectionPanel;
+
+    public bool runningGame = true;
 
     private void Awake()
     {
@@ -49,6 +51,19 @@ public class SelectionTable : MonoBehaviour
 
     private void Update()
     {
+        // Interacción con el jugador al estar cerca
+        if(Input.GetKeyDown(KeyCode.Space)) 
+        {
+            if (_playerTransform != null)
+            {
+                if (Vector3.Distance(transform.position, _playerTransform.position) < MAX_DISTANCE && !_isReturning && !_isZooming)
+                {
+                    _isZooming = true;
+                    runningGame = false;
+                }
+            }
+        }
+
         if(_isZooming)
         {
             // Mueve la cámara hacia la posición objetivo
@@ -107,22 +122,12 @@ public class SelectionTable : MonoBehaviour
         _playerTransform = playerTransform;
     }
 
-    private void OnMouseDown()
-    {
-        if (_playerTransform != null)
-        {
-            if (Vector3.Distance(transform.position, _playerTransform.position) < MAX_DISTANCE && !_isReturning && !_isZooming)
-            {
-                _isZooming = true;
-            }
-        }
-    }
-
     // Función para ocultar la pantalla de elección de minijuegos
     public void HideGameSelectionPanel()
     {
         StartCoroutine(LoadingScreenManager.instance.FadeCanvasGroup(_gameSelectionPanel, 0f, false));
         _isReturning = true; // La cámara vuelve a su posición de origen
+        runningGame = true;
     }
 
 }

@@ -62,6 +62,8 @@ public class PlayerMovement : MonoBehaviour
         switch (_currentScene)
         {
             case Scene.Lobby:
+                // Si se está en el menú, no te puedes mover
+                if (!SelectionTable.Instance.runningGame) return;
                 // Gestión de los controles
                 if (Input.GetKey(KeyCode.W)) _movementDirection.z = 1f;
                 if (Input.GetKey(KeyCode.S)) _movementDirection.z = -1f;

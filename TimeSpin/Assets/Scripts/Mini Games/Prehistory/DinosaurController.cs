@@ -9,9 +9,9 @@ public class DinosaurController : MonoBehaviour
     [SerializeField] private string _dinosaurType; // Tipo de dinosaurio (Normal, Velociraptor, TRex)
 
     private Vector3 _player; // Referencia al jugador
-    private const float MAX_HIT_DISTANCE = 5.0f; // Distancia mínima para golpear al dinosaurio
+    private const float MAX_HIT_DISTANCE = 3.0f; // Distancia mínima para golpear al dinosaurio
 
-    private int _hitCount = 0; // Cuenta los clicks (para el T-Rex)
+    private int _hitCount = 0; // Cuenta los golpes (para el T-Rex)
     private int _requiredHits = 1; // Golpes minimos para matar al dinosaurio (1 por defecto)
 
     public int holeIndex; // Índice del agujero ocupado
@@ -39,23 +39,22 @@ public class DinosaurController : MonoBehaviour
     {
         // Si el juego no ha empezado o ha terminado, que no se pueda hacer nada
         if (!PrehistoryManager.Instance.runningGame) return;
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            // Comprobar si el jugador esta cerca para golpearle
+            float distanceToPlayer = Vector3.Distance(_player, transform.position);
+
+            if (distanceToPlayer <= MAX_HIT_DISTANCE)
+            {
+                // Si el jugador está cerca, lo golpea
+                HitDinosaur();
+            }
+        }
         _timer += Time.deltaTime;
         if (_timer >= _visibleTime)
         {
             // Se desaparece el dinosaurio
             HideDinosaur();
-        }
-    }
-
-    void OnMouseDown()
-    {
-        // Comprobar si el jugador esta cerca para pincharle
-        float distanceToPlayer = Vector3.Distance(_player, transform.position);
-
-        if (distanceToPlayer <= MAX_HIT_DISTANCE)
-        {
-            // Si el jugador está cerca, lo golpea
-            HitDinosaur();
         }
     }
 
