@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.ConstrainedExecution;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GridManager : MonoBehaviour
 {
@@ -10,8 +11,6 @@ public class GridManager : MonoBehaviour
 
     // Variable que controla el flujo del juego
     public bool runningGame = false;
-    // Variable que gestiona el número de jugadores
-    private int _numPlayers;
 
     // Dimensiones del tablero
     private const int COLUMNS = 13;
@@ -25,6 +24,7 @@ public class GridManager : MonoBehaviour
     // Temporizador del juego
     [SerializeField] private TMP_Text _timerText;
     private float _remainingTime = 120f; // El tiempo de juego son 2 minutos (120 segundos)
+    private float _survivedTime = 0f;
 
     // Gestión de la aparición aleatoria de pinchos
     // Lista de todas las casillas con pinchos
@@ -41,8 +41,10 @@ public class GridManager : MonoBehaviour
     // Gestión de la aparición de momias
     // Prefab de la momia
     [SerializeField] private GameObject _mummy;
+    // Posición de spawn de las momias
+    [SerializeField] private Vector3 _mummySpawnPosition;
     // Tiempo que tiene que transcurrir para que se genere una nueva momia
-    private float _mummyTime = 30f;
+    private float _mummyTime = 0f;
 
     private void Awake()
     {
@@ -53,7 +55,7 @@ public class GridManager : MonoBehaviour
     {
         // Se genera el tablero
         GenerateGrid();
-        // Se prepara la gestión aleatoria de los pinchos
+        // Se prepara la gestión aleatoria de los pinchos 
         PrepareSpikesSpawn();
     }
 
@@ -62,8 +64,10 @@ public class GridManager : MonoBehaviour
         if (!runningGame) return;
 
         // GESTIÓN DEL TIEMPO RESTANTE
-        if(_remainingTime > 0f)
+        if (_remainingTime > 0f)
         {
+            // Aumentar el tiempo sobrevivido
+            _survivedTime+= Time.deltaTime;
             // Disminuir el tiempo restante
             _remainingTime -= Time.deltaTime;
             // Se actualiza el temporizador
@@ -74,15 +78,14 @@ public class GridManager : MonoBehaviour
             _remainingTime = 0f;
             // Se actualiza el temporizador
             UpdateTimer();
-            // Se indica que el juego ha finalizado
-            runningGame = false;
+            // Se finaliza el minijuego
             GameOver();
             return;
         }
 
         // APARICIÓN DE PINCHOS
         _spikesTime -= Time.deltaTime;
-        if(_spikesTime < 0f)
+        if (_spikesTime < 0f)
         {
             _spikesTime = 10f; // Entre apariciones se deja un tiempo de 10 segundos
             SpawnSpikes();
@@ -90,19 +93,11 @@ public class GridManager : MonoBehaviour
 
         // GENERACIÓN DE MOMIAS
         _mummyTime -= Time.deltaTime;
-        if(_mummyTime < 0f)
+        if (_mummyTime < 0f)
         {
-            GameObject.Instantiate(_mummy, new Vector3(7.5f, 0.5f, -4.5f), Quaternion.identity);
-            _mummyTime = 30f;
-        }
-
-        // CONTROL DEL NÚMERO DE JUGADORES
-        _numPlayers = GameObject.FindGameObjectsWithTag("Player").Length;
-        // Si sólo queda un jugador, se termina el juego
-        if(_numPlayers == 1)
-        {
-            runningGame = false;
-            GameOver();
+            // Instancia el objeto
+            Instantiate(_mummy, _mummySpawnPosition, Quaternion.Euler(-90f, 0f, 0f));
+            _mummyTime = 90f;
         }
 
     }
@@ -111,15 +106,15 @@ public class GridManager : MonoBehaviour
 
     private void GenerateGrid()
     {
-        for(int x = 0; x < COLUMNS; x++)
+        for (int x = 0; x < COLUMNS; x++)
         {
-            for(int z = 0; z < ROWS; z++)
+            for (int z = 0; z < ROWS; z++)
             {
                 // Primero se define el centro de la casilla en la que se encuentra
-                Vector3 tileCenter = new Vector3((x * tileSize) + tileSize / 2, 0, - ((z * tileSize) + tileSize / 2));
+                Vector3 tileCenter = new Vector3((x * tileSize) + tileSize / 2, 0, -((z * tileSize) + tileSize / 2));
 
                 // Se crea la casilla y se añade a la matriz
-                _gridTiles[x,z] = new Tile(x, z, tileCenter);
+                _gridTiles[x, z] = new Tile(x, z, tileCenter);
             }
         }
 
@@ -129,7 +124,7 @@ public class GridManager : MonoBehaviour
     private void GenerateNonWalkableTiles()
     {
         // Se recorren todas las coordenadas de las casillas no caminables, para marcarlas en el tablero
-        foreach(Vector2Int tile in _nonWalkableTiles)
+        foreach (Vector2Int tile in _nonWalkableTiles)
         {
             _gridTiles[tile.x, tile.y].MakeNonWalkable();
         }
@@ -204,14 +199,14 @@ public class GridManager : MonoBehaviour
     private void PrepareSpikesSpawn()
     {
         // Al ser un total de 10 pinchos, se genera una lista de 10 elementos
-        for(int i = 0; i < NUM_SPIKES_TILES; i++)
+        for (int i = 0; i < NUM_SPIKES_TILES; i++)
         {
             _randomSpikesSpawn.Add(i);
         }
         // Para garantizar que aparezcan de forma aleatoria, es decir, en cada partida con un orden distinto,
         // se utiliza el algoritmo de Fisher - Yates, con coste O(N)
         int n = _randomSpikesSpawn.Count;
-        for(int i = n - 1; i > 0; i--)
+        for (int i = n - 1; i > 0; i--)
         {
             int j = Random.Range(0, i + 1); // Usamos UnityEngine.Random para generar un número aleatorio
             // Intercambiar los elementos en i y j
@@ -223,8 +218,9 @@ public class GridManager : MonoBehaviour
 
     private void SpawnSpikes()
     {
+        int randomSpike = _randomSpikesSpawn[_numSpikes];
         // Se activan los pinchos de la casilla que toque según el orden aleatorio
-        _spikesList[_randomSpikesSpawn[_numSpikes]].SetActive(true);
+        _spikesList[randomSpike].SetActive(true);
         // Se obtiene la posición global de dicha casilla
         Vector3 spikesPos = _spikesList[_randomSpikesSpawn[_numSpikes]].transform.position;
         // Se pasa de dichas coordenadas a las locales del escenario
@@ -233,12 +229,18 @@ public class GridManager : MonoBehaviour
         GetTile((int)spikesTilePos.x, (int)spikesTilePos.y).MakeNonWalkable();
         // Se indica que se ha generado una casilla más con pinchos
         _numSpikes++;
+        // Una vez hecho, se activan los pinchos
+        _spikesList[randomSpike].SetActive(true);
     }
 
     #endregion
-
-    private void GameOver()
+    public void GameOver()
     {
-
+        if (!runningGame) return;
+        // Se indica que ha terminado el juego
+        runningGame = false;
+        // Se calcula la puntuación del jugador en base a los resultados
+        GameSceneManager.instance.GameOverEgiptFuture(_survivedTime, true);
     }
+
 }

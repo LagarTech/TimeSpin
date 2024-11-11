@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class RaceManager : MonoBehaviour
 {
     public static RaceManager instance;
 
     public bool runningGame = false;
-    private List<GameObject> _players;
-    private List<GameObject> _playersFinished = new List<GameObject>();
+    private float _timer = 0f;
 
     private void Awake()
     {
@@ -23,45 +23,30 @@ public class RaceManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void Update()
     {
-        _players = GameObject.FindGameObjectsWithTag("Player").ToList();
-    }
-
-    private void PlayerReachedFinishLine(GameObject player)
-    {
-        // Se actualiza la lista de jugadores, por si acaso alguno se ha desconectado
-        _players = GameObject.FindGameObjectsWithTag("Player").ToList();
-        if (!_playersFinished.Contains(player))
+        if(runningGame)
         {
-            _playersFinished.Add(player); // Añade al jugador que ha llegado a la meta
-            CheckEndOfRace(); // Verifica si la carrera debe terminar
+            // Se contabiliza el tiempo que se tarda en terminar la carrera
+            _timer += Time.deltaTime;
         }
     }
 
-    private void CheckEndOfRace()
-    {
-        // Se calcula cuántos jugadores quedan por llegar a la meta
-        int remainingPlayers = _players.Count - _playersFinished.Count;
-
-        if (remainingPlayers <= 1)
-        {
-            EndRace();
-        }
-    }
-
+    // Función para terminar el minijuego
     private void EndRace()
     {
-        Debug.Log("La carrera ha terminado");
+        if (!runningGame) return;
         runningGame = false;
+        // Se inicia la transición
+        GameSceneManager.instance.GameOverMaya(_timer);
     }
 
+    // Se comprueba si el jugador ha pasado la meta
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.tag == "Player")
         {
-            // Se indica que el jugador ha pasado la meta
-            PlayerReachedFinishLine(collision.gameObject);
+            EndRace();
         }
     }
 }

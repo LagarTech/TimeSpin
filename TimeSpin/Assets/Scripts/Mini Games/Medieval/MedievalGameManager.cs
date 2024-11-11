@@ -1,50 +1,67 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+
 public class MedievalGameManager : MonoBehaviour
 {
-    public GameObject[] swordPrefabs;       // Prefabs de espadas (bronce, plata, oro)
-    public Transform[] spawnPoints;         // Puntos de las espadas
-    public float spawnInterval = 3f;        // tiwmpo de aparición de espadas
-    public float gameTime = 60f;            // Duración del minijuego
+    public static MedievalGameManager Instance;
 
-    private float timeLeft;
-    private float spawnTimer;
-    public bool isGameOver = false;
-    public bool isGameActive = false;      // Controla si el juego está activo
+    [SerializeField] private GameObject[] _swordPrefabs; // Prefabs de espadas (bronce, plata, oro)
+    [SerializeField] private GameObject _spawnArea; // Donde aparecen las espadas
+    private const float SPAWN_INTERVAL = 3f; // Tiempo de aparición de espadas
+    private const float GAME_TIME = 60f; // Duración del minijuego
 
-    public Text timeText;
-    public Text[] playerScoreTexts;         // UI de la puntuación de los jugadores
-    private int[] playerScores;             // Puntuación de los jugadores
+    private float _timeLeft; // Tiempo restante
+    private float _spawnTimer; // Temporizador para spawnear las espadas
 
-    // Start is called before the first frame update
-    void Start()
+    public bool runningGame = false;
+
+    [SerializeField] private TMP_Text _timeText;
+    [SerializeField] private TMP_Text _scoreText; // UI de la puntuación del jugador
+
+    public Transform basePlayer;
+
+    private int _score = 0; // Puntuación del juego
+    private int _numSwords = 0; // Número de espadas
+
+    private void Awake()
     {
-        timeLeft = gameTime;
-        playerScores = new int[2];  // Asumiendo 2 jugadores para este minijuego
-        UpdateUI();
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        // Si el juego no ha empezado, no hacer nada
-        if (!isGameActive || isGameOver)
-            return;
+        _timeLeft = GAME_TIME;
+        UpdateUI();
+        GameSceneManager.instance.practiceStarted = true;
+    }
 
-        // Timer
-        if (timeLeft > 0)
+    private void Update()
+    {
+        if (!runningGame) return;
+
+        if (_timeLeft > 0)
         {
-            timeLeft -= Time.deltaTime;
-            spawnTimer += Time.deltaTime;
+            _timeLeft -= Time.deltaTime;
+            _spawnTimer += Time.deltaTime;
 
-            if (spawnTimer >= spawnInterval)
+            // Si ha pasado el tiempo de spawn, se genera una nueva espada
+            if (_spawnTimer >= SPAWN_INTERVAL)
             {
                 SpawnRandomSword();
-                spawnTimer = 0f;
+                _spawnTimer = 0f;
             }
-
+            // Se actualiza la interfaz
             UpdateUI();
         }
         else
@@ -52,62 +69,48 @@ public class MedievalGameManager : MonoBehaviour
             EndGame();
         }
     }
-    //Spawn espadas
+
     void SpawnRandomSword()
     {
-        int spawnIndex = Random.Range(0, spawnPoints.Length);   // Posición aleatoria
-        int swordIndex = Random.Range(0, swordPrefabs.Length);  // Espada aleatoria
-
-        Instantiate(swordPrefabs[swordIndex], spawnPoints[spawnIndex].position, Quaternion.identity);
+        // Se escoge una espada aleatoria
+        int swordIndex = Random.Range(0, _swordPrefabs.Length);
+        Instantiate(_swordPrefabs[swordIndex], GetRandomSpawnPosition(), Quaternion.identity);
     }
 
-    //Puntuaciones
-    public void AddScore(int playerIndex, int points)
+    Vector3 GetRandomSpawnPosition()
     {
-        playerScores[playerIndex] += points;
-        UpdateUI();
+        // Se genera una posición aleatoria
+        MeshRenderer meshRenderer = _spawnArea.gameObject.GetComponent<MeshRenderer>();
+        if (meshRenderer != null)
+        {
+            Vector3 size = meshRenderer.bounds.size;
+            Vector3 center = meshRenderer.bounds.center;
+            float x = Random.Range(center.x - size.x / 2, center.x + size.x / 2);
+            float z = Random.Range(center.z - size.z / 2, center.z + size.z / 2);
+            return new Vector3(x, 0, z);
+        }
+        return Vector3.zero;
+    }
+
+    public void AddScore(int points)
+    {
+        _score += points; // Se suman los puntos asociados a la espada
+        _numSwords++; // Se incrementa el número de espadas
+        UpdateUI(); // Se actualiza la UI
     }
 
     void UpdateUI()
     {
-        int minutes = Mathf.FloorToInt(timeLeft / 60);
-        int seconds = Mathf.FloorToInt(timeLeft % 60);
+        int minutes = Mathf.FloorToInt(_timeLeft / 60);
+        int seconds = Mathf.FloorToInt(_timeLeft % 60);
+        _timeText.text = string.Format("{0:0}:{1:00}", minutes, seconds);
 
-        timeText.text = string.Format("{0:0}:{1:00}", minutes, seconds);
-
-        for (int i = 0; i < playerScores.Length; i++)
-        {
-            playerScoreTexts[i].text = "Jugador " + (i + 1) + ": " + playerScores[i] + " puntos";
-        }
+        _scoreText.text = _score.ToString() + " puntos";
     }
-
-
-
-
 
     void EndGame()
     {
-        isGameOver = true;
-        isGameActive = false;
-        Debug.Log("El juego ha terminado");
+        runningGame = false;
     }
 
-    public void StartGame()
-    {
-        isGameActive = true;
-        isGameOver = false;
-        timeLeft = gameTime;
-        playerScores = new int[2];
-        UpdateUI();
-    }
-
-    public bool IsGameActive()
-    {
-        return isGameActive;
-    }
-
-    public bool IsGameOver()
-    {
-        return isGameOver;
-    }
 }

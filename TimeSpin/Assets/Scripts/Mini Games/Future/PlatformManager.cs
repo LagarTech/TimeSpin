@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlatformManager : MonoBehaviour
 {
+    public static PlatformManager instance;
+
     private const int _numPlatforms = 45; // Número de plataformas
     private const int _totalDisappeared = 30; // Número de plataformas que van a desaparecer
 
@@ -23,8 +25,21 @@ public class PlatformManager : MonoBehaviour
     private float _shakeDuration = 1f; // Duración del temblor
     private float _fallDuration = 1.5f; // Duración de la caída
 
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
+
     private void Start()
     {
+        // Lógica de generación del orden de caída de las plataformas
         PreparePlatformsFall();
     }
 
@@ -134,11 +149,13 @@ public class PlatformManager : MonoBehaviour
             yield return null;
         }
 
-        // Se apaga la plataforma
+        // Se apaga la plataforma, sólo en el cliente    
         platform.GetComponentInChildren<Platform>().FallPlatform();
-
+        
         // Desactivar la plataforma tras la caída
         platform.SetActive(false);
     }
+
+
 
 }

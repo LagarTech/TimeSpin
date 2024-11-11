@@ -10,6 +10,9 @@ public class Platform : MonoBehaviour
     public int platformCount = 0;
     private bool _isHighlighted = false;
 
+    public int idPlatform;
+    public bool isUp;
+
     private void Start()
     {
         _meshRenderer = GetComponent<MeshRenderer>();
@@ -35,15 +38,21 @@ public class Platform : MonoBehaviour
     public void OnCollisionEnter(Collision collision)
     {
         // Si el jugador entra en la casilla
-        if(collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player")
         {
-            // Se aumenta el contador de la plataforma
-            platformCount++;
-            // Se aumenta el contador de las vecinas
-            foreach (Platform platform in _neighbourPlatforms)
-            {
-                platform.platformCount++;
-            }
+            // Se activan las plataformas vecinas
+            OnPlatformEnter();
+        }
+    }
+
+    public void OnPlatformEnter()
+    {
+        // Se aumenta el contador de la plataforma
+        platformCount++;
+        // Se aumenta el contador de las vecinas
+        foreach (Platform platform in _neighbourPlatforms)
+        {
+            platform.platformCount++;
         }
     }
 
@@ -52,13 +61,19 @@ public class Platform : MonoBehaviour
         // Si el jugador entra en la casilla
         if (collision.gameObject.tag == "Player")
         {
-            // Se disminuye el contador de la plataforma
-            platformCount--;
-            // Se disminuye el contador de las vecinas
-            foreach (Platform platform in _neighbourPlatforms)
-            {
-                platform.platformCount--;
-            }
+            // Se desactivan las plataformas vecinas
+            OnPlatformExit();
+        }
+    }
+
+    public void OnPlatformExit()
+    {
+        // Se disminuye el contador de la plataforma
+        platformCount--;
+        // Se disminuye el contador de las vecinas
+        foreach (Platform platform in _neighbourPlatforms)
+        {
+            platform.platformCount--;
         }
     }
 
@@ -85,9 +100,5 @@ public class Platform : MonoBehaviour
             }
         }
     }
-
-
-
-
 
 }

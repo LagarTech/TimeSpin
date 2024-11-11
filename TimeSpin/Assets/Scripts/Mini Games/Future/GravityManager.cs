@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
+// Este script se encarga de las inversiones en la gravedad, que se gestionarán por el servidor. La única funcionalidad que realizará el cliente es actualizar el temporizador
 public class GravityManager : MonoBehaviour
 {
     public static GravityManager Instance;
@@ -27,8 +29,8 @@ public class GravityManager : MonoBehaviour
     // Temporizador del juego
     [SerializeField] private TMP_Text _timerText;
     private float _remainingTime = 120f; // El tiempo de juego son 2 minutos (120 segundos)
+    private float _survivedTime = 0f;
 
-    private int _numPlayers = 0; // Control del número de jugadores
 
     private void Awake()
     {
@@ -58,19 +60,21 @@ public class GravityManager : MonoBehaviour
         // GESTIÓN DEL TIEMPO RESTANTE
         if (_remainingTime > 0f)
         {
+            // Aumentar el tiempo de supervivencia
+            _survivedTime += Time.deltaTime;
             // Disminuir el tiempo restante
             _remainingTime -= Time.deltaTime;
             // Se actualiza el temporizador
             UpdateTimer();
+            
         }
         else
         {
             _remainingTime = 0f;
             // Se actualiza el temporizador
             UpdateTimer();
-            // Se indica que el juego ha finalizado
-            runningGame = false;
-            GameOver();
+            // Se inicia el final del juego
+            GameOver();     
             return;
         }
 
@@ -95,14 +99,6 @@ public class GravityManager : MonoBehaviour
             }
         }
 
-        // CONTROL DEL NÚMERO DE JUGADORES
-        _numPlayers = GameObject.FindGameObjectsWithTag("Player").Length;
-        // Si sólo queda un jugador, se termina el juego
-        if (_numPlayers == 1)
-        {
-            runningGame = false;
-            GameOver();
-        }
     }
 
     private void StartFloating()
@@ -121,7 +117,6 @@ public class GravityManager : MonoBehaviour
             Physics.gravity = new Vector3(0, _gravity, 0);   // Gravedad invertida
         }
         isGravityInverted = !isGravityInverted;
-
     }
 
     private void StopFloating()
@@ -140,10 +135,14 @@ public class GravityManager : MonoBehaviour
         _timerText.text = string.Format("{0:00}:{1:00}", displayMinutes, displaySeconds);
     }
 
-    private void GameOver()
+    public void GameOver()
     {
-
+        // Se indica que el juego ha finalizado
+        runningGame = false;
+        // Se restaura la gravedad
+        Physics.gravity = new Vector3(0, -9.81f, 0);
+        // Se calcula la puntuación del jugador en base al resultado
+        GameSceneManager.instance.GameOverEgiptFuture(_survivedTime, false);
     }
-
 
 }

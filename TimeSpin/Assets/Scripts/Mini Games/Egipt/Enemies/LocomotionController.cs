@@ -9,7 +9,8 @@ public class LocomotionController : MonoBehaviour
     private Vector3 _targetPosition;
     // Esta variable sirve para determinar la dirección de movimiento del agente
     private Vector3 _moveDirection;
-    [SerializeField] private float _speed;
+    [SerializeField] private float _speed = 1f;
+    private float _timer = 0f;
     // Esta variable indica si se ha finalizado el movimiento, es decir, se ha llegado a la casilla calculada
     public bool finishedMove;
     // Enumerador con las direcciones en las que se puede mover el agente
@@ -34,6 +35,10 @@ public class LocomotionController : MonoBehaviour
         // Se evitan los movimientos si el juego no ha comenzado
         if (!GridManager.Instance.runningGame) return;
 
+        // Se cuenta el tiempo transcurrido para aumentar su velocidad
+        _timer += Time.deltaTime;
+        float increaseSpeed = _timer / 200f;
+
         if (_targetPosition == Vector3.zero) return; // Cuando no se ha iniciado el movimiento, no se pueden realizar las comprobaciones
         // Se comprueba si se ha llegado al destino
         if(!AtDestination())
@@ -41,7 +46,7 @@ public class LocomotionController : MonoBehaviour
             // Si no, se indica que el movimiento no se ha terminado
             finishedMove = false;
             // Se continúa moviendo
-            transform.position += _moveDirection * _speed * Time.deltaTime;
+            transform.position += _moveDirection * (_speed + increaseSpeed) * Time.deltaTime;
         }
         else
         {

@@ -14,7 +14,6 @@ public class TrunkSpawner : MonoBehaviour
     private void Update()
     {
         if (!RaceManager.instance.runningGame) return;
-
         // Incrementa el temporizador basado en el tiempo real transcurrido
         _spawnTimer += Time.deltaTime;
 
@@ -31,11 +30,11 @@ public class TrunkSpawner : MonoBehaviour
         // Genera una posición aleatoria en el eje X
         float randomX = Random.Range(_minX, _maxX);
 
-        // Define la posición de generación (en Z = 58)
-        Vector3 spawnPosition = new Vector3(randomX, 2f, 58f);  // Ajusta según el escenario
-        Quaternion spawnRotation = Quaternion.Euler(0, 0, 90); // Rotación en Z
+        // Define la posición de generación (en Z = 53)
+        Vector3 spawnPosition = new Vector3(randomX, 2f, 53f);  // Ajusta según el escenario
+        Quaternion spawnRotation = Quaternion.Euler(0, 90, 90); // Rotación en Z
 
-        // Instancia el tronco
+        // Instancia el tronco 
         GameObject newTrunk = TrunkPool.instance.GetTrunkFromPool();
 
         if (newTrunk != null)
@@ -51,6 +50,7 @@ public class TrunkSpawner : MonoBehaviour
         {
             trunkRb.AddForce(Vector3.back * 500f);
         }
+
     }
 
 }

@@ -15,19 +15,20 @@ public class Hole : MonoBehaviour
         }
     }
 
+
     private IEnumerator RespawnPlayer(Transform player)
     {
         // Desactiva la colisión entre el jugador y el terreno
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Terrain"), true);
 
         // Simula la caída
-        yield return new WaitForSeconds(_respawnDelay / 4);
+        yield return new WaitForSeconds(_respawnDelay / 3);
 
         // Desactiva al jugador durante un breve periodo de tiempo
         player.gameObject.SetActive(false);
 
         // Simula el tiempo de reaparición
-        yield return new WaitForSeconds(_respawnDelay * 3/4);
+        yield return new WaitForSeconds(_respawnDelay * 2 / 3);
 
         // Reposiciona al jugador un poco atrás del agujero
         Vector3 respawnPosition = transform.position + _respawnOffset;
@@ -38,5 +39,6 @@ public class Hole : MonoBehaviour
 
         // Reactiva la colisión entre el jugador y el terreno
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Terrain"), false);
+
     }
 }
