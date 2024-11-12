@@ -44,13 +44,9 @@ public class LoadingScreenManager : MonoBehaviour
             case "Medieval": MedievalGameManager.Instance.runningGame = true;  break;
             case "Maya": RaceManager.instance.runningGame = true; break;
             case "Future": GravityManager.Instance.runningGame = true; break;
+            case "Ending": EndingManager.Instance.ShowResults(); break;
         }
 
-        // Si se ha ido al lobby y se han jugado los 5 minijuegos, se pasa a la pantalla final de puntuaciones
-        if (startedScene == "LobbyMenu" && GameSceneManager.instance.allGamesPlayed)
-        {
-            // Pantalla final de puntuaciones totales
-        }
     }
 
     private IEnumerator ScoresPanelTransitionCoroutine(string sceneName, int result, int points, bool isRecord)
@@ -70,11 +66,17 @@ public class LoadingScreenManager : MonoBehaviour
         // Se obtiene el texto y el total de puntos para hacer la animación
         int targetPoints = GameSceneManager.instance.totalPoints;
         TMP_Text currentPointsText = GameObject.FindGameObjectWithTag("PuntuacionActual").GetComponent<TMP_Text>();
+        if(GameSceneManager.instance.allGamesPlayed)
+        {
+            // Si es el último minijuego, no se muestra la puntuación hasta el final
+            currentPointsText.text = "";
+            GameObject.FindGameObjectWithTag("TituloPActual").SetActive(false);
+        }
 
         // Fade in (aparecer)
         yield return FadeCanvasGroup(scoresScreen, 1f, true); // De 0 (invisible) a 1 (visible)
         // Animación de la puntuación
-        yield return AnimateNumber(currentPointsText, targetPoints);
+        if (!GameSceneManager.instance.allGamesPlayed) yield return AnimateNumber(currentPointsText, targetPoints);
         yield return new WaitForSeconds(5f); // Espera 5 segundos mostrando las puntuaciones
         yield return FinalFade(sceneName);
     }
@@ -160,6 +162,11 @@ public class LoadingScreenManager : MonoBehaviour
             yield return null;
         }
         // Carga la siguiente escena
+        if(GameSceneManager.instance.allGamesPlayed && sceneName == "LobbyMenu")
+        {
+            // Si se ha terminado, se pasa a la escena final en lugar de volver al lobby
+            sceneName = "Ending";
+        }
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
 
     }

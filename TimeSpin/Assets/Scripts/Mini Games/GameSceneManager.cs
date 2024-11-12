@@ -27,7 +27,7 @@ public class GameSceneManager : MonoBehaviour
     const int MAX_POINTS_MY = 50;
     // Se almacenan los resultados de los juegos y los puntos asociados para mostrarlos al final
     [SerializeField] private int[] _resultsGames = new int[NUM_GAMES];
-    [SerializeField] private int[] _pointsGames = new int[NUM_GAMES];
+    public int[] pointsGames = new int[NUM_GAMES];
 
     public int totalPoints = 0;
 
@@ -194,14 +194,14 @@ public class GameSceneManager : MonoBehaviour
         if (egypt)
         {
             _resultsGames[1] = (int)survivedTime;
-            _pointsGames[1] = resultPoints;
+            pointsGames[1] = resultPoints;
             // Se comprueba si es récord
 
         }
         else
         {
             _resultsGames[4] = (int)survivedTime;
-            _pointsGames[4] = resultPoints;
+            pointsGames[4] = resultPoints;
             // Se comprueba si es récord
 
         }
@@ -230,7 +230,7 @@ public class GameSceneManager : MonoBehaviour
 
         // Se almacena el resultado en la lista
         _resultsGames[3] = (int)raceTime;
-        _pointsGames[3] = resultPoints;
+        pointsGames[3] = resultPoints;
 
         // Se comprueba si es record
         bool isRecord = false;
@@ -251,13 +251,13 @@ public class GameSceneManager : MonoBehaviour
         if(prehistory)
         {
             _resultsGames[0] = numDefeated;
-            _pointsGames[0] = resultPoints;
+            pointsGames[0] = resultPoints;
             // Se comprueba si es record
         }
         else
         {
-            _resultsGames[1] = numDefeated;
-            _pointsGames[1] = resultPoints;
+            _resultsGames[2] = numDefeated;
+            pointsGames[2] = resultPoints;
             // Se comprueba si es record
         }
 
