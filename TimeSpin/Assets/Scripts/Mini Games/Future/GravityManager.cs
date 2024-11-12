@@ -142,7 +142,7 @@ public class GravityManager : MonoBehaviour
         // Se restaura la gravedad
         Physics.gravity = new Vector3(0, -9.81f, 0);
         // Se calcula la puntuación del jugador en base al resultado
-        GameSceneManager.instance.GameOverEgiptFuture(_survivedTime, false);
+        GameSceneManager.instance.GameOverEgyptFuture(_survivedTime, false);
     }
 
 }

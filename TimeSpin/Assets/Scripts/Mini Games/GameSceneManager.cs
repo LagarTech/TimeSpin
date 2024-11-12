@@ -37,7 +37,7 @@ public class GameSceneManager : MonoBehaviour
     {
         Lobby,
         Prehistory,
-        Egipt,
+        Egypt,
         Medieval,
         Maya,
         Future
@@ -48,7 +48,7 @@ public class GameSceneManager : MonoBehaviour
     public GameObject playerPrefab;
     public Vector3 startingPositionLobby;
     [SerializeField] private Vector3 _startingPositionPrehistory;
-    [SerializeField] private Vector3 _startingPositionEgipt;
+    [SerializeField] private Vector3 _startingPositionEgypt;
     [SerializeField] private Vector3 _startingPositionMedieval;
     [SerializeField] private Vector3 _startingPositionMaya;
     [SerializeField] private Vector3 _startingPositionFuture;
@@ -94,6 +94,9 @@ public class GameSceneManager : MonoBehaviour
                 DespawnMummies();
                 // Se eliminan los troncos del minijuego anterior
                 DespawnTrunks();
+                // Se apaga la lámpara
+                GameObject luz = GameObject.FindGameObjectWithTag("LuzFarol");
+                if(luz != null) luz.GetComponent<Light>().intensity = 0;
                 break;
             case "Prehistory":
                 // Una vez se cambia de la primera escena, se indica que ya ha comenzado el juego
@@ -101,11 +104,14 @@ public class GameSceneManager : MonoBehaviour
                 // Se instancia al jugador en la posición de inicio adecuada
                 Instantiate(playerPrefab, _startingPositionPrehistory, Quaternion.identity);
                 break;
-            case "Egipt":
+            case "Egypt":
                 // Una vez se cambia de la primera escena, se indica que ya ha comenzado el juego
                 gameStarted = true;
                 // Se instancia al jugador en la posición de inicio adecuada con la escala adecuada
-                Instantiate(playerPrefab, _startingPositionEgipt, Quaternion.identity).transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+                Instantiate(playerPrefab, _startingPositionEgypt, Quaternion.identity).transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+                // Se activa la lámpara
+                Light farol = GameObject.FindGameObjectWithTag("LuzFarol").GetComponent<Light>();
+                farol.intensity = 15;
                 break;
             case "Medieval":
                 // Una vez se cambia de la primera escena, se indica que ya ha comenzado el juego
@@ -177,7 +183,7 @@ public class GameSceneManager : MonoBehaviour
     public bool[] GetPlayedGames() { return _playedGames; }
 
     // GESTIÓN DE LAS PUNTUACIONES DE LOS MINIJUEGOS
-    public void GameOverEgiptFuture(float survivedTime, bool egipt)
+    public void GameOverEgyptFuture(float survivedTime, bool egypt)
     {
         // La puntuación máxima para estos minijuegos es de 50 puntos, si se aguantan los dos minutos
         // Se aplica la relación de proporcionalidad
@@ -185,7 +191,7 @@ public class GameSceneManager : MonoBehaviour
         totalPoints += resultPoints;
         // Se almacena el resultado en una lista
         bool isRecord = false;
-        if (egipt)
+        if (egypt)
         {
             _resultsGames[1] = (int)survivedTime;
             _pointsGames[1] = resultPoints;

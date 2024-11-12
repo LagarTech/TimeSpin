@@ -40,10 +40,16 @@ public class LoadingScreenManager : MonoBehaviour
         switch (startedScene)
         {
             case "Prehistory": PrehistoryManager.Instance.runningGame = true; break;
-            case "Egipt": GridManager.Instance.runningGame = true; break;
-            case "Medieval": break;
+            case "Egypt": GridManager.Instance.runningGame = true; break;
+            case "Medieval": MedievalGameManager.Instance.runningGame = true;  break;
             case "Maya": RaceManager.instance.runningGame = true; break;
             case "Future": GravityManager.Instance.runningGame = true; break;
+        }
+
+        // Si se ha ido al lobby y se han jugado los 5 minijuegos, se pasa a la pantalla final de puntuaciones
+        if (startedScene == "LobbyMenu" && GameSceneManager.instance.allGamesPlayed)
+        {
+            // Pantalla final de puntuaciones totales
         }
     }
 

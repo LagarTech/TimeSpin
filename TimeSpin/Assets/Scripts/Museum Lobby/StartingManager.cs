@@ -18,7 +18,7 @@ public class StartingManager : MonoBehaviour
         switch(gameId)
         {
             case 0: nextScene = "Prehistory"; break;
-            case 1: nextScene = "Egipt"; break;
+            case 1: nextScene = "Egypt"; break;
             case 2: nextScene = "Medieval"; break;
             case 3: nextScene = "Maya"; break;
             case 4: nextScene = "Future"; break;

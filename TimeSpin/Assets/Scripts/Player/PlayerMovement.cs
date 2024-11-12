@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Lobby,
         Prehistory,
-        Egipt,
+        Egypt,
         Medieval,
         Maya,
         Future
@@ -48,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
         {
             case "LobbyMenu": _currentScene = Scene.Lobby; break;
             case "Prehistory": _currentScene = Scene.Prehistory; break;
-            case "Egipt": _currentScene = Scene.Egipt; break;
+            case "Egypt": _currentScene = Scene.Egypt; break;
             case "Medieval": _currentScene = Scene.Medieval; break;
             case "Maya": _currentScene = Scene.Maya; break;
             case "Future": _currentScene = Scene.Future; break;
@@ -81,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
                 if (Input.GetKey(KeyCode.D)) _movementDirection.x = 1f;
                 break;
 
-            case Scene.Egipt:
+            case Scene.Egypt:
                 // Si el minijuego no ha comenzado, no se ejecuta ninguna acción
                 if (!GridManager.Instance.runningGame) return;
                 // En el minijuego de Egipto, se necesita conocer la casilla en la que se encuentra el jugador
@@ -180,13 +180,19 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // Si el jugador entra a su base y lleva una espada
-        if(carriedSword != null && other.gameObject.tag == "Base")
+        // Si el jugador entra a una base y lleva una espada
+        if (carriedSword != null && other.gameObject.tag == "Base")
         {
-            // El jugador deja de llevar la espada
-            carriedSword = null;
-            // La deja en la base
-            carriedSword.GetComponent<SwordController>().DeliverSword();
+            // Si se deja la espada en la base correcta
+            if (other.gameObject.GetComponent<Base>().baseIndex == MedievalGameManager.Instance.nextBaseIndex)
+            {
+                // El jugador deja la espada en la base
+                carriedSword.GetComponent<SwordController>().DeliverSword();
+                // El jugador deja de llevar la espada
+                carriedSword = null;
+                // Se genera la siguiente base
+                MedievalGameManager.Instance.ChooseRandomBase();
+            }
         }
     }
 

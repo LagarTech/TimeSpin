@@ -11,21 +11,25 @@ public class MedievalGameManager : MonoBehaviour
 
     [SerializeField] private GameObject[] _swordPrefabs; // Prefabs de espadas (bronce, plata, oro)
     [SerializeField] private GameObject _spawnArea; // Donde aparecen las espadas
-    private const float SPAWN_INTERVAL = 3f; // Tiempo de aparición de espadas
+    private const float SPAWN_INTERVAL = 8f; // Tiempo de aparición de espadas
     private const float GAME_TIME = 60f; // Duración del minijuego
 
     private float _timeLeft; // Tiempo restante
-    private float _spawnTimer; // Temporizador para spawnear las espadas
+    private float _spawnTimer = 5f; // Temporizador para spawnear las espadas
 
     public bool runningGame = false;
 
     [SerializeField] private TMP_Text _timeText;
     [SerializeField] private TMP_Text _scoreText; // UI de la puntuación del jugador
 
-    public Transform basePlayer;
+    public Transform[] bases;
 
     private int _score = 0; // Puntuación del juego
     private int _numSwords = 0; // Número de espadas
+
+    // Gestión de las bases
+    public int nextBaseIndex = 0;
+    private const int NUM_BASES = 4;
 
     private void Awake()
     {
@@ -44,6 +48,8 @@ public class MedievalGameManager : MonoBehaviour
         _timeLeft = GAME_TIME;
         UpdateUI();
         GameSceneManager.instance.practiceStarted = true;
+        // Se indica cuál es la primera base a la que se debe llevar una espada
+        ChooseRandomBase();
     }
 
     private void Update()
@@ -70,6 +76,11 @@ public class MedievalGameManager : MonoBehaviour
         }
     }
 
+    public void ChooseRandomBase()
+    {
+        nextBaseIndex = Random.Range(0, NUM_BASES); // Se escoge una base al azar
+    }
+
     void SpawnRandomSword()
     {
         // Se escoge una espada aleatoria
@@ -87,7 +98,7 @@ public class MedievalGameManager : MonoBehaviour
             Vector3 center = meshRenderer.bounds.center;
             float x = Random.Range(center.x - size.x / 2, center.x + size.x / 2);
             float z = Random.Range(center.z - size.z / 2, center.z + size.z / 2);
-            return new Vector3(x, 0, z);
+            return new Vector3(x, 2, z);
         }
         return Vector3.zero;
     }
@@ -111,6 +122,7 @@ public class MedievalGameManager : MonoBehaviour
     void EndGame()
     {
         runningGame = false;
+        GameSceneManager.instance.GameOverPrehistoryMedieval(_score, _numSwords, false); // Se muestra la pantalla de puntuaciones y se pasa a la siguiente pantalla
     }
 
 }
