@@ -5,8 +5,8 @@ using UnityEngine;
 public class TrunkSpawner : MonoBehaviour
 {
     // Extremos para la generación aleatoria de los troncos
-    private float _minX = -3;
-    private float _maxX = 3;
+    private float _minX = -2.8f;
+    private float _maxX = 2.8f;
 
     private float _spawnInterval = 1.5f; // Tiempo entre spawns
     private float _spawnTimer = 0f;   // Temporizador para controlar el spawn

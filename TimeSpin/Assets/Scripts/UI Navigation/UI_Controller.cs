@@ -35,6 +35,11 @@ public class UI_Controller : MonoBehaviour
 
     public GameObject playerPrefab;
 
+    public GameObject AbandonarPanel;
+    public GameObject AbandonarBoton;
+
+    public GameObject TextoConsejo;
+
 
     private void Awake()
     {
@@ -50,7 +55,7 @@ public class UI_Controller : MonoBehaviour
 
     void Start()
     {
-        if (GameSceneManager.instance.gameStarted)
+        if (GameSceneManager.instance.gameStarted && !GameSceneManager.instance.practiceStarted)
         {
             // Si ya ha comenzado el juego, es decir, se vuelve de nuevo a la escena tras ya haber estado, no se necesitan mostrar todas las pantallas previas
             // Por lo tanto, s?lo se necesita la interfaz de la propia lobby
@@ -73,7 +78,7 @@ public class UI_Controller : MonoBehaviour
         else if (GameSceneManager.instance.practiceStarted)
         {
             // Si ya ha comenzado el juego, es decir, se vuelve de nuevo a la escena tras ya haber estado, no se necesitan mostrar todas las pantallas previas
-            // Por lo tanto, s?lo se necesita la interfaz de la propia lobby
+            // Por lo tanto, solo se necesita la interfaz de la propia lobby
             Desarrollador.SetActive(false);
             Cinematica.SetActive(false);
             Menu.SetActive(false);
@@ -91,6 +96,28 @@ public class UI_Controller : MonoBehaviour
             creditos.onClick.AddListener(OnCreditosButtonClicked);
             configuracion.onClick.AddListener(OnConfiguracionButtonClicked);
             practica.onClick.AddListener(OnPracticaButtonClicked);
+        }
+        else if (GameSceneManager.instance.gameFinished)
+        {
+            // Si la partida ha terminado, se volverá al menú 
+            Desarrollador.SetActive(false);
+            Cinematica.SetActive(false);
+            Menu.SetActive(true);
+            PracticaPanel.SetActive(false);
+            ConfiguracionPanel.SetActive(false);
+            CreditosPanel.SetActive(false);
+            Volver.SetActive(false);
+            Nombre.SetActive(true);
+
+            // Se agregan los eventos a los botones asociados
+            avanzarButton.onClick.AddListener(OnAvanzarButtonClicked);
+            jugar.onClick.AddListener(OnJugarButtonClicked);
+            creditos.onClick.AddListener(OnCreditosButtonClicked);
+            configuracion.onClick.AddListener(OnConfiguracionButtonClicked);
+            practica.onClick.AddListener(OnPracticaButtonClicked);
+
+            GameSceneManager.instance.gameFinished = false;
+
         }
         else 
         {
@@ -166,6 +193,8 @@ public class UI_Controller : MonoBehaviour
         Instantiate(playerPrefab, GameSceneManager.instance.startingPositionLobby, Quaternion.identity);
         // Se oculta el menú
         Menu.SetActive(false);
+        // Se muestra el texto de consejo
+        TextoConsejo.SetActive(true);
     }
 
     void OnPracticaButtonClicked()
@@ -236,5 +265,25 @@ public class UI_Controller : MonoBehaviour
     {
         Menu.SetActive(false);
         Nombre.SetActive(false);
+    }
+
+    public void MostrarPanelAbandonar()
+    {
+        SelectionTable.Instance.runningGame = false;
+        AbandonarPanel.SetActive(true);
+        AbandonarBoton.SetActive(false);
+    }
+
+    public void OcultarPanelAbandonar()
+    {
+        SelectionTable.Instance.runningGame = true;
+        AbandonarPanel.SetActive(false);
+        AbandonarBoton.SetActive(true);
+    }
+
+    public void AbandonarPartida()
+    {
+        GameSceneManager.instance.LeaveGame();
+        OcultarPanelAbandonar();
     }
 }

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class TrunkMovement : MonoBehaviour
 {
-    private float _speed = 3f; // Velocidad de movimiento del tronco
-    private float _rotationSpeed = 100f; // Velocidad de rotación del tronco
+    private float _speed = 2f; // Velocidad de movimiento del tronco
+    private float _rotationSpeed = 30f; // Velocidad de rotación del tronco
 
     private Rigidbody _rb;
 
@@ -26,8 +26,8 @@ public class TrunkMovement : MonoBehaviour
         // Mueve el tronco hacia atrás continuamente
         transform.position += Vector3.back * _speed * Time.deltaTime;
 
-        // Rota el tronco sobre su eje X
-        transform.Rotate(Vector3.forward, _rotationSpeed * Time.deltaTime);
+        // Rota el tronco alrededor de su propio eje Z
+        transform.Rotate(Vector3.forward * _rotationSpeed * Time.deltaTime, Space.Self);
 
 
         // Verifica si el tronco ha caído fuera del área, tanto en el cliente como en el servidor, para poder ocultarlo en ambos

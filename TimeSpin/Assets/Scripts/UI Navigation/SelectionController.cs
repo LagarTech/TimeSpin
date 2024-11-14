@@ -17,8 +17,10 @@ public class SelectionController : MonoBehaviour
         }
         else
         {
-            Destroy(this);
+            Destroy(gameObject);
         }
+
+        DontDestroyOnLoad(gameObject);
     }
     // Función para modificar el personaje escogido
     public void ModifyCharacter(int newCharacter)

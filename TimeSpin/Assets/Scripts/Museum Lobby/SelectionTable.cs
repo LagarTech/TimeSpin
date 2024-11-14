@@ -58,6 +58,7 @@ public class SelectionTable : MonoBehaviour
             {
                 if (Vector3.Distance(transform.position, _playerTransform.position) < MAX_DISTANCE && !_isReturning && !_isZooming)
                 {
+                    UI_Controller.instance.TextoConsejo.SetActive(false);
                     _isZooming = true;
                     runningGame = false;
                 }
@@ -87,6 +88,7 @@ public class SelectionTable : MonoBehaviour
                 // Una vez se llega a la posición de destino, se muestra la pantalla de elección de minijuegos
                 _isZooming = false;
                 _gameSelectionPanel.gameObject.SetActive(true);
+                UI_Controller.instance.AbandonarBoton.SetActive(false);
                 StartCoroutine(LoadingScreenManager.instance.FadeCanvasGroup(_gameSelectionPanel, 1f, false));
             }
         }
@@ -128,6 +130,7 @@ public class SelectionTable : MonoBehaviour
         StartCoroutine(LoadingScreenManager.instance.FadeCanvasGroup(_gameSelectionPanel, 0f, false));
         _isReturning = true; // La cámara vuelve a su posición de origen
         runningGame = true;
+        UI_Controller.instance.AbandonarBoton.SetActive(true);
     }
 
 }

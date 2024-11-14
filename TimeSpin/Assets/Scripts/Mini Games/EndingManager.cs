@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -5,6 +6,7 @@ using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Leaderboards;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EndingManager : MonoBehaviour
 {
@@ -14,6 +16,11 @@ public class EndingManager : MonoBehaviour
     [SerializeField] private TMP_Text _totalScore; // Texto para mostrar la puntuación total
     [SerializeField] private GameObject _rankingButton; // Botón para mostrar el ranking
     [SerializeField] private GameObject _rankingPanel; // Panel con el ranking
+
+    [SerializeField] private List<GameObject> _rankingSprites; // Objetos con los sprites de los personajes en el ranking
+    [SerializeField] private List<Sprite> _characterSprites; // Sprites de cada personaje
+    [SerializeField] private List<TMP_Text> _rankingPositions; // Lista con los textos para poner el puesto de los personajes
+    [SerializeField] private List<TMP_Text> _rankingEntries; // Lista con los textos para mostrar los nombres y las puntuaciones
 
     private const int NUM_GAMES = 5;
 
@@ -31,6 +38,8 @@ public class EndingManager : MonoBehaviour
 
     void Start()
     {
+        // Se realiza el registro del usuario una sola vez
+        if (AuthenticationService.Instance.IsSignedIn) return;
         StartCoroutine(InitializeUnityServicesCoroutine());
     }
 
@@ -122,7 +131,13 @@ public class EndingManager : MonoBehaviour
     private IEnumerator GetOnlineRanking()
     {
         // Enviar la puntuación al leaderboard
-        var submitScoreTask = LeaderboardsService.Instance.AddPlayerScoreAsync("Time_Spin_Ranking", GameSceneManager.instance.totalPoints);
+        var submitScoreTask = LeaderboardsService.Instance.AddPlayerScoreAsync("Time_Spin_Ranking", 
+            GameSceneManager.instance.totalPoints, 
+            new AddPlayerScoreOptions { Metadata = new Dictionary<string, string>() { 
+                { "Name", SelectionController.instance.GetName()},
+                { "Character", SelectionController.instance.GetCharacterSelected().ToString()} 
+            } });
+        
         yield return new WaitUntil(() => submitScoreTask.IsCompleted);
 
         if (submitScoreTask.IsFaulted)
@@ -136,7 +151,8 @@ public class EndingManager : MonoBehaviour
         }
 
         // Cargar las primeras 10 mejores puntuaciones del leaderboard
-        var loadScoresTask = LeaderboardsService.Instance.GetScoresAsync("Time_Spin_Ranking", new GetScoresOptions { Limit = 10 });
+        var loadScoresTask = LeaderboardsService.Instance.GetScoresAsync("Time_Spin_Ranking", 
+            new GetScoresOptions { Limit = 10, IncludeMetadata = true });
         yield return new WaitUntil(() => loadScoresTask.IsCompleted);
 
         if (loadScoresTask.IsFaulted)
@@ -146,10 +162,44 @@ public class EndingManager : MonoBehaviour
         else
         {
             Debug.Log("Puntuaciones cargadas con éxito:");
+            int numEntry = 0;
             foreach (var entry in loadScoresTask.Result.Results)
             {
-                Debug.Log($"Jugador: {entry.PlayerId}, Puntuación: {entry.Score}");
-                // Aquí podrías actualizar la UI para mostrar cada entrada
+                // Se deserializan los datos
+                Dictionary<string, string> entryData = JsonConvert.DeserializeObject<Dictionary<string, string>>(entry.Metadata);
+                // Obtener el nombre del jugador desde el metadata
+                entryData.TryGetValue("Name", out string playerName);
+                // Obtener el personaje elegido por cada jugador desde el metadata
+                entryData.TryGetValue("Character", out string playerCharacter);
+
+                // ACTUALIZACIÓN DE LA UI
+                // Puesto en el ranking
+                _rankingPositions[numEntry].text = (numEntry + 1).ToString() + "º";
+                // Sprite del jugador, en función del personaje escogido
+                // Al ser un string, se tiene que actuar con un switch
+                int characterSprite = 0;
+                switch(playerCharacter)
+                {
+                    case "0": characterSprite = 0; break;
+                    case "1": characterSprite = 1; break;
+                    case "2": characterSprite = 2; break;
+                    case "3": characterSprite = 3; break;
+                    case "4": characterSprite = 4; break;
+                    case "5": characterSprite = 5; break;
+                    case "6": characterSprite = 6; break;
+                    case "7": characterSprite = 7; break;
+                    case "8": characterSprite = 8; break;
+                    case "9": characterSprite = 9; break;
+                    case "10": characterSprite = 10; break;
+                    case "11": characterSprite = 11; break;
+                    case "12": characterSprite = 12; break;
+                    case "13": characterSprite = 13; break;
+                }
+                _rankingSprites[numEntry].SetActive(true);
+                // Se muestra el sprite correspondiente en base a la información de la entrada de la tabla
+                _rankingSprites[numEntry].GetComponent<Image>().sprite = _characterSprites[characterSprite];
+                // Por último, se actualiza la entrada de la tabla con el nombre y la puntuación del jugador
+                _rankingEntries[numEntry].text = playerName + "    " + entry.Score;
             }
         }
         _rankingPanel.SetActive(true);
@@ -157,6 +207,8 @@ public class EndingManager : MonoBehaviour
 
     public void BackLobby()
     {
+        // Se resetea el estado inicial para comenzar una nueva partida
+        GameSceneManager.instance.ResetState();
         // Se comienza la transición para volver al Lobby
         StartCoroutine(LoadingScreenManager.instance.FinalFade("LobbyMenu"));
     }

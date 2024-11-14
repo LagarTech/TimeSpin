@@ -13,6 +13,7 @@ public class GameSceneManager : MonoBehaviour
 
     public bool gameStarted = false;
     public bool practiceStarted = false;
+    public bool gameFinished = false;
 
     private const int NUM_GAMES = 5;
     [SerializeField] private bool[] _playedGames = new bool[NUM_GAMES]; // Lista en la que se va a marcar los minijuegos que se van jugando, para que no se puedan repetir
@@ -53,7 +54,6 @@ public class GameSceneManager : MonoBehaviour
     [SerializeField] private Vector3 _startingPositionMaya;
     [SerializeField] private Vector3 _startingPositionFuture;
 
-
     private void Awake()
     {
         if (instance == null)
@@ -86,7 +86,7 @@ public class GameSceneManager : MonoBehaviour
                 // Se restaura la gravedad
                 Physics.gravity = new Vector3(0, -9.81f, 0);
                 // Se instancia al jugador en la posición de inicio adecuada
-                if(gameStarted)
+                if (gameStarted && !practiceStarted)
                 {
                     Instantiate(playerPrefab, startingPositionLobby, Quaternion.identity);
                 }
@@ -96,7 +96,7 @@ public class GameSceneManager : MonoBehaviour
                 DespawnTrunks();
                 // Se apaga la lámpara
                 GameObject luz = GameObject.FindGameObjectWithTag("LuzFarol");
-                if(luz != null) luz.GetComponent<Light>().intensity = 0;
+                if (luz != null) luz.GetComponent<Light>().intensity = 0;
                 break;
             case "Prehistory":
                 // Una vez se cambia de la primera escena, se indica que ya ha comenzado el juego
@@ -129,7 +129,7 @@ public class GameSceneManager : MonoBehaviour
                 // Se hace que si el personaje es del propietario, la cámara lo siga
                 GameObject.FindGameObjectWithTag("FollowCamera").GetComponent<CinemachineVirtualCamera>().Follow = _playerTransform;
                 GameObject.FindGameObjectWithTag("FollowCamera").GetComponent<CinemachineVirtualCamera>().LookAt = _playerTransform;
-               
+
                 break;
             case "Future":
                 // Una vez se cambia de la primera escena, se indica que ya ha comenzado el juego
@@ -185,84 +185,144 @@ public class GameSceneManager : MonoBehaviour
     // GESTIÓN DE LAS PUNTUACIONES DE LOS MINIJUEGOS
     public void GameOverEgyptFuture(float survivedTime, bool egypt)
     {
-        // La puntuación máxima para estos minijuegos es de 50 puntos, si se aguantan los dos minutos
-        // Se aplica la relación de proporcionalidad
-        int resultPoints = (int)(MAX_POINTS_EG_FT * survivedTime / MAX_SURVIVED_TIME);
-        totalPoints += resultPoints;
-        // Se almacena el resultado en una lista
-        bool isRecord = false;
-        if (egypt)
+        // La puntuación sólo se calcula cuando no se está en el modo de práctica
+        if (!practiceStarted)
         {
-            _resultsGames[1] = (int)survivedTime;
-            pointsGames[1] = resultPoints;
-            // Se comprueba si es récord
+            // La puntuación máxima para estos minijuegos es de 50 puntos, si se aguantan los dos minutos
+            // Se aplica la relación de proporcionalidad
+            int resultPoints = (int)(MAX_POINTS_EG_FT * survivedTime / MAX_SURVIVED_TIME);
+            totalPoints += resultPoints;
+            // Se almacena el resultado en una lista
+            bool isRecord = false;
+            if (egypt)
+            {
+                _resultsGames[1] = (int)survivedTime;
+                pointsGames[1] = resultPoints;
+                // Se comprueba si es récord
 
+            }
+            else
+            {
+                _resultsGames[4] = (int)survivedTime;
+                pointsGames[4] = resultPoints;
+                // Se comprueba si es récord
+
+            }
+            // Se pasa dicha información a la pantalla de puntuaciones para mostrarlo
+            LoadingScreenManager.instance.SceneToLobbyTransition("LobbyMenu", (int)survivedTime, resultPoints, isRecord);
         }
         else
         {
-            _resultsGames[4] = (int)survivedTime;
-            pointsGames[4] = resultPoints;
-            // Se comprueba si es récord
-
+            LoadingScreenManager.instance.SceneToLobbyTransition("LobbyMenu", 0, 0, false);
         }
-        // Se pasa dicha información a la pantalla de puntuaciones para mostrarlo
-        LoadingScreenManager.instance.SceneToLobbyTransition("LobbyMenu", (int)survivedTime, resultPoints, isRecord);
     }
 
     public void GameOverMaya(float raceTime)
     {
-        // La puntuación máxima para estos minijuegos es de 50 puntos, si se tardan 50 segundos o menos
-        int resultPoints = 0;
-        if (raceTime <= MIN_RACE_TIME)
+        if (!practiceStarted)
         {
-            resultPoints = MAX_POINTS_MY;
-        }
-        else if (raceTime > MIN_RACE_TIME && raceTime <= MAX_RACE_TIME)
-        {
-            resultPoints = (int) (MAX_RACE_TIME - raceTime);
+            // La puntuación máxima para estos minijuegos es de 50 puntos, si se tardan 50 segundos o menos
+            int resultPoints = 0;
+            if (raceTime <= MIN_RACE_TIME)
+            {
+                resultPoints = MAX_POINTS_MY;
+            }
+            else if (raceTime > MIN_RACE_TIME && raceTime <= MAX_RACE_TIME)
+            {
+                resultPoints = (int)(MAX_RACE_TIME - raceTime);
+            }
+            else
+            {
+                resultPoints = 0;
+            }
+            // Se suman los puntos acumulados
+            totalPoints += resultPoints;
+
+            // Se almacena el resultado en la lista
+            _resultsGames[3] = (int)raceTime;
+            pointsGames[3] = resultPoints;
+
+            // Se comprueba si es record
+            bool isRecord = false;
+
+            // Se pasa dicha información a la pantalla de puntuaciones para mostrarlo
+            LoadingScreenManager.instance.SceneToLobbyTransition("LobbyMenu", (int)raceTime, resultPoints, isRecord);
         }
         else
         {
-            resultPoints = 0;
+            LoadingScreenManager.instance.SceneToLobbyTransition("LobbyMenu", 0, 0, false);
         }
-        // Se suman los puntos acumulados
-        totalPoints+= resultPoints;
-
-        // Se almacena el resultado en la lista
-        _resultsGames[3] = (int)raceTime;
-        pointsGames[3] = resultPoints;
-
-        // Se comprueba si es record
-        bool isRecord = false;
-
-        // Se pasa dicha información a la pantalla de puntuaciones para mostrarlo
-        LoadingScreenManager.instance.SceneToLobbyTransition("LobbyMenu", (int)raceTime, resultPoints, isRecord);
     }
 
     public void GameOverPrehistoryMedieval(int points, int numDefeated, bool prehistory)
     {
-        // La puntuación de estos minijuegos viene determinada por la propia partida
-        int resultPoints = points;
-        totalPoints += resultPoints; // Se suman los puntos al total
-
-        // Como resultado, se tomará el número de espadas cogidas y el número de dinosaurios derrotados
-        bool isRecord = false;
-
-        if(prehistory)
+        if (!practiceStarted)
         {
-            _resultsGames[0] = numDefeated;
-            pointsGames[0] = resultPoints;
-            // Se comprueba si es record
+            // La puntuación de estos minijuegos viene determinada por la propia partida
+            int resultPoints = points;
+            totalPoints += resultPoints; // Se suman los puntos al total
+
+            // Como resultado, se tomará el número de espadas cogidas y el número de dinosaurios derrotados
+            bool isRecord = false;
+
+            if (prehistory)
+            {
+                _resultsGames[0] = numDefeated;
+                pointsGames[0] = resultPoints;
+                // Se comprueba si es record
+            }
+            else
+            {
+                _resultsGames[2] = numDefeated;
+                pointsGames[2] = resultPoints;
+                // Se comprueba si es record
+            }
+
+            // Se pasa dicha información a la pantalla de puntuaciones para mostrarlo
+            LoadingScreenManager.instance.SceneToLobbyTransition("LobbyMenu", numDefeated, resultPoints, isRecord);
         }
         else
         {
-            _resultsGames[2] = numDefeated;
-            pointsGames[2] = resultPoints;
-            // Se comprueba si es record
+            LoadingScreenManager.instance.SceneToLobbyTransition("LobbyMenu", 0, 0, false);
         }
+    }
 
-        // Se pasa dicha información a la pantalla de puntuaciones para mostrarlo
-        LoadingScreenManager.instance.SceneToLobbyTransition("LobbyMenu", numDefeated, resultPoints, isRecord);
+    public void ResetState()
+    {
+        // Se indica que no se ha jugado ningún minijuego y se resetean los resultados y puntuaciones
+        allGamesPlayed = false;
+        _numPlayedGames = 0;
+        for (int i = 0; i < NUM_GAMES; i++)
+        {
+            _playedGames[i] = false;
+            _resultsGames[i] = 0;
+            pointsGames[i] = 0;
+        }
+        // Se resetea la puntuación total
+        totalPoints = 0;
+        // Se indica que ha terminado la partida
+        gameFinished = true;
+        gameStarted = false;
+    }
+
+    public void LeaveGame()
+    {
+        // Se indica que no se ha jugado ningún minijuego y se resetean los resultados y puntuaciones
+        allGamesPlayed = false;
+        _numPlayedGames = 0;
+        for (int i = 0; i < NUM_GAMES; i++)
+        {
+            _playedGames[i] = false;
+            _resultsGames[i] = 0;
+            pointsGames[i] = 0;
+        }
+        // Se resetea la puntuación total
+        totalPoints = 0;
+        // Se reactiva el menú
+        UI_Controller.instance.Menu.SetActive(true);
+        gameStarted = false;
+        // Se elimina al jugador
+        Destroy(GameObject.FindGameObjectWithTag("Player"));
     }
 
 

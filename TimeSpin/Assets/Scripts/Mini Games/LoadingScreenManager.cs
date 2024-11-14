@@ -41,7 +41,7 @@ public class LoadingScreenManager : MonoBehaviour
         {
             case "Prehistory": PrehistoryManager.Instance.runningGame = true; break;
             case "Egypt": GridManager.Instance.runningGame = true; break;
-            case "Medieval": MedievalGameManager.Instance.runningGame = true;  break;
+            case "Medieval": MedievalGameManager.Instance.runningGame = true; break;
             case "Maya": RaceManager.instance.runningGame = true; break;
             case "Future": GravityManager.Instance.runningGame = true; break;
             case "Ending": EndingManager.Instance.ShowResults(); break;
@@ -51,33 +51,39 @@ public class LoadingScreenManager : MonoBehaviour
 
     private IEnumerator ScoresPanelTransitionCoroutine(string sceneName, int result, int points, bool isRecord)
     {
-        // Se busca el objeto con la pantalla de puntuaciones para activarlo
-        CanvasGroup scoresScreen = GameObject.FindGameObjectWithTag("PantallaPuntuaciones").GetComponent<CanvasGroup>();
-
-        // Se coloca la información del minijuego en la pantalla
-        // Resultado (en unidades correctas)
-        TMP_Text resultText = GameObject.FindGameObjectWithTag("Resultado").GetComponent<TMP_Text>();
-        resultText.text = result.ToString();
-        // Puntos
-        TMP_Text pointsText = GameObject.FindGameObjectWithTag("Puntuacion").GetComponent<TMP_Text>();
-        pointsText.text = points.ToString();
-        // Se indica si es record
-
-        // Se obtiene el texto y el total de puntos para hacer la animación
-        int targetPoints = GameSceneManager.instance.totalPoints;
-        TMP_Text currentPointsText = GameObject.FindGameObjectWithTag("PuntuacionActual").GetComponent<TMP_Text>();
-        if(GameSceneManager.instance.allGamesPlayed)
+        if (!GameSceneManager.instance.practiceStarted)
         {
-            // Si es el último minijuego, no se muestra la puntuación hasta el final
-            currentPointsText.text = "";
-            GameObject.FindGameObjectWithTag("TituloPActual").SetActive(false);
-        }
+            // Se busca el objeto con la pantalla de puntuaciones para activarlo
+            CanvasGroup scoresScreen = GameObject.FindGameObjectWithTag("PantallaPuntuaciones").GetComponent<CanvasGroup>();
 
-        // Fade in (aparecer)
-        yield return FadeCanvasGroup(scoresScreen, 1f, true); // De 0 (invisible) a 1 (visible)
-        // Animación de la puntuación
-        if (!GameSceneManager.instance.allGamesPlayed) yield return AnimateNumber(currentPointsText, targetPoints);
-        yield return new WaitForSeconds(5f); // Espera 5 segundos mostrando las puntuaciones
+            // Se coloca la información del minijuego en la pantalla
+            // Resultado (en unidades correctas)
+            TMP_Text resultText = GameObject.FindGameObjectWithTag("Resultado").GetComponent<TMP_Text>();
+            resultText.text = result.ToString();
+            // Puntos
+            TMP_Text pointsText = GameObject.FindGameObjectWithTag("Puntuacion").GetComponent<TMP_Text>();
+            pointsText.text = points.ToString();
+            // Se indica si es record
+
+            // Se obtiene el texto y el total de puntos para hacer la animación
+            int targetPoints = GameSceneManager.instance.totalPoints;
+            TMP_Text currentPointsText = GameObject.FindGameObjectWithTag("PuntuacionActual").GetComponent<TMP_Text>();
+            if (GameSceneManager.instance.allGamesPlayed)
+            {
+                // Si es el último minijuego, no se muestra la puntuación hasta el final
+                currentPointsText.text = "";
+                GameObject.FindGameObjectWithTag("TituloPActual").SetActive(false);
+                // Se modifica el subtítulo
+                GameObject.FindGameObjectWithTag("TituloPuntuacion").GetComponent<TMP_Text>().text = "Has recorrido multitud de épocas históricas, en unos instantes se mostrarán los resultados de tu trayectoria...";
+            }
+
+            // Fade in (aparecer)
+            yield return FadeCanvasGroup(scoresScreen, 1f, true); // De 0 (invisible) a 1 (visible)
+                                                                  // Animación de la puntuación
+            if (!GameSceneManager.instance.allGamesPlayed) yield return AnimateNumber(currentPointsText, targetPoints);
+            yield return new WaitForSeconds(5f); // Espera 5 segundos mostrando las puntuaciones
+
+        }
         yield return FinalFade(sceneName);
     }
 
@@ -162,7 +168,7 @@ public class LoadingScreenManager : MonoBehaviour
             yield return null;
         }
         // Carga la siguiente escena
-        if(GameSceneManager.instance.allGamesPlayed && sceneName == "LobbyMenu")
+        if (GameSceneManager.instance.allGamesPlayed && sceneName == "LobbyMenu")
         {
             // Si se ha terminado, se pasa a la escena final en lugar de volver al lobby
             sceneName = "Ending";

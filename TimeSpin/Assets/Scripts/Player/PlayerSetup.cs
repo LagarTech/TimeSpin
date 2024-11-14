@@ -9,8 +9,13 @@ public class PlayerSetup : MonoBehaviour
 
     private void Start()
     {
+        // Se muestra el personaje correcto
         _charactersList[SelectionController.instance.GetCharacterSelected()].SetActive(true);
+
+        // Se obtiene su nombre
         _playerName = SelectionController.instance.GetName();
+
+        // Se hace referencia a la mesa
         SelectionTable.Instance.AddPlayerReference(transform);
     }
 
