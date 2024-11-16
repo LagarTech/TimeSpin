@@ -24,6 +24,15 @@ public class PrehistoryManager : MonoBehaviour
 
     private HashSet<int> _occupiedHoles = new HashSet<int>(); // Conjunto que almacena los agujeros ocupados por dinosaurios
 
+    //Logros
+    public int _velociraptorHits = 0;
+    public bool _tRexDefeated = false;
+    public HashSet<int> _holesHit = new HashSet<int>(); // Agujeros golpeados
+    public float _lastHitTime = -5f; // Tiempo del último golpe para "Racha rápida"
+    public int _consecutiveHits = 0; // Golpes consecutivos en corto tiempo
+
+    private List<string> _recentlyUnlockedAchievements = new List<string>(); //lista de logros desbloqueados recientemente
+
     private void Awake()
     {
         if(Instance == null)
@@ -103,9 +112,47 @@ public class PrehistoryManager : MonoBehaviour
     public void AddScore(int points)
     {
         _score += points;
-        _hitDinosaurs++; // Se incrementa el número de dinosaurios derrotados
+        _hitDinosaurs++;
+
+        float currentTime = Time.time;
+
+        // Logro: Primer golpe
+        if (_hitDinosaurs == 1)
+        {
+            AchievementManager.UnlockAchievement("Prehistory_PrimerosInstrumentosMusicales");
+        }
+
+        // Logro: Racha rápida
+        if (currentTime - _lastHitTime <= 5f)
+        {
+            _consecutiveHits++;
+            if (_consecutiveHits >= 3)
+            {
+                AchievementManager.UnlockAchievement("Prehistory_PinturasRupestres");
+            }
+        }
+        else
+        {
+            _consecutiveHits = 1; // Reinicia la racha si no golpea a tiempo
+        }
+
+        _lastHitTime = currentTime;
+
+        // Logro: Cazador experto
+        if (_hitDinosaurs >= 10)
+        {
+            AchievementManager.UnlockAchievement("Prehistory_HerramientasDePiedra");
+        }
+
+        // Logro: Puntuación perfecta
+        if (_score >= 30)
+        {
+            AchievementManager.UnlockAchievement("Prehistory_DomesticaciónDeAnimales");
+        }
+
         UpdateUI();
     }
+
 
     void UpdateUI()
     {
@@ -120,10 +167,41 @@ public class PrehistoryManager : MonoBehaviour
         scoreText.text = "Puntuación: " + _score;
     }
 
+
+    void UnlockAchievement(string achievementKey)
+    {
+        if (!AchievementManager.IsAchievementUnlocked(achievementKey))
+        {
+            AchievementManager.UnlockAchievement(achievementKey);
+            _recentlyUnlockedAchievements.Add(achievementKey); // Guardar en lista temporal
+        }
+    }
+
     // Detengo el juego cuando se acabe el tiempo
     void EndGame()
     {
         runningGame = false;
+
+        // Logro "El descubrimiento de Ötzi"
+        if (_holesHit.Count == _holes.Length)
+        {
+            AchievementManager.UnlockAchievement("Prehistory_ElDescubrimientoDeÖtzi");
+        }
+
+        // Mostrar logros desbloqueados en esta partida
+        if (_recentlyUnlockedAchievements.Count > 0)
+        {
+            string unlockedAchievements = "¡Logros desbloqueados!\n";
+            foreach (string achievement in _recentlyUnlockedAchievements)
+            {
+                unlockedAchievements += "- " + achievement.Replace("Prehistory_", "") + "\n";
+            }
+            Debug.Log(unlockedAchievements);
+        }
+
+        // Limpiar logros recientes
+        _recentlyUnlockedAchievements.Clear();
+
         // Se inicia la transición
         GameSceneManager.instance.GameOverPrehistoryMedieval(_score, _hitDinosaurs, true);
     }

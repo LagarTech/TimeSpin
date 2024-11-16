@@ -77,17 +77,45 @@ public class DinosaurController : MonoBehaviour
 
     void HitDinosaur()
     {
-        // Se aumenta el contador de golpes
         _hitCount++;
         if (_hitCount >= _requiredHits && !_isHit)
         {
             _isHit = true;
-            // Se suman los puntos al golpear el dinosaurio
+
+            // Logro: Derrota al T-Rex
+            if (_dinosaurType == "T-Rex")
+            {
+                PrehistoryManager.Instance._tRexDefeated = true;
+                AchievementManager.UnlockAchievement("Prehistory_PrimerosAsentamientos");
+            }
+
+            // Logro: Raptor letal
+            if (_dinosaurType == "Velociraptor")
+            {
+                PrehistoryManager.Instance._velociraptorHits++;
+                if (PrehistoryManager.Instance._velociraptorHits >= 3)
+                {
+                    AchievementManager.UnlockAchievement("Prehistory_DuraciónExtensa");
+                }
+            }
+
+            // Logro: Reacción instantánea
+            if (_timer <= 1f)
+            {
+                AchievementManager.UnlockAchievement("Prehistory_ElFuego");
+            }
+
+            // Logro: Golpear todos los agujeros
+            PrehistoryManager.Instance._holesHit.Add(holeIndex);
+
+            // Añadir puntos
             PrehistoryManager.Instance.AddScore(_dinosaurPoints);
+
             // Se desaparece el dinosaurio
             HideDinosaur();
         }
     }
+
 
     private void HideDinosaur()
     {

@@ -17,6 +17,9 @@ public class PlayerSetup : MonoBehaviour
 
         // Se hace referencia a la mesa
         SelectionTable.Instance.AddPlayerReference(transform);
+
+        // Se hace referencia a los baules
+        LobbyChest.Instance.AddPlayerReference(transform);
     }
 
 }
