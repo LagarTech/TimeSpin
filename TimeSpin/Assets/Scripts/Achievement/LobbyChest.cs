@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LobbyChest : MonoBehaviour
@@ -6,12 +7,13 @@ public class LobbyChest : MonoBehaviour
 
     [SerializeField] private string minigameName; // Nombre del minijuego
     [SerializeField] private GameObject achievementMenu; // Referencia al menú de logros
-    [SerializeField] private Transform achievementList; // Contenedor para logros
     [SerializeField] private GameObject achievementPrefab; // Prefab de cada logro
-    [SerializeField] private int MAX_DISTANCE = 5; // Distancia máxima para interactuar
+    [SerializeField] private int MAX_DISTANCE = 2; // Distancia máxima para interactuar
 
     private Transform _playerTransform; // Referencia dinámica al jugador
     private string[] achievements; // Logros asociados al minijuego
+
+    [SerializeField] private List <GameObject> listAchievements;
 
     private void Awake()
     {
@@ -72,17 +74,11 @@ public class LobbyChest : MonoBehaviour
     {
         // Activar el menú y la lista
         achievementMenu.SetActive(true);
-        achievementList.gameObject.SetActive(true);
-
-        // Limpiar logros previos en la lista
-        foreach (Transform child in achievementList)
-        {
-            Destroy(child.gameObject);
-        }
 
         // Rellenar la lista con logros
-        foreach (string achievementName in achievements)
+        for (int i = 0; i< achievements.Length; i++)
         {
+            string achievementName = achievements[i];
             string achievementKey = $"{minigameName}_{achievementName.Replace(" ", "")}";
 
             // Imprimir la clave generada
@@ -92,7 +88,7 @@ public class LobbyChest : MonoBehaviour
 
             Debug.Log($"Logro: {achievementKey}, Estado: {(unlocked ? "Desbloqueado" : "Bloqueado")}");
 
-            GameObject achievementItem = Instantiate(achievementPrefab, achievementList);
+            GameObject achievementItem = listAchievements[i];
             AchievementItemUI achievementUI = achievementItem.GetComponent<AchievementItemUI>();
 
             if (achievementUI != null)
@@ -106,9 +102,6 @@ public class LobbyChest : MonoBehaviour
             }
         }
     }
-
-
-
 
     private void InitializeAchievements()
     {

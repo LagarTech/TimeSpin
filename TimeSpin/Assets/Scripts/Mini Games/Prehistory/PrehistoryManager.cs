@@ -49,7 +49,6 @@ public class PrehistoryManager : MonoBehaviour
     {
         _timeLeft = GAME_TIME;
         UpdateUI();
-        GameSceneManager.instance.practiceStarted = true;
 
     }
 
