@@ -82,14 +82,14 @@ public class DinosaurController : MonoBehaviour
         {
             _isHit = true;
 
-            // Logro: Derrota al T-Rex
+            // Logro PrimerosAsentamientos
             if (_dinosaurType == "T-Rex")
             {
                 PrehistoryManager.Instance._tRexDefeated = true;
                 AchievementManager.UnlockAchievement("Prehistory_PrimerosAsentamientos");
             }
 
-            // Logro: Raptor letal
+            // Logro DuraciónExtensa
             if (_dinosaurType == "Velociraptor")
             {
                 PrehistoryManager.Instance._velociraptorHits++;
@@ -99,7 +99,7 @@ public class DinosaurController : MonoBehaviour
                 }
             }
 
-            // Logro: Reacción instantánea
+            // Logro ElFuego
             if (_timer <= 1f)
             {
                 AchievementManager.UnlockAchievement("Prehistory_ElFuego");

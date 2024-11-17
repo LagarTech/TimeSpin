@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject characterNamePlayer;
     // Dirección y velocidad de movimiento
     private Vector3 _movementDirection = Vector3.zero;
-    private float _speed = 1f;
+    private float _speed = 4f;
 
     // Control de la escena en la que se encuentra el jugador
     private enum Scene

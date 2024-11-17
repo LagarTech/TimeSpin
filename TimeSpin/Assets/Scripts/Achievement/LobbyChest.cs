@@ -31,14 +31,14 @@ public class LobbyChest : MonoBehaviour
         {
             achievements = new string[]
             {
-                "Duración extensa",
-                "El fuego",
-                "Primeros instrumentos musicales",
-                "Pinturas rupestres",
-                "Herramientas de piedra",
-                "Domesticación de animales",
-                "El descubrimiento de Ötzi",
-                "Primeros asentamientos"
+                "Duración Extensa",
+                "El Fuego",
+                "Primeros Instrumentos Musicales",
+                "Pinturas Rupestres",
+                "Herramientas de Piedra",
+                "Domesticación de Animales",
+                "El Descubrimiento de Ötzi",
+                "Primeros Asentamientos"
             };
         }
 
@@ -70,20 +70,27 @@ public class LobbyChest : MonoBehaviour
 
     private void ShowAchievements()
     {
-        // Limpia los logros previos en la lista antes de añadir nuevos
+        // Activar el menú y la lista
+        achievementMenu.SetActive(true);
+        achievementList.gameObject.SetActive(true);
+
+        // Limpiar logros previos en la lista
         foreach (Transform child in achievementList)
         {
             Destroy(child.gameObject);
         }
 
-        // Mostrar el menú
-        achievementMenu.SetActive(true);
-
-        // Rellenar con logros
+        // Rellenar la lista con logros
         foreach (string achievementName in achievements)
         {
             string achievementKey = $"{minigameName}_{achievementName.Replace(" ", "")}";
+
+            // Imprimir la clave generada
+            Debug.Log($"Clave generada: {achievementKey}");
+
             bool unlocked = AchievementManager.IsAchievementUnlocked(achievementKey);
+
+            Debug.Log($"Logro: {achievementKey}, Estado: {(unlocked ? "Desbloqueado" : "Bloqueado")}");
 
             GameObject achievementItem = Instantiate(achievementPrefab, achievementList);
             AchievementItemUI achievementUI = achievementItem.GetComponent<AchievementItemUI>();
@@ -91,6 +98,7 @@ public class LobbyChest : MonoBehaviour
             if (achievementUI != null)
             {
                 achievementUI.SetAchievementData(achievementName, unlocked);
+                achievementItem.GetComponent<RectTransform>().localScale = Vector3.one; // Asegurar escala correcta
             }
             else
             {
@@ -98,6 +106,9 @@ public class LobbyChest : MonoBehaviour
             }
         }
     }
+
+
+
 
     private void InitializeAchievements()
     {
