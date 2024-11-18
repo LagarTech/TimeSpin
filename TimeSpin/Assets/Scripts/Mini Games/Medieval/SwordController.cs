@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.Audio;
 
 public class SwordController : MonoBehaviour
 {
@@ -7,6 +8,13 @@ public class SwordController : MonoBehaviour
     private bool _isHeldAtBase = false; // Se indica si la espada está en la base
     [SerializeField] private int _swordPoints = 0; // Puntos que se otorgan al llevar la espada a la base
     private Rigidbody _rb;
+
+    [SerializeField]
+    private AudioSource _reproductor;
+    [SerializeField]
+    private AudioClip _clipAudio;
+    [SerializeField]
+    private AudioMixer mezclador;
 
     private void Start()
     {
@@ -23,6 +31,7 @@ public class SwordController : MonoBehaviour
             _rb.useGravity = false; // Se desactiva la gravedad
             transform.SetParent(player.transform);
             transform.localPosition = new Vector3(0, 1, 0);
+            MusicManager.PonerMusica(_clipAudio, _reproductor, false);
         }
     }
 

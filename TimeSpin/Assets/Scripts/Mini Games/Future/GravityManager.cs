@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 // Este script se encarga de las inversiones en la gravedad, que se gestionarán por el servidor. La única funcionalidad que realizará el cliente es actualizar el temporizador
@@ -31,6 +32,15 @@ public class GravityManager : MonoBehaviour
     private float _remainingTime = 120f; // El tiempo de juego son 2 minutos (120 segundos)
     private float _survivedTime = 0f;
 
+    [SerializeField]
+    private AudioSource _reproductor;
+    [SerializeField]
+    private AudioClip _clipAudio;
+    [SerializeField]
+    private AudioMixer mezclador;
+    [SerializeField]
+    private GameObject _optionsPanel;
+
 
     private void Awake()
     {
@@ -56,6 +66,11 @@ public class GravityManager : MonoBehaviour
     private void Update()
     {
         if (!runningGame) return;
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            _optionsPanel.SetActive(true);
+            runningGame = false;
+        }
 
         // GESTIÓN DEL TIEMPO RESTANTE
         if (_remainingTime > 0f)
@@ -86,6 +101,7 @@ public class GravityManager : MonoBehaviour
             // Se inicia el proceso de flotación
             StartFloating();
             _gravityTimer = 0; // También se reinicia el temporizador
+            MusicManager.PonerMusica(_clipAudio, _reproductor, false);
         }
 
         if(floating)
@@ -143,6 +159,11 @@ public class GravityManager : MonoBehaviour
         Physics.gravity = new Vector3(0, -9.81f, 0);
         // Se calcula la puntuación del jugador en base al resultado
         GameSceneManager.instance.GameOverEgyptFuture(_survivedTime, false);
+    }
+    public void Options()
+    {
+        _optionsPanel.SetActive(false);
+        runningGame = true;
     }
 
 }

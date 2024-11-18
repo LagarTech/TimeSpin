@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class DinosaurController : MonoBehaviour
 {
@@ -23,6 +24,15 @@ public class DinosaurController : MonoBehaviour
     private const float DISAPPEAR_DURATION = 0.5f; // Duración de la animación de desaparición
 
     private bool _isHit = false;
+
+    [SerializeField]
+    private AudioSource _reproductor;
+    [SerializeField]
+    private AudioClip _clipAudio;
+    [SerializeField]
+    private AudioClip _clipAudio2;
+    [SerializeField]
+    private AudioMixer mezclador;
 
     void Start()
     {
@@ -48,6 +58,7 @@ public class DinosaurController : MonoBehaviour
             {
                 // Si el jugador está cerca, lo golpea
                 HitDinosaur();
+                MusicManager.PonerMusica(_clipAudio, _reproductor, false);
             }
         }
         _timer += Time.deltaTime;
@@ -85,6 +96,7 @@ public class DinosaurController : MonoBehaviour
             // Logro PrimerosAsentamientos
             if (_dinosaurType == "T-Rex")
             {
+                MusicManager.PonerMusica(_clipAudio2, _reproductor, false);
                 PrehistoryManager.Instance._tRexDefeated = true;
                 AchievementManager.UnlockAchievement("Prehistory_PrimerosAsentamientos");
             }

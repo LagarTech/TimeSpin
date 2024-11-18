@@ -10,6 +10,8 @@ public class RaceManager : MonoBehaviour
 
     public bool runningGame = false;
     private float _timer = 0f;
+    [SerializeField]
+    private GameObject _optionsPanel;
 
     private void Awake()
     {
@@ -25,7 +27,12 @@ public class RaceManager : MonoBehaviour
 
     private void Update()
     {
-        if(runningGame)
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            _optionsPanel.SetActive(true);
+            runningGame = false;
+        }
+        if (runningGame)
         {
             // Se contabiliza el tiempo que se tarda en terminar la carrera
             _timer += Time.deltaTime;
@@ -48,5 +55,10 @@ public class RaceManager : MonoBehaviour
         {
             EndRace();
         }
+    }
+    public void Options()
+    {
+        _optionsPanel.SetActive(false);
+        runningGame = true;
     }
 }

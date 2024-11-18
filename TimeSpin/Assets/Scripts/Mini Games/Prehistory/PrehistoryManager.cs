@@ -33,6 +33,9 @@ public class PrehistoryManager : MonoBehaviour
 
     private List<string> _recentlyUnlockedAchievements = new List<string>(); //lista de logros desbloqueados recientemente
 
+    [SerializeField]
+    private GameObject _optionsPanel;
+
     private void Awake()
     {
         if(Instance == null)
@@ -56,7 +59,11 @@ public class PrehistoryManager : MonoBehaviour
     {
         // Si el juego no ha comenzado, no se ejecuta nada
         if (!runningGame) return;
-
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            _optionsPanel.SetActive(true);
+            runningGame = false;
+        }
         // Temporizador
         if (_timeLeft > 0)
         {
@@ -203,6 +210,11 @@ public class PrehistoryManager : MonoBehaviour
 
         // Se inicia la transición
         GameSceneManager.instance.GameOverPrehistoryMedieval(_score, _hitDinosaurs, true);
+    }
+    public void Options()
+    {
+        _optionsPanel.SetActive(false);
+        runningGame = true;
     }
 
 }

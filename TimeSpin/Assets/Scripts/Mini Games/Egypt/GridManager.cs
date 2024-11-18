@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.ConstrainedExecution;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 public class GridManager : MonoBehaviour
@@ -46,6 +47,15 @@ public class GridManager : MonoBehaviour
     // Tiempo que tiene que transcurrir para que se genere una nueva momia
     private float _mummyTime = 0f;
 
+    [SerializeField]
+    private AudioSource _reproductor;
+    [SerializeField]
+    private AudioClip _clipAudio;
+    [SerializeField]
+    private AudioMixer mezclador;
+    [SerializeField]
+    private GameObject _optionsPanel;
+
     private void Awake()
     {
         Instance = this;
@@ -62,6 +72,11 @@ public class GridManager : MonoBehaviour
     private void Update()
     {
         if (!runningGame) return;
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            _optionsPanel.SetActive(true);
+            runningGame = false;
+        }
 
         // GESTIÓN DEL TIEMPO RESTANTE
         if (_remainingTime > 0f)
@@ -89,6 +104,7 @@ public class GridManager : MonoBehaviour
         {
             _spikesTime = 10f; // Entre apariciones se deja un tiempo de 10 segundos
             SpawnSpikes();
+            MusicManager.PonerMusica(_clipAudio, _reproductor, false);
         }
 
         // GENERACIÓN DE MOMIAS
@@ -241,6 +257,12 @@ public class GridManager : MonoBehaviour
         runningGame = false;
         // Se calcula la puntuación del jugador en base a los resultados
         GameSceneManager.instance.GameOverEgyptFuture(_survivedTime, true);
+    }
+
+    public void Options()
+    {
+        _optionsPanel.SetActive(false);
+        runningGame = true;
     }
 
 }

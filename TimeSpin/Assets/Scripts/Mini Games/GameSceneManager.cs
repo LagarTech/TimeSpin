@@ -34,6 +34,7 @@ public class GameSceneManager : MonoBehaviour
 
     // Gestión de las escenas
     // Control de la escena en la que se encuentra el jugador
+
     private enum Scene
     {
         Lobby,
@@ -53,6 +54,10 @@ public class GameSceneManager : MonoBehaviour
     [SerializeField] private Vector3 _startingPositionMedieval;
     [SerializeField] private Vector3 _startingPositionMaya;
     [SerializeField] private Vector3 _startingPositionFuture;
+
+    public float MusicVolume;
+    public float EffectsVolume;
+    public float Brigthness=1f;
 
     private void Awake()
     {

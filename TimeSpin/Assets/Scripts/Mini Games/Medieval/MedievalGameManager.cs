@@ -31,6 +31,9 @@ public class MedievalGameManager : MonoBehaviour
     public int nextBaseIndex = 0;
     private const int NUM_BASES = 4;
 
+    [SerializeField]
+    private GameObject _optionsPanel;
+
     private void Awake()
     {
         if(Instance == null)
@@ -55,6 +58,11 @@ public class MedievalGameManager : MonoBehaviour
     private void Update()
     {
         if (!runningGame) return;
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            _optionsPanel.SetActive(true);
+            runningGame = false;
+        }
 
         if (_timeLeft > 0)
         {
@@ -123,6 +131,11 @@ public class MedievalGameManager : MonoBehaviour
     {
         runningGame = false;
         GameSceneManager.instance.GameOverPrehistoryMedieval(_score, _numSwords, false); // Se muestra la pantalla de puntuaciones y se pasa a la siguiente pantalla
+    }
+    public void Options()
+    {
+        _optionsPanel.SetActive(false);
+        runningGame = true;
     }
 
 }
