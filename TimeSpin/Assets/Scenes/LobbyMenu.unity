@@ -4568,11 +4568,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3461604616464776922, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 151
+      value: 206
       objectReference: {fileID: 0}
     - target: {fileID: 3461604616464776922, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 6.32164
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 3461604616464776922, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -9532,7 +9532,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3461604616464776922, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 259
+      value: 205
       objectReference: {fileID: 0}
     - target: {fileID: 3461604616464776922, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -9612,7 +9612,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -18}
   m_SizeDelta: {x: 1045.14, y: 512.6527}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &919658180
@@ -11520,6 +11520,7 @@ GameObject:
   - component: {fileID: 1067382174}
   - component: {fileID: 1067382173}
   - component: {fileID: 1067382175}
+  - component: {fileID: 1067382176}
   m_Layer: 9
   m_Name: 'Exposicion_P '
   m_TagString: Untagged
@@ -11616,6 +11617,31 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -4733938554633669925, guid: ec7107f93d5b3fa46b11c4231856151c, type: 3}
+--- !u!114 &1067382176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1067382171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d8a9d73ee5919a439f7f04ddf277387, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minigameName: Maya
+  achievementMenu: {fileID: 919658178}
+  achievementPrefab: {fileID: 695679150150548665, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
+  MAX_DISTANCE: 2
+  listAchievements:
+  - {fileID: 878713628}
+  - {fileID: 1910781543}
+  - {fileID: 1309416862}
+  - {fileID: 1867010071}
+  - {fileID: 914457797}
+  - {fileID: 2008616415}
+  - {fileID: 2106297799}
+  - {fileID: 1266225928}
 --- !u!1 &1096400849
 GameObject:
   m_ObjectHideFlags: 0
@@ -13845,11 +13871,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3461604616464776922, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 259
+      value: 206
       objectReference: {fileID: 0}
     - target: {fileID: 3461604616464776922, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -72.554
+      value: -73
       objectReference: {fileID: 0}
     - target: {fileID: 3461604616464776922, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -13894,6 +13920,7 @@ GameObject:
   - component: {fileID: 1317206912}
   - component: {fileID: 1317206911}
   - component: {fileID: 1317206913}
+  - component: {fileID: 1317206914}
   m_Layer: 9
   m_Name: 'Exposicion_P '
   m_TagString: Untagged
@@ -13991,6 +14018,31 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -4733938554633669925, guid: ec7107f93d5b3fa46b11c4231856151c, type: 3}
+--- !u!114 &1317206914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1317206909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d8a9d73ee5919a439f7f04ddf277387, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minigameName: Egipto
+  achievementMenu: {fileID: 919658178}
+  achievementPrefab: {fileID: 695679150150548665, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
+  MAX_DISTANCE: 2
+  listAchievements:
+  - {fileID: 878713628}
+  - {fileID: 1266225928}
+  - {fileID: 1910781543}
+  - {fileID: 1309416862}
+  - {fileID: 1867010071}
+  - {fileID: 914457797}
+  - {fileID: 2008616415}
+  - {fileID: 2106297799}
 --- !u!1 &1329342584
 GameObject:
   m_ObjectHideFlags: 0
@@ -14420,6 +14472,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1427193452}
   m_CullTransparentMesh: 1
+--- !u!1 &1445072991
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1445072993}
+  - component: {fileID: 1445072992}
+  m_Layer: 0
+  m_Name: '@LobbyChestManager'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1445072992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1445072991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bf6fecd05156104f96734a02daae4af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1445072993
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1445072991}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.4612925, y: -0.81920755, z: 10.922773}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1451768629
 GameObject:
   m_ObjectHideFlags: 0
@@ -16172,6 +16268,7 @@ GameObject:
   - component: {fileID: 1591045678}
   - component: {fileID: 1591045677}
   - component: {fileID: 1591045679}
+  - component: {fileID: 1591045680}
   m_Layer: 9
   m_Name: Exposicion_M
   m_TagString: Untagged
@@ -16268,6 +16365,31 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -1476270321348802410, guid: ec7107f93d5b3fa46b11c4231856151c, type: 3}
+--- !u!114 &1591045680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1591045675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d8a9d73ee5919a439f7f04ddf277387, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minigameName: Medieval
+  achievementMenu: {fileID: 919658178}
+  achievementPrefab: {fileID: 695679150150548665, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
+  MAX_DISTANCE: 2
+  listAchievements:
+  - {fileID: 878713628}
+  - {fileID: 1266225928}
+  - {fileID: 1910781543}
+  - {fileID: 1309416862}
+  - {fileID: 1867010071}
+  - {fileID: 914457797}
+  - {fileID: 2008616415}
+  - {fileID: 2106297799}
 --- !u!1 &1593282995
 GameObject:
   m_ObjectHideFlags: 0
@@ -18711,6 +18833,7 @@ GameObject:
   - component: {fileID: 1809391348}
   - component: {fileID: 1809391347}
   - component: {fileID: 1809391349}
+  - component: {fileID: 1809391350}
   m_Layer: 0
   m_Name: 'Exposicion_P '
   m_TagString: Untagged
@@ -18806,6 +18929,31 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -4733938554633669925, guid: ec7107f93d5b3fa46b11c4231856151c, type: 3}
+--- !u!114 &1809391350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1809391345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d8a9d73ee5919a439f7f04ddf277387, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minigameName: Future
+  achievementMenu: {fileID: 919658178}
+  achievementPrefab: {fileID: 695679150150548665, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
+  MAX_DISTANCE: 2
+  listAchievements:
+  - {fileID: 878713628}
+  - {fileID: 1266225928}
+  - {fileID: 1910781543}
+  - {fileID: 1309416862}
+  - {fileID: 1867010071}
+  - {fileID: 914457797}
+  - {fileID: 2008616415}
+  - {fileID: 2106297799}
 --- !u!1 &1818617050
 GameObject:
   m_ObjectHideFlags: 0
@@ -19633,11 +19781,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3461604616464776922, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 259
+      value: 205
       objectReference: {fileID: 0}
     - target: {fileID: 3461604616464776922, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 38.223
+      value: 38
       objectReference: {fileID: 0}
     - target: {fileID: 3461604616464776922, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -19967,11 +20115,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3461604616464776922, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -198
+      value: -274
       objectReference: {fileID: 0}
     - target: {fileID: 3461604616464776922, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 6.32164
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 3461604616464776922, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -23017,3 +23165,4 @@ SceneRoots:
   - {fileID: 1189541868}
   - {fileID: 59730136}
   - {fileID: 1467398702}
+  - {fileID: 1445072993}

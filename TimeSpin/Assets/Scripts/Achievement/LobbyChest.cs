@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class LobbyChest : MonoBehaviour
 {
-    public static LobbyChest Instance;
 
     [SerializeField] private string minigameName; // Nombre del minijuego
     [SerializeField] private GameObject achievementMenu; // Referencia al menú de logros
@@ -15,34 +14,96 @@ public class LobbyChest : MonoBehaviour
 
     [SerializeField] private List <GameObject> listAchievements;
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
+
     void Start()
     {
-        // Define los logros para cada minijuego
-        if (minigameName == "Prehistory")
+        // Registra este baúl con el manager
+        LobbyChestManager.Instance?.RegisterChest(this);
+
+        // Define los logros para cada minijuego 
+        switch (minigameName)
         {
-            achievements = new string[]
-            {
-                "Duración Extensa",
-                "El Fuego",
-                "Primeros Instrumentos Musicales",
-                "Pinturas Rupestres",
-                "Herramientas de Piedra",
-                "Domesticación de Animales",
-                "El Descubrimiento de Ötzi",
-                "Primeros Asentamientos"
-            };
+            case "Prehistory":
+
+                achievements = new string[]
+                {
+                    "Duración Extensa",
+                    "El Fuego",
+                    "Primeros Instrumentos Musicales",
+                    "Pinturas Rupestres",
+                    "Herramientas de Piedra",
+                    "Domesticación de Animales",
+                    "El Descubrimiento de Ötzi",
+                    "Primeros Asentamientos"
+                };
+                break;
+
+            case "Medieval":
+
+                achievements = new string[]
+                {
+                    "Caballeros y Torneos",
+                    "La Peste Negra",
+                    "Las Cruzadas",
+                    "Las Ciudades Amuralladas",
+                    "Mujeres en el Medievo",
+                    "Los Castillos",
+                    "El Sistema Feudal",
+                    "Los Gremios"
+                };
+                break;
+
+            case "Egipto":
+
+                achievements = new string[]
+                {
+                    "Astrología de Pirámides",
+                    "Escritura Jeroglífica",
+                    "Gatos Sagrados",
+                    "Diversidad en Faraones",
+                    "El Maquillaje de los Ojos",
+                    "Calendario Egipcio",
+                    "Mujeres con Derechos",
+                    "Proceso de Momificación"
+                };
+                break;
+
+            case "Maya":
+
+                achievements = new string[]
+                {
+                    "Calendario Avanzado",
+                    "Pirámides Escalonadas",
+                    "Escritura Jeroglífica",
+                    "Conocimientos Astronómicos",
+                    "Sacrificios Humanos",
+                    "Juego de Pelota",
+                    "Ingeniería Hidráulica",
+                    "Abandono de las Ciudades"
+                };
+                break;
+
+            case "Future":
+
+                achievements = new string[]
+                {
+                    "Coches Voladores",
+                    "Carreras Espaciales",
+                    "Vida en otros Planetas",
+                    "Alienígenas",
+                    "Inteligencia Artificial y Robots",
+                    "Ciudades",
+                    "Automatización del Hogar",
+                    "Tecnología de Comunicación"
+                };
+                break;
+
+            default:
+                achievements = new string[] { }; // Por si no se encuentra una etapa válida
+                Debug.LogWarning($"Error");
+                break;
         }
+            
 
         // Inicializar logros como bloqueados si aún no se han registrado
         InitializeAchievements();
@@ -53,16 +114,20 @@ public class LobbyChest : MonoBehaviour
 
     void Update()
     {
-        // Verificar si se presiona la tecla Espacio
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space)) 
         {
-            // Verificar que haya un jugador y que esté cerca
             if (_playerTransform != null && Vector3.Distance(transform.position, _playerTransform.position) < MAX_DISTANCE)
             {
-                ShowAchievements();
+                LobbyChestManager.Instance?.OpenAchievements(this);
             }
         }
     }
+
+    public void CloseAchievements()
+    {
+        achievementMenu.SetActive(false);
+    }
+
 
     public void AddPlayerReference(Transform playerTransform)
     {
@@ -70,7 +135,7 @@ public class LobbyChest : MonoBehaviour
         Debug.Log("Referencia del jugador asignada al baúl.");
     }
 
-    private void ShowAchievements()
+    public void ShowAchievements()
     {
         // Activar el menú y la lista
         achievementMenu.SetActive(true);

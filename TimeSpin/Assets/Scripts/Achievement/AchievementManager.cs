@@ -11,6 +11,7 @@ public static class AchievementManager
             PlayerPrefs.SetInt(achievementKey, 1); // Logro desbloqueado
             Debug.Log("Logro desbloqueado: "  + achievementKey ); // Imprimir clave
         }
+
     }
 
     public static bool IsAchievementUnlocked(string achievementKey)

@@ -7,6 +7,7 @@ public class AchievementItemUI : MonoBehaviour
     [SerializeField] private TMP_Text titleText; // Referencia al texto del nombre
     [SerializeField] private TMP_Text statusText; // Referencia al texto del estado
     [SerializeField] private Image statusIcon; // Icono del estado
+    [SerializeField] private Slider progressSlider;//Slider
 
     public void SetAchievementData(string title, bool unlocked)
     {
@@ -15,13 +16,18 @@ public class AchievementItemUI : MonoBehaviour
 
         if (statusText != null)
         {
-            statusText.text = unlocked ? "Desbloqueado" : "Bloqueado";
-            statusText.color = unlocked ? Color.green : Color.gray;
+            statusText.text = unlocked ? "1/1" : "0/1";
+            statusText.color = unlocked ? Color.gray : Color.gray;
         }
 
         if (statusIcon != null)
         {
             statusIcon.color = unlocked ? Color.green : Color.gray;
+        }
+
+        if (progressSlider != null)
+        {
+            progressSlider.value = unlocked ? progressSlider.maxValue : 0f; // Completar o reiniciar slider
         }
     }
 
