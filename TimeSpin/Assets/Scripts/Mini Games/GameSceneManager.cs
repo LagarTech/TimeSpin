@@ -55,9 +55,12 @@ public class GameSceneManager : MonoBehaviour
     [SerializeField] private Vector3 _startingPositionMaya;
     [SerializeField] private Vector3 _startingPositionFuture;
 
+    // Conservación de los parámetros de configuración
     public float MusicVolume;
     public float EffectsVolume;
-    public float Brigthness=1f;
+    public float Brigthness = 1f;
+
+    public bool initializedServices = false;
 
     private void Awake()
     {
@@ -95,6 +98,7 @@ public class GameSceneManager : MonoBehaviour
                 {
                     Instantiate(playerPrefab, startingPositionLobby, Quaternion.identity);
                 }
+                practiceStarted = false; // Se indica que no ya se ha terminado el minijuego de práctica
                 // Se eliminan las momias del minijuego anterior
                 DespawnMummies();
                 // Se eliminan los troncos del minijuego anterior

@@ -39,7 +39,7 @@ public class EndingManager : MonoBehaviour
     void Start()
     {
         // Se realiza el registro del usuario una sola vez
-        if (AuthenticationService.Instance.IsSignedIn) return;
+        if (GameSceneManager.instance.initializedServices) return;
         StartCoroutine(InitializeUnityServicesCoroutine());
     }
 
@@ -69,6 +69,7 @@ public class EndingManager : MonoBehaviour
             else
             {
                 Debug.Log("Usuario autenticado exitosamente.");
+                GameSceneManager.instance.initializedServices = true;
             }
         }
     }

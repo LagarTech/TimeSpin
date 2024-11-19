@@ -21,18 +21,13 @@ public class DinosaurController : MonoBehaviour
     private Vector3 _initialPosition;
     private const float RISE_AMOUNT = 0.7f;
     private const float RISE_DURATION = 0.5f; // Duración de la animación de aparición
-    private const float DISAPPEAR_DURATION = 0.5f; // Duración de la animación de desaparición
+    private const float DISAPPEAR_DURATION = 2.5f; // Duración de la animación de desaparición
 
-    private bool _isHit = false;
+    [SerializeField] private bool _isHit = false;
 
-    [SerializeField]
-    private AudioSource _reproductor;
-    [SerializeField]
-    private AudioClip _clipAudio;
-    [SerializeField]
-    private AudioClip _clipAudio2;
-    [SerializeField]
-    private AudioMixer mezclador;
+    [SerializeField] private AudioSource _reproductor;
+    [SerializeField] private AudioClip _clipAudio; // Sonido de golpeo al dinosaurio
+    [SerializeField] private AudioClip _clipAudio2; // Sonido de derrota del T-Rex
 
     void Start()
     {
@@ -42,14 +37,14 @@ public class DinosaurController : MonoBehaviour
             _requiredHits = 2;
         }
 
-        // Se busca una referencia a la posición del jugador
-        _player = GameObject.FindGameObjectWithTag("Player").transform.position;       
     }
 
     void Update()
     {
         // Si el juego no ha empezado o ha terminado, que no se pueda hacer nada
         if (!PrehistoryManager.Instance.runningGame) return;
+        // Se busca una referencia a la posición del jugador
+        _player = GameObject.FindGameObjectWithTag("Player").transform.position;       
         // Comprobar la distancia del jugador para que lo pueda golpear o no
         _distanceToPlayer = Vector3.Distance(_player, transform.position);
         if(Input.GetKeyDown(KeyCode.Space))
@@ -58,7 +53,6 @@ public class DinosaurController : MonoBehaviour
             {
                 // Si el jugador está cerca, lo golpea
                 HitDinosaur();
-                MusicManager.PonerMusica(_clipAudio, _reproductor, false);
             }
         }
         _timer += Time.deltaTime;
@@ -96,13 +90,12 @@ public class DinosaurController : MonoBehaviour
             // Logro PrimerosAsentamientos
             if (_dinosaurType == "T-Rex")
             {
-                MusicManager.PonerMusica(_clipAudio2, _reproductor, false);
                 PrehistoryManager.Instance._tRexDefeated = true;
                 AchievementManager.UnlockAchievement("Prehistory_PrimerosAsentamientos");
             }
 
             // Logro DuraciónExtensa
-            if (_dinosaurType == "Velociraptor")
+            if (_dinosaurType == "Velocirraptor")
             {
                 PrehistoryManager.Instance._velociraptorHits++;
                 if (PrehistoryManager.Instance._velociraptorHits >= 3)
@@ -126,11 +119,24 @@ public class DinosaurController : MonoBehaviour
             // Se desaparece el dinosaurio
             HideDinosaur();
         }
+        if (_hitCount < _requiredHits && _dinosaurType == "T-Rex")
+        {
+            MusicManager.PonerMusica(_clipAudio, _reproductor, false);
+        }
     }
 
 
     private void HideDinosaur()
     {
+        // Reproducción del sonido
+        if(_dinosaurType == "Base" || _dinosaurType == "Velocirraptor")
+        {
+            MusicManager.PonerMusica(_clipAudio, _reproductor, false);
+        }
+        else
+        {
+            MusicManager.PonerMusica(_clipAudio2, _reproductor, false);
+        }
         _hitCount = 0; // Reiniciar el contador de golpes
         _timer = 0; // Reiniciar el temporizador
         StartCoroutine(DisappearAnimation());
@@ -139,7 +145,7 @@ public class DinosaurController : MonoBehaviour
     private IEnumerator DisappearAnimation()
     {
         Vector3 startPosition = transform.position;
-        Vector3 targetPosition = _initialPosition; // La posición original hacia la cual descenderá
+        Vector3 targetPosition = _initialPosition - new Vector3 (0, 3, 0); // La posición original hacia la cual descenderá
         float elapsedTime = 0;
 
         while (elapsedTime < DISAPPEAR_DURATION)
@@ -152,6 +158,7 @@ public class DinosaurController : MonoBehaviour
         transform.position = targetPosition;
 
         _isHit = false;
+
         // Se indica que se desocupa su agujero
         PrehistoryManager.Instance.ReleaseHole(holeIndex);
         // Una vez finalizada la animación, se devuelve el dinosaurio al pool

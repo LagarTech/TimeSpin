@@ -11,11 +11,11 @@ public class MedievalGameManager : MonoBehaviour
 
     [SerializeField] private GameObject[] _swordPrefabs; // Prefabs de espadas (bronce, plata, oro)
     [SerializeField] private GameObject _spawnArea; // Donde aparecen las espadas
-    private const float SPAWN_INTERVAL = 8f; // Tiempo de aparición de espadas
+    private const float SPAWN_INTERVAL = 4f; // Tiempo de aparición de espadas
     private const float GAME_TIME = 60f; // Duración del minijuego
 
     private float _timeLeft; // Tiempo restante
-    private float _spawnTimer = 5f; // Temporizador para spawnear las espadas
+    private float _spawnTimer = 4f; // Temporizador para spawnear las espadas
 
     public bool runningGame = false;
 
@@ -34,6 +34,11 @@ public class MedievalGameManager : MonoBehaviour
     [SerializeField]
     private GameObject _optionsPanel;
 
+    [SerializeField]
+    private AudioSource _reproductor;
+    [SerializeField]
+    private AudioClip _clipAudio;
+
     private void Awake()
     {
         if(Instance == null)
@@ -50,7 +55,6 @@ public class MedievalGameManager : MonoBehaviour
     {
         _timeLeft = GAME_TIME;
         UpdateUI();
-        GameSceneManager.instance.practiceStarted = true;
         // Se indica cuál es la primera base a la que se debe llevar una espada
         ChooseRandomBase();
     }
@@ -72,6 +76,7 @@ public class MedievalGameManager : MonoBehaviour
             // Si ha pasado el tiempo de spawn, se genera una nueva espada
             if (_spawnTimer >= SPAWN_INTERVAL)
             {
+                MusicManager.PonerMusica(_clipAudio, _reproductor, false);
                 SpawnRandomSword();
                 _spawnTimer = 0f;
             }

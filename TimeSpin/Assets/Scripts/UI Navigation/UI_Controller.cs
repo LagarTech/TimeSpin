@@ -88,8 +88,6 @@ public class UI_Controller : MonoBehaviour
             Volver.SetActive(false);
             Nombre.SetActive(false);
 
-            GameSceneManager.instance.practiceStarted = false;
-
             // Se agregan los eventos a los botones asociados
             avanzarButton.onClick.AddListener(OnAvanzarButtonClicked);
             jugar.onClick.AddListener(OnJugarButtonClicked);

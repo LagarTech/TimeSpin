@@ -9,7 +9,7 @@ public class PrehistoryManager : MonoBehaviour
     public static PrehistoryManager Instance;
 
     [SerializeField] Transform[] _holes; // Posiciones de los agujeros
-    private const float SPAWN_INTERVAL = 1.25f; // Intervalo de aparición
+    private const float SPAWN_INTERVAL = 2f; // Intervalo de aparición
     private const float GAME_TIME = 60f; // Duración del juego
 
     private float _timeLeft;
@@ -170,7 +170,7 @@ public class PrehistoryManager : MonoBehaviour
         timeText.text = string.Format("{0:0}:{1:00}", minutes, seconds);
 
         // Puntuacion
-        scoreText.text = "Puntuación: " + _score;
+        scoreText.text = "Puntuacion: " + _score;
     }
 
 

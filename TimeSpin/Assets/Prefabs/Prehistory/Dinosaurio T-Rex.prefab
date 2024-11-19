@@ -264,10 +264,10 @@ MonoBehaviour:
   _dinosaurType: T-Rex
   _distanceToPlayer: 0
   holeIndex: 0
+  _isHit: 0
   _reproductor: {fileID: 8065282627001299722}
   _clipAudio: {fileID: 8300000, guid: 99bf2cb9d61cbca468ef20cbd72bdede, type: 3}
   _clipAudio2: {fileID: 8300000, guid: 8cf9265380004584886a050632c4bf47, type: 3}
-  mezclador: {fileID: 24100000, guid: 1f928c631f270ed45b21f12f59aa246e, type: 2}
 --- !u!82 &8065282627001299722
 AudioSource:
   m_ObjectHideFlags: 0
@@ -279,8 +279,8 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -5920182445048119610, guid: 1f928c631f270ed45b21f12f59aa246e, type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 0.05
+  m_PlayOnAwake: 0
+  m_Volume: 0.02
   m_Pitch: 1
   Loop: 0
   Mute: 0

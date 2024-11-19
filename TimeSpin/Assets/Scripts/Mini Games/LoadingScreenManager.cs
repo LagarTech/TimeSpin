@@ -74,7 +74,7 @@ public class LoadingScreenManager : MonoBehaviour
                 currentPointsText.text = "";
                 GameObject.FindGameObjectWithTag("TituloPActual").SetActive(false);
                 // Se modifica el subtítulo
-                GameObject.FindGameObjectWithTag("TituloPuntuacion").GetComponent<TMP_Text>().text = "Has recorrido multitud de épocas históricas, en unos instantes se mostrarán los resultados de tu trayectoria...";
+                GameObject.FindGameObjectWithTag("TituloPuntuacion").GetComponent<TMP_Text>().text = "Has recorrido multitud de epocas historicas, en unos instantes se mostraran los resultados de tu trayectoria...";
             }
 
             // Fade in (aparecer)

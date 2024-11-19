@@ -178,13 +178,18 @@ public class PlayerMovement : MonoBehaviour
         carriedSword = sword;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        // Si el jugador entra a una base y lleva una espada
-        if (carriedSword != null && other.gameObject.tag == "Base")
+        // Detectamos cuando el jugador está de vuelta en el suelo en el juego Maya
+        if (collision.gameObject.CompareTag("Ground") && _currentScene == Scene.Maya)
+        {
+            _isGrounded = true;
+        }
+        // Si el jugador entra a una base y lleva una espada en el juego Medieval
+        if (carriedSword != null && collision.gameObject.tag == "Base" && _currentScene == Scene.Medieval)
         {
             // Si se deja la espada en la base correcta
-            if (other.gameObject.GetComponent<Base>().baseIndex == MedievalGameManager.Instance.nextBaseIndex)
+            if (collision.gameObject.GetComponent<Base>().baseIndex == MedievalGameManager.Instance.nextBaseIndex)
             {
                 // El jugador deja la espada en la base
                 carriedSword.GetComponent<SwordController>().DeliverSword();
@@ -205,15 +210,6 @@ public class PlayerMovement : MonoBehaviour
         // Se indica que ahora el jugador ya no está en el suelo
         _isGrounded = false;
         _rb.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        // Detectamos cuando el jugador está de vuelta en el suelo
-        if (collision.gameObject.CompareTag("Ground") && _currentScene == Scene.Maya)
-        {
-            _isGrounded = true;
-        }
     }
 
     #endregion

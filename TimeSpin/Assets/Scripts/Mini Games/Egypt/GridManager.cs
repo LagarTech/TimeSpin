@@ -103,8 +103,7 @@ public class GridManager : MonoBehaviour
         if (_spikesTime < 0f)
         {
             _spikesTime = 10f; // Entre apariciones se deja un tiempo de 10 segundos
-            SpawnSpikes();
-            MusicManager.PonerMusica(_clipAudio, _reproductor, false);
+            StartCoroutine(SpawnSpikesCoroutine());
         }
 
         // GENERACIÓN DE MOMIAS
@@ -232,6 +231,12 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    private IEnumerator SpawnSpikesCoroutine()
+    {
+        MusicManager.PonerMusica(_clipAudio, _reproductor, false); // Reproducción del efecto de sonido
+        yield return new WaitForSeconds(1.5f);
+        SpawnSpikes();
+    }
     private void SpawnSpikes()
     {
         int randomSpike = _randomSpikesSpawn[_numSpikes];

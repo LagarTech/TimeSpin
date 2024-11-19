@@ -13,12 +13,24 @@ public class SwordController : MonoBehaviour
     private AudioSource _reproductor;
     [SerializeField]
     private AudioClip _clipAudio;
-    [SerializeField]
-    private AudioMixer mezclador;
+
+    private bool _isCarried = false;
 
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
+    }
+
+    private void Update()
+    {
+        if(_isCarried && !_isHeldAtBase)
+        {
+            transform.localPosition = new Vector3(0, 1, 0);
+        }
+        if(_isHeldAtBase)
+        {
+            transform.localPosition = Vector3.zero;
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -27,8 +39,10 @@ public class SwordController : MonoBehaviour
         // Si el jugador entra en contacto con una espada, este la toma consigo
         if (player != null && player.carriedSword == null && !_isHeldAtBase)
         {
+            _isCarried = true;
             player.SetCarriedSword(gameObject);
             _rb.useGravity = false; // Se desactiva la gravedad
+            _rb.velocity = Vector3.zero; // Se desactiva la velocidad
             transform.SetParent(player.transform);
             transform.localPosition = new Vector3(0, 1, 0);
             MusicManager.PonerMusica(_clipAudio, _reproductor, false);
@@ -42,6 +56,7 @@ public class SwordController : MonoBehaviour
         _isHeldAtBase = true; // Se indica que la espada ha sido depositada en la base
 
         // Mueve la espada a la base correcta
+        transform.SetParent(MedievalGameManager.Instance.bases[MedievalGameManager.Instance.nextBaseIndex]);
         transform.position = MedievalGameManager.Instance.bases[MedievalGameManager.Instance.nextBaseIndex].position;
         transform.parent = MedievalGameManager.Instance.bases[MedievalGameManager.Instance.nextBaseIndex]; // Fija la espada en la base
 
