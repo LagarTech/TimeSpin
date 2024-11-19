@@ -39,6 +39,8 @@ public class SwordController : MonoBehaviour
         // Si el jugador entra en contacto con una espada, este la toma consigo
         if (player != null && player.carriedSword == null && !_isHeldAtBase)
         {
+            // Animación para interactuar
+            StartCoroutine(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().InteractPlayer());
             _isCarried = true;
             player.SetCarriedSword(gameObject);
             _rb.useGravity = false; // Se desactiva la gravedad
@@ -54,7 +56,8 @@ public class SwordController : MonoBehaviour
         if (_isHeldAtBase) return;  // No hacer nada si ya está siendo retenida
 
         _isHeldAtBase = true; // Se indica que la espada ha sido depositada en la base
-
+        // Animación para interactuar
+        StartCoroutine(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().InteractPlayer());
         // Mueve la espada a la base correcta
         transform.SetParent(MedievalGameManager.Instance.bases[MedievalGameManager.Instance.nextBaseIndex]);
         transform.position = MedievalGameManager.Instance.bases[MedievalGameManager.Instance.nextBaseIndex].position;

@@ -58,6 +58,7 @@ public class SelectionTable : MonoBehaviour
             {
                 if (Vector3.Distance(transform.position, _playerTransform.position) < MAX_DISTANCE && !_isReturning && !_isZooming)
                 {
+                    StartCoroutine(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().InteractPlayer());
                     UI_Controller.instance.TextoConsejo.SetActive(false);
                     _isZooming = true;
                     runningGame = false;

@@ -37,9 +37,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool _startedRotation = false; // Variable que controla el giro del personaje
     private Quaternion _targetRotation; // Rotación destino
 
+    // CONTROL DE ANIMACIONES
+    private Animator _animatorController;
+
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
+        _animatorController = GetComponentInChildren<Animator>();
         // Se establece la escena actual
         // Se obtiene el nombre de la escena
         string sceneName = SceneManager.GetActiveScene().name;
@@ -65,20 +69,14 @@ public class PlayerMovement : MonoBehaviour
                 // Si se está en el menú, no te puedes mover
                 if (!SelectionTable.Instance.runningGame) return;
                 // Gestión de los controles
-                if (Input.GetKey(KeyCode.W)) _movementDirection.z = 1f;
-                if (Input.GetKey(KeyCode.S)) _movementDirection.z = -1f;
-                if (Input.GetKey(KeyCode.A)) _movementDirection.x = -1f;
-                if (Input.GetKey(KeyCode.D)) _movementDirection.x = 1f;
+                ProcessMovementInput();
                 break;
 
             case Scene.Prehistory:
                 // Si el minijuego no ha comenzado, no se ejecuta ninguna acción
                 if (!PrehistoryManager.Instance.runningGame) return;
                 // Gestión de los controles
-                if (Input.GetKey(KeyCode.W)) _movementDirection.z = 1f;
-                if (Input.GetKey(KeyCode.S)) _movementDirection.z = -1f;
-                if (Input.GetKey(KeyCode.A)) _movementDirection.x = -1f;
-                if (Input.GetKey(KeyCode.D)) _movementDirection.x = 1f;
+                ProcessMovementInput();
                 break;
 
             case Scene.Egypt:
@@ -90,29 +88,20 @@ public class PlayerMovement : MonoBehaviour
                 Vector2Int tilePos = new Vector2Int((int)transform.position.x, -(int)transform.position.z);
                 _currentTile = GridManager.Instance.GetTile(tilePos.x, tilePos.y);
                 // Gestión de los controles
-                if (Input.GetKey(KeyCode.W)) _movementDirection.z = 1f;
-                if (Input.GetKey(KeyCode.S)) _movementDirection.z = -1f;
-                if (Input.GetKey(KeyCode.A)) _movementDirection.x = -1f;
-                if (Input.GetKey(KeyCode.D)) _movementDirection.x = 1f;
+                ProcessMovementInput();
                 break;
 
             case Scene.Medieval:
                 // Si el minijuego no ha comenzado, no se ejecuta ninguna acción
                 if (!MedievalGameManager.Instance.runningGame) return;
                 // Gestión de los controles
-                if (Input.GetKey(KeyCode.W)) _movementDirection.z = 1f;
-                if (Input.GetKey(KeyCode.S)) _movementDirection.z = -1f;
-                if (Input.GetKey(KeyCode.A)) _movementDirection.x = -1f;
-                if (Input.GetKey(KeyCode.D)) _movementDirection.x = 1f;
+                ProcessMovementInput();
                 break;
 
             case Scene.Maya:
                 if (!RaceManager.instance.runningGame) return;
                 // Gestión de los controles
-                if (Input.GetKey(KeyCode.W)) _movementDirection.z = 1f;
-                if (Input.GetKey(KeyCode.S)) _movementDirection.z = -1f;
-                if (Input.GetKey(KeyCode.A)) _movementDirection.x = -1f;
-                if (Input.GetKey(KeyCode.D)) _movementDirection.x = 1f;
+                ProcessMovementInput();
                 // Gestión del control del salto
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
@@ -135,6 +124,10 @@ public class PlayerMovement : MonoBehaviour
                     // Se indica que ha comenzado la rotación, y se calcula la rotación destino
                     _startedRotation = true;
                     RotatePlayerToGround();
+                    // Actualiza la velocidad del Rigidbody manteniendo la gravedad
+                    Vector3 cVelocity = _rb.velocity;
+                    Vector3 hVelocity = Vector3.zero;
+                    _rb.velocity = new Vector3(hVelocity.x, cVelocity.y, hVelocity.z);
                     return;
                 }
                 else if (GravityManager.Instance.floating && _startedRotation)
@@ -146,14 +139,28 @@ public class PlayerMovement : MonoBehaviour
                 // Se indica que ya se terminó la rotación
                 _startedRotation = false;
                 // Gestión de los controles
-                if (Input.GetKey(KeyCode.W)) _movementDirection.z = 1f;
-                if (Input.GetKey(KeyCode.S)) _movementDirection.z = -1f;
-                if (Input.GetKey(KeyCode.A)) _movementDirection.x = -1f;
-                if (Input.GetKey(KeyCode.D)) _movementDirection.x = 1f;
+                ProcessMovementInput();
                 break;
         }
-        transform.position += _movementDirection * _speed * Time.deltaTime;
+
+        // Actualiza la velocidad del Rigidbody manteniendo la gravedad
+        Vector3 currentVelocity = _rb.velocity;
+        Vector3 horizontalVelocity = _movementDirection * _speed;
+        _rb.velocity = new Vector3(horizontalVelocity.x, currentVelocity.y, horizontalVelocity.z);
+
+        // Calcula la velocidad del Animator usando solo las componentes x y z
+        float currentSpeed = new Vector3(_rb.velocity.x, 0f, _rb.velocity.z).magnitude;
+        _animatorController.SetFloat("Speed", currentSpeed);
     }
+
+    private void ProcessMovementInput()
+    {
+        if (Input.GetKey(KeyCode.W)) _movementDirection.z = 1f;
+        if (Input.GetKey(KeyCode.S)) _movementDirection.z = -1f;
+        if (Input.GetKey(KeyCode.A)) _movementDirection.x = -1f;
+        if (Input.GetKey(KeyCode.D)) _movementDirection.x = 1f;
+    }
+
 
     // Esta función se utiliza para ocultar el nombre y el personaje del jugador, sin desactivarlo completamente para poder acceder a él de nuevo
     public void HidePlayer()
@@ -184,6 +191,7 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground") && _currentScene == Scene.Maya)
         {
             _isGrounded = true;
+            _animatorController.SetBool("Jump", false);
         }
         // Si el jugador entra a una base y lleva una espada en el juego Medieval
         if (carriedSword != null && collision.gameObject.tag == "Base" && _currentScene == Scene.Medieval)
@@ -210,6 +218,7 @@ public class PlayerMovement : MonoBehaviour
         // Se indica que ahora el jugador ya no está en el suelo
         _isGrounded = false;
         _rb.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
+        _animatorController.SetBool("Jump", true);
     }
 
     #endregion
@@ -220,4 +229,11 @@ public class PlayerMovement : MonoBehaviour
         _targetRotation = Quaternion.Euler(transform.rotation.eulerAngles.x + 180 % 360, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
     }
     #endregion
+
+    public IEnumerator InteractPlayer()
+    {
+        _animatorController.SetBool("Interacting", true);
+        yield return new WaitForSeconds(2f);
+        _animatorController.SetBool("Interacting", false);
+    } 
 }
