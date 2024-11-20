@@ -137,7 +137,6 @@ public class GameSceneManager : MonoBehaviour
                 _playerTransform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
                 // Se hace que si el personaje es del propietario, la cámara lo siga
                 GameObject.FindGameObjectWithTag("FollowCamera").GetComponent<CinemachineVirtualCamera>().Follow = _playerTransform;
-                GameObject.FindGameObjectWithTag("FollowCamera").GetComponent<CinemachineVirtualCamera>().LookAt = _playerTransform;
 
                 break;
             case "Future":

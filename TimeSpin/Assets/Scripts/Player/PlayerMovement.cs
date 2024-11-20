@@ -151,6 +151,33 @@ public class PlayerMovement : MonoBehaviour
         // Calcula la velocidad del Animator usando solo las componentes x y z
         float currentSpeed = new Vector3(_rb.velocity.x, 0f, _rb.velocity.z).magnitude;
         _animatorController.SetFloat("Speed", currentSpeed);
+
+        // Se escoge la animación de correr en función de la escena
+        if(_currentScene == Scene.Egypt)
+        {
+            _animatorController.SetBool("Egypt", true);
+        }
+        else
+        {
+            _animatorController.SetBool("Egypt", false);
+        }
+
+        // Rotación del personaje
+        if (_movementDirection.sqrMagnitude > 0.01f) // Comprueba si hay movimiento
+        {
+            // Calcula el ángulo de rotación en torno al eje Y basado en la dirección de movimiento
+            float targetYRotation = Mathf.Atan2(_movementDirection.x, _movementDirection.z) * Mathf.Rad2Deg;
+
+            // Obtén la rotación actual del jugador como ángulos de Euler
+            Vector3 currentRotation = transform.rotation.eulerAngles;
+
+            // Crea una nueva rotación que conserva los valores actuales en X y Z, pero ajusta la Y
+            Quaternion targetRotation = Quaternion.Euler(currentRotation.x, targetYRotation, currentRotation.z);
+
+            // Aplica una rotación suave hacia el objetivo
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.deltaTime * 360f);
+        }
+
     }
 
     private void ProcessMovementInput()
@@ -191,7 +218,6 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground") && _currentScene == Scene.Maya)
         {
             _isGrounded = true;
-            _animatorController.SetBool("Jump", false);
         }
         // Si el jugador entra a una base y lleva una espada en el juego Medieval
         if (carriedSword != null && collision.gameObject.tag == "Base" && _currentScene == Scene.Medieval)
@@ -218,7 +244,7 @@ public class PlayerMovement : MonoBehaviour
         // Se indica que ahora el jugador ya no está en el suelo
         _isGrounded = false;
         _rb.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
-        _animatorController.SetBool("Jump", true);
+        _animatorController.SetTrigger("Jump");
     }
 
     #endregion
@@ -230,10 +256,13 @@ public class PlayerMovement : MonoBehaviour
     }
     #endregion
 
-    public IEnumerator InteractPlayer()
+    public void InteractPlayer()
     {
-        _animatorController.SetBool("Interacting", true);
-        yield return new WaitForSeconds(2f);
-        _animatorController.SetBool("Interacting", false);
-    } 
+        _animatorController.SetTrigger("Interacting");
+    }
+    
+    public void HitDinosaur()
+    {
+        _animatorController.SetTrigger("Hit");
+    }
 }

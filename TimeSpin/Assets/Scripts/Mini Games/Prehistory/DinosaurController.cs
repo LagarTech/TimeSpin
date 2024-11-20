@@ -82,6 +82,8 @@ public class DinosaurController : MonoBehaviour
 
     void HitDinosaur()
     {
+        // Animación de golpeo
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().HitDinosaur();
         _hitCount++;
         if (_hitCount >= _requiredHits && !_isHit)
         {
