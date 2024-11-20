@@ -1,111 +1,27 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static AchievementItemUI;
 
 public class LobbyChest : MonoBehaviour
 {
-
     [SerializeField] private string minigameName; // Nombre del minijuego
     [SerializeField] private GameObject achievementMenu; // Referencia al menú de logros
-    [SerializeField] private GameObject achievementPrefab; // Prefab de cada logro
     [SerializeField] private int MAX_DISTANCE = 2; // Distancia máxima para interactuar
 
     private Transform _playerTransform; // Referencia dinámica al jugador
-    private string[] achievements; // Logros asociados al minijuego
 
-    [SerializeField] private List <GameObject> listAchievements;
+    // Lista de ScriptableObjects que contienen los datos de los logros
+    [SerializeField] private List<AchievementScriptable> achievements;
 
+    // Prefabs o elementos de UI en la jerarquía que representan logros
+    [SerializeField] private List<GameObject> listAchievements;
 
     void Start()
     {
         // Registra este baúl con el manager
         LobbyChestManager.Instance?.RegisterChest(this);
 
-        // Define los logros para cada minijuego 
-        switch (minigameName)
-        {
-            case "Prehistory":
-
-                achievements = new string[]
-                {
-                    "Duración Extensa",
-                    "El Fuego",
-                    "Primeros Instrumentos Musicales",
-                    "Pinturas Rupestres",
-                    "Herramientas de Piedra",
-                    "Domesticación de Animales",
-                    "El Descubrimiento de Ötzi",
-                    "Primeros Asentamientos"
-                };
-                break;
-
-            case "Medieval":
-
-                achievements = new string[]
-                {
-                    "Caballeros y Torneos",
-                    "La Peste Negra",
-                    "Las Cruzadas",
-                    "Las Ciudades Amuralladas",
-                    "Mujeres en el Medievo",
-                    "Los Castillos",
-                    "El Sistema Feudal",
-                    "Los Gremios"
-                };
-                break;
-
-            case "Egipto":
-
-                achievements = new string[]
-                {
-                    "Astrología de Pirámides",
-                    "Escritura Jeroglífica",
-                    "Gatos Sagrados",
-                    "Diversidad en Faraones",
-                    "El Maquillaje de los Ojos",
-                    "Calendario Egipcio",
-                    "Mujeres con Derechos",
-                    "Proceso de Momificación"
-                };
-                break;
-
-            case "Maya":
-
-                achievements = new string[]
-                {
-                    "Calendario Avanzado",
-                    "Pirámides Escalonadas",
-                    "Escritura Jeroglífica",
-                    "Conocimientos Astronómicos",
-                    "Sacrificios Humanos",
-                    "Juego de Pelota",
-                    "Ingeniería Hidráulica",
-                    "Abandono de las Ciudades"
-                };
-                break;
-
-            case "Future":
-
-                achievements = new string[]
-                {
-                    "Coches Voladores",
-                    "Carreras Espaciales",
-                    "Vida en otros Planetas",
-                    "Alienígenas",
-                    "Inteligencia Artificial y Robots",
-                    "Ciudades",
-                    "Automatización del Hogar",
-                    "Tecnología de Comunicación"
-                };
-                break;
-
-            default:
-                achievements = new string[] { }; // Por si no se encuentra una etapa válida
-                Debug.LogWarning($"Error");
-                break;
-        }
-            
-
-        // Inicializar logros como bloqueados si aún no se han registrado
+        // Inicializar logros si aún no están registrados
         InitializeAchievements();
 
         // Ocultar el menú al inicio
@@ -114,8 +30,10 @@ public class LobbyChest : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) 
+        // Comprobar si el jugador está cerca y pulsa "Espacio" para abrir logros
+        if (Input.GetKeyDown(KeyCode.Space))
         {
+            _playerTransform = GameObject.FindGameObjectWithTag("Player")?.transform;
             if (_playerTransform != null && Vector3.Distance(transform.position, _playerTransform.position) < MAX_DISTANCE)
             {
                 LobbyChestManager.Instance?.OpenAchievements(this);
@@ -128,38 +46,35 @@ public class LobbyChest : MonoBehaviour
         achievementMenu.SetActive(false);
     }
 
-
-    public void AddPlayerReference(Transform playerTransform)
-    {
-        _playerTransform = playerTransform;
-        Debug.Log("Referencia del jugador asignada al baúl.");
-    }
-
     public void ShowAchievements()
     {
-        // Activar el menú y la lista
-        achievementMenu.SetActive(true);
-
-        // Rellenar la lista con logros
-        for (int i = 0; i< achievements.Length; i++)
+        if (achievements.Count != listAchievements.Count)
         {
-            string achievementName = achievements[i];
-            string achievementKey = $"{minigameName}_{achievementName.Replace(" ", "")}";
+            Debug.LogError("La cantidad de logros no coincide con la cantidad de elementos visuales en listAchievements.");
+            return;
+        }
 
-            // Imprimir la clave generada
-            Debug.Log($"Clave generada: {achievementKey}");
+        for (int i = 0; i < achievements.Count; i++)
+        {
+            if (achievements[i] == null || listAchievements[i] == null)
+            {
+                Debug.LogError($"El logro o el elemento visual en la posición {i} es null.");
+                continue;
+            }
 
-            bool unlocked = AchievementManager.IsAchievementUnlocked(achievementKey);
-
-            Debug.Log($"Logro: {achievementKey}, Estado: {(unlocked ? "Desbloqueado" : "Bloqueado")}");
-
+            AchievementScriptable achievementData = achievements[i];
             GameObject achievementItem = listAchievements[i];
             AchievementItemUI achievementUI = achievementItem.GetComponent<AchievementItemUI>();
 
             if (achievementUI != null)
             {
-                achievementUI.SetAchievementData(achievementName, unlocked);
-                achievementItem.GetComponent<RectTransform>().localScale = Vector3.one; // Asegurar escala correcta
+                achievementUI.SetAchievementData(new AchievementItemUI.AchievementData
+                {
+                    Title = achievementData.Title,
+                    Description = achievementData.Description,
+                    Condition = achievementData.Condition,
+                    IsUnlocked = achievementData.IsUnlocked
+                });
             }
             else
             {
@@ -168,11 +83,12 @@ public class LobbyChest : MonoBehaviour
         }
     }
 
+
     private void InitializeAchievements()
     {
-        foreach (string achievementName in achievements)
+        foreach (AchievementScriptable achievementData in achievements)
         {
-            string achievementKey = $"{minigameName}_{achievementName.Replace(" ", "")}";
+            string achievementKey = $"{minigameName}_{achievementData.Title.Replace(" ", "")}";
             if (!AchievementManager.IsAchievementUnlocked(achievementKey) && PlayerPrefs.GetInt(achievementKey, -1) == -1)
             {
                 // Si no existe el logro en PlayerPrefs, inicializarlo como bloqueado (valor 0)
@@ -180,6 +96,6 @@ public class LobbyChest : MonoBehaviour
             }
         }
     }
-
 }
+
 

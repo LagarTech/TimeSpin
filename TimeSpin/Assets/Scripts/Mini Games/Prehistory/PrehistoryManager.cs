@@ -129,7 +129,7 @@ public class PrehistoryManager : MonoBehaviour
         }
 
         // Logro: Racha rápida
-        if (currentTime - _lastHitTime <= 5f)
+        if (currentTime - _lastHitTime <= 10f)
         {
             _consecutiveHits++;
             if (_consecutiveHits >= 3)

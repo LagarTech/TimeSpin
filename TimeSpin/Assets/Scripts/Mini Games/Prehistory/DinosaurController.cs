@@ -107,7 +107,7 @@ public class DinosaurController : MonoBehaviour
             }
 
             // Logro ElFuego
-            if (_timer <= 1f)
+            if (_timer <= 5f)
             {
                 AchievementManager.UnlockAchievement("Prehistory_ElFuego");
             }

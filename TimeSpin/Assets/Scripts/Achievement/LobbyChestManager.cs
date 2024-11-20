@@ -43,4 +43,9 @@ public class LobbyChestManager : MonoBehaviour
         // Abre el menú de logros del baúl solicitado
         chest.ShowAchievements();
     }
+
+    public void OcultarPanelLogros()
+    {
+        GameObject.FindGameObjectWithTag("Logros").SetActive(false);
+    }
 }
