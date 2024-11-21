@@ -8,13 +8,13 @@ public class AchievementItemUI : MonoBehaviour
     [SerializeField] private TMP_Text statusText; // Texto del estado
     [SerializeField] private GameObject statusIcon; // Icono del estado
     [SerializeField] private Slider progressSlider; // Barra de progreso
-    [SerializeField] private GameObject prefabContainer; // Contenedor principal del prefab
-    [SerializeField] private TMP_Text detailText; // Texto para mostrar Condition o Description
+    [SerializeField] private TMP_Text detailText; // Texto para Condition/Description
+    [SerializeField] private GameObject conditionButton; // Botón de condición
+    [SerializeField] private GameObject descriptionButton; // Botón de descripción
     [SerializeField] private GameObject closeButton; // Botón para cerrar detalles
-    [SerializeField] private Button conditionButton; // Botón de condición
-    [SerializeField] private Button descriptionButton; // Botón de descripción
 
     private bool unlockedAchievement; // Estado del logro
+    private string detailToShow; // Texto a mostrar (Condition o Description)
 
     // Estructura para recibir datos del logro
     public struct AchievementData
@@ -29,8 +29,11 @@ public class AchievementItemUI : MonoBehaviour
     {
         unlockedAchievement = data.IsUnlocked;
 
-        // Configurar texto y estado
-        if (titleText != null) titleText.text = data.Title;
+        // Configurar título
+        if (titleText != null)
+            titleText.text = data.Title;
+
+        // Configurar estado
         if (statusText != null)
         {
             statusText.text = data.IsUnlocked ? "1/1" : "0/1";
@@ -43,38 +46,70 @@ public class AchievementItemUI : MonoBehaviour
             statusIcon.GetComponent<Image>().color = data.IsUnlocked ? Color.green : Color.gray;
         }
 
-        // Configurar barra de progreso
+        // Configurar progreso
         if (progressSlider != null)
         {
             progressSlider.value = data.IsUnlocked ? progressSlider.maxValue : 0;
         }
 
         // Configurar botones
-        conditionButton.gameObject.SetActive(!data.IsUnlocked); // Mostrar solo si está bloqueado
-        descriptionButton.gameObject.SetActive(data.IsUnlocked); // Mostrar solo si está desbloqueado
-        detailText.gameObject.SetActive(false); // Ocultar detalles inicialmente
-        closeButton.SetActive(false); // Ocultar botón de cerrar inicialmente
+        conditionButton.SetActive(!data.IsUnlocked);
+        descriptionButton.SetActive(data.IsUnlocked);
+        closeButton.SetActive(false); // Botón de cerrar oculto inicialmente
 
-        // Asignar texto de descripción y condición
-        conditionButton.onClick.AddListener(() => ShowDetails(data.Condition));
-        descriptionButton.onClick.AddListener(() => ShowDetails(data.Description));
+        // Asignar acciones a los botones
+        conditionButton.GetComponent<Button>().onClick.RemoveAllListeners();
+        conditionButton.GetComponent<Button>().onClick.AddListener(() => ShowDetails(data.Condition));
+
+        descriptionButton.GetComponent<Button>().onClick.RemoveAllListeners();
+        descriptionButton.GetComponent<Button>().onClick.AddListener(() => ShowDetails(data.Description));
+
+        closeButton.GetComponent<Button>().onClick.RemoveAllListeners();
         closeButton.GetComponent<Button>().onClick.AddListener(HideDetails);
+
+        // Ocultar detalles iniciales
+        if (detailText != null)
+            detailText.gameObject.SetActive(false);
     }
 
-    // Mostrar los detalles (Condition o Description)
+    // Mostrar Condition o Description
     private void ShowDetails(string detail)
     {
-        prefabContainer.SetActive(false); // Ocultar el prefab
-        detailText.text = detail; // Configurar texto
-        detailText.gameObject.SetActive(true); // Mostrar texto de detalle
-        closeButton.SetActive(true); // Mostrar botón de cerrar
+        detailToShow = detail;
+        Debug.Log(detailToShow);
+        // Ocultar elementos principales
+        if (titleText != null) titleText.gameObject.SetActive(false);
+        if (statusText != null) statusText.gameObject.SetActive(false);
+        if (statusIcon != null) statusIcon.SetActive(false);
+        if (progressSlider != null) progressSlider.gameObject.SetActive(false);
+        conditionButton.SetActive(false);
+        descriptionButton.SetActive(false);
+
+        // Mostrar detalles y botón de cerrar
+        if (detailText != null)
+        {
+            detailText.text = detailToShow;
+            detailText.gameObject.SetActive(true);
+        }
+        closeButton.SetActive(true);
     }
 
-    // Ocultar detalles y volver al prefab
-    public void HideDetails()
+    // Ocultar detalles y restaurar elementos principales
+    private void HideDetails()
     {
-        detailText.gameObject.SetActive(false); // Ocultar texto de detalle
-        closeButton.SetActive(false); // Ocultar botón de cerrar
-        prefabContainer.SetActive(true); // Mostrar el prefab original
+        // Mostrar elementos principales
+        if (titleText != null) titleText.gameObject.SetActive(true);
+        if (statusText != null) statusText.gameObject.SetActive(true);
+        if (statusIcon != null) statusIcon.SetActive(true);
+        if (progressSlider != null) progressSlider.gameObject.SetActive(true);
+
+        // Restaurar botones según el estado del logro
+        conditionButton.SetActive(!unlockedAchievement);
+        descriptionButton.SetActive(unlockedAchievement);
+
+        // Ocultar detalles y botón de cerrar
+        if (detailText != null) detailText.gameObject.SetActive(false);
+        closeButton.SetActive(false);
     }
 }
+

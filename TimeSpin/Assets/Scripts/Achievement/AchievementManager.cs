@@ -6,11 +6,10 @@ public static class AchievementManager
 {
     public static void UnlockAchievement(string achievementKey)
     {
-        if (!IsAchievementUnlocked(achievementKey))
-        {
-            PlayerPrefs.SetInt(achievementKey, 1); // Logro desbloqueado
-            Debug.Log("Logro desbloqueado: "  + achievementKey ); // Imprimir clave
-        }
+        Debug.Log("Clave" + achievementKey);
+        // Desbloquea el logro en PlayerPrefs
+        PlayerPrefs.SetInt(achievementKey, 1);
+        PlayerPrefs.Save();
 
     }
 
@@ -18,12 +17,6 @@ public static class AchievementManager
     {
         return PlayerPrefs.GetInt(achievementKey, 0) == 1;
     }
-
-    public static void ResetAchievements()
-    {
-        PlayerPrefs.DeleteAll(); //Borra todos los logros
-        Debug.Log("Todos los logros han sido reiniciados.");
-    }
-
 }
+
 

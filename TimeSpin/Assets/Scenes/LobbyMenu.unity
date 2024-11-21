@@ -3984,13 +3984,22 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7866383253468522433, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.000036263715
+      objectReference: {fileID: 0}
+    - target: {fileID: 7866383253468522433, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 13.869843
+      objectReference: {fileID: 0}
+    - target: {fileID: 7866383253468522433, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 4.895294
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 695679150150548665, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 878713633}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
 --- !u!1 &424583831
 GameObject:
@@ -7282,7 +7291,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &854826774
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7640,27 +7649,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3461604616464776922, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
   m_PrefabInstance: {fileID: 398806333}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &878713633
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 878713628}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc19a3c987c6e094eaf22d3f6c1a65ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  titleText: {fileID: 1831203025}
-  statusText: {fileID: 1353067309}
-  statusIcon: {fileID: 1601626006}
-  progressSlider: {fileID: 1785761812}
-  prefabContainer: {fileID: 878713628}
-  detailText: {fileID: 1411755565}
-  closeButton: {fileID: 854826773}
-  conditionButton: {fileID: 951332898}
-  descriptionButton: {fileID: 1554393215}
 --- !u!1 &881339229
 GameObject:
   m_ObjectHideFlags: 0
@@ -8202,10 +8190,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 695679150150548665, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 914457801}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
 --- !u!224 &914457796 stripped
 RectTransform:
@@ -8217,27 +8202,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 695679150150548665, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
   m_PrefabInstance: {fileID: 914457795}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &914457801
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 914457797}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc19a3c987c6e094eaf22d3f6c1a65ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  titleText: {fileID: 1831203025}
-  statusText: {fileID: 1353067309}
-  statusIcon: {fileID: 1601626006}
-  progressSlider: {fileID: 1785761812}
-  prefabContainer: {fileID: 914457797}
-  detailText: {fileID: 1411755565}
-  closeButton: {fileID: 854826773}
-  conditionButton: {fileID: 951332898}
-  descriptionButton: {fileID: 1554393215}
 --- !u!1 &919658178
 GameObject:
   m_ObjectHideFlags: 0
@@ -8492,17 +8456,6 @@ RectTransform:
   m_AnchoredPosition: {x: -5, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &951332898 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3651761266994416855, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
-  m_PrefabInstance: {fileID: 398806333}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &952013585
 GameObject:
   m_ObjectHideFlags: 0
@@ -10179,7 +10132,15 @@ MonoBehaviour:
   minigameName: Maya
   achievementMenu: {fileID: 919658178}
   MAX_DISTANCE: 2
-  achievements: []
+  achievements:
+  - {fileID: 11400000, guid: 075eff65acad187428d88d96c80d6df3, type: 2}
+  - {fileID: 11400000, guid: ab67b229fcfd0344ab3340fac48211a5, type: 2}
+  - {fileID: 11400000, guid: 181001b3405cd934499cbff273ba1061, type: 2}
+  - {fileID: 11400000, guid: ec0b72fc1a25b6d49bf818e41da1a486, type: 2}
+  - {fileID: 11400000, guid: e7cc7346bb1f68f4890697b9a906747c, type: 2}
+  - {fileID: 11400000, guid: 05c92dedec857c3429baf9ad220353be, type: 2}
+  - {fileID: 11400000, guid: 119606e109bc2d143abd0a782530d6ec, type: 2}
+  - {fileID: 11400000, guid: c028c514ab1759343b85ea451a98aa2e, type: 2}
   listAchievements:
   - {fileID: 878713628}
   - {fileID: 1910781543}
@@ -11935,10 +11896,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 695679150150548665, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1266225932}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
 --- !u!224 &1266225927 stripped
 RectTransform:
@@ -11950,27 +11908,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 695679150150548665, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
   m_PrefabInstance: {fileID: 1266225926}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1266225932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1266225928}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc19a3c987c6e094eaf22d3f6c1a65ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  titleText: {fileID: 1831203025}
-  statusText: {fileID: 1353067309}
-  statusIcon: {fileID: 1601626006}
-  progressSlider: {fileID: 1785761812}
-  prefabContainer: {fileID: 1266225928}
-  detailText: {fileID: 1411755565}
-  closeButton: {fileID: 854826773}
-  conditionButton: {fileID: 951332898}
-  descriptionButton: {fileID: 1554393215}
 --- !u!1 &1282016737
 GameObject:
   m_ObjectHideFlags: 0
@@ -12222,10 +12159,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 695679150150548665, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1309416866}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
 --- !u!224 &1309416861 stripped
 RectTransform:
@@ -12237,27 +12171,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 695679150150548665, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
   m_PrefabInstance: {fileID: 1309416860}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1309416866
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1309416862}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc19a3c987c6e094eaf22d3f6c1a65ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  titleText: {fileID: 1831203025}
-  statusText: {fileID: 1353067309}
-  statusIcon: {fileID: 1601626006}
-  progressSlider: {fileID: 1785761812}
-  prefabContainer: {fileID: 1309416862}
-  detailText: {fileID: 1411755565}
-  closeButton: {fileID: 854826773}
-  conditionButton: {fileID: 951332898}
-  descriptionButton: {fileID: 1554393215}
 --- !u!1 &1317206909
 GameObject:
   m_ObjectHideFlags: 0
@@ -12383,7 +12296,15 @@ MonoBehaviour:
   minigameName: Egipto
   achievementMenu: {fileID: 919658178}
   MAX_DISTANCE: 2
-  achievements: []
+  achievements:
+  - {fileID: 11400000, guid: 075eff65acad187428d88d96c80d6df3, type: 2}
+  - {fileID: 11400000, guid: ab67b229fcfd0344ab3340fac48211a5, type: 2}
+  - {fileID: 11400000, guid: 181001b3405cd934499cbff273ba1061, type: 2}
+  - {fileID: 11400000, guid: ec0b72fc1a25b6d49bf818e41da1a486, type: 2}
+  - {fileID: 11400000, guid: e7cc7346bb1f68f4890697b9a906747c, type: 2}
+  - {fileID: 11400000, guid: 05c92dedec857c3429baf9ad220353be, type: 2}
+  - {fileID: 11400000, guid: 119606e109bc2d143abd0a782530d6ec, type: 2}
+  - {fileID: 11400000, guid: c028c514ab1759343b85ea451a98aa2e, type: 2}
   listAchievements:
   - {fileID: 878713628}
   - {fileID: 1266225928}
@@ -12609,17 +12530,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1353067309 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1561859289935119883, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
-  m_PrefabInstance: {fileID: 398806333}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1366349132 stripped
@@ -12872,7 +12782,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1411755564
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14001,17 +13911,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1532226729}
   m_CullTransparentMesh: 1
---- !u!114 &1554393215 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7155790765498360319, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
-  m_PrefabInstance: {fileID: 398806333}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1572034919
 GameObject:
   m_ObjectHideFlags: 0
@@ -14531,7 +14430,15 @@ MonoBehaviour:
   minigameName: Medieval
   achievementMenu: {fileID: 919658178}
   MAX_DISTANCE: 2
-  achievements: []
+  achievements:
+  - {fileID: 11400000, guid: 075eff65acad187428d88d96c80d6df3, type: 2}
+  - {fileID: 11400000, guid: ab67b229fcfd0344ab3340fac48211a5, type: 2}
+  - {fileID: 11400000, guid: 181001b3405cd934499cbff273ba1061, type: 2}
+  - {fileID: 11400000, guid: ec0b72fc1a25b6d49bf818e41da1a486, type: 2}
+  - {fileID: 11400000, guid: e7cc7346bb1f68f4890697b9a906747c, type: 2}
+  - {fileID: 11400000, guid: 05c92dedec857c3429baf9ad220353be, type: 2}
+  - {fileID: 11400000, guid: 119606e109bc2d143abd0a782530d6ec, type: 2}
+  - {fileID: 11400000, guid: c028c514ab1759343b85ea451a98aa2e, type: 2}
   listAchievements:
   - {fileID: 878713628}
   - {fileID: 1266225928}
@@ -14624,11 +14531,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1593282995}
   m_Mesh: {fileID: 8995473907268066679, guid: ec7107f93d5b3fa46b11c4231856151c, type: 3}
---- !u!1 &1601626006 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 178676738441844470, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
-  m_PrefabInstance: {fileID: 398806333}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1604648474
 GameObject:
   m_ObjectHideFlags: 0
@@ -16708,7 +16610,15 @@ MonoBehaviour:
   minigameName: Future
   achievementMenu: {fileID: 919658178}
   MAX_DISTANCE: 2
-  achievements: []
+  achievements:
+  - {fileID: 11400000, guid: 075eff65acad187428d88d96c80d6df3, type: 2}
+  - {fileID: 11400000, guid: ab67b229fcfd0344ab3340fac48211a5, type: 2}
+  - {fileID: 11400000, guid: 181001b3405cd934499cbff273ba1061, type: 2}
+  - {fileID: 11400000, guid: ec0b72fc1a25b6d49bf818e41da1a486, type: 2}
+  - {fileID: 11400000, guid: e7cc7346bb1f68f4890697b9a906747c, type: 2}
+  - {fileID: 11400000, guid: 05c92dedec857c3429baf9ad220353be, type: 2}
+  - {fileID: 11400000, guid: 119606e109bc2d143abd0a782530d6ec, type: 2}
+  - {fileID: 11400000, guid: c028c514ab1759343b85ea451a98aa2e, type: 2}
   listAchievements:
   - {fileID: 878713628}
   - {fileID: 1266225928}
@@ -17248,17 +17158,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1830229406}
   m_CullTransparentMesh: 1
---- !u!114 &1831203025 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7726340246221010839, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
-  m_PrefabInstance: {fileID: 398806333}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1834272664
 GameObject:
   m_ObjectHideFlags: 0
@@ -17666,10 +17565,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 695679150150548665, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1867010075}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
 --- !u!224 &1867010070 stripped
 RectTransform:
@@ -17681,27 +17577,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 695679150150548665, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
   m_PrefabInstance: {fileID: 1867010069}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1867010075
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1867010071}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc19a3c987c6e094eaf22d3f6c1a65ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  titleText: {fileID: 1831203025}
-  statusText: {fileID: 1353067309}
-  statusIcon: {fileID: 1601626006}
-  progressSlider: {fileID: 1785761812}
-  prefabContainer: {fileID: 1867010071}
-  detailText: {fileID: 1411755565}
-  closeButton: {fileID: 854826773}
-  conditionButton: {fileID: 951332898}
-  descriptionButton: {fileID: 1554393215}
 --- !u!1 &1899428951
 GameObject:
   m_ObjectHideFlags: 0
@@ -17964,10 +17839,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 695679150150548665, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1910781547}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
 --- !u!224 &1910781542 stripped
 RectTransform:
@@ -17979,27 +17851,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 695679150150548665, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
   m_PrefabInstance: {fileID: 1910781541}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1910781547
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1910781543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc19a3c987c6e094eaf22d3f6c1a65ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  titleText: {fileID: 1831203025}
-  statusText: {fileID: 1353067309}
-  statusIcon: {fileID: 1601626006}
-  progressSlider: {fileID: 1785761812}
-  prefabContainer: {fileID: 1910781543}
-  detailText: {fileID: 1411755565}
-  closeButton: {fileID: 854826773}
-  conditionButton: {fileID: 951332898}
-  descriptionButton: {fileID: 1554393215}
 --- !u!1 &1914067846
 GameObject:
   m_ObjectHideFlags: 0
@@ -19610,10 +19461,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 695679150150548665, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2008616419}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
 --- !u!224 &2008616414 stripped
 RectTransform:
@@ -19625,27 +19473,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 695679150150548665, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
   m_PrefabInstance: {fileID: 2008616413}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2008616419
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2008616415}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc19a3c987c6e094eaf22d3f6c1a65ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  titleText: {fileID: 1831203025}
-  statusText: {fileID: 1353067309}
-  statusIcon: {fileID: 1601626006}
-  progressSlider: {fileID: 1785761812}
-  prefabContainer: {fileID: 2008616415}
-  detailText: {fileID: 1411755565}
-  closeButton: {fileID: 854826773}
-  conditionButton: {fileID: 951332898}
-  descriptionButton: {fileID: 1554393215}
 --- !u!1 &2019218523
 GameObject:
   m_ObjectHideFlags: 0
@@ -20221,10 +20048,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 695679150150548665, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2106297803}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
 --- !u!224 &2106297798 stripped
 RectTransform:
@@ -20236,27 +20060,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 695679150150548665, guid: 2798e9fe0fdb45647afb9f596dba5183, type: 3}
   m_PrefabInstance: {fileID: 2106297797}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2106297803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2106297799}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc19a3c987c6e094eaf22d3f6c1a65ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  titleText: {fileID: 1831203025}
-  statusText: {fileID: 1353067309}
-  statusIcon: {fileID: 1601626006}
-  progressSlider: {fileID: 1785761812}
-  prefabContainer: {fileID: 2106297799}
-  detailText: {fileID: 1411755565}
-  closeButton: {fileID: 854826773}
-  conditionButton: {fileID: 951332898}
-  descriptionButton: {fileID: 1554393215}
 --- !u!1 &2107072874
 GameObject:
   m_ObjectHideFlags: 0

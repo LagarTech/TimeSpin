@@ -29,21 +29,6 @@ public class LobbyChestManager : MonoBehaviour
         }
     }
 
-    public void OpenAchievements(LobbyChest chest)
-    {
-        // Cierra otros menús de logros si están abiertos
-        foreach (var otherChest in chests)
-        {
-            if (otherChest != chest)
-            {
-                otherChest.CloseAchievements();
-            }
-        }
-
-        // Abre el menú de logros del baúl solicitado
-        chest.ShowAchievements();
-    }
-
     public void OcultarPanelLogros()
     {
         GameObject.FindGameObjectWithTag("Logros").SetActive(false);

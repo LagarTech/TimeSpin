@@ -4,14 +4,14 @@ using static AchievementItemUI;
 
 public class LobbyChest : MonoBehaviour
 {
-    [SerializeField] private string minigameName; // Nombre del minijuego
+    [SerializeField] public string minigameName; // Nombre del minijuego
     [SerializeField] private GameObject achievementMenu; // Referencia al menú de logros
-    [SerializeField] private int MAX_DISTANCE = 2; // Distancia máxima para interactuar
+    [SerializeField] private int MAX_DISTANCE = 3; // Distancia máxima para interactuar
 
     private Transform _playerTransform; // Referencia dinámica al jugador
 
     // Lista de ScriptableObjects que contienen los datos de los logros
-    [SerializeField] private List<AchievementScriptable> achievements;
+    [SerializeField] public List<AchievementScriptable> achievements;
 
     // Prefabs o elementos de UI en la jerarquía que representan logros
     [SerializeField] private List<GameObject> listAchievements;
@@ -36,7 +36,9 @@ public class LobbyChest : MonoBehaviour
             _playerTransform = GameObject.FindGameObjectWithTag("Player")?.transform;
             if (_playerTransform != null && Vector3.Distance(transform.position, _playerTransform.position) < MAX_DISTANCE)
             {
-                LobbyChestManager.Instance?.OpenAchievements(this);
+                ShowAchievements();
+
+                Debug.Log("space pulsado");
             }
         }
     }
@@ -44,14 +46,33 @@ public class LobbyChest : MonoBehaviour
     public void CloseAchievements()
     {
         achievementMenu.SetActive(false);
+        SelectionTable.Instance.runningGame = true;
     }
 
     public void ShowAchievements()
-    {
+    {   
+        SelectionTable.Instance.runningGame = false;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().InteractPlayer();
+
+        achievementMenu.SetActive(true);
         if (achievements.Count != listAchievements.Count)
         {
             Debug.LogError("La cantidad de logros no coincide con la cantidad de elementos visuales en listAchievements.");
             return;
+        }
+        for (int j = 0; j < achievements.Count; j++)
+        {
+            string achievementKey = $"{minigameName}_{achievements[j].Title.Replace(" ", "")}";
+            int desbloqueado = PlayerPrefs.GetInt(achievementKey);
+
+            if (desbloqueado == 0)
+            {
+                achievements[j].IsUnlocked = false;
+            }
+            else
+            {
+                achievements[j].IsUnlocked = true;
+            }
         }
 
         for (int i = 0; i < achievements.Count; i++)
