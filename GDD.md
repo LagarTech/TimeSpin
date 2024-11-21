@@ -39,7 +39,19 @@ Por último, se lanza la versión Gold Master del producto con todos los errores
 | Beta        | Desarrollo de una versión beta con todas las funcionalidades disponibles, se pretende recibir feedback de la comunidad de jugadores y encontrar errores en el juego | Equipo de desarrollo  | 28/10/2024      | 19/11/2024   |
 | Gold Master | Desarrollo y publicación de la versión final del juego                                            | Equipo de desarrollo  | 20/11/2024      | 10/12/2024   |
 
-Cabe destacar que el juego es free to play y para que se mantenga vivo a lo largo de 2 años se pretende incluir cada 3 o 4 meses una serie de DLCs en los que se introducen nuevos minijuegos para evitar que los 5 primeros se vuelvan repetitivos y la gente abandone el juego. Además de esto, se incluyen de forma más frecuente nuevos atuendos y vestimentas que se pueden adquirir mediante micropagos en la tienda del juego, de esta forma también se incita a jugar a los jugadores y no aburrirse.
+Para mantener el interés y la sostenibilidad del juego a largo plazo, se introduce una estrategia basada en contenido adicional periódico y monetización no invasiva:
+Actualizaciones trimestrales (cada 3-4 meses):
+Lanzamiento de nuevos minijuegos que expanden la experiencia del usuario, introduciendo mecánicas innovadoras y temáticas frescas.
+Ampliación de entornos históricos, añadiendo civilizaciones o épocas adicionales para diversificar la narrativa del juego.
+Micropagos estéticos:
+Introducción frecuente de nuevos atuendos, accesorios y personalizaciones para los personajes, disponibles en la tienda del juego.
+Eventos temáticos con recompensas exclusivas (ej.: festividades, competiciones globales).
+Eventos especiales:
+Competencias de comunidad: Torneos en línea o desafíos que premian a los jugadores con atuendos especiales, monedas del juego u objetos exclusivos.
+Integración educativa: Ediciones especiales diseñadas para escuelas con contenidos didácticos alineados con materias específicas.
+DLCs adicionales:
+Introducción de packs premium opcionales con más expansiones y distintos minijuegos nuevos.
+
 - **Información de usuarios**: ¿Quién es?
   
 El público objetivo que se espera que tenga este videojuego es muy variado, puesto que la edad mínima que se recomienda para jugar es de tres años. Además de esto, gracias a su temática familiar y competitiva, se pretende captar a gente de todas las edades. Este perfil objetivo es a nivel nacional, puesto que el juego solo está disponible en este idioma. 
@@ -226,28 +238,30 @@ Sumando todos los gastos que aparecen en la tabla, se tiene un total de 20145€
 
 ## 5. Mecánicas de Juego y Elementos de Juego
 En este apartado se procede a explicar y detallar las distintas mecánicas y elementos que se utilizan en el videojuego. Las mecánicas es uno de los apartados más importantes a tener en cuenta cuando se desarrolla un juego, puesto que son las que van a hacer que los jugadores jueguen al juego de una forma u otra, las acciones posibles a realizar por el jugador o las distintas opciones y funciones que se introducen dentro del juego.
-- **Descripción detallada del concepto de juego**: TimeSpin es un videojuego que se ambienta en la época actual, en el que unos chavales de instituto que están de excursión se encuentran en un museo una pantalla que los teletransporta a distintas épocas históricas para realizar pruebas y jugar minijuegos entre todos. Estos son 5 y se eligen a través de una votación que se realiza por todos los jugadores, en caso de empate se elige aleatoriamente. Una partida completa consiste en jugar a los 5 minijuegos en el orden que se elige por los jugadores, en los que se obtienen puntos que se guardan a lo largo de la partida y posteriormente se suman a un ranking general. 
-- **Descripción detallada de las mecánicas de juego**: Las mecánicas del videojuego varían en función del minijuego que se vota para jugar. Lo primero es entender cómo funciona el lobby de este juego.
+- **Descripción detallada del concepto de juego**: TimeSpin es un videojuego que se ambienta en la época actual, en el que unos chavales de instituto que están de excursión se encuentran en un museo una pantalla que los teletransporta a distintas épocas históricas para realizar pruebas y jugar minijuegos. Estos son 5 y se juegan en orden cronológico de las distintas épocas históricas. Una partida completa consiste en jugar a los 5 minijuegos en los que se obtienen puntos en base a un sistema de puntuación que se establece previamente, estos puntos se guardan a lo largo de la partida y posteriormente se suman a un ranking general. 
+- **Descripción detallada de las mecánicas de juego**: Las mecánicas del videojuego varían en función del minijuego. Lo primero es entender cómo funciona el lobby de este juego.
 
-El lobby es una sala dentro de un museo a la que se unen los 4 jugadores tanto al inicio de la partida como después de cada ronda.
+El lobby es una sala dentro de un museo a la que se une el jugador  tanto al inicio de la partida como después de cada ronda.
 
-En ella, los jugadores se pueden mover libremente dentro del espacio predefinido e interactuar con la pantalla en la que se encuentran los 5 minijuegos disponibles para realizar una votación entre todos los participantes y elegir el primer minijuego a jugar. Una vez se realiza esa primera prueba, se vuelve al lobby y se realiza una nueva votación, sin posibilidad de votar el minijuego que se ha jugado previamente. Una vez todos los jugadores estén en el lobby y listos para comenzar, disponen de 45 segundos para realizar esa votación. En caso de empate entre algunos de los minijuegos, la prueba se elige de forma aleatoria. 
+En ella, los personajes se pueden mover libremente dentro del espacio predefinido e interactuar con la pantalla en la que se encuentran los 5 minijuegos disponibles para realizar una selección y elegir el primer minijuego a jugar. Una vez se realiza esa primera prueba, se vuelve al lobby y se realiza una nueva elección, sin posibilidad de votar el minijuego que se ha jugado previamente.
+
 
 Para los 5 minijuegos se utilizan las siguientes mecánicas:
 
-Prehistoria: En este minijuego, la mecánica principal es moverse y golpear a los distintos tipos de dinosaurios que aparecen en los 9 agujeros de los que se compone el mapa para esta prueba. Hay tres tipos de dinosaurios, el velocirraptor que es más rápido y difícil de golpear otorga 2 puntos, un T-Rex que en vez de un golpe es necesario darle 2 y otorga 3 puntos y un dinosaurio base que otorga 1 punto. La aparición en los agujeros y del tipo de dinosaurio es aleatoria. Este minijuego tiene la duración de 1 minuto. 
+Prehistoria: En este minijuego, la mecánica principal es moverse y golpear a los distintos tipos de dinosaurios que aparecen en los 9 agujeros de los que se compone el mapa para esta prueba. Hay tres tipos de dinosaurios, el velocirraptor que es más rápido y difícil de golpear otorga 2 puntos, un T-Rex que en vez de un golpe es necesario darle 2 y otorga 3 puntos y un dinosaurio base que otorga 1 punto. La aparición en los agujeros y del tipo de dinosaurio es aleatoria. Este minijuego tiene la duración de 1 minuto.  
 
-Egipto: El segundo minijuego está ambientado en la época egipcia, en él, los jugadores se encuentran atrapados en una pirámide llena de momias y trampas. La duración de este minijuego es de 2 minutos y la mecánica principal es la supervivencia, el jugador que más tiempo aguante sin ser atrapado por una momia gana. El tablero se compone de 13 columnas y 9 filas de celdas cuadradas, algunas caminables y otras no. A medida que va transcurriendo el tiempo de juego, a partir de los 20 segundos, cada 10 segundos aparecen pinchos en una de las 10 casillas predefinidas del mapa, que cierran el paso de los jugadores y las momias. Además, cada 30 segundos se genera un enemigo más, haciendo que aumente la dificultad progresivamente.
+Egipto: El segundo minijuego está ambientado en la época egipcia, en él, el jugador se encuentra atrapado en una pirámide llena de momias y trampas. La duración de este minijuego es de 2 minutos y la mecánica principal es la supervivencia, cuanto más tiempo se sobrevive, mayor puntuación se obtiene. El tablero se compone de 13 columnas y 9 filas de celdas cuadradas, algunas caminables y otras no. A medida que va transcurriendo el tiempo de juego, a partir de los 20 segundos, cada 10 segundos aparecen pinchos en una de las 10 casillas predefinidas del mapa, que cierran el paso de los jugadores y las momias. Además, cada 30 segundos se genera un enemigo más, haciendo que aumente la dificultad progresivamente.
 En la siguiente imagen se puede observar la planificación del mapa, con las zonas de obstáculos, las casillas con trampa, el lugar de generación de los enemigos y la posición de inicio de los jugadores.
+
 ### Mapa de Egipto
 ![Caja](Diseño/ImagenesGDD/Egipto.jpg)
 
 Medieval: En este tercer minijuego el jugador se ubica dentro del patio de un castillo. En este patio cuadrangular, se dispone de un espacio dedicado para el jugador que se sitúa en un lado del mapa, siendo la mecánica principal ir por el patio para recoger espadas de distintos materiales consiguiendo de esta manera puntos. Para obtener los puntos se deben depositar los objetos en el espacio dedicado que se mencionan anteriormente. Los objetos para recoger son espadas, de bronce 1 punto, de plata 2 puntos y de oro 5 puntos. Solo se puede coger un objeto a la vez. Los puntos se otorgan a medida que se introducen los objetos en el recinto del jugador, la prueba dura 1 minuto. Dentro del mapa también se introducen obstáculos, como pueden ser carros de mercadillo antiguos o barriles para aumentar el nivel de la prueba.
 
-Maya: Este minijuego se desarrolla en una jungla típica de la época Maya, siendo la mecánica principal correr una carrera entre todos los jugadores. Tendrán que ir sorteando distintos obstáculos, que les entorpecen el paso: una serie de troncos que ocupan 4/9 del ancho del escenario y los empujan hacia atrás y unos hoyos que harán que se caigan y pierdan tiempo en reaparecer. Los jugadores podrán utilizar el salto, siendo esta mecánica única en este minijuego, para evitar los obstáculos.
+Maya: Este minijuego se desarrolla en una jungla típica de la época Maya, siendo la mecánica principal correr una carrera contrarreloj. Los jugadores tienen que ir sorteando distintos obstáculos que les entorpecen el paso: una serie de troncos que ocupan 4/9 del ancho del escenario y los empujan hacia atrás y unos hoyos que harán que se caigan y pierdan tiempo en reaparecer. Los jugadores podrán utilizar el salto, siendo esta mecánica única en este minijuego, para evitar los obstáculos. El tiempo que se tarda en completar el circuito se guarda y se muestra por pantalla un ranking con todos los que se almacenan.
 
-Futurista: Por último, en la prueba futurista se opta por una mecánica sencilla. El escenario se compone de dos grandes plataformas, suspendidas en el aire, divididas a su vez en casillas hexagonales más pequeñas. Los jugadores deberán moverse a lo largo de ellas tratando de no caerse durante el mayor tiempo posible, siendo el máximo del minijuego 2 minutos. 
-Durante este tiempo, cada 10-20 segundos, se produce una alteración gravitatoria que hace que los personajes pasen de la plataforma inferior, a la superior, y viceversa. Además, cada 4 segundos durante el primer minuto, y cada 3 durante el segundo, caerá una casilla al azar de la parte inferior y otra distinta de la superior. Por lo tanto, los jugadores deberán ir moviéndose evitando quedarse detenidos en una casilla que caiga, y tratar de recordar aquellas que cayeron en la otra plataforma, para no perderse en el vacío con el cambio de gravedad.
+Futurista: Por último, en la prueba futurista se opta por una mecánica sencilla. El escenario se compone de dos grandes plataformas, suspendidas en el aire y divididas a su vez en casillas hexagonales más pequeñas. El jugador debe moverse a lo largo de ellas tratando de no caerse durante el mayor tiempo posible, siendo el máximo del minijuego 2 minutos. 
+Durante este tiempo, cada 10-20 segundos, se produce una alteración gravitatoria que hace que los personajes pasen de la plataforma inferior, a la superior, y viceversa. Además, cada 4 segundos durante el primer minuto, y cada 3 durante el segundo, caerá una casilla al azar de la parte inferior y otra distinta de la superior. Por lo tanto, los jugadores se deben mover para evitar quedarse detenidos en una casilla que caiga, y tratar de recordar aquellas que cayeron en la otra plataforma para no perderse en el vacío con el cambio de gravedad.
 También se añade una dificultad adicional, que es que todo el tablero permanece a oscuras, a excepción de las casillas que están pisando los jugadores y todas las adyacentes que no hayan caído. Por ello deben de ir con precaución tratando de no pisar en un hueco.
 En la siguiente imagen se muestra la distribución de las casillas en cada una de las plataformas, apareciendo con una cruz las posiciones de aparición de los personajes.
 
@@ -324,9 +338,9 @@ Juego de pelota: Los mayas jugaban a un deporte ritual llamado pok-ta-pok, que c
 -Abandono de las ciudades: Una de las grandes incógnitas sobre los mayas es por qué abandonaron muchas de sus grandes ciudades en el siglo IX. Aunque no se sabe con certeza, las teorías incluyen una combinación de factores como el agotamiento de los recursos naturales, sequías prolongadas, conflictos internos y la presión de otras civilizaciones vecinas.
 
 Futurista
--Coches voladores: Uno de los grandes deseos para el futuro es que los coches pueden volar y que no utilicen ningún tipo de combustible.
+-Coches voladores: Uno de los grandes deseos para el futuro es que los coches puedan volar y que no utilicen ningún tipo de combustible. ¿Sucederá en algún momento de la historia?
 
--Carreras espaciales: Otro de los deseos humanos es poder hacer carreras por todo el espacio.
+-Carreras espaciales: Otro de los deseos humanos es poder hacer carreras por todo el espacio. Imagina ve una carrera de fórmula 1 por el anillo de Saturno.
 
 -Vida en otros planetas: Hoy en día se intenta buscar otros planetas con las condiciones óptimas para seguir viviendo.
 
