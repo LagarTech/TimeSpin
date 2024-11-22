@@ -18,6 +18,9 @@ public class PlayerSetup : MonoBehaviour
         // Se hace referencia a la mesa
         SelectionTable.Instance.AddPlayerReference(transform);
 
+        // Se activa el controlador de las animaciones
+        GetComponent<PlayerMovement>().SetAnimator();
+
     }
 
 }

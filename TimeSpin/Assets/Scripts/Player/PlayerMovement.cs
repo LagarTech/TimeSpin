@@ -43,7 +43,6 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
-        _animatorController = GetComponentInChildren<Animator>();
         // Se establece la escena actual
         // Se obtiene el nombre de la escena
         string sceneName = SceneManager.GetActiveScene().name;
@@ -150,16 +149,21 @@ public class PlayerMovement : MonoBehaviour
 
         // Calcula la velocidad del Animator usando solo las componentes x y z
         float currentSpeed = new Vector3(_rb.velocity.x, 0f, _rb.velocity.z).magnitude;
-        _animatorController.SetFloat("Speed", currentSpeed);
 
-        // Se escoge la animación de correr en función de la escena
-        if(_currentScene == Scene.Egypt)
+        // Actualización de las animaciones
+        if (_animatorController != null)
         {
-            _animatorController.SetBool("Egypt", true);
-        }
-        else
-        {
-            _animatorController.SetBool("Egypt", false);
+            _animatorController.SetFloat("Speed", currentSpeed);
+
+            // Se escoge la animación de correr en función de la escena
+            if (_currentScene == Scene.Egypt)
+            {
+                _animatorController.SetBool("Egypt", true);
+            }
+            else
+            {
+                _animatorController.SetBool("Egypt", false);
+            }
         }
 
         // Rotación del personaje
@@ -256,13 +260,19 @@ public class PlayerMovement : MonoBehaviour
     }
     #endregion
 
+    public void SetAnimator()
+    {
+        _animatorController = GetComponentInChildren<Animator>();
+    }
+
     public void InteractPlayer()
     {
         _animatorController.SetTrigger("Interacting");
     }
-    
+
     public void HitDinosaur()
     {
         _animatorController.SetTrigger("Hit");
     }
+
 }

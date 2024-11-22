@@ -22,6 +22,12 @@ public class SelectionController : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
     }
+
+    private void Start()
+    {
+        _namePlayer = "";
+    }
+
     // Función para modificar el personaje escogido
     public void ModifyCharacter(int newCharacter)
     {

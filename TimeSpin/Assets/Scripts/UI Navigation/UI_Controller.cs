@@ -39,6 +39,7 @@ public class UI_Controller : MonoBehaviour
     public GameObject AbandonarBoton;
 
     public GameObject TextoConsejo;
+    public GameObject TextoNombre;
 
 
     private void Awake()
@@ -180,6 +181,13 @@ public class UI_Controller : MonoBehaviour
     void OnJugarButtonClicked()
     {
         // Función para ocultar el menú y pasar al lobby, mejor poner una pantalla de carga
+        // Primero se comprueba si el jugador ha introducido un nombre
+        if (SelectionController.instance.GetName() == "")
+        {
+            TextoNombre.SetActive(true);
+            return;
+        }
+        TextoNombre.SetActive(false);
         // Se activa el panel del fundido
         Image background = GameObject.FindGameObjectWithTag("Fundido").GetComponent<Image>();
         Color color = background.color;

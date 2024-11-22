@@ -9,8 +9,6 @@ public class CharacterSelectionController : MonoBehaviour
 
     void Start()
     {
-        // Este código solo se ejecuta en el cliente
-        if (Application.platform == RuntimePlatform.LinuxServer) return;
         // Mostrar el primer personaje al inicio
         UpdateCharacterPreview();
     }
@@ -36,6 +34,7 @@ public class CharacterSelectionController : MonoBehaviour
     // Método que actualiza la imagen del personaje
     void UpdateCharacterPreview()
     {
+        if (GameSceneManager.instance.gameStarted) return;
         SelectionController.instance.ModifyCharacter(currentCharacterIndex);
         characterPreview.sprite = characterSprites[currentCharacterIndex];
     }
