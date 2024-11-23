@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.ConstrainedExecution;
 using TMPro;
+using Unity.Services.Leaderboards;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
@@ -46,6 +47,24 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Vector3 _mummySpawnPosition;
     // Tiempo que tiene que transcurrir para que se genere una nueva momia
     private float _mummyTime = 0f;
+
+    /////////////////////////LOGROS///////////////////////////////////
+
+    //Lista para saber la casilla
+    public HashSet<Tile> _visitedTiles = new HashSet<Tile>();
+    //Cola que almacena las puntuaciones junto con el tiempo en que fueron obtenidas
+    private Queue<(float time, int points)> _scoreHistory = new Queue<(float time, int points)>();
+    // Puntuación del jugador
+    private int _playerScore = 0;
+    // Indica si el jugador fue atrapado
+    public bool PlayerCaught = false;
+    // Referencias de UI o externas
+    public Tile[,] _gridTile; // Mapa del juego
+    //Centro 
+    public bool centroPisado;
+    /// <summary>
+    /// //////////////////////////////////////////////////////////////
+    /// </summary>
 
     [SerializeField]
     private AudioSource _reproductor;
@@ -98,6 +117,9 @@ public class GridManager : MonoBehaviour
             return;
         }
 
+        // Verifica logros
+        CheckAchievements();
+
         // APARICIÓN DE PINCHOS
         _spikesTime -= Time.deltaTime;
         if (_spikesTime < 0f)
@@ -115,6 +137,68 @@ public class GridManager : MonoBehaviour
             _mummyTime = 90f;
         }
 
+    }
+
+    private void CheckAchievements()
+    {
+        // 1. AstrologiaDePiramides: Sobrevive 30 segundos sin ser golpeado
+        if (_survivedTime >= 30f && !PlayerCaught)
+        {
+            AchievementManager.UnlockAchievement("Egipto_AstrologiaDePiramides");
+            Debug.Log("Desbloqueado: AstrologiaDePiramides");
+        }
+
+        // 2. CalendarioEgipcio: Sobrevive 1.5 minutos sin ser atrapado
+        if (_survivedTime >= 90f && !PlayerCaught)
+        {
+            AchievementManager.UnlockAchievement("Egipto_CalendarioEgipcio");
+            Debug.Log("Desbloqueado: CalendarioEgipcio");
+        }
+
+        // 3. DiversidadEnFaraones: Termina con al menos dos trampas activadas
+        if (_remainingTime <= 0f && _numSpikes >= 2)
+        {
+            AchievementManager.UnlockAchievement("Egipto_DiversidadEnFaraones");
+            Debug.Log("Desbloqueado: DiversidadEnFaraones");
+        }
+
+        // 4. ElMaquillajeDeLosOjos: Activa al menos 5 trampas sin morir
+        if (_numSpikes >= 5 && !PlayerCaught)
+        {
+            AchievementManager.UnlockAchievement("Egipto_ElMaquillajeDeLosOjos");
+            Debug.Log("Desbloqueado: ElMaquillajeDeLosOjos");
+        }
+
+        // 5. EscrituraJeroglifica: Utiliza todo el mapa para escapar
+        if (_visitedTiles.Count == (COLUMNS * ROWS - _nonWalkableTiles.Count))
+        {
+            AchievementManager.UnlockAchievement("Egipto_EscrituraJeroglifica");
+            Debug.Log("Desbloqueado: EscrituraJeroglifica");
+        }
+
+        // 6. GatosSagrados: Llega al centro del mapa antes de que se cierre el primer espacio
+        Vector2Int centerTile = new Vector2Int(COLUMNS/2, ROWS/2);//Centro
+        Tile centerTileObj = GetTile(centerTile.x, centerTile.y);
+
+        if (_remainingTime >= 100f && GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>()._currentTile == centerTileObj)
+        {
+            AchievementManager.UnlockAchievement("Egipto_GatosSagrados");
+            Debug.Log("Desbloqueado: GatosSagrados");
+        }
+
+        // 7. MujeresConDerechos: Obtén 50 puntos en una partida
+        if (_playerScore >= 50)
+        {
+            AchievementManager.UnlockAchievement("Egipto_MujeresConDerechos");
+            Debug.Log("Desbloqueado: MujeresConDerechos");
+        }
+
+        // 8. ProcesoDeMomificacion: Obtén 30 puntos en un minuto
+        if (PointsInLastMinute() >= 30)
+        {
+            AchievementManager.UnlockAchievement("Egipto_ProcesoDeMomificacion");
+            Debug.Log("Desbloqueado: ProcesoDeMomificacion");
+        }
     }
 
     #region Grid
@@ -154,8 +238,10 @@ public class GridManager : MonoBehaviour
             return null;
         }
 
-        // Si están dentro de los límites, devolver la casilla correspondiente
+        // Si están dentro de los límites, devolver la casilla correspondiente, se añade a la lista de casillas caminadas        
+        _visitedTiles.Add(_gridTiles[x, z]);
         return _gridTiles[x, z];
+
     }
 
     public Tile[] GetWalkableNeighbours(Tile currentTile)
@@ -268,6 +354,37 @@ public class GridManager : MonoBehaviour
     {
         _optionsPanel.SetActive(false);
         runningGame = true;
+    }
+
+    //Cada vez que se obtienen puntos
+    public void AddPoints(int points)
+    {
+        int _playerScore = (int)(50 * _survivedTime / 120f);
+        _playerScore += points;
+        _scoreHistory.Enqueue((Time.time, points));
+
+        // Limpia la cola eliminando los puntos fuera del rango de 60 segundos
+        while (_scoreHistory.Count > 0 && Time.time - _scoreHistory.Peek().time > 60f)
+        {
+            _scoreHistory.Dequeue();
+        }
+    }
+
+    //Puntos en los ultimos 60 segundos
+    private int PointsInLastMinute()
+    {
+        int totalPoints = 0;
+
+        // Suma los puntos dentro del rango de 60 segundos
+        foreach (var entry in _scoreHistory)
+        {
+            if (Time.time - entry.time <= 60f)
+            {
+                totalPoints += entry.points;
+            }
+        }
+
+        return totalPoints;
     }
 
 }

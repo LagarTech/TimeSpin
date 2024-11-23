@@ -54,6 +54,7 @@ public class MummyBehaviour : MonoBehaviour
             collision.gameObject.GetComponent<PlayerMovement>().HidePlayer();
             // Se indica al gestor que se ha atrapado al jugador, por lo que debe terminar el juego
             GridManager.Instance.GameOver();
+            GridManager.Instance.PlayerCaught = true;
         }
     }
 }

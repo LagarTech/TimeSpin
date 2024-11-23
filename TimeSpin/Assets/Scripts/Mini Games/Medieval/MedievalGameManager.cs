@@ -39,6 +39,17 @@ public class MedievalGameManager : MonoBehaviour
     [SerializeField]
     private AudioClip _clipAudio;
 
+    /////////////////LOGROS////////////////////
+    private HashSet<string> _swordsDelivered = new HashSet<string>(); // Tipos de espadas entregadas ("Bronze", "Silver", "Gold")
+    private int _goldSwordsDelivered = 0; // Espadas de oro entregadas en una partida
+    private int _goldSwordsDeliveredStreak = 0; // Racha de espadas de oro consecutivas
+    private int _totalObjectsDelivered = 0; // Total de objetos entregados
+    private HashSet<int> _usedBases = new HashSet<int>(); // Índices de las bases utilizadas
+    private bool _collidedWithObstacle = false; // Si el jugador chocó contra un obstáculo
+
+    // Logro de puntuación
+    private const int POINTS_FOR_MEDIEVAL = 20;
+
     private void Awake()
     {
         if(Instance == null)
@@ -87,7 +98,93 @@ public class MedievalGameManager : MonoBehaviour
         {
             EndGame();
         }
+
     }
+
+    private void CheckAchievements()
+    {
+        // 1. CaballerosYTorneos: Recoge una espada y llévala a su baúl
+        if (_totalObjectsDelivered >= 1)
+        {
+            AchievementManager.UnlockAchievement("CaballerosYTorneos");
+            Debug.Log("Desbloqueado: CaballerosYTorneos");
+        }
+
+        // 2. ElSistemaFeudal: Lleva al menos una espada de cada tipo al baúl
+        if (_swordsDelivered.Contains("Bronze") && _swordsDelivered.Contains("Silver") && _swordsDelivered.Contains("Gold"))
+        {
+            AchievementManager.UnlockAchievement("ElSistemaFeudal");
+            Debug.Log("Desbloqueado: CaballerosYTorneos");
+        }
+
+        // 3. LaPesteNegra: Lleva al menos 3 espadas de oro en una partida al baúl
+        if (_goldSwordsDelivered >= 3)
+        {
+            AchievementManager.UnlockAchievement("Medieval_LaPesteNegra");
+            Debug.Log("Desbloqueado: CaballerosYTorneos");
+        }
+
+        // 4. LasCiudadesAmuralladas: Lleva 3 espadas de oro seguidas al baúl
+        if (_goldSwordsDeliveredStreak >= 3)
+        {
+            AchievementManager.UnlockAchievement("Medieval_LasCiudadesAmuralladas");
+            Debug.Log("Desbloqueado: LasCiudadesAmuralladas");
+        }
+
+        // 5. LasCruzadas: Lleva al menos 6 objetos a los baúles
+        if (_totalObjectsDelivered >= 6)
+        {
+            AchievementManager.UnlockAchievement("Medieval_LasCruzadas");
+            Debug.Log("Desbloqueado: LasCruzadas");
+        }
+
+        // 6. LosCastillos: No chocar contra ningún obstáculo en una partida
+        if (!_collidedWithObstacle && _timeLeft <= 0)
+        {
+            AchievementManager.UnlockAchievement("Medieval_LosCastillos");
+            Debug.Log("Desbloqueado: LosCastillos");
+        }
+
+        // 7. LosGremios: Utiliza todos los baúles al menos una vez
+        if (_usedBases.Count == NUM_BASES)
+        {
+            AchievementManager.UnlockAchievement("Medieval_LosGremios");
+            Debug.Log("Desbloqueado: LosGremios");
+        }
+
+        // 8. MujeresEnElMedievo: Consigue 20 puntos o más
+        if (_score >= POINTS_FOR_MEDIEVAL)
+        {
+            AchievementManager.UnlockAchievement("Medieval_MujeresEnElMedievo");
+            Debug.Log("Desbloqueado: MujeresEnElMedievo");
+        }
+    }
+    public void DeliverSword(string swordType)
+    {
+        _totalObjectsDelivered++; // Incrementa el total de objetos entregados
+        _swordsDelivered.Add(swordType); // Registra el tipo de espada entregada
+        _usedBases.Add(nextBaseIndex); // Marca la base como utilizada
+
+        if (swordType == "Gold")
+        {
+            _goldSwordsDelivered++;
+            _goldSwordsDeliveredStreak++;
+        }
+        else
+        {
+            _goldSwordsDeliveredStreak = 0; // Reinicia la racha si no es de oro
+        }
+
+        CheckAchievements(); // Verifica los logros después de entregar
+    }
+
+    //Se marca que el jugador chocó con un obstáculo 
+    public void PlayerHitObstacle()
+    {
+        _collidedWithObstacle = true;
+    }
+
+
 
     public void ChooseRandomBase()
     {
@@ -135,6 +232,7 @@ public class MedievalGameManager : MonoBehaviour
     void EndGame()
     {
         runningGame = false;
+        CheckAchievements();
         GameSceneManager.instance.GameOverPrehistoryMedieval(_score, _numSwords, false); // Se muestra la pantalla de puntuaciones y se pasa a la siguiente pantalla
     }
     public void Options()
