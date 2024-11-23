@@ -25,6 +25,27 @@ public class LoadingScreenManager : MonoBehaviour
 
     public IEnumerator LoadingScreenCoroutine(string startedScene)
     {
+        int sceneID = -1;
+
+        switch (startedScene)
+        {
+            case "LobbyMenu": sceneID = 0; break;
+            case "Prehistory": sceneID = 1; break;
+            case "Egypt": sceneID = 2; break;
+            case "Medieval": sceneID = 3; break;
+            case "Maya": sceneID = 4; break;
+            case "Future": sceneID = 5; break;
+        }
+
+        // Se establece el texto de la pantalla de carga
+
+        if(startedScene != "Ending")
+        {
+            TMP_Text textoCarga = GameObject.FindGameObjectWithTag("TextoCarga").GetComponent<TMP_Text>();
+            textoCarga.text = LoadingScreenTexts.Instance.GetAdviceText(sceneID);
+        }
+
+
         // Se busca la pantalla de carga
         CanvasGroup loadingScreen = GameObject.FindGameObjectWithTag("PantallaCarga").GetComponent<CanvasGroup>();
 

@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class StartingManager : MonoBehaviour
 {
     [SerializeField] private List<Button> _gamesButtons;
+    [SerializeField] private List<GameObject> _playedGamesIcons;
+
     private void Start()
     {
         BlockPlayedGamesButtons();
@@ -36,6 +38,8 @@ public class StartingManager : MonoBehaviour
             if (gamesPlayed[i])
             {
                 BlockButton(_gamesButtons[i]);
+                // Se muestra la imagen de bloqueo
+                _playedGamesIcons[i].SetActive(true);
             }
         }
     }
