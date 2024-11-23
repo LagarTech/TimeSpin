@@ -271,6 +271,7 @@ En la siguiente imagen se muestra la distribución de las casillas en cada una d
 - **Niveles y misiones**:	En este apartado no se tienen misiones, si no que se tienen logros con los que se desbloquean skins y curiosidades acerca de las épocas históricas dentro del juego. Las curiosidades son 40 (8 por cada época) y son las siguientes:
 
 Prehistoria 
+
 -Periodo extenso: La prehistoria es el lapso de tiempo de la historia humana que abarca desde que aparece el primer ser humano hasta que se crea de la escritura.
 
 -El fuego: El dominio del fuego es uno de los avances que marca este periodo. Se cree que los Homo erectus comenzaron a usarlo hace aproximadamente 10000 siglos, con ello consiguieron cocinar alimentos, protegerse de las fuertes nevadas y defenderse de depredadores.
@@ -288,6 +289,7 @@ Prehistoria
 -Primeros asentamientos: Los humanos comenzaron a formar los primeros asentamientos permanentes, gracias al desarrollo de la agricultura. Jericó, en la actual Cisjordania, es un gran referente de las ciudades antiguas conocidas.
 
 Egipto
+
 -Astrología de Pirámides: Las pirámides de Giza, especialmente la Gran Pirámide, están alineadas con la constelación de Orión. Se cree que los egipcios hicieron esto porque asociaban a Orión con Osiris, el dios de la muerte y la vida después de la muerte.
 
 -Escritura jeroglífica: Los antiguos egipcios desarrollaron los jeroglíficos, un sistema de escritura que utilizaba símbolos y pictogramas. Era utilizado tanto para inscripciones en monumentos como para textos religiosos, y estaba reservado para usos ceremoniales y de prestigio.
@@ -305,6 +307,7 @@ Egipto
 -Proceso de momificación: Los egipcios perfeccionaron el arte de la momificación, creyendo que preservando el cuerpo físico aseguraban una vida eterna en el más allá. Los órganos internos eran extraídos y conservados en vasos canopos, mientras que el cuerpo era tratado con sales para evitar la descomposición y envuelto en lino.
 
 Medievo
+
 -Caballeros y torneos: Los caballeros medievales no solo luchaban en guerras, sino que también participaban en torneos de justas. Estos eventos eran competiciones donde los caballeros mostraban sus habilidades con lanzas, espadas y otras armas, en parte por entretenimiento y en parte para ganar prestigio.
 
 -La Peste Negra: La Peste Negra fue una de las pandemias más devastadoras de la historia, matando entre el 30 y 60 por ciento de la población europea entre 1347 y 1351. La enfermedad, propagada por pulgas en ratas, cambió profundamente la sociedad, llevando a cambios en la economía y la mentalidad religiosa.
@@ -322,6 +325,7 @@ Medievo
 -Los gremios: En las ciudades medievales, los gremios eran asociaciones de artesanos y comerciantes que regulaban las profesiones. Controlaban la calidad de los productos, asignaban precios y organizaban la enseñanza de aprendices. Los gremios fueron esenciales para el desarrollo urbano.
 
 Maya
+
 -Calendario avanzado: Los mayas desarrollaron un calendario muy preciso, basado en ciclos astronómicos. Contaban con varios calendarios, incluyendo el Tzolk in de 260 días y el Haab de 365 días. De igual modo usaron la Cuenta Larga, un sistema que marcaba grandes ciclos de tiempo y que dio lugar a la famosa profecía del fin del mundo en 2012, que fue malinterpretada.
 
 -Pirámides escalonadas: Al igual que los antiguos egipcios, los mayas construyeron impresionantes pirámides, aunque sus pirámides eran escalonadas y servían como templos. La más famosa es la Pirámide de Kukulkán en Chichén Itzá, que también funciona como un calendario solar, durante los equinoccios, la sombra proyecta la forma de una serpiente que desciende por la pirámide.
@@ -339,6 +343,7 @@ Maya
 -Abandono de las ciudades: Una de las grandes incógnitas sobre los mayas es por qué abandonaron muchas de sus grandes ciudades en el siglo IX. Aunque no se sabe con certeza, las teorías incluyen una combinación de factores como el agotamiento de los recursos naturales, sequías prolongadas, conflictos internos y la presión de otras civilizaciones vecinas.
 
 Futurista
+
 -Coches voladores: Uno de los grandes deseos para el futuro es que los coches puedan volar y que no utilicen ningún tipo de combustible. Tal vez algún día suceda, pero es complicado
 
 -Carreras espaciales: Otro de los deseos humanos es poder hacer carreras por todo el espacio. Imagina ver una carrera de fórmula 1 por el anillo de Saturno.
