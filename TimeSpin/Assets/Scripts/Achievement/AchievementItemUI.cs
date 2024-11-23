@@ -1,20 +1,21 @@
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
 
 public class AchievementItemUI : MonoBehaviour
 {
     [SerializeField] private TMP_Text titleText; // Texto del nombre
     [SerializeField] private TMP_Text statusText; // Texto del estado
     [SerializeField] private GameObject statusIcon; // Icono del estado
-    [SerializeField] private Slider progressSlider; // Barra de progreso
-    [SerializeField] private TMP_Text detailText; // Texto para Condition/Description
+    [SerializeField] private UnityEngine.UI.Slider progressSlider; // Barra de progreso
     [SerializeField] private GameObject conditionButton; // Botón de condición
     [SerializeField] private GameObject descriptionButton; // Botón de descripción
-    [SerializeField] private GameObject closeButton; // Botón para cerrar detalles
+    [SerializeField] private TMP_Text detailText; // Texto de condición/descripción
+    [SerializeField] private GameObject closeButton; // Botón para cerrar los detalles
 
     private bool unlockedAchievement; // Estado del logro
-    private string detailToShow; // Texto a mostrar (Condition o Description)
+    private string detailToShow; // Almacena el texto de condición o descripción a mostrar
+    private AchievementUIManager uiManager; // Referencia al script central
+
 
     // Estructura para recibir datos del logro
     public struct AchievementData
@@ -23,6 +24,16 @@ public class AchievementItemUI : MonoBehaviour
         public string Description;
         public string Condition;
         public bool IsUnlocked;
+    }
+
+    void Start()
+    {
+        // Encontrar el script central en la escena
+        uiManager = FindObjectOfType<AchievementUIManager>();
+        if (uiManager != null)
+        {
+            uiManager.RegisterAchievementPrefab(gameObject);
+        }
     }
 
     public void SetAchievementData(AchievementData data)
@@ -43,7 +54,7 @@ public class AchievementItemUI : MonoBehaviour
         // Configurar icono
         if (statusIcon != null)
         {
-            statusIcon.GetComponent<Image>().color = data.IsUnlocked ? Color.green : Color.gray;
+            statusIcon.GetComponent<UnityEngine.UI.Image>().color = data.IsUnlocked ? Color.green : Color.gray;
         }
 
         // Configurar progreso
@@ -55,29 +66,22 @@ public class AchievementItemUI : MonoBehaviour
         // Configurar botones
         conditionButton.SetActive(!data.IsUnlocked);
         descriptionButton.SetActive(data.IsUnlocked);
-        closeButton.SetActive(false); // Botón de cerrar oculto inicialmente
 
         // Asignar acciones a los botones
-        conditionButton.GetComponent<Button>().onClick.RemoveAllListeners();
-        conditionButton.GetComponent<Button>().onClick.AddListener(() => ShowDetails(data.Condition));
+        conditionButton.GetComponent<UnityEngine.UI.Button>().onClick.RemoveAllListeners();
+        conditionButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => ShowCondition(data.Condition));
 
-        descriptionButton.GetComponent<Button>().onClick.RemoveAllListeners();
-        descriptionButton.GetComponent<Button>().onClick.AddListener(() => ShowDetails(data.Description));
-
-        closeButton.GetComponent<Button>().onClick.RemoveAllListeners();
-        closeButton.GetComponent<Button>().onClick.AddListener(HideDetails);
-
-        // Ocultar detalles iniciales
-        if (detailText != null)
-            detailText.gameObject.SetActive(false);
+        descriptionButton.GetComponent<UnityEngine.UI.Button>().onClick.RemoveAllListeners();
+        descriptionButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => ShowDescription(data.Description));
     }
 
-    // Mostrar Condition o Description
-    private void ShowDetails(string detail)
+    private void ShowCondition(string condition)
     {
-        detailToShow = detail;
-        Debug.Log(detailToShow);
-        // Ocultar elementos principales
+        detailToShow = condition;
+
+        Debug.Log("Mostrando condición: " + condition);
+
+        // Ocultar solo el contenido del prefab actual
         if (titleText != null) titleText.gameObject.SetActive(false);
         if (statusText != null) statusText.gameObject.SetActive(false);
         if (statusIcon != null) statusIcon.SetActive(false);
@@ -85,31 +89,57 @@ public class AchievementItemUI : MonoBehaviour
         conditionButton.SetActive(false);
         descriptionButton.SetActive(false);
 
-        // Mostrar detalles y botón de cerrar
+        // Mostrar el texto de condición
         if (detailText != null)
         {
             detailText.text = detailToShow;
             detailText.gameObject.SetActive(true);
         }
-        closeButton.SetActive(true);
+
+        // Mostrar el botón de cerrar
+        if (closeButton != null)
+            closeButton.SetActive(true);
     }
 
-    // Ocultar detalles y restaurar elementos principales
-    private void HideDetails()
+    public void HideConditionDetails()
     {
-        // Mostrar elementos principales
+        Debug.Log("Ocultando detalles y restaurando contenido original...");
+
+        // Restaurar el contenido del prefab actual
         if (titleText != null) titleText.gameObject.SetActive(true);
         if (statusText != null) statusText.gameObject.SetActive(true);
         if (statusIcon != null) statusIcon.SetActive(true);
         if (progressSlider != null) progressSlider.gameObject.SetActive(true);
 
-        // Restaurar botones según el estado del logro
         conditionButton.SetActive(!unlockedAchievement);
         descriptionButton.SetActive(unlockedAchievement);
 
-        // Ocultar detalles y botón de cerrar
-        if (detailText != null) detailText.gameObject.SetActive(false);
-        closeButton.SetActive(false);
+        // Ocultar el texto de condición y el botón de cerrar
+        if (detailText != null)
+            detailText.gameObject.SetActive(false);
+        if (closeButton != null)
+            closeButton.SetActive(false);
+
+        SelectionTable.Instance.runningGame = true;
     }
+
+    private void ShowDescription(string description)
+    {
+        Debug.Log("Descripción enviada al UI Manager: " + description);
+
+        if (uiManager != null)
+        {
+            uiManager.ShowDescription(description);
+        }
+        else
+        {
+            Debug.LogError("No se encontró una referencia válida a AchievementUIManager.");
+        }
+    }
+
 }
+
+
+
+
 

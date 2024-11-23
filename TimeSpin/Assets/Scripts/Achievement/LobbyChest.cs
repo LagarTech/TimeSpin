@@ -47,6 +47,8 @@ public class LobbyChest : MonoBehaviour
     {
         achievementMenu.SetActive(false);
         SelectionTable.Instance.runningGame = true;
+
+
     }
 
     public void ShowAchievements()
