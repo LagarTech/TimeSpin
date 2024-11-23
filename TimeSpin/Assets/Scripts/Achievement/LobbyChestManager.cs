@@ -32,5 +32,7 @@ public class LobbyChestManager : MonoBehaviour
     public void OcultarPanelLogros()
     {
         GameObject.FindGameObjectWithTag("Logros").SetActive(false);
+
+        SelectionTable.Instance.runningGame = true;
     }
 }
