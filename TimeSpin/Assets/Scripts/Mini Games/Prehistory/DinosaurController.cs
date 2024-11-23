@@ -44,10 +44,10 @@ public class DinosaurController : MonoBehaviour
         // Si el juego no ha empezado o ha terminado, que no se pueda hacer nada
         if (!PrehistoryManager.Instance.runningGame) return;
         // Se busca una referencia a la posición del jugador
-        _player = GameObject.FindGameObjectWithTag("Player").transform.position;       
+        _player = GameObject.FindGameObjectWithTag("Player").transform.position;
         // Comprobar la distancia del jugador para que lo pueda golpear o no
         _distanceToPlayer = Vector3.Distance(_player, transform.position);
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             if (_distanceToPlayer <= MAX_HIT_DISTANCE)
             {
@@ -59,7 +59,7 @@ public class DinosaurController : MonoBehaviour
         if (_timer >= _visibleTime)
         {
             // Se desaparece el dinosaurio
-            HideDinosaur();
+            HideDinosaur(false);
         }
     }
 
@@ -97,7 +97,7 @@ public class DinosaurController : MonoBehaviour
             }
 
             // Logro DuraciónExtensa
-            if (_dinosaurType == "Velocirraptor")
+            if (_dinosaurType == "Diplodocus")
             {
                 PrehistoryManager.Instance._velociraptorHits++;
                 if (PrehistoryManager.Instance._velociraptorHits >= 3)
@@ -119,25 +119,30 @@ public class DinosaurController : MonoBehaviour
             PrehistoryManager.Instance.AddScore(_dinosaurPoints);
 
             // Se desaparece el dinosaurio
-            HideDinosaur();
+            HideDinosaur(true);
         }
-        if (_hitCount < _requiredHits && _dinosaurType == "T-Rex")
+        if (_hitCount == 1 && _dinosaurType == "T-Rex")
         {
             MusicManager.PonerMusica(_clipAudio, _reproductor, false);
         }
     }
 
 
-    private void HideDinosaur()
+    private void HideDinosaur(bool hit)
     {
-        // Reproducción del sonido
-        if(_dinosaurType == "Base" || _dinosaurType == "Velocirraptor")
+        // Si ha sido golpeado, se reproduce el efecto de sonido
+        if (hit)
         {
-            MusicManager.PonerMusica(_clipAudio, _reproductor, false);
-        }
-        else
-        {
-            MusicManager.PonerMusica(_clipAudio2, _reproductor, false);
+            // Reproducción del sonido
+            if (_dinosaurType == "Base" || _dinosaurType == "Diplodocus")
+            {
+                MusicManager.PonerMusica(_clipAudio, _reproductor, false);
+            }
+            else
+            {
+                MusicManager.PonerMusica(_clipAudio2, _reproductor, false);
+                Debug.Log("Rex golpeado");
+            }
         }
         _hitCount = 0; // Reiniciar el contador de golpes
         _timer = 0; // Reiniciar el temporizador
@@ -147,7 +152,7 @@ public class DinosaurController : MonoBehaviour
     private IEnumerator DisappearAnimation()
     {
         Vector3 startPosition = transform.position;
-        Vector3 targetPosition = _initialPosition - new Vector3 (0, 3, 0); // La posición original hacia la cual descenderá
+        Vector3 targetPosition = _initialPosition - new Vector3(0, 3, 0); // La posición original hacia la cual descenderá
         float elapsedTime = 0;
 
         while (elapsedTime < DISAPPEAR_DURATION)

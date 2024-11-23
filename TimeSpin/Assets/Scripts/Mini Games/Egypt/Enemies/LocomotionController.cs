@@ -9,7 +9,7 @@ public class LocomotionController : MonoBehaviour
     private Vector3 _targetPosition;
     // Esta variable sirve para determinar la dirección de movimiento del agente
     private Vector3 _moveDirection;
-    [SerializeField] private float _speed = 1f;
+    [SerializeField] private float _speed = 0.5f;
     private float _timer = 0f;
     // Esta variable indica si se ha finalizado el movimiento, es decir, se ha llegado a la casilla calculada
     public bool finishedMove;
@@ -47,6 +47,12 @@ public class LocomotionController : MonoBehaviour
             finishedMove = false;
             // Se continúa moviendo
             transform.position += _moveDirection * (_speed + increaseSpeed) * Time.deltaTime;
+
+            // Rotación suave hacia la dirección de movimiento
+            if (_moveDirection != Vector3.zero)
+            {
+                RotateTowards(_moveDirection);
+            }
         }
         else
         {
@@ -54,6 +60,7 @@ public class LocomotionController : MonoBehaviour
             finishedMove = true;
             transform.position = _targetPosition;
         }
+
     }
 
 
@@ -115,6 +122,18 @@ public class LocomotionController : MonoBehaviour
         {
             return false;
         }
+    }
+
+    private void RotateTowards(Vector3 direction)
+    {
+        // Calcula la rotación deseada en base a la dirección de movimiento
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+        // Mantén la rotación del eje X original del agente
+        targetRotation = Quaternion.Euler(transform.rotation.eulerAngles.x, targetRotation.eulerAngles.y, targetRotation.eulerAngles.z);
+
+        // Aplica una rotación suave hacia el objetivo
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 360 * Time.deltaTime);
     }
 
 }
