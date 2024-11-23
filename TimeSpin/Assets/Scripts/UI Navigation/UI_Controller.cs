@@ -41,6 +41,11 @@ public class UI_Controller : MonoBehaviour
     public GameObject TextoConsejo;
     public GameObject TextoNombre;
 
+    [SerializeField]
+    private AudioSource _reproductor;
+    [SerializeField]
+    private AudioClip _clipAudio;
+
 
     private void Awake()
     {
@@ -185,9 +190,14 @@ public class UI_Controller : MonoBehaviour
         if (SelectionController.instance.GetName() == "")
         {
             TextoNombre.SetActive(true);
+            MusicManager.PonerMusica(_clipAudio, _reproductor, false);
             return;
         }
+
         TextoNombre.SetActive(false);
+
+        // Se coloca la cámara
+        CharacterSelectionController.instance.SetMuseumCamera();
         // Se activa el panel del fundido
         Image background = GameObject.FindGameObjectWithTag("Fundido").GetComponent<Image>();
         Color color = background.color;
