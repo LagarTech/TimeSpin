@@ -16,6 +16,8 @@ public class SwordController : MonoBehaviour
 
     private bool _isCarried = false;
 
+    [SerializeField] public string swordType;
+
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
@@ -65,6 +67,9 @@ public class SwordController : MonoBehaviour
 
         // Inicia la corutina para mantener la espada en la base
         StartCoroutine(HoldSwordAtBase());
+
+        MedievalGameManager.Instance.ContarDeliverSword(swordType);
+
 
     }
     private IEnumerator HoldSwordAtBase()

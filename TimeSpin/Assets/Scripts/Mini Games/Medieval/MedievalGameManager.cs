@@ -100,28 +100,46 @@ public class MedievalGameManager : MonoBehaviour
         }
 
     }
+    public void ContarDeliverSword(string swordType)
+    {
+        _totalObjectsDelivered++;
+        _swordsDelivered.Add(swordType);
+        _usedBases.Add(nextBaseIndex);
+
+        if (swordType == "Gold")
+        {
+            _goldSwordsDelivered++;
+            _goldSwordsDeliveredStreak++;
+        }
+        else
+        {
+            _goldSwordsDeliveredStreak = 0;
+        }
+
+        CheckAchievements();
+    }
 
     private void CheckAchievements()
     {
         // 1. CaballerosYTorneos: Recoge una espada y llévala a su baúl
         if (_totalObjectsDelivered >= 1)
         {
-            AchievementManager.UnlockAchievement("CaballerosYTorneos");
+            AchievementManager.UnlockAchievement("Medieval_CaballerosYTorneos");
             Debug.Log("Desbloqueado: CaballerosYTorneos");
         }
 
         // 2. ElSistemaFeudal: Lleva al menos una espada de cada tipo al baúl
         if (_swordsDelivered.Contains("Bronze") && _swordsDelivered.Contains("Silver") && _swordsDelivered.Contains("Gold"))
         {
-            AchievementManager.UnlockAchievement("ElSistemaFeudal");
-            Debug.Log("Desbloqueado: CaballerosYTorneos");
+            AchievementManager.UnlockAchievement("Medieval_ElSistemaFeudal");
+            Debug.Log("Desbloqueado: ElSistemaFeudal");
         }
 
         // 3. LaPesteNegra: Lleva al menos 3 espadas de oro en una partida al baúl
         if (_goldSwordsDelivered >= 3)
         {
             AchievementManager.UnlockAchievement("Medieval_LaPesteNegra");
-            Debug.Log("Desbloqueado: CaballerosYTorneos");
+            Debug.Log("Desbloqueado: LaPesteNegra");
         }
 
         // 4. LasCiudadesAmuralladas: Lleva 3 espadas de oro seguidas al baúl
@@ -159,32 +177,12 @@ public class MedievalGameManager : MonoBehaviour
             Debug.Log("Desbloqueado: MujeresEnElMedievo");
         }
     }
-    public void DeliverSword(string swordType)
-    {
-        _totalObjectsDelivered++; // Incrementa el total de objetos entregados
-        _swordsDelivered.Add(swordType); // Registra el tipo de espada entregada
-        _usedBases.Add(nextBaseIndex); // Marca la base como utilizada
-
-        if (swordType == "Gold")
-        {
-            _goldSwordsDelivered++;
-            _goldSwordsDeliveredStreak++;
-        }
-        else
-        {
-            _goldSwordsDeliveredStreak = 0; // Reinicia la racha si no es de oro
-        }
-
-        CheckAchievements(); // Verifica los logros después de entregar
-    }
 
     //Se marca que el jugador chocó con un obstáculo 
     public void PlayerHitObstacle()
     {
         _collidedWithObstacle = true;
     }
-
-
 
     public void ChooseRandomBase()
     {

@@ -25,6 +25,8 @@ public class PlatformManager : MonoBehaviour
     private float _shakeDuration = 1f; // Duración del temblor
     private float _fallDuration = 1.5f; // Duración de la caída
 
+    private int consecutiveFalls = 0; //plataformas consecutivas caidas
+
     private void Awake()
     {
         if(instance == null)
@@ -154,6 +156,13 @@ public class PlatformManager : MonoBehaviour
         
         // Desactivar la plataforma tras la caída
         platform.SetActive(false);
+
+        consecutiveFalls++;
+
+        if (consecutiveFalls >= 3)
+        {
+            AchievementManager.UnlockAchievement("Future_CarrerasEspaciales");
+        }
     }
 
 

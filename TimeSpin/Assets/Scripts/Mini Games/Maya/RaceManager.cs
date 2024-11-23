@@ -44,6 +44,10 @@ public class RaceManager : MonoBehaviour
     {
         if (!runningGame) return;
         runningGame = false;
+
+        // Completar la carrera y verificar logros
+        AchievementsManager.instance.CompleteRace(_timer);
+
         // Se inicia la transición
         GameSceneManager.instance.GameOverMaya(_timer);
     }

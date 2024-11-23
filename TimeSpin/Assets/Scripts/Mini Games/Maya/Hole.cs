@@ -20,6 +20,9 @@ public class Hole : MonoBehaviour
         {
             StartCoroutine(RespawnPlayer(other.transform));
             MusicManager.PonerMusica(_clipAudio, _reproductor, false);
+
+            // Caídas en el sistema de logros
+            AchievementsManager.instance.RegisterFall();
         }
     }
 

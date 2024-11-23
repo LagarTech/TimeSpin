@@ -11779,14 +11779,14 @@ MonoBehaviour:
   achievementMenu: {fileID: 919658178}
   MAX_DISTANCE: 2
   achievements:
-  - {fileID: 11400000, guid: 075eff65acad187428d88d96c80d6df3, type: 2}
-  - {fileID: 11400000, guid: ab67b229fcfd0344ab3340fac48211a5, type: 2}
-  - {fileID: 11400000, guid: 181001b3405cd934499cbff273ba1061, type: 2}
-  - {fileID: 11400000, guid: ec0b72fc1a25b6d49bf818e41da1a486, type: 2}
-  - {fileID: 11400000, guid: e7cc7346bb1f68f4890697b9a906747c, type: 2}
-  - {fileID: 11400000, guid: 05c92dedec857c3429baf9ad220353be, type: 2}
-  - {fileID: 11400000, guid: 119606e109bc2d143abd0a782530d6ec, type: 2}
-  - {fileID: 11400000, guid: c028c514ab1759343b85ea451a98aa2e, type: 2}
+  - {fileID: 11400000, guid: cc2b3cc7d28ca644f85372bed3616bf6, type: 2}
+  - {fileID: 11400000, guid: 217a41a195cac94409e926a068003caa, type: 2}
+  - {fileID: 11400000, guid: 0b47303fd9ed05d47ae563932f629513, type: 2}
+  - {fileID: 11400000, guid: 02943375090a6ee42aa277d4a723341d, type: 2}
+  - {fileID: 11400000, guid: a88bafde4b7f84d4ba14bdc9b2b1f3c4, type: 2}
+  - {fileID: 11400000, guid: aa1b8fc924da94748b16b16c43692d22, type: 2}
+  - {fileID: 11400000, guid: 889690cbcf4bec54aad362277f317da7, type: 2}
+  - {fileID: 11400000, guid: 3a0a985b22f35ff4db1b8f752e86b2a4, type: 2}
   listAchievements:
   - {fileID: 878713628}
   - {fileID: 1910781543}
@@ -13656,6 +13656,50 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1241426241}
   m_Mesh: {fileID: 1422773384071490680, guid: ec7107f93d5b3fa46b11c4231856151c, type: 3}
+--- !u!1 &1245885825
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1245885827}
+  - component: {fileID: 1245885826}
+  m_Layer: 0
+  m_Name: AchievementsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1245885826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1245885825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 491bc2ebb596c2e449a87902d70eefdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1245885827
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1245885825}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -6.6399994, y: 2.5728295, z: 7.5255604}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1249833315
 GameObject:
   m_ObjectHideFlags: 0
@@ -18586,14 +18630,14 @@ MonoBehaviour:
   achievementMenu: {fileID: 919658178}
   MAX_DISTANCE: 2
   achievements:
-  - {fileID: 11400000, guid: 075eff65acad187428d88d96c80d6df3, type: 2}
-  - {fileID: 11400000, guid: ab67b229fcfd0344ab3340fac48211a5, type: 2}
-  - {fileID: 11400000, guid: 181001b3405cd934499cbff273ba1061, type: 2}
-  - {fileID: 11400000, guid: ec0b72fc1a25b6d49bf818e41da1a486, type: 2}
-  - {fileID: 11400000, guid: e7cc7346bb1f68f4890697b9a906747c, type: 2}
-  - {fileID: 11400000, guid: 05c92dedec857c3429baf9ad220353be, type: 2}
-  - {fileID: 11400000, guid: 119606e109bc2d143abd0a782530d6ec, type: 2}
-  - {fileID: 11400000, guid: c028c514ab1759343b85ea451a98aa2e, type: 2}
+  - {fileID: 11400000, guid: 94ba108324daff74198056188a543faa, type: 2}
+  - {fileID: 11400000, guid: ddcc859fc440bb849ba817af4264c815, type: 2}
+  - {fileID: 11400000, guid: 5003d1dac1a94074da9124d1358fb6d3, type: 2}
+  - {fileID: 11400000, guid: 0b6a97fda5ab66d4e88b196c41e86d9e, type: 2}
+  - {fileID: 11400000, guid: 847f01635b74c7644808e26198cf8f41, type: 2}
+  - {fileID: 11400000, guid: bcc6ccebc2b6ce847bf2ea8b8e46c329, type: 2}
+  - {fileID: 11400000, guid: 2fd67b6166625094480a635fedf0757c, type: 2}
+  - {fileID: 11400000, guid: dc7dd2befa6c1dc4e8f7ab0a4fbcff60, type: 2}
   listAchievements:
   - {fileID: 878713628}
   - {fileID: 1266225928}
@@ -23423,3 +23467,4 @@ SceneRoots:
   - {fileID: 59730136}
   - {fileID: 1467398702}
   - {fileID: 1445072993}
+  - {fileID: 1245885827}

@@ -13,6 +13,8 @@ public class Platform : MonoBehaviour
     public int idPlatform;
     public bool isUp;
 
+    public float playerOnPlatformTimer = 0f;
+
     private void Start()
     {
         _meshRenderer = GetComponent<MeshRenderer>();
@@ -26,10 +28,21 @@ public class Platform : MonoBehaviour
         {
             HighlightPlatform(); // Ilumina la plataforma
             _isHighlighted = true; // Marcar la plataforma como iluminada
+
+            playerOnPlatformTimer += Time.deltaTime;
+
+            // Logro: AutomatizaciónDelHogar
+            if (playerOnPlatformTimer >= 5f)
+            {
+                AchievementManager.UnlockAchievement("Future_AutomatizaciónDelHogar");
+            }
         }
+
         // Si no hay jugadores y la plataforma está iluminada
         else if (platformCount <= 0 && _isHighlighted)
         {
+            playerOnPlatformTimer = 0f; // Reiniciar el temporizador si el jugador se baja
+
             HidePlatform(); // Oculta la plataforma
             _isHighlighted = false; // Marcar la plataforma como no iluminada
         }
@@ -42,6 +55,9 @@ public class Platform : MonoBehaviour
         {
             // Se activan las plataformas vecinas
             OnPlatformEnter();
+
+            // Logro: CochesVoladores
+            AchievementManager.UnlockAchievement("Future_CochesVoladores");
         }
     }
 

@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject characterNamePlayer;
     // Dirección y velocidad de movimiento
     private Vector3 _movementDirection = Vector3.zero;
-    private float _speed = 2f;
+    private float _speed = 6f;
 
     // Control de la escena en la que se encuentra el jugador
     private enum Scene
@@ -218,6 +218,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (_currentScene == Scene.Maya && collision.gameObject.CompareTag("Obstaculos"))
+        {
+            AchievementsManager.instance.RegisterObstacleHit();
+        }
+
         // Detectamos cuando el jugador está de vuelta en el suelo en el juego Maya
         if (collision.gameObject.CompareTag("Ground") && _currentScene == Scene.Maya)
         {
@@ -249,6 +254,9 @@ public class PlayerMovement : MonoBehaviour
         _isGrounded = false;
         _rb.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
         _animatorController.SetTrigger("Jump");
+
+        //Salto en el sistema de logros
+        AchievementsManager.instance.RegisterJump();
     }
 
     #endregion

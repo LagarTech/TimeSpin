@@ -32,6 +32,8 @@ public class GravityManager : MonoBehaviour
     private float _remainingTime = 120f; // El tiempo de juego son 2 minutos (120 segundos)
     private float _survivedTime = 0f;
 
+    private int consecutiveGravityChanges = 0;//Cambio gravitatorios seguidos
+
     [SerializeField]
     private AudioSource _reproductor;
     [SerializeField]
@@ -115,6 +117,11 @@ public class GravityManager : MonoBehaviour
             }
         }
 
+        if (_survivedTime >= 60f)
+        {
+            AchievementManager.UnlockAchievement("Future_Ciudades");
+        }
+
     }
 
     private void StartFloating()
@@ -133,6 +140,17 @@ public class GravityManager : MonoBehaviour
             Physics.gravity = new Vector3(0, _gravity, 0);   // Gravedad invertida
         }
         isGravityInverted = !isGravityInverted;
+
+        // Logro: Alienígenas
+        AchievementManager.UnlockAchievement("Future_Alienígenas");
+
+        //Logro: Inteligencia Artificial
+        consecutiveGravityChanges++;
+
+        if (consecutiveGravityChanges >= 5)
+        {
+            AchievementManager.UnlockAchievement("Future_InteligenciaArtificialYRobots");
+        }
     }
 
     private void StopFloating()
@@ -157,6 +175,19 @@ public class GravityManager : MonoBehaviour
         runningGame = false;
         // Se restaura la gravedad
         Physics.gravity = new Vector3(0, -9.81f, 0);
+
+        //Logro: Tecnologia de Comunicacion
+        if (_remainingTime <= 0)
+        {
+            AchievementManager.UnlockAchievement("Future_TecnologíaDeComunicación");
+        }
+
+        float maxScore = 120f; // Cambia esto según tus reglas de puntuación
+        if (_survivedTime >= maxScore)
+        {
+            AchievementManager.UnlockAchievement("Future_VidaEnOtrosPlanetas");
+        }
+
         // Se calcula la puntuación del jugador en base al resultado
         GameSceneManager.instance.GameOverEgyptFuture(_survivedTime, false);
     }
