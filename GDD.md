@@ -271,34 +271,34 @@ En la siguiente imagen se muestra la distribución de las casillas en cada una d
 - **Niveles y misiones**:	En este apartado no se tienen misiones, si no que se tienen logros con los que se desbloquean skins y curiosidades acerca de las épocas históricas dentro del juego. Las curiosidades son 40 (8 por cada época) y son las siguientes:
 
 Prehistoria 
--Duración extensa: La prehistoria es el período más largo de la historia humana, abarcando desde la aparición de los primeros homínidos hace unos 2,5 millones de años hasta la invención de la escritura, hace unos 5.000 años.
+-Periodo extenso: La prehistoria es el lapso de tiempo de la historia humana que abarca desde que aparece el primer ser humano hasta que se crea de la escritura.
 
--El fuego: El dominio del fuego fue uno de los avances más importantes. Se cree que los Homo erectus comenzaron a usarlo hace aproximadamente 1,5 millones de años, lo que les permitió cocinar alimentos, protegerse del frío y defenderse de depredadores.
+-El fuego: El dominio del fuego es uno de los avances que marca este periodo. Se cree que los Homo erectus comenzaron a usarlo hace aproximadamente 10000 siglos, con ello consiguieron cocinar alimentos, protegerse de las fuertes nevadas y defenderse de depredadores.
 
--Primeros instrumentos musicales: Se han encontrado flautas de hueso con más de 40.000 años de antigüedad, lo que sugiere que los seres humanos prehistóricos ya disfrutaban de la música mucho antes de la creación de la escritura.
+-Primeros instrumentos musicales: Se han encontrado flautas de hueso de hace 400 siglos , lo que sugiere que los seres humanos de este periodo ya disfrutaban de este arte mucho antes de que se creara la escritura.
 
--Pinturas rupestres: Las primeras formas de arte incluyen las pinturas rupestres, algunas de las más famosas se encuentran en las cuevas de Lascaux, en Francia, con una antigüedad de más de 17.000 años. Estas imágenes muestran escenas de caza y animales de la época.
+-Pinturas rupestres: Las primeras formas de arte incluyen las pinturas rupestres, algunas se encuentran en las cuevas de Lascaux, en Francia, con un pasado de 170 siglos. Estas pinturas muestran escenas de caza y animales de este periodo.
 
--Herramientas de piedra: Los humanos prehistóricos fabricaban herramientas principalmente de piedra. Las más antiguas encontradas tienen unos 3,3 millones de años y fueron utilizadas por los primeros homínidos para cortar, raspar y perforar.
+-Herramientas de piedra: Los humanos de este periodo, fabricaban herramientas principalmente de piedra. Estas se utilizaban para cortar, raspar y perforar.
 
--Domesticación de animales: La domesticación de animales fue un avance clave en la prehistoria. El perro fue uno de los primeros animales domesticados, hace unos 15.000 años, probablemente como compañero en la caza. Otros animales como ovejas, cabras y vacas fueron domesticados más tarde, facilitando la vida sedentaria y el desarrollo de la agricultura.
+-Adiestramiento de animales: El adiestramiento de animales fue un avance clave en la prehistoria. El perro fue uno de los primeros animales domesticados, probablemente como ayudante en la caza. Otros animales como ovejas, cabras y vacas fueron domesticados con el paso del tiempo, facilitando la vida sedentaria y el desarrollo de la agricultura.
 
--El descubrimiento de Ötzi: Ötzi, también conocido como el "Hombre de los hielos", es una momia natural de 5.300 años encontrada en los Alpes en 1991. Es uno de los cuerpos humanos prehistóricos mejor conservados, lo que ha permitido obtener mucha información sobre la vida en esa época, desde su vestimenta hasta sus tatuajes.
+-El descubrimiento de Otzi: Otzi, conocido como el Hombre de los hielos, es una momia natural encontrada en los Alpes en 1991. Es uno de los cuerpos humanos mejor conservados, lo que ha permitido obtener muchos datos sobre la vida en ese periodo, desde su vestimenta hasta sus tatuajes.
 
--Primeros asentamientos: Durante el Neolítico (hace unos 10.000 años), los humanos comenzaron a formar los primeros asentamientos permanentes, gracias al desarrollo de la agricultura. Jericó, en la actual Cisjordania, es una de las ciudades más antiguas conocidas, con más de 11.000 años de antigüedad.
+-Primeros asentamientos: Los humanos comenzaron a formar los primeros asentamientos permanentes, gracias al desarrollo de la agricultura. Jericó, en la actual Cisjordania, es un gran referente de las ciudades antiguas conocidas.
 
 Egipto
--Pirámides alineadas con las estrellas: Las pirámides de Giza, especialmente la Gran Pirámide, están alineadas con la constelación de Orión. Se cree que los egipcios hicieron esto porque asociaban a Orión con Osiris, el dios de la muerte y la vida después de la muerte.
+-Astrología de Pirámides: Las pirámides de Giza, especialmente la Gran Pirámide, están alineadas con la constelación de Orión. Se cree que los egipcios hicieron esto porque asociaban a Orión con Osiris, el dios de la muerte y la vida después de la muerte.
 
 -Escritura jeroglífica: Los antiguos egipcios desarrollaron los jeroglíficos, un sistema de escritura que utilizaba símbolos y pictogramas. Era utilizado tanto para inscripciones en monumentos como para textos religiosos, y estaba reservado para usos ceremoniales y de prestigio.
 
 -Gatos sagrados: Los gatos eran considerados animales sagrados en el Antiguo Egipto. Se asociaban con la diosa Bastet, la diosa de la protección, el hogar y la fertilidad. Los egipcios protegían y veneraban a los gatos, y matar uno era un crimen muy grave.
 
--Faraones tanto hombres como mujeres: Aunque la mayoría de los faraones fueron hombres, hubo algunas mujeres que gobernaron, como la famosa Hatshepsut, una de las reinas más poderosas, y Cleopatra, la última faraona de Egipto antes de su conquista por Roma.
+-Diversidad en Faraones: Aunque la mayoría de los faraones fueron hombres, hubo algunas mujeres que gobernaron, como la famosa Hatshepsut, una de las reinas más poderosas, y Cleopatra, la última faraona de Egipto antes de su conquista por Roma.
 
--El maquillaje de los ojos: Tanto hombres como mujeres usaban maquillaje en los ojos, especialmente delineador negro conocido como "kohl". No solo lo usaban por razones estéticas, sino también por razones prácticas: ayudaba a proteger los ojos del sol y las infecciones.
+-El maquillaje de los ojos: Tanto hombres como mujeres usaban maquillaje en los ojos, especialmente delineador negro conocido como kohl. No solo lo usaban por razones estéticas, sino también por razones prácticas, ya que ayudaba a proteger los ojos del sol y las infecciones.
 
--Calendario egipcio: Los antiguos egipcios desarrollaron un calendario basado en el ciclo de inundación del río Nilo. Tenía 365 días, divididos en 12 meses de 30 días cada uno, con cinco días adicionales al final del año, lo que se parece mucho al calendario actual.
+-Calendario egipcio: Los antiguos egipcios desarrollaron un calendario basado en el ciclo de inundación del río Nilo. Tenía 365 días, divididos en 12 meses de 30 días cada uno, con cinco días adicionales al final del calendario, lo que se parece mucho al calendario actual.
 
 -Mujeres con derechos: Las mujeres en el Antiguo Egipto disfrutaban de muchos derechos en comparación con otras civilizaciones de la época. Podían poseer propiedades, divorciarse, heredar bienes y participar en acuerdos legales. Sin embargo, los hombres ocupaban generalmente los puestos de mayor autoridad.
 
@@ -307,23 +307,24 @@ Egipto
 Medievo
 -Caballeros y torneos: Los caballeros medievales no solo luchaban en guerras, sino que también participaban en torneos de justas. Estos eventos eran competiciones donde los caballeros mostraban sus habilidades con lanzas, espadas y otras armas, en parte por entretenimiento y en parte para ganar prestigio.
 
--La Peste Negra: La Peste Negra fue una de las pandemias más devastadoras de la historia, matando entre 30% y 60% de la población europea entre 1347 y 1351. La enfermedad, propagada por pulgas en ratas, cambió profundamente la sociedad, llevando a cambios en la economía y la mentalidad religiosa.
+-La Peste Negra: La Peste Negra fue una de las pandemias más devastadoras de la historia, matando entre el 30 y 60 por ciento de la población europea entre 1347 y 1351. La enfermedad, propagada por pulgas en ratas, cambió profundamente la sociedad, llevando a cambios en la economía y la mentalidad religiosa.
 
--Las Cruzadas: Durante la Edad Media, se organizaron una serie de guerras conocidas como las Cruzadas (del siglo XI al XIII). El objetivo principal era recuperar Tierra Santa del control musulmán, pero también involucraron intereses políticos, económicos y religiosos, generando vastas interacciones entre Oriente y Occidente.
+-Las Cruzadas: Durante la Edad Media, se organizaron una serie de guerras conocidas como las Cruzadas del siglo XI al XIII. El objetivo principal era recuperar Tierra Santa del control musulmán, pero también involucraron intereses políticos, económicos y religiosos, generando vastas interacciones entre Oriente y Occidente.
 
--Las ciudades amuralladas: Muchas ciudades medievales estaban rodeadas de enormes murallas para protegerse de los ataques. Ejemplos de ciudades medievales con murallas que aún existen incluyen Carcasona (Francia) y Ávila (España), donde las fortificaciones eran tanto defensivas como símbolos de poder.
-Mujeres en el medievo: Aunque la vida de la mujer medieval solía estar subordinada a la de los hombres, algunas mujeres lograron destacarse en el ámbito político, religioso o intelectual. Un ejemplo famoso es Juana de Arco, quien lideró ejércitos franceses en la Guerra de los Cien Años y se convirtió en una heroína nacional.
+-Las ciudades amuralladas: Muchas ciudades medievales estaban rodeadas de enormes murallas para protegerse de los ataques. Ejemplos de ciudades medievales con murallas que aún existen incluyen Carcasona en Francia y algunas ciudades importantes de España, donde las fortificaciones eran tanto defensivas como objetos de poder.
 
--Los castillos: Los castillos no eran solo residencias nobles, sino también fortalezas militares. Servían para defender territorios y a sus habitantes durante las invasiones, y contaban con gruesos muros, torres de vigilancia, fosos y puentes levadizos. Con el tiempo, se convirtieron también en símbolos de estatus y poder.
+-Mujeres en el medievo: Aunque la vida de la mujer medieval estaba subordinada a la de los hombres, algunas mujeres lograron destacarse en el dentro de distintos campos como el religioso o intelectual. Un ejemplo famoso es Juana de Arco, quien lideraba los ejércitos franceses en alguna de sus guerras más importantes llegando a ser considerada una gran heroína.
 
--El sistema feudal: La sociedad medieval se organizaba en torno al feudalismo, un sistema donde los reyes concedían tierras a los nobles a cambio de lealtad y servicios militares. Los campesinos, a menudo siervos, trabajaban estas tierras a cambio de protección, viviendo bajo el control de un señor feudal.
+-Los castillos: Los castillos no eran solo residencias nobles, sino fortalezas militares. Se usaban para defender territorios y a sus habitantes durante las invasiones, y contaban con gruesos muros, torres de vigilancia, fosos y puentes levadizos. Con el tiempo, se convirtieron en objetos de estatus y poder.
 
--Los gremios: En las ciudades medievales, los gremios eran asociaciones de artesanos y comerciantes que regulaban las profesiones. Controlaban la calidad de los productos, establecían precios y organizaban la formación de aprendices. Los gremios fueron esenciales para el desarrollo económico urbano.
+-El sistema feudal: La sociedad medieval se organizaba en torno al feudalismo, un sistema donde los reyes daban tierras a los nobles a cambio de lealtad y servicios militares. Los campesinos, a menudo siervos, trabajaban estas tierras a cambio de cobijo, viviendo bajo el control de un señor feudal.
+
+-Los gremios: En las ciudades medievales, los gremios eran asociaciones de artesanos y comerciantes que regulaban las profesiones. Controlaban la calidad de los productos, asignaban precios y organizaban la enseñanza de aprendices. Los gremios fueron esenciales para el desarrollo urbano.
 
 Maya
--Calendario avanzado: Los mayas desarrollaron un calendario muy preciso, basado en ciclos astronómicos. Tenían varios calendarios, incluyendo el "Tzolk'in" (de 260 días) y el "Haab'" (de 365 días). También usaron la Cuenta Larga, un sistema que marcaba grandes ciclos de tiempo, y que generó la famosa "profecía" del fin del mundo en 2012, que fue malinterpretada.
+-Calendario avanzado: Los mayas desarrollaron un calendario muy preciso, basado en ciclos astronómicos. Contaban con varios calendarios, incluyendo el Tzolk in de 260 días y el Haab de 365 días. De igual modo usaron la Cuenta Larga, un sistema que marcaba grandes ciclos de tiempo y que dio lugar a la famosa profecía del fin del mundo en 2012, que fue malinterpretada.
 
--Pirámides escalonadas: Al igual que los antiguos egipcios, los mayas construyeron impresionantes pirámides, aunque sus pirámides eran escalonadas y servían como templos. La más famosa es la Pirámide de Kukulkán en Chichén Itzá, que también funciona como un calendario solar: durante los equinoccios, la sombra proyecta la forma de una serpiente que "desciende" por la pirámide.
+-Pirámides escalonadas: Al igual que los antiguos egipcios, los mayas construyeron impresionantes pirámides, aunque sus pirámides eran escalonadas y servían como templos. La más famosa es la Pirámide de Kukulkán en Chichén Itzá, que también funciona como un calendario solar, durante los equinoccios, la sombra proyecta la forma de una serpiente que desciende por la pirámide.
 
 -Escritura jeroglífica: Los mayas desarrollaron una de las pocas escrituras mesoamericanas que fue completamente descifrada. Su sistema de escritura era logográfico, con símbolos que representaban sonidos y palabras completas. Los códices mayas, hechos de corteza de árbol, eran libros plegables donde se registraban eventos históricos y religiosos.
 
@@ -331,28 +332,29 @@ Maya
 
 -Sacrificios humanos: Los mayas realizaban sacrificios humanos como parte de sus rituales religiosos. Creían que los dioses necesitaban ser alimentados con sangre para mantener el equilibrio cósmico. Aunque no fue una práctica tan masiva como en otras culturas mesoamericanas, como los aztecas, era común en momentos importantes, como la dedicación de templos.
 
-Juego de pelota: Los mayas jugaban a un deporte ritual llamado pok-ta-pok, que consistía en golpear una pelota de caucho usando solo las caderas, antebrazos o muslos, tratando de pasarla a través de un aro de piedra vertical. Este juego no solo era una actividad deportiva, sino también tenía un profundo significado religioso y simbólico.
+-Juego de pelota: Los mayas jugaban a un deporte ritual llamado poktapok, que consistía en golpear una pelota de caucho usando solo las caderas, antebrazos o muslos, tratando de pasarla a través de un aro de piedra vertical. Este juego no solo era una actividad deportiva, sino también tenía un profundo significado religioso y simbólico.
 
--Ingeniería hidráulica: Los mayas desarrollaron avanzados sistemas hidráulicos para gestionar el agua en sus ciudades. En sitios como Tikal, construyeron grandes reservorios para almacenar agua de lluvia y canales para distribuirla. Esto fue crucial en las regiones donde la disponibilidad de agua era limitada durante ciertos periodos del año.
+-Ingeniería hidráulica: Los mayas desarrollaron avanzados sistemas hidráulicos para gestionar el agua en sus ciudades. En sitios como Tikal, construyeron grandes reservorios para almacenar agua de lluvia y canales para distribuirla. Esto fue crucial en las regiones donde la disponibilidad de agua era limitada durante ciertas estaciones como verano.
 
 -Abandono de las ciudades: Una de las grandes incógnitas sobre los mayas es por qué abandonaron muchas de sus grandes ciudades en el siglo IX. Aunque no se sabe con certeza, las teorías incluyen una combinación de factores como el agotamiento de los recursos naturales, sequías prolongadas, conflictos internos y la presión de otras civilizaciones vecinas.
 
 Futurista
--Coches voladores: Uno de los grandes deseos para el futuro es que los coches puedan volar y que no utilicen ningún tipo de combustible. ¿Sucederá en algún momento de la historia?
+-Coches voladores: Uno de los grandes deseos para el futuro es que los coches puedan volar y que no utilicen ningún tipo de combustible. Tal vez algún día suceda, pero es complicado
 
--Carreras espaciales: Otro de los deseos humanos es poder hacer carreras por todo el espacio. Imagina ve una carrera de fórmula 1 por el anillo de Saturno.
+-Carreras espaciales: Otro de los deseos humanos es poder hacer carreras por todo el espacio. Imagina ver una carrera de fórmula 1 por el anillo de Saturno.
 
 -Vida en otros planetas: Hoy en día se intenta buscar otros planetas con las condiciones óptimas para seguir viviendo.
 
--Alienígenas: ¿Existen realmente? Posiblemente nunca lo sepamos a ciencia cierta, pero hay gente que afirma haber visto alguno.
+-Alienígenas: Nunca sabremos si exiten a ciencia cierta, pero hay gente que afirma haber visto alguno.
 
--Inteligencia artificial y robots: Desde los años 50, los futuristas predijeron que los robots serían parte de la vida diaria, ayudando con tareas domésticas y trabajando en fábricas. Aunque la robótica ha avanzado mucho, estamos comenzando a ver aplicaciones prácticas de la IA y robots como asistentes virtuales, pero la visión de "robots humanoides" sigue en desarrollo.
+-Inteligencia artificial y robots: Desde el siglo XX, los futuristas predijeron que los robots serían parte de la vida diaria, ayudando con tareas domésticas y trabajando en fábricas. Aunque la robótica ha avanzado mucho, estamos comenzando a ver aplicaciones prácticas de la IA y robots como asistentes virtuales, pero la visión de robots humanoides sigue en desarrollo.
 
 -Ciudades: Los futuristas imaginaron que las ciudades serían verticales, con enormes rascacielos, transporte elevado y sistemas automatizados. Si bien muchas ciudades han crecido verticalmente y adoptado tecnologías avanzadas, aún estamos lejos de las ciudades completamente automatizadas o autosuficientes que se visualizaban.
 
--Automatización del hogar: En los años 50 y 60, se pensaba que el futuro traería hogares totalmente automatizados. Las cocinas robóticas, los electrodomésticos inteligentes y los sistemas de control remoto fueron ideas futuristas que poco a poco se están cumpliendo con las casas inteligentes de hoy.
+-Automatización del hogar: En el siglo XX, se pensaba que el futuro traería hogares totalmente automatizados. Las cocinas robóticas, los electrodomésticos inteligentes y los sistemas de control remoto fueron ideas futuristas que poco a poco se están cumpliendo con las casas inteligentes de hoy.
 
--Tecnología de comunicación: En el futurismo del siglo XX, se soñaba con dispositivos que permitirían comunicarse instantáneamente desde cualquier parte del mundo. Hoy en día, estos "futurismos" son una realidad con los teléfonos inteligentes, internet y videollamadas, tecnologías que han transformado la forma en que interactuamos globalmente.
+-Tecnología de comunicación: En el futurismo del siglo XX, se fantaseaba con dispositivos que permitirían comunicarse instantáneamente desde cualquier parte del mundo. Hoy en día, estos futurismos son una realidad con los teléfonos inteligentes, internet y videollamadas, tecnologías que han transformado la forma en que interactuamos globalmente.
+
 
 Estas curiosidades se desbloquean a la vez que se consiguen victorias y grandes puntuaciones en las pruebas de los minijuegos.
 Por otra parte, se disponen de 12 skins diferentes, un traje dorado y otro plateado que son de pago, y 2 trajes distintos por cada época histórica, uno versión masculina y otro femenina. Estos 10 últimos trajes se desbloquean una vez se consiguen 25 victorias en cada minijuego. Por ejemplo, para desbloquear la skin de la prehistoria, se debe ganar 25 veces en el minijuego de la prehistoria y así con todos los trajes y épocas históricas.
