@@ -56,7 +56,7 @@ public class CharacterSelectionController : MonoBehaviour
 
     // Método que actualiza la imagen del personaje
     // Para ello, se necesita mover la posición de la cámara
-    void UpdateCharacterPreview()
+    public void UpdateCharacterPreview()
     {
         if (GameSceneManager.instance.gameStarted) return;
         // Se calcula la posición que tendrá la cámara utilizando la fórmula

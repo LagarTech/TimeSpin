@@ -17,16 +17,16 @@ public class EndingManager : MonoBehaviour
     [SerializeField] private GameObject _rankingButton; // Botón para mostrar el ranking
     [SerializeField] private GameObject _rankingPanel; // Panel con el ranking
 
-    [SerializeField] private List<GameObject> _rankingSprites; // Objetos con los sprites de los personajes en el ranking
-    [SerializeField] private List<Sprite> _characterSprites; // Sprites de cada personaje
-    [SerializeField] private List<TMP_Text> _rankingPositions; // Lista con los textos para poner el puesto de los personajes
     [SerializeField] private List<TMP_Text> _rankingEntries; // Lista con los textos para mostrar los nombres y las puntuaciones
+    [SerializeField] private List<GameObject> _characterModels1;
+    [SerializeField] private List<GameObject> _characterModels2;
+    [SerializeField] private List<GameObject> _characterModels3;
 
     private const int NUM_GAMES = 5;
 
     private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
         }
@@ -81,7 +81,7 @@ public class EndingManager : MonoBehaviour
 
     private IEnumerator ShowMinigamesResults()
     {
-        for(int i = 0; i < NUM_GAMES; i++)
+        for (int i = 0; i < NUM_GAMES; i++)
         {
             yield return StartCoroutine(AnimateNumber(_minigamesScores[i], GameSceneManager.instance.pointsGames[i]));
         }
@@ -132,13 +132,16 @@ public class EndingManager : MonoBehaviour
     private IEnumerator GetOnlineRanking()
     {
         // Enviar la puntuación al leaderboard
-        var submitScoreTask = LeaderboardsService.Instance.AddPlayerScoreAsync("Time_Spin_Ranking", 
-            GameSceneManager.instance.totalPoints, 
-            new AddPlayerScoreOptions { Metadata = new Dictionary<string, string>() { 
+        var submitScoreTask = LeaderboardsService.Instance.AddPlayerScoreAsync("Time_Spin_Ranking",
+            GameSceneManager.instance.totalPoints,
+            new AddPlayerScoreOptions
+            {
+                Metadata = new Dictionary<string, string>() {
                 { "Name", SelectionController.instance.GetName()},
-                { "Character", SelectionController.instance.GetCharacterSelected().ToString()} 
-            } });
-        
+                { "Character", SelectionController.instance.GetCharacterSelected().ToString()}
+            }
+            });
+
         yield return new WaitUntil(() => submitScoreTask.IsCompleted);
 
         if (submitScoreTask.IsFaulted)
@@ -152,7 +155,7 @@ public class EndingManager : MonoBehaviour
         }
 
         // Cargar las primeras 10 mejores puntuaciones del leaderboard
-        var loadScoresTask = LeaderboardsService.Instance.GetScoresAsync("Time_Spin_Ranking", 
+        var loadScoresTask = LeaderboardsService.Instance.GetScoresAsync("Time_Spin_Ranking",
             new GetScoresOptions { Limit = 10, IncludeMetadata = true });
         yield return new WaitUntil(() => loadScoresTask.IsCompleted);
 
@@ -174,33 +177,45 @@ public class EndingManager : MonoBehaviour
                 entryData.TryGetValue("Character", out string playerCharacter);
 
                 // ACTUALIZACIÓN DE LA UI
-                // Puesto en el ranking
-                _rankingPositions[numEntry].text = (numEntry + 1).ToString() + "º";
-                // Sprite del jugador, en función del personaje escogido
-                // Al ser un string, se tiene que actuar con un switch
-                int characterSprite = 0;
-                switch(playerCharacter)
+                // Se actualiza la entrada de la tabla con la posición, el nombre y la puntuación del jugador
+                _rankingEntries[numEntry].text = (numEntry + 1).ToString() + "º - " + playerName + "    " + entry.Score;
+
+                // Se muestran los personajes del podio
+                if (numEntry < 3)
                 {
-                    case "0": characterSprite = 0; break;
-                    case "1": characterSprite = 1; break;
-                    case "2": characterSprite = 2; break;
-                    case "3": characterSprite = 3; break;
-                    case "4": characterSprite = 4; break;
-                    case "5": characterSprite = 5; break;
-                    case "6": characterSprite = 6; break;
-                    case "7": characterSprite = 7; break;
-                    case "8": characterSprite = 8; break;
-                    case "9": characterSprite = 9; break;
-                    case "10": characterSprite = 10; break;
-                    case "11": characterSprite = 11; break;
-                    case "12": characterSprite = 12; break;
-                    case "13": characterSprite = 13; break;
+                    // Al ser un string, se tiene que actuar con un switch
+                    int characterSprite = 0;
+                    switch (playerCharacter)
+                    {
+                        case "0": characterSprite = 0; break;
+                        case "1": characterSprite = 1; break;
+                        case "2": characterSprite = 2; break;
+                        case "3": characterSprite = 3; break;
+                        case "4": characterSprite = 4; break;
+                        case "5": characterSprite = 5; break;
+                        case "6": characterSprite = 6; break;
+                        case "7": characterSprite = 7; break;
+                        case "8": characterSprite = 8; break;
+                        case "9": characterSprite = 9; break;
+                        case "10": characterSprite = 10; break;
+                        case "11": characterSprite = 11; break;
+                    }
+
+                    // Se activan los modelos de los personajes
+                    switch(numEntry)
+                    {
+                        case 0:
+                            _characterModels1[characterSprite].SetActive(true);
+                            break;
+                        case 1:
+                            _characterModels2[characterSprite].SetActive(true);
+                            break;
+                        case 2:
+                            _characterModels3[characterSprite].SetActive(true);
+                            break;
+                    }
                 }
-                _rankingSprites[numEntry].SetActive(true);
-                // Se muestra el sprite correspondiente en base a la información de la entrada de la tabla
-                _rankingSprites[numEntry].GetComponent<Image>().sprite = _characterSprites[characterSprite];
-                // Por último, se actualiza la entrada de la tabla con el nombre y la puntuación del jugador
-                _rankingEntries[numEntry].text = playerName + "    " + entry.Score;
+                numEntry++;
             }
         }
         _rankingPanel.SetActive(true);

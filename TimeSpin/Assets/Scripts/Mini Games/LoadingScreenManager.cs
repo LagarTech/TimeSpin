@@ -38,13 +38,11 @@ public class LoadingScreenManager : MonoBehaviour
         }
 
         // Se establece el texto de la pantalla de carga
-
         if(startedScene != "Ending")
         {
             TMP_Text textoCarga = GameObject.FindGameObjectWithTag("TextoCarga").GetComponent<TMP_Text>();
             textoCarga.text = LoadingScreenTexts.Instance.GetAdviceText(sceneID);
         }
-
 
         // Se busca la pantalla de carga
         CanvasGroup loadingScreen = GameObject.FindGameObjectWithTag("PantallaCarga").GetComponent<CanvasGroup>();

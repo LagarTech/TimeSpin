@@ -80,6 +80,11 @@ public class UI_Controller : MonoBehaviour
             creditos.onClick.AddListener(OnCreditosButtonClicked);
             configuracion.onClick.AddListener(OnConfiguracionButtonClicked);
             practica.onClick.AddListener(OnPracticaButtonClicked);
+
+            // Se coloca la cámara
+            CharacterSelectionController.instance.SetMuseumCamera();
+
+
         }
         else if (GameSceneManager.instance.practiceStarted)
         {
@@ -300,6 +305,8 @@ public class UI_Controller : MonoBehaviour
     public void AbandonarPartida()
     {
         GameSceneManager.instance.LeaveGame();
-        OcultarPanelAbandonar();
+        AbandonarPanel.SetActive(false);
+        AbandonarBoton.SetActive(true);
+        CharacterSelectionController.instance.UpdateCharacterPreview();
     }
 }
