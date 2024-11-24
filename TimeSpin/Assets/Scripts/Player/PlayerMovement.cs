@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Cinemachine;
+using System.Runtime.InteropServices;
+using UnityEngine.UI; // Para manejar el botón interactivo
+
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -11,6 +14,11 @@ public class PlayerMovement : MonoBehaviour
     // Dirección y velocidad de movimiento
     private Vector3 _movementDirection = Vector3.zero;
     private float _speed = 6f;
+
+    // Control de joystick y botón de interacción
+    [Header("Mobile Controls")]
+    [SerializeField] public DynamicJoystick joystick; // Referencia al joystick móvil
+    [SerializeField] public Button interactButton; // Referencia al botón de interactuar/saltar
 
     // Control de la escena en la que se encuentra el jugador
     private enum Scene
@@ -40,9 +48,33 @@ public class PlayerMovement : MonoBehaviour
     // CONTROL DE ANIMACIONES
     private Animator _animatorController;
 
+
+    #region WebGL is on mobile check
+
+    [DllImport("__Internal")]
+    private static extern void IsMobile();
+
+    public bool isMobile()
+    {
+#if !UNITY_EDITOR && UNITY_WEBGL
+                return _isMobile;  
+#endif
+        return false;
+    }
+
+    #endregion
+
+
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
+
+        // Configuración para el botón móvil
+        if (isMobile())
+        {
+            interactButton.onClick.AddListener(HandleMobileInteraction);
+        }
+
         // Se establece la escena actual
         // Se obtiene el nombre de la escena
         string sceneName = SceneManager.GetActiveScene().name;
@@ -61,6 +93,18 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         _movementDirection = Vector3.zero;
+
+        // Detectar si está en móvil o PC
+        if (isMobile())
+        {
+            ProcessMobileInput();
+        }
+        else
+        {
+            ProcessMovementInput(); // Controles de PC
+        }
+
+
         // En función del escenario en el que se encuentre el jugador, se realizan una serie de acciones y se procesa una lógica diferente
         switch (_currentScene)
         {
@@ -150,7 +194,7 @@ public class PlayerMovement : MonoBehaviour
         // Calcula la velocidad del Animator usando solo las componentes x y z
         float currentSpeed = new Vector3(_rb.velocity.x, 0f, _rb.velocity.z).magnitude;
 
-        // Actualización de las animaciones
+        // Actualizar animaciones
         if (_animatorController != null)
         {
             _animatorController.SetFloat("Speed", currentSpeed);
@@ -166,6 +210,35 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
+        // Rotar el personaje según la dirección de movimiento
+        RotateCharacter();
+
+    }
+
+    private void ProcessMovementInput()
+    {
+        if (Input.GetKey(KeyCode.W)) _movementDirection.z = 1f;
+        if (Input.GetKey(KeyCode.S)) _movementDirection.z = -1f;
+        if (Input.GetKey(KeyCode.A)) _movementDirection.x = -1f;
+        if (Input.GetKey(KeyCode.D)) _movementDirection.x = 1f;
+
+        // Salto o interacción
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            HandleInteraction();
+        }
+
+    }
+
+    private void ProcessMobileInput()
+    {
+        // Controles móviles con joystick
+        _movementDirection.x = joystick.Horizontal;
+        _movementDirection.z = joystick.Vertical;
+    }
+
+    private void RotateCharacter()
+    {
         // Rotación del personaje
         if (_movementDirection.sqrMagnitude > 0.01f) // Comprueba si hay movimiento
         {
@@ -181,17 +254,30 @@ public class PlayerMovement : MonoBehaviour
             // Aplica una rotación suave hacia el objetivo
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.deltaTime * 360f);
         }
-
     }
-
-    private void ProcessMovementInput()
+    private void HandleMobileInteraction()
     {
-        if (Input.GetKey(KeyCode.W)) _movementDirection.z = 1f;
-        if (Input.GetKey(KeyCode.S)) _movementDirection.z = -1f;
-        if (Input.GetKey(KeyCode.A)) _movementDirection.x = -1f;
-        if (Input.GetKey(KeyCode.D)) _movementDirection.x = 1f;
+        // Evento vinculado al botón móvil
+        HandleInteraction();
     }
 
+    private void HandleInteraction()
+    {
+        // Lógica común para salto e interacción
+        if (_isGrounded)
+        {
+            Jump();
+        }
+        else
+        {
+            Interact();
+        }
+    }
+
+    private void Interact()
+    {
+        _animatorController?.SetTrigger("Interacting");
+    }
 
     // Esta función se utiliza para ocultar el nombre y el personaje del jugador, sin desactivarlo completamente para poder acceder a él de nuevo
     public void HidePlayer()
