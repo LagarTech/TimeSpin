@@ -503,19 +503,19 @@ Futuro: Escenarios futuristas llenos de luces neón y elementos flotantes, en un
 ### Chica Egipcio Front
 ![Caja](Diseño/ImagenesGDD/chica1.jpg)
 ### Render Podio
-![Caja](Diseño/ImagenesGDD/RenderPodio.png)
+![Caja](Diseño/ImagenesGDD/RenderPodio.PNG)
 ### Render Museo
-![Caja](Diseño/ImagenesGDD/RenderMuseo.png)
+![Caja](Diseño/ImagenesGDD/RenderMuseo.PNG)
 ### Render Medieval
-![Caja](Diseño/ImagenesGDD/RenderMedieval.png)
+![Caja](Diseño/ImagenesGDD/RenderMedieval.PNG)
 ### Render Maya
-![Caja](Diseño/ImagenesGDD/RenderMaya.png)
+![Caja](Diseño/ImagenesGDD/RenderMaya.PNG)
 ### Render Futurista
-![Caja](Diseño/ImagenesGDD/RenderFuturista.png)
+![Caja](Diseño/ImagenesGDD/RenderFuturista.PNG)
 ### Render Egipto
-![Caja](Diseño/ImagenesGDD/RenderEgipto.png)
+![Caja](Diseño/ImagenesGDD/RenderEgipto.PNG)
 ### Render Prehistoria
-![Caja](Diseño/ImagenesGDD/RenderPrehistoria.png)
+![Caja](Diseño/ImagenesGDD/RenderPrehistoria.PNG)
 ## 8. Interfaz
 - **Diseños básicos de los menús**:
 ### Interfaz de configuración
