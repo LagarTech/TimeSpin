@@ -361,7 +361,57 @@ Futurista
 -Tecnología de comunicación: En el futurismo del siglo XX, se fantaseaba con dispositivos que permitirían comunicarse instantáneamente desde cualquier parte del mundo. Hoy en día, estos futurismos son una realidad con los teléfonos inteligentes, internet y videollamadas, tecnologías que han transformado la forma en que interactuamos globalmente.
 
 
-Estas curiosidades se desbloquean a la vez que se consiguen victorias y grandes puntuaciones en las pruebas de los minijuegos.
+Estas curiosidades se desbloquean de la siguiente manera:
+Prehistoria 
+-Periodo extenso: Golpea un dinosaurio
+-El fuego: Golpea 3 dinosaurios en menos de 10 segundos
+-Primeros instrumentos musicales: Golpea 10 dinosaurios en una partida
+-Pinturas rupestres: Acierta a 3 Velocirraptores en una partida
+-Herramientas de piedra: Derriba un T-Rex.
+-Adiestramiento de animales: Llega a 30 puntos o más en una partida.
+-El descubrimiento de Otzi: Golpea al menos 1 dinosaurio en cada agujero.
+-Primeros asentamientos: Golpea un dinosaurio menos de 5 segundos después de que aparezca.
+
+Egipto
+-Astrología de Pirámides: Sobrevive 30 segundos sin ser golpeado.
+-Escritura jeroglífica: Sobrevive 1 y medio minuto sin ser atrapado.
+-Gatos sagrados: Termina con al menos dos trampas activadas.
+-Diversidad en Faraones: Activa al menos 5 trampas sin morir.
+-El maquillaje de los ojos: Utiliza todo el mapa para escapar.
+-Calendario egipcio: Llega al centro del mapa antes de que se cierre el primer espacio.
+-Mujeres con derechos: Obtén 50 puntos en una partida.
+-Proceso de momificación: Obtén 30 puntos en un minuto.
+
+Medievo
+-Caballeros y torneos:Recoge una espada y llévala a su baúl.
+-La Peste Negra: Lleva al menos 3 espadas de oro en una partida.
+-Las Cruzadas: Consigue 20 puntos o más.
+-Las ciudades amuralladas: No chocar contra ningún obstáculo en una partida.
+-Mujeres en el medievo: Lleva al menos una espada de cada tipo.
+-Los castillos: Utiliza todos los baúles al menos una vez.
+-El sistema feudal: Lleva al menos 6 objetos a tu baúl.
+-Los gremios: Lleva 3 espadas de oro seguidas en una partida.
+
+Maya
+-Calendario avanzado: Completa la carrera.
+-Pirámides escalonadas: Completa la carrera sin chocar con obstáculos ni caer en agujeros.
+-Escritura jeroglífica: Salta 5 obstáculos consecutivamente sin fallar.
+-Conocimientos astronómicos: Completa la carrera en menos de 60 segundos.
+-Sacrificios humanos: Gana la partida con 50 puntos.
+-Juego de pelota: Cae en 2 agujeros consecutivos.
+-Ingeniería hidráulica: Completa la carrera sin saltar.
+-Abandono de las ciudades: No caigas en ningún agujero en la partida.
+
+Futurista
+-Coches voladores: Sobrevive un cambio gravitatorio.
+-Carreras espaciales: Permanece en una plataforma segura 3 segundos.
+-Vida en otros planetas: Sobrevive mientras 3 plataformas caen seguidas.
+-Alienígenas: Dura un minuto jugando.
+-Inteligencia artificial y robots: Muévete a una plataforma segura antes del aviso.
+-Ciudades: Sobrevive 5 cambios gravitatorios seguidos.
+-Automatización del hogar: Gana una partida.
+-Tecnología de comunicación: Termina con la puntuación máxima posible.
+
 Por otra parte, se disponen de 12 skins diferentes, un traje dorado y otro plateado que son de pago, y 2 trajes distintos por cada época histórica, uno versión masculina y otro femenina. Estos 10 últimos trajes se desbloquean una vez se consiguen 25 victorias en cada minijuego. Por ejemplo, para desbloquear la skin de la prehistoria, se debe ganar 25 veces en el minijuego de la prehistoria y así con todos los trajes y épocas históricas.
 
 - **Objetos, armas y power ups**: En cuanto a los objetos, armas y power ups destacan diferentes en función del minijuego: 
@@ -452,7 +502,20 @@ Futuro: Escenarios futuristas llenos de luces neón y elementos flotantes, en un
 ![Caja](Diseño/ImagenesGDD/chica2.jpg)
 ### Chica Egipcio Front
 ![Caja](Diseño/ImagenesGDD/chica1.jpg)
-
+### Render Podio
+![Caja](Diseño/ImagenesGDD/RenderPodio.png)
+### Render Museo
+![Caja](Diseño/ImagenesGDD/RenderMuseo.png)
+### Render Medieval
+![Caja](Diseño/ImagenesGDD/RenderMedieval.png)
+### Render Maya
+![Caja](Diseño/ImagenesGDD/RenderMaya.png)
+### Render Futurista
+![Caja](Diseño/ImagenesGDD/RenderFuturista.png)
+### Render Egipto
+![Caja](Diseño/ImagenesGDD/RenderEgipto.png)
+### Render Prehistoria
+![Caja](Diseño/ImagenesGDD/RenderPrehistoria.png)
 ## 8. Interfaz
 - **Diseños básicos de los menús**:
 ### Interfaz de configuración
