@@ -511,7 +511,7 @@ Futuro: Escenarios futuristas llenos de luces neón y elementos flotantes, en un
 ### Render Maya
 ![Caja](Diseño/ImagenesGDD/RenderMaya.PNG)
 ### Render Futurista
-![Caja](Diseño/ImagenesGDD/RenderFuturista.PNG)
+![Caja](Diseño/ImagenesGDD/RenderFuturista.png)
 ### Render Egipto
 ![Caja](Diseño/ImagenesGDD/RenderEgipto.PNG)
 ### Render Prehistoria
