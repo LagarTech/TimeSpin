@@ -26,10 +26,26 @@ public class LoadingScreenTexts : MonoBehaviour
 
     public string GetAdviceText(int sceneID)
     {
-        // Se obtiene un consejo de los 4 posibles
-        int randomText = Random.Range(0, NUM_TEXTS_PER_SCENE - 1);
-        // Se calcula el ID de la lista
+        // Verificar si sceneID está dentro del rango permitido
+        if (sceneID < 0 || sceneID >= NUM_SCENES)
+        {
+            Debug.LogError($"sceneID ({sceneID}) está fuera del rango permitido.");
+            return "Error: escena inválida";
+        }
+
+        // Obtener un índice aleatorio
+        int randomText = Random.Range(0, NUM_TEXTS_PER_SCENE);
         int id = sceneID * NUM_TEXTS_PER_SCENE + randomText;
+
+        // Verificar si id está dentro de los límites de la lista
+        if (id < 0 || id >= advices.Count)
+        {
+            Debug.LogError($"Índice fuera de rango: id={id}, advices.Count={advices.Count}");
+            return "Error: índice fuera de rango";
+        }
+
+        // Devolver el texto correspondiente
         return advices[id];
     }
+
 }
