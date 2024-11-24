@@ -403,12 +403,62 @@ Civilización Maya: Ambientes selváticos exuberantes, llenos de verdes profundo
 Futuro: Escenarios futuristas llenos de luces neón y elementos flotantes, en una paleta de colores vivos en las plataformas junto con un contraste negro con el fondo.
 - **Música**: Para la música, el audio y los efectos especiales del juego, el jugador dispone de un apartado en el menú de pausa en que se pueden ajustar todos estos elementos a gusto del consumidor. Se puede subir y bajar el volumen de la música, el volumen de los efectos de sonido e incluso se puede desactivar por completo en caso de ser muy molesto para el jugador. La música y efectos especiales principalmente se toman de distintas fuentes y se editan con un programa especializado, aunque algunos de estos son de elaboración propia. El objetivo principal de la música es mantener animado el juego acompañado siempre de los efectos especiales. Cabe destacar que la música varía dependiendo del entorno en que se encuentre el jugador: en la sala principal hay una música totalmente distinta a la que hay en los 5 minijuegos, que a su vez es distinta entre ellos. Los efectos especiales se producen cada vez que el jugador realiza una interacción con alguno de los elementos interactuables que se encuentran dentro del juego.
 - **Ambiente sonoro**: Con la música y efectos especiales que se mencionan en el apartado anterior se pretende crear un ambiente amistoso y poco hostil, combinando melodías suaves y alegres junto con efectos especiales que resalten y acompañen estas melodías. El hecho de usar este tipo de música es para no incomodar a ningún tipo de jugador ni producir ningún tipo de sensación tenebrosa ni de miedo, puesto que el juego se trata de un juego para gente a partir de 3 años y lo que se pretende es que el jugador esté siempre a gusto e infundir por su cuerpo esa sensación de amistad y seguridad.
+- **Modelos 3D**:
+### Personaje Básico Left
+![Caja](Diseño/ImagenesGDD/Chico12.png)
+### Personaje Básico Front
+![Caja](Diseño/ImagenesGDD/Chico11.png)
+### Personaje Prehistoria Left
+![Caja](Diseño/ImagenesGDD/Chico10.png)
+### Personaje Prehistoria Front
+![Caja](Diseño/ImagenesGDD/Chico9.png)
+### Personaje Medieval Left
+![Caja](Diseño/ImagenesGDD/Chico8.png)
+### Personaje Medieval Front
+![Caja](Diseño/ImagenesGDD/Chico7.png)
+### Personaje Maya Left
+![Caja](Diseño/ImagenesGDD/Chico6.png)
+### Personaje Maya Front
+![Caja](Diseño/ImagenesGDD/Chico5.png)
+### Personaje Futurista Left
+![Caja](Diseño/ImagenesGDD/Chico4.png)
+### Personaje Futurista Front
+![Caja](Diseño/ImagenesGDD/Chico3.png)
+### Chico Egipcio Left
+![Caja](Diseño/ImagenesGDD/Chico2.png)
+### Chico Egipcio Front
+![Caja](Diseño/ImagenesGDD/Chico1.png)
+### Chica Básico Left
+![Caja](Diseño/ImagenesGDD/Chica12.png)
+### Chica Básico Front
+![Caja](Diseño/ImagenesGDD/Chica11.png)
+### Chica Prehistoria Left
+![Caja](Diseño/ImagenesGDD/Chica10.png)
+### Chica Prehistoria Front
+![Caja](Diseño/ImagenesGDD/Chica9.png)
+### Chica Medieval Left
+![Caja](Diseño/ImagenesGDD/Chica8.png)
+### Chica Medieval Front
+![Caja](Diseño/ImagenesGDD/Chica7.png)
+### Chica Maya Left
+![Caja](Diseño/ImagenesGDD/Chica6.png)
+### Chica Maya Front
+![Caja](Diseño/ImagenesGDD/Chica5.png)
+### Chica Futurista Left
+![Caja](Diseño/ImagenesGDD/Chica4.png)
+### Chica Futurista Front
+![Caja](Diseño/ImagenesGDD/Chica3.png)
+### Chica Egipcio Left
+![Caja](Diseño/ImagenesGDD/Chica2.png)
+### Chica Egipcio Front
+![Caja](Diseño/ImagenesGDD/Chica1.png)
+
 ## 8. Interfaz
 - **Diseños básicos de los menús**:
 ### Interfaz de configuración
-![Caja](Diseño/ImagenesGDD/Interfaz.jpg)
+![Caja](Diseño/ImagenesGDD/Interfaz.png)
 ### Menú principal
-![Caja](Diseño/ImagenesGDD/MenuPrincipal.jpg)
+![Caja](Diseño/ImagenesGDD/MenuPrincipal.png)
 ### Menú de pausa
 ![Caja](Diseño/ImagenesGDD/PauseMenu.png)
 ### Interfaz de voto de minijuego
