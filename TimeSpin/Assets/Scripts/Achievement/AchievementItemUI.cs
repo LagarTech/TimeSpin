@@ -6,6 +6,8 @@ public class AchievementItemUI : MonoBehaviour
     [SerializeField] private TMP_Text titleText; // Texto del nombre
     [SerializeField] private TMP_Text statusText; // Texto del estado
     [SerializeField] private GameObject statusIcon; // Icono del estado
+    [SerializeField] private Sprite Unlocked;
+    [SerializeField] private Sprite locked;
     [SerializeField] private UnityEngine.UI.Slider progressSlider; // Barra de progreso
     [SerializeField] private GameObject conditionButton; // Botón de condición
     [SerializeField] private GameObject descriptionButton; // Botón de descripción
@@ -55,6 +57,7 @@ public class AchievementItemUI : MonoBehaviour
         if (statusIcon != null)
         {
             statusIcon.GetComponent<UnityEngine.UI.Image>().color = data.IsUnlocked ? Color.green : Color.gray;
+            statusIcon.GetComponent<UnityEngine.UI.Image>().sprite = data.IsUnlocked ? Unlocked : locked;
         }
 
         // Configurar progreso

@@ -16,6 +16,7 @@ public class EndingManager : MonoBehaviour
     [SerializeField] private TMP_Text _totalScore; // Texto para mostrar la puntuación total
     [SerializeField] private GameObject _rankingButton; // Botón para mostrar el ranking
     [SerializeField] private GameObject _rankingPanel; // Panel con el ranking
+    [SerializeField] private GameObject scorePanel;
 
     [SerializeField] private List<TMP_Text> _rankingEntries; // Lista con los textos para mostrar los nombres y las puntuaciones
     [SerializeField] private List<GameObject> _characterModels1;
@@ -127,6 +128,7 @@ public class EndingManager : MonoBehaviour
     public void ShowRanking()
     {
         StartCoroutine(GetOnlineRanking());
+        scorePanel.SetActive(false);
     }
 
     private IEnumerator GetOnlineRanking()

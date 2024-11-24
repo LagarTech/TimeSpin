@@ -59,11 +59,11 @@ public class PrehistoryManager : MonoBehaviour
     {
         // Si el juego no ha comenzado, no se ejecuta nada
         if (!runningGame) return;
-        if (Input.GetKeyDown(KeyCode.Escape))
+        /*if (Input.GetKeyDown(KeyCode.Escape))
         {
             _optionsPanel.SetActive(true);
             runningGame = false;
-        }
+        }*/
         // Temporizador
         if (_timeLeft > 0)
         {
@@ -216,5 +216,9 @@ public class PrehistoryManager : MonoBehaviour
         _optionsPanel.SetActive(false);
         runningGame = true;
     }
-
+    public void ShowOptions()
+    {
+        _optionsPanel.SetActive(true);
+        runningGame = false;
+    }
 }

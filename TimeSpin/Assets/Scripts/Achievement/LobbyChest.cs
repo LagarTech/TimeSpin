@@ -30,17 +30,6 @@ public class LobbyChest : MonoBehaviour
 
     void Update()
     {
-        // Comprobar si el jugador está cerca y pulsa "Espacio" para abrir logros
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            _playerTransform = GameObject.FindGameObjectWithTag("Player")?.transform;
-            if (_playerTransform != null && Vector3.Distance(transform.position, _playerTransform.position) < MAX_DISTANCE)
-            {
-                ShowAchievements();
-
-                Debug.Log("space pulsado");
-            }
-        }
     }
 
     public void CloseAchievements()
@@ -117,6 +106,17 @@ public class LobbyChest : MonoBehaviour
                 // Si no existe el logro en PlayerPrefs, inicializarlo como bloqueado (valor 0)
                 PlayerPrefs.SetInt(achievementKey, 0);
             }
+        }
+    }
+
+    public void InteractChest()
+    {
+        _playerTransform = GameObject.FindGameObjectWithTag("Player")?.transform;
+        if (_playerTransform != null && Vector3.Distance(transform.position, _playerTransform.position) < MAX_DISTANCE)
+        {
+            ShowAchievements();
+
+            Debug.Log("space pulsado");
         }
     }
 }

@@ -38,12 +38,7 @@ public class LoadingScreenManager : MonoBehaviour
         }
 
         // Se establece el texto de la pantalla de carga
-<<<<<<< Updated upstream
-        if(startedScene != "Ending")
-=======
-
         if (startedScene != "Ending" && (GameSceneManager.instance.gameStarted || GameSceneManager.instance.practiceStarted))
->>>>>>> Stashed changes
         {
             TMP_Text textoCarga = GameObject.FindGameObjectWithTag("TextoCarga").GetComponent<TMP_Text>();
             textoCarga.text = LoadingScreenTexts.Instance.GetAdviceText(sceneID);

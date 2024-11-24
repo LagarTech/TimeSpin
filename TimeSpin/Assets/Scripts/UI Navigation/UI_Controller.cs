@@ -38,7 +38,6 @@ public class UI_Controller : MonoBehaviour
     public GameObject AbandonarPanel;
     public GameObject AbandonarBoton;
 
-    public GameObject TextoConsejo;
     public GameObject TextoNombre;
 
     [SerializeField]
@@ -46,6 +45,8 @@ public class UI_Controller : MonoBehaviour
     [SerializeField]
     private AudioClip _clipAudio;
 
+    private Quaternion rotacionCamara;
+    private Vector3 posicionCamara;
 
     private void Awake()
     {
@@ -61,6 +62,9 @@ public class UI_Controller : MonoBehaviour
 
     void Start()
     {
+        rotacionCamara = Camera.main.transform.rotation;
+        posicionCamara = Camera.main.transform.position;
+
         if (GameSceneManager.instance.gameStarted && !GameSceneManager.instance.practiceStarted)
         {
             // Si ya ha comenzado el juego, es decir, se vuelve de nuevo a la escena tras ya haber estado, no se necesitan mostrar todas las pantallas previas
@@ -214,8 +218,8 @@ public class UI_Controller : MonoBehaviour
         Instantiate(playerPrefab, GameSceneManager.instance.startingPositionLobby, Quaternion.identity);
         // Se oculta el menú
         Menu.SetActive(false);
-        // Se muestra el texto de consejo
-        TextoConsejo.SetActive(true);
+
+        SelectionTable.Instance.runningGame = true;
     }
 
     void OnPracticaButtonClicked()
@@ -307,6 +311,7 @@ public class UI_Controller : MonoBehaviour
         GameSceneManager.instance.LeaveGame();
         AbandonarPanel.SetActive(false);
         AbandonarBoton.SetActive(true);
-        CharacterSelectionController.instance.UpdateCharacterPreview();
+        Camera.main.transform.position = posicionCamara;
+        Camera.main.transform.rotation = rotacionCamara;
     }
 }

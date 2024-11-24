@@ -27,11 +27,11 @@ public class RaceManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        /*if (Input.GetKeyDown(KeyCode.Escape))
         {
             _optionsPanel.SetActive(true);
             runningGame = false;
-        }
+        }*/
         if (runningGame)
         {
             // Se contabiliza el tiempo que se tarda en terminar la carrera
@@ -52,17 +52,23 @@ public class RaceManager : MonoBehaviour
         GameSceneManager.instance.GameOverMaya(_timer);
     }
 
-    // Se comprueba si el jugador ha pasado la meta
-    private void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.tag == "Player")
-        {
-            EndRace();
-        }
-    }
     public void Options()
     {
         _optionsPanel.SetActive(false);
         runningGame = true;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            EndRace();
+        }
+    }
+
+    public void ShowOptions()
+    {
+        _optionsPanel.SetActive(true);
+        runningGame = false;
     }
 }

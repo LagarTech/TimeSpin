@@ -22,7 +22,9 @@ public class SelectionTable : MonoBehaviour
     private Quaternion _targetQuaternionRotation; // Rotación destino en Quaternions, para poder interpolar
 
     [SerializeField] private Vector3 _originPosition; // Posición de origen
-    [SerializeField] private Quaternion _originQuaternionRotation; // Rotación de origen
+    [SerializeField] private Vector3 _originRotation; // Rotación de origen
+
+    private Quaternion _originQuaternionRotation;
 
     // Canvas de elección de minijuego
     [SerializeField] private CanvasGroup _gameSelectionPanel;
@@ -43,28 +45,13 @@ public class SelectionTable : MonoBehaviour
 
     private void Start()
     {
+        _originQuaternionRotation = Quaternion.Euler(_originRotation);
         _mainCamera = Camera.main;
-        _originPosition = _mainCamera.transform.position;
-        _originQuaternionRotation = _mainCamera.transform.rotation;
         _targetQuaternionRotation = Quaternion.Euler(_targetRotation);
     }
 
     private void Update()
     {
-        // Interacción con el jugador al estar cerca
-        if(Input.GetKeyDown(KeyCode.Space)) 
-        {
-            if (_playerTransform != null)
-            {
-                if (Vector3.Distance(transform.position, _playerTransform.position) < MAX_DISTANCE && !_isReturning && !_isZooming)
-                {
-                    GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().InteractPlayer();
-                    UI_Controller.instance.TextoConsejo.SetActive(false);
-                    _isZooming = true;
-                    runningGame = false;
-                }
-            }
-        }
 
         if(_isZooming)
         {
@@ -132,6 +119,19 @@ public class SelectionTable : MonoBehaviour
         _isReturning = true; // La cámara vuelve a su posición de origen
         runningGame = true;
         UI_Controller.instance.AbandonarBoton.SetActive(true);
+    }
+
+    public void InteractTable()
+    {
+        if (_playerTransform != null)
+        {
+            if (Vector3.Distance(transform.position, _playerTransform.position) < MAX_DISTANCE && !_isReturning && !_isZooming)
+            {
+                GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().InteractPlayer();
+                _isZooming = true;
+                runningGame = false;
+            }
+        }
     }
 
 }

@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,7 +7,9 @@ public class CharacterSelectionController : MonoBehaviour
 
     public static CharacterSelectionController instance;
 
-    public Image characterPreview;  // La imagen donde se mostrará el personaje
+    public string[] characterSkins;
+    public TMP_Text skinName;
+
     private int currentCharacterIndex = 0;  // Índice del personaje actual
     private const int NUM_CHARACTERS = 12;
 
@@ -59,6 +62,9 @@ public class CharacterSelectionController : MonoBehaviour
     public void UpdateCharacterPreview()
     {
         if (GameSceneManager.instance.gameStarted) return;
+
+        skinName.text = characterSkins[currentCharacterIndex];
+
         // Se calcula la posición que tendrá la cámara utilizando la fórmula
         float cameraPosition = _startingCharacterPosition + currentCharacterIndex * CHARACTERS_DISTANCE + CAMERA_OFFSET;
         // Se actualiza la posición de la cámara

@@ -73,11 +73,11 @@ public class MedievalGameManager : MonoBehaviour
     private void Update()
     {
         if (!runningGame) return;
-        if (Input.GetKeyDown(KeyCode.Escape))
+        /*if (Input.GetKeyDown(KeyCode.Escape))
         {
             _optionsPanel.SetActive(true);
             runningGame = false;
-        }
+        }*/
 
         if (_timeLeft > 0)
         {
@@ -238,5 +238,9 @@ public class MedievalGameManager : MonoBehaviour
         _optionsPanel.SetActive(false);
         runningGame = true;
     }
-
+    public void ShowOptions()
+    {
+        _optionsPanel.SetActive(true);
+        runningGame = false;
+    }
 }

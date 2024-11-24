@@ -97,6 +97,7 @@ public class GameSceneManager : MonoBehaviour
                 if (gameStarted && !practiceStarted)
                 {
                     Instantiate(playerPrefab, startingPositionLobby, Quaternion.identity);
+                    GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>()._speed = 2f;
                 }
                 practiceStarted = false; // Se indica que no ya se ha terminado el minijuego de práctica
                 // Se eliminan las momias del minijuego anterior
@@ -112,12 +113,14 @@ public class GameSceneManager : MonoBehaviour
                 gameStarted = true;
                 // Se instancia al jugador en la posición de inicio adecuada
                 Instantiate(playerPrefab, _startingPositionPrehistory, Quaternion.identity);
+                GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>()._speed = 3f;
                 break;
             case "Egypt":
                 // Una vez se cambia de la primera escena, se indica que ya ha comenzado el juego
                 gameStarted = true;
                 // Se instancia al jugador en la posición de inicio adecuada con la escala adecuada
                 Instantiate(playerPrefab, _startingPositionEgypt, Quaternion.identity).transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+                GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>()._speed = 2f;
                 // Se activa la lámpara
                 Light farol = GameObject.FindGameObjectWithTag("LuzFarol").GetComponent<Light>();
                 farol.intensity = 15;
@@ -127,12 +130,14 @@ public class GameSceneManager : MonoBehaviour
                 gameStarted = true;
                 // Se instancia al jugador en la posición de inicio adecuada
                 Instantiate(playerPrefab, _startingPositionMedieval, Quaternion.identity);
+                GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>()._speed = 4f;
                 break;
             case "Maya":
                 // Una vez se cambia de la primera escena, se indica que ya ha comenzado el juego
                 gameStarted = true;
                 // Se instancia al jugador en la posición de inicio adecuada
                 Transform _playerTransform = Instantiate(playerPrefab, _startingPositionMaya, Quaternion.identity).transform;
+                GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>()._speed = 2f;
                 // Se modifica la escala del personaje
                 _playerTransform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
                 // Se hace que si el personaje es del propietario, la cámara lo siga
@@ -144,6 +149,7 @@ public class GameSceneManager : MonoBehaviour
                 gameStarted = true;
                 // Se instancia al jugador en la posición de inicio adecuada
                 Instantiate(playerPrefab, _startingPositionFuture, Quaternion.identity);
+                GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>()._speed = 2f;
                 break;
         }
         if (_previousScene != "")

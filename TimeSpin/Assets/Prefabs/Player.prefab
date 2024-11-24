@@ -613,7 +613,78 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterNamePlayer: {fileID: 228684260957079276}
+  accionMover:
+    m_Name: Accion Mover
+    m_Type: 0
+    m_ExpectedControlType: Vector2
+    m_Id: 0ec91867-090c-4791-81bd-fa0ad024bf06
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 2D Vector
+      m_Id: b98b34fd-193f-471c-b6f5-7656bbc61886
+      m_Path: 2DVector
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Accion Mover
+      m_Flags: 4
+    - m_Name: up
+      m_Id: ad83c9f9-e70e-4cf1-997d-e65f725857bb
+      m_Path: <Keyboard>/w
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Accion Mover
+      m_Flags: 8
+    - m_Name: down
+      m_Id: 28f1b019-3543-424f-b11e-1e63e9953d16
+      m_Path: <Keyboard>/s
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Accion Mover
+      m_Flags: 8
+    - m_Name: left
+      m_Id: 0f0e161f-bbf6-4d40-8817-c40dc56a3116
+      m_Path: <Keyboard>/a
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Accion Mover
+      m_Flags: 8
+    - m_Name: right
+      m_Id: cf0d1fed-318a-479b-b4c1-3d561f0d161f
+      m_Path: <Keyboard>/d
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Accion Mover
+      m_Flags: 8
+    m_Flags: 0
+  interactuarSaltar:
+    m_Name: Interactuar Saltar
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: 343a6989-b155-44dc-85ec-e5c8b158ba2e
+    m_Processors: 
+    m_Interactions: Press
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 40dca109-952b-43c1-919a-bed24d75cbc6
+      m_Path: <Keyboard>/space
+      m_Interactions: Press
+      m_Processors: 
+      m_Groups: 
+      m_Action: Interactuar Saltar
+      m_Flags: 0
+    m_Flags: 1
   _currentScene: 0
+  _currentTile:
+    xTile: 0
+    zTile: 0
+    tileCenterPos: {x: 0, y: 0, z: 0}
+    isWalkable: 0
   carriedSword: {fileID: 0}
   _startedRotation: 0
 --- !u!114 &7272773993452262603

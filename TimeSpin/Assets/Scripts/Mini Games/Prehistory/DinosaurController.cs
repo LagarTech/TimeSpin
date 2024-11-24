@@ -47,14 +47,6 @@ public class DinosaurController : MonoBehaviour
         _player = GameObject.FindGameObjectWithTag("Player").transform.position;
         // Comprobar la distancia del jugador para que lo pueda golpear o no
         _distanceToPlayer = Vector3.Distance(_player, transform.position);
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (_distanceToPlayer <= MAX_HIT_DISTANCE)
-            {
-                // Si el jugador está cerca, lo golpea
-                HitDinosaur();
-            }
-        }
         _timer += Time.deltaTime;
         if (_timer >= _visibleTime)
         {
@@ -170,6 +162,15 @@ public class DinosaurController : MonoBehaviour
         PrehistoryManager.Instance.ReleaseHole(holeIndex);
         // Una vez finalizada la animación, se devuelve el dinosaurio al pool
         DinosaurPool.Instance.ReturnDinosaur(gameObject);
+    }
+
+    public void InteractDino()
+    {
+        if (_distanceToPlayer <= MAX_HIT_DISTANCE)
+        {
+            // Si el jugador está cerca, lo golpea
+            HitDinosaur();
+        }
     }
 }
 

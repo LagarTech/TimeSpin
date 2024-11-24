@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using Cinemachine;
 using System.Runtime.InteropServices;
 using UnityEngine.UI; // Para manejar el botón interactivo
+using UnityEngine.InputSystem;
 
 
 public class PlayerMovement : MonoBehaviour
@@ -13,12 +14,13 @@ public class PlayerMovement : MonoBehaviour
     public GameObject characterNamePlayer;
     // Dirección y velocidad de movimiento
     private Vector3 _movementDirection = Vector3.zero;
-    private float _speed = 6f;
+    public float _speed = 6f;
 
-    // Control de joystick y botón de interacción
-    [Header("Mobile Controls")]
-    [SerializeField] public DynamicJoystick joystick; // Referencia al joystick móvil
-    [SerializeField] public Button interactButton; // Referencia al botón de interactuar/saltar
+    private Vector2 _entradaMovimiento;   // Para almacenar la entrada del sistema de entrada.
+
+    public InputAction accionMover; // Referencia a la acción "Mover".
+
+    public InputAction interactuarSaltar;
 
     // Control de la escena en la que se encuentra el jugador
     private enum Scene
@@ -48,31 +50,19 @@ public class PlayerMovement : MonoBehaviour
     // CONTROL DE ANIMACIONES
     private Animator _animatorController;
 
-
-    #region WebGL is on mobile check
-
-    [DllImport("__Internal")]
-    private static extern void IsMobile();
-
-    public bool isMobile()
-    {
-#if !UNITY_EDITOR && UNITY_WEBGL
-                return _isMobile;  
-#endif
-        return false;
-    }
-
-    #endregion
-
-
     private void Start()
     {
+
         _rb = GetComponent<Rigidbody>();
 
+        // Activa la acción de entrada.
+        accionMover.Enable();
+        interactuarSaltar.Enable();
+
         // Configuración para el botón móvil
-        if (isMobile())
+        if (MobileController.instance.isMobile())
         {
-            interactButton.onClick.AddListener(HandleMobileInteraction);
+            MobileController.instance.interactuar.onClick.AddListener(HandleMobileInteraction);
         }
 
         // Se establece la escena actual
@@ -94,16 +84,6 @@ public class PlayerMovement : MonoBehaviour
     {
         _movementDirection = Vector3.zero;
 
-        // Detectar si está en móvil o PC
-        if (isMobile())
-        {
-            ProcessMobileInput();
-        }
-        else
-        {
-            ProcessMovementInput(); // Controles de PC
-        }
-
 
         // En función del escenario en el que se encuentre el jugador, se realizan una serie de acciones y se procesa una lógica diferente
         switch (_currentScene)
@@ -112,14 +92,36 @@ public class PlayerMovement : MonoBehaviour
                 // Si se está en el menú, no te puedes mover
                 if (!SelectionTable.Instance.runningGame) return;
                 // Gestión de los controles
-                ProcessMovementInput();
+                if (MobileController.instance.isMobile())
+                {
+                    ProcessMobileInput();
+                }
+                else
+                {
+                    ProcessMovementInput(); // Controles de PC
+                    if (interactuarSaltar.triggered)
+                    {
+                        Interact();
+                    }   
+                }
                 break;
 
             case Scene.Prehistory:
                 // Si el minijuego no ha comenzado, no se ejecuta ninguna acción
                 if (!PrehistoryManager.Instance.runningGame) return;
                 // Gestión de los controles
-                ProcessMovementInput();
+                if (MobileController.instance.isMobile())
+                {
+                    ProcessMobileInput();
+                }
+                else
+                {
+                    ProcessMovementInput(); // Controles de PC
+                    if (interactuarSaltar.triggered)
+                    {
+                       Interact();
+                    }
+                }
                 break;
 
             case Scene.Egypt:
@@ -131,25 +133,48 @@ public class PlayerMovement : MonoBehaviour
                 Vector2Int tilePos = new Vector2Int((int)transform.position.x, -(int)transform.position.z);
                 _currentTile = GridManager.Instance.GetTile(tilePos.x, tilePos.y);
                 // Gestión de los controles
-                ProcessMovementInput();
+                if (MobileController.instance.isMobile())
+                {
+                    ProcessMobileInput();
+                }
+                else
+                {
+                    ProcessMovementInput(); // Controles de PC
+                }
                 break;
 
             case Scene.Medieval:
                 // Si el minijuego no ha comenzado, no se ejecuta ninguna acción
                 if (!MedievalGameManager.Instance.runningGame) return;
                 // Gestión de los controles
-                ProcessMovementInput();
+                if (MobileController.instance.isMobile())
+                {
+                    ProcessMobileInput();
+                }
+                else
+                {
+                    ProcessMovementInput(); // Controles de PC
+                }
                 break;
 
             case Scene.Maya:
                 if (!RaceManager.instance.runningGame) return;
                 // Gestión de los controles
-                ProcessMovementInput();
-                // Gestión del control del salto
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (MobileController.instance.isMobile())
                 {
-                    Jump();
+                    ProcessMobileInput();
                 }
+                else
+                {
+                    ProcessMovementInput();  
+                    
+                    // Controles de PC
+                    if (interactuarSaltar.triggered)
+                    {
+                       Jump();
+                    } 
+                }
+
                 break;
 
             case Scene.Future:
@@ -182,7 +207,14 @@ public class PlayerMovement : MonoBehaviour
                 // Se indica que ya se terminó la rotación
                 _startedRotation = false;
                 // Gestión de los controles
-                ProcessMovementInput();
+                if (MobileController.instance.isMobile())
+                {
+                    ProcessMobileInput();
+                }
+                else
+                {
+                    ProcessMovementInput(); // Controles de PC
+                }
                 break;
         }
 
@@ -217,24 +249,22 @@ public class PlayerMovement : MonoBehaviour
 
     private void ProcessMovementInput()
     {
-        if (Input.GetKey(KeyCode.W)) _movementDirection.z = 1f;
-        if (Input.GetKey(KeyCode.S)) _movementDirection.z = -1f;
-        if (Input.GetKey(KeyCode.A)) _movementDirection.x = -1f;
-        if (Input.GetKey(KeyCode.D)) _movementDirection.x = 1f;
+        // Lee el valor de entrada del sistema de entrada.
+        _entradaMovimiento = accionMover.ReadValue<Vector2>();
 
-        // Salto o interacción
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            HandleInteraction();
-        }
+        // Mapear el movimiento a un Vector3 (si es necesario para la lógica de tu juego).
+        _movementDirection.x = _entradaMovimiento.x; // Izquierda/Derecha (A/D o Joystick eje X).
+        _movementDirection.z = _entradaMovimiento.y; // Adelante/Atrás (W/S o Joystick eje Y).
+
+        Debug.Log($"Dirección de Movimiento: {_movementDirection}");
 
     }
 
     private void ProcessMobileInput()
     {
-        // Controles móviles con joystick
-        _movementDirection.x = joystick.Horizontal;
-        _movementDirection.z = joystick.Vertical;
+        //Controles móviles con joystick
+       _movementDirection.x = MobileController.instance.Joystick.Horizontal;
+        _movementDirection.z = MobileController.instance.Joystick.Vertical;
     }
 
     private void RotateCharacter()
@@ -264,20 +294,37 @@ public class PlayerMovement : MonoBehaviour
     private void HandleInteraction()
     {
         // Lógica común para salto e interacción
-        if (_isGrounded)
+        if (_isGrounded && _currentScene == Scene.Maya)
         {
             Jump();
         }
-        else
+        if(_currentScene == Scene.Lobby || _currentScene == Scene.Prehistory) 
         {
-            Interact();
+            Interact(); 
         }
     }
 
     private void Interact()
     {
-        _animatorController?.SetTrigger("Interacting");
+        GameObject[] interactObject = GameObject.FindGameObjectsWithTag("Interactuable");
+
+        for (int i = 0; i < interactObject.Length; i++)
+        {
+            if (interactObject[i].GetComponent <SelectionTable>() != null) 
+            {
+                interactObject[i].GetComponent<SelectionTable>().InteractTable();
+            }
+            if (interactObject[i].GetComponent<LobbyChest>() != null)
+            {
+                interactObject[i].GetComponent<LobbyChest>().InteractChest();
+            }
+            if (interactObject[i].GetComponent<DinosaurController>() != null)
+            {
+                interactObject[i].GetComponent<DinosaurController>().InteractDino();
+            }
+        }
     }
+
 
     // Esta función se utiliza para ocultar el nombre y el personaje del jugador, sin desactivarlo completamente para poder acceder a él de nuevo
     public void HidePlayer()

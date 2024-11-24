@@ -91,11 +91,11 @@ public class GridManager : MonoBehaviour
     private void Update()
     {
         if (!runningGame) return;
-        if (Input.GetKeyDown(KeyCode.Escape))
+        /*if (Input.GetKeyDown(KeyCode.Escape))
         {
             _optionsPanel.SetActive(true);
             runningGame = false;
-        }
+        }*/
 
         // GESTIÓN DEL TIEMPO RESTANTE
         if (_remainingTime > 0f)
@@ -385,6 +385,12 @@ public class GridManager : MonoBehaviour
         }
 
         return totalPoints;
+    }
+
+    public void ShowOptions()
+    {
+        _optionsPanel.SetActive(true);
+        runningGame = false;
     }
 
 }

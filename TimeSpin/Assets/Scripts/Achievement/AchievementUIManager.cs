@@ -5,7 +5,7 @@ public class AchievementUIManager : MonoBehaviour
 {
     [SerializeField] private GameObject achievementsMenu; // Panel principal de AchievementsMenu
     [SerializeField] private GameObject fullScreenDetailContainer; // Contenedor de texto a pantalla completa
-    [SerializeField] private TMP_Text fullScreenDetailText; // Texto a pantalla completa para descripción
+    [SerializeField] private GameObject fullScreenDetailText; // Texto a pantalla completa para descripción
     [SerializeField] private GameObject closeButton; // Botón de cerrar para fullscreen
     [SerializeField] private GameObject panel;
 
@@ -23,16 +23,18 @@ public class AchievementUIManager : MonoBehaviour
     {
         Debug.Log("Mostrando descripción: " + description);
 
-            // Asignar el texto de la descripción
-            fullScreenDetailText.text = description;
+        fullScreenDetailText.SetActive(true);
 
-            // Ocultar el menú principal de logros
-            achievementsMenu.SetActive(false);
+        // Asignar el texto de la descripción
+        fullScreenDetailText.GetComponent<TMP_Text>().text = description;
 
-            // Mostrar solo el contenedor de detalles
-            fullScreenDetailContainer.SetActive(true);
-            panel.SetActive(true);
-            closeButton.SetActive(true);
+        // Ocultar el menú principal de logros
+        achievementsMenu.SetActive(false);
+
+        // Mostrar solo el contenedor de detalles
+        fullScreenDetailContainer.SetActive(true);
+        panel.SetActive(true);
+        closeButton.SetActive(true);
     }
 
     // Ocultar el contenedor de detalles y volver al menú principal
