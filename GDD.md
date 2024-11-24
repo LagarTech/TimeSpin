@@ -405,53 +405,53 @@ Futuro: Escenarios futuristas llenos de luces neón y elementos flotantes, en un
 - **Ambiente sonoro**: Con la música y efectos especiales que se mencionan en el apartado anterior se pretende crear un ambiente amistoso y poco hostil, combinando melodías suaves y alegres junto con efectos especiales que resalten y acompañen estas melodías. El hecho de usar este tipo de música es para no incomodar a ningún tipo de jugador ni producir ningún tipo de sensación tenebrosa ni de miedo, puesto que el juego se trata de un juego para gente a partir de 3 años y lo que se pretende es que el jugador esté siempre a gusto e infundir por su cuerpo esa sensación de amistad y seguridad.
 - **Modelos 3D**:
 ### Personaje Básico Left
-![Caja](Diseño/ImagenesGDD/Chico12.png)
+![Caja](Diseño/ImagenesGDD/chico12.jpg)
 ### Personaje Básico Front
-![Caja](Diseño/ImagenesGDD/Chico11.png)
+![Caja](Diseño/ImagenesGDD/chico11.jpg)
 ### Personaje Prehistoria Left
-![Caja](Diseño/ImagenesGDD/Chico10.png)
+![Caja](Diseño/ImagenesGDD/chico10.jpg)
 ### Personaje Prehistoria Front
-![Caja](Diseño/ImagenesGDD/Chico9.png)
+![Caja](Diseño/ImagenesGDD/chico9.jpg)
 ### Personaje Medieval Left
-![Caja](Diseño/ImagenesGDD/Chico8.png)
+![Caja](Diseño/ImagenesGDD/chico8.jpg)
 ### Personaje Medieval Front
-![Caja](Diseño/ImagenesGDD/Chico7.png)
+![Caja](Diseño/ImagenesGDD/chico7.jpg)
 ### Personaje Maya Left
-![Caja](Diseño/ImagenesGDD/Chico6.png)
+![Caja](Diseño/ImagenesGDD/chico6.jpg)
 ### Personaje Maya Front
-![Caja](Diseño/ImagenesGDD/Chico5.png)
+![Caja](Diseño/ImagenesGDD/chico5.jpg)
 ### Personaje Futurista Left
-![Caja](Diseño/ImagenesGDD/Chico4.png)
+![Caja](Diseño/ImagenesGDD/chico4.jpg)
 ### Personaje Futurista Front
-![Caja](Diseño/ImagenesGDD/Chico3.png)
+![Caja](Diseño/ImagenesGDD/chico3.jpg)
 ### Chico Egipcio Left
-![Caja](Diseño/ImagenesGDD/Chico2.png)
+![Caja](Diseño/ImagenesGDD/chico2.jpg)
 ### Chico Egipcio Front
-![Caja](Diseño/ImagenesGDD/Chico1.png)
+![Caja](Diseño/ImagenesGDD/chico1.jpg)
 ### Chica Básico Left
-![Caja](Diseño/ImagenesGDD/Chica12.png)
+![Caja](Diseño/ImagenesGDD/chica12.jpg)
 ### Chica Básico Front
-![Caja](Diseño/ImagenesGDD/Chica11.png)
+![Caja](Diseño/ImagenesGDD/chica11.jpg)
 ### Chica Prehistoria Left
-![Caja](Diseño/ImagenesGDD/Chica10.png)
+![Caja](Diseño/ImagenesGDD/chica10.jpg)
 ### Chica Prehistoria Front
-![Caja](Diseño/ImagenesGDD/Chica9.png)
+![Caja](Diseño/ImagenesGDD/chica9.jpg)
 ### Chica Medieval Left
-![Caja](Diseño/ImagenesGDD/Chica8.png)
+![Caja](Diseño/ImagenesGDD/chica8.jpg)
 ### Chica Medieval Front
-![Caja](Diseño/ImagenesGDD/Chica7.png)
+![Caja](Diseño/ImagenesGDD/chica7.jpg)
 ### Chica Maya Left
-![Caja](Diseño/ImagenesGDD/Chica6.png)
+![Caja](Diseño/ImagenesGDD/chica6.jpg)
 ### Chica Maya Front
-![Caja](Diseño/ImagenesGDD/Chica5.png)
+![Caja](Diseño/ImagenesGDD/chica5.jpg)
 ### Chica Futurista Left
-![Caja](Diseño/ImagenesGDD/Chica4.png)
+![Caja](Diseño/ImagenesGDD/chica4.jpg)
 ### Chica Futurista Front
-![Caja](Diseño/ImagenesGDD/Chica3.png)
+![Caja](Diseño/ImagenesGDD/chica3.jpg)
 ### Chica Egipcio Left
-![Caja](Diseño/ImagenesGDD/Chica2.png)
+![Caja](Diseño/ImagenesGDD/chica2.jpg)
 ### Chica Egipcio Front
-![Caja](Diseño/ImagenesGDD/Chica1.png)
+![Caja](Diseño/ImagenesGDD/chica1.jpg)
 
 ## 8. Interfaz
 - **Diseños básicos de los menús**:
