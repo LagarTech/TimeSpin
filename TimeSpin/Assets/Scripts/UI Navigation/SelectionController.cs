@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SelectionController : MonoBehaviour
 {
@@ -42,6 +43,11 @@ public class SelectionController : MonoBehaviour
 
     public int GetCharacterSelected() { return _selectedCharacter; }
     public string GetName() { return _namePlayer; }
+
+    public void ReasignNameField(GameObject nombre)
+    {
+        nombre.GetComponent<InputField>().onValueChanged.AddListener((value) => ModifyName(value));
+    }
 
 
 }

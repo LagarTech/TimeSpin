@@ -79,4 +79,10 @@ public class CharacterSelectionController : MonoBehaviour
         Camera.main.transform.position = lobbyCameraPosition;
         Camera.main.transform.rotation = Quaternion.Euler(lobbyCameraRotation);
     }
+
+    public void SetCorrectPreview()
+    {
+        currentCharacterIndex = SelectionController.instance.GetCharacterSelected();
+        UpdateCharacterPreview();
+    }
 }

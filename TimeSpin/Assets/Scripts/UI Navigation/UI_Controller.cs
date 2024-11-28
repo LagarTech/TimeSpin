@@ -88,6 +88,9 @@ public class UI_Controller : MonoBehaviour
             // Se coloca la cámara
             CharacterSelectionController.instance.SetMuseumCamera();
 
+            // Se reasigna el campo del nombre
+            SelectionController.instance.ReasignNameField(Nombre);
+
 
         }
         else if (GameSceneManager.instance.practiceStarted)
@@ -111,6 +114,12 @@ public class UI_Controller : MonoBehaviour
             practica.onClick.AddListener(OnPracticaButtonClicked);
 
             GameSceneManager.instance.gameStarted = false;
+
+            // Se reasigna el campo del nombre
+            SelectionController.instance.ReasignNameField(Nombre);
+
+            // Se muestra el personaje correcto
+            CharacterSelectionController.instance.SetCorrectPreview();
         }
         else if (GameSceneManager.instance.gameFinished)
         {
@@ -133,6 +142,12 @@ public class UI_Controller : MonoBehaviour
 
             GameSceneManager.instance.gameFinished = false;
             GameSceneManager.instance.gameStarted = false;
+
+            // Se reasigna el campo del nombre
+            SelectionController.instance.ReasignNameField(Nombre);
+
+            // Se muestra el personaje correcto
+            CharacterSelectionController.instance.SetCorrectPreview();
 
         }
         else 
@@ -316,5 +331,7 @@ public class UI_Controller : MonoBehaviour
         AbandonarBoton.SetActive(true);
         Camera.main.transform.position = posicionCamara;
         Camera.main.transform.rotation = rotacionCamara;
+        // Se muestra el personaje correcto
+        CharacterSelectionController.instance.SetCorrectPreview();
     }
 }
