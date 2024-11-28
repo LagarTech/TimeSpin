@@ -109,6 +109,8 @@ public class UI_Controller : MonoBehaviour
             creditos.onClick.AddListener(OnCreditosButtonClicked);
             configuracion.onClick.AddListener(OnConfiguracionButtonClicked);
             practica.onClick.AddListener(OnPracticaButtonClicked);
+
+            GameSceneManager.instance.gameStarted = false;
         }
         else if (GameSceneManager.instance.gameFinished)
         {
@@ -130,6 +132,7 @@ public class UI_Controller : MonoBehaviour
             practica.onClick.AddListener(OnPracticaButtonClicked);
 
             GameSceneManager.instance.gameFinished = false;
+            GameSceneManager.instance.gameStarted = false;
 
         }
         else 

@@ -332,11 +332,21 @@ public class GameSceneManager : MonoBehaviour
         }
         // Se resetea la puntuación total
         totalPoints = 0;
-        // Se reactiva el menú
-        UI_Controller.instance.Menu.SetActive(true);
+        
+        RestartMenu();
+
         gameStarted = false;
         // Se elimina al jugador
         Destroy(GameObject.FindGameObjectWithTag("Player"));
+    }
+
+    public void RestartMenu()
+    {
+        // Se reactiva el menú
+        UI_Controller.instance.Menu.SetActive(true);
+        // Se reactiva el nombre
+        UI_Controller.instance.Nombre.SetActive(true);
+        CharacterSelectionController.instance.skinName.text = "LAGAR BOY";
     }
 
 

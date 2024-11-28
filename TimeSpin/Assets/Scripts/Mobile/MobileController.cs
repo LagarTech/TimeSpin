@@ -38,8 +38,6 @@ public class MobileController : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
