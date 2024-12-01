@@ -43,12 +43,17 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody _rb;
     private bool _isGrounded = true; // Se indica que se encuentra en el suelo
     private float _jumpForce = 5f; // Fuerza con la que salta
+    private bool _isConfused = false;
+
     // FUTURO
     [SerializeField] private bool _startedRotation = false; // Variable que controla el giro del personaje
     private Quaternion _targetRotation; // Rotación destino
 
     // CONTROL DE ANIMACIONES
     private Animator _animatorController;
+
+    [SerializeField] private AudioSource _reproductor;
+    [SerializeField] private AudioClip _clipAudio;
 
     private void Start()
     {
@@ -221,6 +226,12 @@ public class PlayerMovement : MonoBehaviour
         // Actualiza la velocidad del Rigidbody manteniendo la gravedad
         Vector3 currentVelocity = _rb.velocity;
         Vector3 horizontalVelocity = _movementDirection * _speed;
+        // Si está confuso, se invierten sus controles
+        if(_isConfused)
+        {
+            horizontalVelocity = new Vector3 (-horizontalVelocity.x, horizontalVelocity.y, horizontalVelocity.z);
+        }
+
         _rb.velocity = new Vector3(horizontalVelocity.x, currentVelocity.y, horizontalVelocity.z);
 
         // Calcula la velocidad del Animator usando solo las componentes x y z
@@ -354,6 +365,12 @@ public class PlayerMovement : MonoBehaviour
         if (_currentScene == Scene.Maya && collision.gameObject.CompareTag("Obstaculos"))
         {
             AchievementsManager.instance.RegisterObstacleHit();
+
+            if(collision.gameObject.GetComponent<TrunkMovement>() != null)
+            {
+                StartCoroutine(ConfusedState());
+                MusicManager.PonerMusica(_clipAudio, _reproductor, false);
+            }
         }
 
         // Detectamos cuando el jugador está de vuelta en el suelo en el juego Maya
@@ -375,6 +392,13 @@ public class PlayerMovement : MonoBehaviour
                 MedievalGameManager.Instance.ChooseRandomBase();
             }
         }
+    }
+
+    private IEnumerator ConfusedState()
+    {
+        _isConfused = true;
+        yield return new WaitForSeconds(5f);
+        _isConfused = false;
     }
 
     #endregion

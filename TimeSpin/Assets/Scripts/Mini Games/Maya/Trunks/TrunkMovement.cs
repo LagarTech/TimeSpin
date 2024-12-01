@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class TrunkMovement : MonoBehaviour
 {
-    private float _speed = 2f; // Velocidad de movimiento del tronco
-    private float _rotationSpeed = 30f; // Velocidad de rotación del tronco
+    private float _speed = 4f; // Velocidad de movimiento del tronco
+    private float _rotationSpeed = 60f; // Velocidad de rotación del tronco
 
     private Rigidbody _rb;
 
@@ -28,18 +28,19 @@ public class TrunkMovement : MonoBehaviour
 
         // Rota el tronco alrededor de su propio eje Z
         transform.Rotate(Vector3.forward * _rotationSpeed * Time.deltaTime, Space.Self);
-
-
-        // Verifica si el tronco ha caído fuera del área, tanto en el cliente como en el servidor, para poder ocultarlo en ambos
-        if (transform.position.y < -2f)
-        {
-            ReturnToPool();
-        }
     }
 
     private void ReturnToPool()
     {
         // Devuelve el tronco al pool
         TrunkPool.instance.ReturnTrunkToPool(gameObject);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Limite")
+        {
+            ReturnToPool();
+        }
     }
 }

@@ -373,9 +373,10 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Muevete por las plataformas iluminando el camino con
-            WASD, evitando las que caen, permanecer en la misma y teniendo cuidado
-            con los cambios repentinos de gravedad
+          m_StringArgument: "Ilumina las plataformas pasando por ellas con WASD o
+            el joystick, evitando que se caigan y tratando de no pisar un hueco.
+            Los flashes de luz avisan cuando se produce un cambio de gravedad. Trata
+            de sobrevivir el m\xE1ximo tiempo posible"
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &23779868
@@ -1498,8 +1499,9 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Avanza por el sendero moviendote con WASD, saltando con
-            SPACE evitando los troncos y los hoyos en el suelo
+          m_StringArgument: "Avanza por el sendero moviendote con WASD, saltando
+            con SPACE evitando los troncos y los hoyos en el suelo. Si un tronco
+            te golpea, te quedar\xE1s confuso y los controles se invertir\xE1n"
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &163086130
@@ -4872,8 +4874,9 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Trata de golpear al mayor numero de dinosaurios acercandote
-            a ellos con WASD, antes de que se escondan y pulsando SPACE
+          m_StringArgument: "Mu\xE9vete por el escenario con el joystick o WASD,
+            y golpea a los dinosaurios que salen de los huecos con SPACE o el bot\xF3n,
+            antes de que se escondan"
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &352972956
@@ -12129,7 +12132,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: MUEVETE CON WASD PARA HUIR DE LOS ENEMIGOS Y CUIDADO CON LAS TRAMPAS
+  m_text: INTERACTUA CON LOS ELEMENTOS DEL MUSEO PARA APRENDER Y CONSULTAR TUS LOGROS
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a8e264362b3e0cf4d8297c9efeee7eea, type: 2}
   m_sharedMaterial: {fileID: 5941693500014277681, guid: a8e264362b3e0cf4d8297c9efeee7eea, type: 2}
@@ -15002,7 +15005,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   advices:
-  - "AC\xC9RCATE A LOS EXPOSITORES PARA VER TUS LOGROS"
+  - "CONSULTA EN LOS EXPOSITORES INFORMACI\xD3N DE CADA \xC9POCA"
   - PULSA SPACE PARA INTERACTUAR CON LOS ELEMENTOS
   - PARA MOVERTE, USA EL JOYSTICK O WASD
   - "VIAJA ENTRE \xC9POCAS EN EL ORDEN QUE QUIERAS"
@@ -15013,19 +15016,19 @@ MonoBehaviour:
   - "MU\xC9VETE CON WASD O EL JOYSTICK POR EL OSCURO LABERINTO"
   - "LAS MOMIAS CADA VEZ IR\xC1N M\xC1S R\xC1PIDO..."
   - TEN CUIDADO CON LAS TRAMPAS PUNZANTES
-  - "INTENTA SOBREVIVIR LOS 2 MINUTOS PARA CONSEGUIR EL M\xC1XIMO"
+  - LAS MOMIAS AZULES SIGUEN UN RECORRIDO FIJO
   - "LAS ESPADAS TE OTORGAR\xC1N MAYOR PUNTUACI\xD3N SEG\xDAN SU VALOR"
   - DEPOSITA LA ESPADA EN LA BASE ADECUADA
   - "AQUELLAS ESPADAS QUE SE CLAVEN EN LOS OBST\xC1CULOS NO LAS PODR\xC1S TOMAR"
   - SE TARDAN 5 SEGUNDOS EN RECOGER LAS ESPADAS DE LAS BASES...
   - "SALTA LOS OBST\xC1CULOS CON SPACE"
   - TRATA DE NO CAER EN LOS AGUJEROS
-  - "\xBFPUEDES LLEGAR A LA META SIN SALTAR?"
+  - "SI UN TRONCO TE GOLPEA, TE QUEDAR\xC1S CONFUSO UNOS SEGUNDOS"
   - "MU\xC9VETE POR EL SENDERO CON WASD O EL JOYSTICK"
-  - "GU\xCDATE POR LAS CASILLAS ADYACENTES QUE SE ILUMINEN"
-  - MEMORIZA LAS PLATAFORMAS QUE CAEN PARA EVITAR FALLAR
+  - PISA UNA PLATAFORMA PARA DEJARLA ILUMINADA
+  - "NO PERMANEZCAS M\xC1S DE 3 SEGUNDOS EN UNA PLATAFORMA, O SE CAER\xC1"
   - TEN CUIDADO CON LOS CAMBIOS DE GRAVEDAD
-  - "INTENTA SOBREVIVIR LOS 2 MINUTOS PARA CONSEGUIR EL M\xC1XIMO"
+  - HAY PLATAFORMAS QUE CAEN Y NO SE VEN AL ESTAR A OSCURAS
 --- !u!1 &1031335354
 GameObject:
   m_ObjectHideFlags: 0
