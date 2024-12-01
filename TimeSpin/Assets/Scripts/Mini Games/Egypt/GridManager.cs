@@ -34,9 +34,9 @@ public class GridManager : MonoBehaviour
     // Lista para generar la aparición aleatoria de los pinchos
     private List<int> _randomSpikesSpawn = new List<int>();
     // Número total de casillas que tendrán pinchos
-    private const int NUM_SPIKES_TILES = 10;
+    private const int NUM_SPIKES_TILES = 15;
     // Tiempo que tiene que transcurrir para que aparezcan los siguientes pinchos
-    private float _spikesTime = 20f; // En un principio, se esperan 20 segundos para empezar a generar pinchos
+    private float _spikesTime = 8f; // Se generan pinchos cada 8 segundos
     // Número de casillas con pinchos
     private int _numSpikes = 0;
 
@@ -62,9 +62,8 @@ public class GridManager : MonoBehaviour
     public Tile[,] _gridTile; // Mapa del juego
     //Centro 
     public bool centroPisado;
-    /// <summary>
-    /// //////////////////////////////////////////////////////////////
-    /// </summary>
+
+    // OPCIONES Y CONFIGURACIÓN
 
     [SerializeField]
     private AudioSource _reproductor;
@@ -74,6 +73,10 @@ public class GridManager : MonoBehaviour
     private AudioMixer mezclador;
     [SerializeField]
     private GameObject _optionsPanel;
+
+    [SerializeField] private GameObject _exitButton;
+    [SerializeField] private GameObject _leaveButton;
+    [SerializeField] private GameObject _leaveAdvise;
 
     private void Awake()
     {
@@ -86,16 +89,13 @@ public class GridManager : MonoBehaviour
         GenerateGrid();
         // Se prepara la gestión aleatoria de los pinchos 
         PrepareSpikesSpawn();
+        // Se preapara el menú de opciones
+        ShowCorrectButton();
     }
 
     private void Update()
     {
         if (!runningGame) return;
-        /*if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            _optionsPanel.SetActive(true);
-            runningGame = false;
-        }*/
 
         // GESTIÓN DEL TIEMPO RESTANTE
         if (_remainingTime > 0f)
@@ -124,7 +124,7 @@ public class GridManager : MonoBehaviour
         _spikesTime -= Time.deltaTime;
         if (_spikesTime < 0f)
         {
-            _spikesTime = 10f; // Entre apariciones se deja un tiempo de 10 segundos
+            _spikesTime = 8f; // Entre apariciones se deja un tiempo de 8 segundos
             StartCoroutine(SpawnSpikesCoroutine());
         }
 
@@ -350,11 +350,6 @@ public class GridManager : MonoBehaviour
         GameSceneManager.instance.GameOverEgyptFuture(_survivedTime, true);
     }
 
-    public void Options()
-    {
-        _optionsPanel.SetActive(false);
-        runningGame = true;
-    }
 
     //Cada vez que se obtienen puntos
     public void AddPoints(int points)
@@ -391,6 +386,44 @@ public class GridManager : MonoBehaviour
     {
         _optionsPanel.SetActive(true);
         runningGame = false;
+    }
+    public void Options()
+    {
+        _optionsPanel.SetActive(false);
+        runningGame = true;
+    }
+
+    private void ShowCorrectButton()
+    {
+        if(GameSceneManager.instance.practiceStarted)
+        {
+            // Se muestra el botón de salir
+            _exitButton.SetActive(true);
+        }
+        else
+        {
+            // Se muestra el botón de abandonar la partida junto con la advertencia
+            _leaveAdvise.SetActive(true);
+            _leaveButton.SetActive(true);
+        }
+    }
+
+    public void ExitPracticeMode()
+    {
+        // Se indica que ha terminado el juego
+        runningGame = false;
+        // Se calcula la puntuación del jugador en base a los resultados
+        GameSceneManager.instance.GameOverEgyptFuture(_survivedTime, true);
+    }
+
+    public void ExitGame()
+    {
+        // Se indica que se ha terminado el juego
+        runningGame = false;
+        // Se resetea el estado inicial para comenzar una nueva partida
+        GameSceneManager.instance.ResetState();
+        // Se comienza la transición para volver al Lobby
+        StartCoroutine(LoadingScreenManager.instance.FinalFade("LobbyMenu"));
     }
 
 }

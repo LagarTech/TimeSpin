@@ -50,6 +50,10 @@ public class MedievalGameManager : MonoBehaviour
     // Logro de puntuación
     private const int POINTS_FOR_MEDIEVAL = 20;
 
+    [SerializeField] private GameObject _exitButton;
+    [SerializeField] private GameObject _leaveButton;
+    [SerializeField] private GameObject _leaveAdvise;
+
     private void Awake()
     {
         if(Instance == null)
@@ -68,16 +72,13 @@ public class MedievalGameManager : MonoBehaviour
         UpdateUI();
         // Se indica cuál es la primera base a la que se debe llevar una espada
         ChooseRandomBase();
+        // Mostrar botón correcto
+        ShowCorrectButton();
     }
 
     private void Update()
     {
         if (!runningGame) return;
-        /*if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            _optionsPanel.SetActive(true);
-            runningGame = false;
-        }*/
 
         if (_timeLeft > 0)
         {
@@ -242,5 +243,38 @@ public class MedievalGameManager : MonoBehaviour
     {
         _optionsPanel.SetActive(true);
         runningGame = false;
+    }
+
+    private void ShowCorrectButton()
+    {
+        if (GameSceneManager.instance.practiceStarted)
+        {
+            // Se muestra el botón de salir
+            _exitButton.SetActive(true);
+        }
+        else
+        {
+            // Se muestra el botón de abandonar la partida junto con la advertencia
+            _leaveAdvise.SetActive(true);
+            _leaveButton.SetActive(true);
+        }
+    }
+
+    public void ExitPracticeMode()
+    {
+        // Se indica que ha terminado el juego
+        runningGame = false;
+        // Se calcula la puntuación del jugador en base a los resultados
+        GameSceneManager.instance.GameOverPrehistoryMedieval(_score, _numSwords, false);
+    }
+
+    public void ExitGame()
+    {
+        // Se indica que se ha terminado el juego
+        runningGame = false;
+        // Se resetea el estado inicial para comenzar una nueva partida
+        GameSceneManager.instance.ResetState();
+        // Se comienza la transición para volver al Lobby
+        StartCoroutine(LoadingScreenManager.instance.FinalFade("LobbyMenu"));
     }
 }

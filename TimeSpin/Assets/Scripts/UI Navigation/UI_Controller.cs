@@ -1,6 +1,9 @@
 using System.Collections;
+using Unity.Services.Authentication;
+using Unity.Services.Core;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class UI_Controller : MonoBehaviour
 {
@@ -47,6 +50,12 @@ public class UI_Controller : MonoBehaviour
 
     private Quaternion rotacionCamara;
     private Vector3 posicionCamara;
+
+    public VideoPlayer videoPlayer;
+    public AudioPlayer audioPlayer;
+
+    public GameObject PanelInfo;
+    public GameObject PanelRanking;
 
     private void Awake()
     {
@@ -150,7 +159,7 @@ public class UI_Controller : MonoBehaviour
             CharacterSelectionController.instance.SetCorrectPreview();
 
         }
-        else 
+        else
         {
             // Se oculta el alfa del fundido
             Color color = Fundido.color;
@@ -184,6 +193,44 @@ public class UI_Controller : MonoBehaviour
 
             // Agregar el listener para el bot?n de pr?ctica
             practica.onClick.AddListener(OnPracticaButtonClicked);
+
+            // Se suscribe al evento del vídeo
+            videoPlayer.loopPointReached += OnVideoEnd;
+
+            // Si no se han inicializado ya, se inicializan los servicios de Unity
+            if (GameSceneManager.instance.initializedServices) return;
+            StartCoroutine(InitializeUnityServicesCoroutine());
+        }
+    }
+
+    private IEnumerator InitializeUnityServicesCoroutine()
+    {
+        var initializationTask = UnityServices.InitializeAsync();
+
+        // Esperar a que termine la inicialización
+        yield return new WaitUntil(() => initializationTask.IsCompleted);
+
+        if (initializationTask.IsFaulted)
+        {
+            Debug.LogError("Error al inicializar Unity Services: " + initializationTask.Exception);
+            yield break;
+        }
+
+        // Autenticación del usuario
+        if (!AuthenticationService.Instance.IsSignedIn)
+        {
+            var signInTask = AuthenticationService.Instance.SignInAnonymouslyAsync();
+            yield return new WaitUntil(() => signInTask.IsCompleted);
+
+            if (signInTask.IsFaulted)
+            {
+                Debug.LogError("Error al autenticar al usuario: " + signInTask.Exception);
+            }
+            else
+            {
+                Debug.Log("Usuario autenticado exitosamente.");
+                GameSceneManager.instance.initializedServices = true;
+            }
         }
     }
 
@@ -202,12 +249,14 @@ public class UI_Controller : MonoBehaviour
     // M?todo que se ejecutar? cuando se pulse el bot?n de avanzar
     void OnAvanzarButtonClicked()
     {
-        // Ocultar la cinem?tica y el UILobby
+        // Ocultar la cinemática y el UILobby
         Cinematica.SetActive(false);
+    }
 
-        // Mostrar el lobby
-        Menu.SetActive(true);
-        Nombre.SetActive(true);
+    public void StartVideo()
+    {
+        // Comenzar el vídeo
+        videoPlayer.Play();
     }
 
     void OnJugarButtonClicked()
@@ -272,36 +321,14 @@ public class UI_Controller : MonoBehaviour
 
     public void OnVolverButtonClicked()
     {
-        // Ocultar la cinem?tica y el menu
-        if (CreditosPanel.active)
-        {
-            Menu.SetActive(true);
-            Nombre.SetActive(true);
+        Menu.SetActive(true);
+        Nombre.SetActive(true);
 
-            ConfiguracionPanel.SetActive(false);
-            PracticaPanel.SetActive(false);
-            CreditosPanel.SetActive(false);
-        }
-
-        if (ConfiguracionPanel.active)
-        {
-            Menu.SetActive(true);
-            Nombre.SetActive(true);
-
-            CreditosPanel.SetActive(false);
-            PracticaPanel.SetActive(false);
-            ConfiguracionPanel.SetActive(false);
-        }
-
-        if (PracticaPanel.active)
-        {
-            Menu.SetActive(true);
-            Nombre.SetActive(true);
-
-            ConfiguracionPanel.SetActive(false);
-            CreditosPanel.SetActive(false);
-            PracticaPanel.SetActive(false);
-        }
+        ConfiguracionPanel.SetActive(false);
+        CreditosPanel.SetActive(false);
+        PracticaPanel.SetActive(false);
+        PanelInfo.SetActive(false);
+        PanelRanking.SetActive(false);
     }
 
     public void OcultarMenu()
@@ -333,5 +360,26 @@ public class UI_Controller : MonoBehaviour
         Camera.main.transform.rotation = rotacionCamara;
         // Se muestra el personaje correcto
         CharacterSelectionController.instance.SetCorrectPreview();
+    }
+
+    public void OnVideoEnd(VideoPlayer vp)
+    {
+        // Mostrar el lobby
+        Menu.SetActive(true);
+        Nombre.SetActive(true);
+        videoPlayer.enabled = false;
+        AbandonarBoton.SetActive(true);
+        audioPlayer.PonerClip();
+    }
+
+    public void ShowGameInfo()
+    {
+        PanelInfo.SetActive(true);
+    }
+
+    public void ShowRanking()
+    {
+        PanelRanking.SetActive(true);
+        Ranking_Menu.instance.UpdateRanking();
     }
 }

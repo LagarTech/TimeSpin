@@ -13,6 +13,10 @@ public class RaceManager : MonoBehaviour
     [SerializeField]
     private GameObject _optionsPanel;
 
+    [SerializeField] private GameObject _exitButton;
+    [SerializeField] private GameObject _leaveButton;
+    [SerializeField] private GameObject _leaveAdvise;
+
     private void Awake()
     {
         if(instance == null)
@@ -25,13 +29,13 @@ public class RaceManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        ShowCorrectButton();
+    }
+
     private void Update()
     {
-        /*if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            _optionsPanel.SetActive(true);
-            runningGame = false;
-        }*/
         if (runningGame)
         {
             // Se contabiliza el tiempo que se tarda en terminar la carrera
@@ -70,5 +74,38 @@ public class RaceManager : MonoBehaviour
     {
         _optionsPanel.SetActive(true);
         runningGame = false;
+    }
+
+    private void ShowCorrectButton()
+    {
+        if (GameSceneManager.instance.practiceStarted)
+        {
+            // Se muestra el botón de salir
+            _exitButton.SetActive(true);
+        }
+        else
+        {
+            // Se muestra el botón de abandonar la partida junto con la advertencia
+            _leaveAdvise.SetActive(true);
+            _leaveButton.SetActive(true);
+        }
+    }
+
+    public void ExitPracticeMode()
+    {
+        // Se indica que ha terminado el juego
+        runningGame = false;
+        // Se calcula la puntuación del jugador en base a los resultados
+        GameSceneManager.instance.GameOverMaya(_timer);
+    }
+
+    public void ExitGame()
+    {
+        // Se indica que se ha terminado el juego
+        runningGame = false;
+        // Se resetea el estado inicial para comenzar una nueva partida
+        GameSceneManager.instance.ResetState();
+        // Se comienza la transición para volver al Lobby
+        StartCoroutine(LoadingScreenManager.instance.FinalFade("LobbyMenu"));
     }
 }

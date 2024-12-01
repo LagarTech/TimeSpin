@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject characterNamePlayer;
     // Dirección y velocidad de movimiento
     private Vector3 _movementDirection = Vector3.zero;
-    public float _speed = 2f;
+    public float _speed = 3f;
 
     private Vector2 _entradaMovimiento;   // Para almacenar la entrada del sistema de entrada.
 

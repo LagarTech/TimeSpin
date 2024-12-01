@@ -89,6 +89,11 @@ public class AStarMind : MonoBehaviour
                 _openedList.Add(nextNode);
             }
 
+            if(_openedList.Count == 0)
+            {
+                Debug.Log("No hay vecinos caminables en la casilla: " + currentCell.xTile + "  " + currentCell.zTile);
+            }
+
             // SE ORDENA LA LISTA DE NUEVO
             _openedList.Sort(Comparator.CompareNodesByF);
             firstNode = _openedList[0];

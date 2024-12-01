@@ -49,7 +49,6 @@ public class MummyBehaviour : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            Debug.Log("pillado");
             // Se oculta el jugador, sin desactivarlo por completo
             collision.gameObject.GetComponent<PlayerMovement>().HidePlayer();
             // Se indica al gestor que se ha atrapado al jugador, por lo que debe terminar el juego

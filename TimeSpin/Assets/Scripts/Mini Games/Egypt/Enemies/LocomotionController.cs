@@ -9,7 +9,7 @@ public class LocomotionController : MonoBehaviour
     private Vector3 _targetPosition;
     // Esta variable sirve para determinar la dirección de movimiento del agente
     private Vector3 _moveDirection;
-    [SerializeField] private float _speed = 0.5f;
+    [SerializeField] private float _speed = 1.25f;
     private float _timer = 0f;
     // Esta variable indica si se ha finalizado el movimiento, es decir, se ha llegado a la casilla calculada
     public bool finishedMove;

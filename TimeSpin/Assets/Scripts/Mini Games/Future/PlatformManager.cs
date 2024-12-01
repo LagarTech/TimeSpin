@@ -109,8 +109,10 @@ public class PlatformManager : MonoBehaviour
         // Tras esto, quedarán los índices ordenados de forma aleatoria
     }
 
-    private IEnumerator ShakeAndFall(GameObject platform)
+    public IEnumerator ShakeAndFall(GameObject platform)
     {
+        if (platform.active == false) yield break; // Si ya se ha caído la plataforma, no se hace nada
+
         Vector3 originalPosition = platform.transform.position;
 
         // Fase de temblor

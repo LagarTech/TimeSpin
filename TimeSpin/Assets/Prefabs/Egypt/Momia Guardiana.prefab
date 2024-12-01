@@ -44,7 +44,7 @@ Light:
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
-  m_Color: {r: 1, g: 0.2783019, b: 0.2783019, a: 1}
+  m_Color: {r: 0.17795259, g: 0.06505874, b: 0.3207547, a: 1}
   m_Intensity: 0.25
   m_Range: 1
   m_SpotAngle: 30
@@ -129,12 +129,9 @@ GameObject:
   - component: {fileID: 8655048181550240568}
   - component: {fileID: 6113909892191918363}
   - component: {fileID: 5459147398706598599}
-  - component: {fileID: 3992822789241117851}
-  - component: {fileID: 6818250383043201575}
-  - component: {fileID: 4304185527683871686}
   m_Layer: 0
-  m_Name: Momia
-  m_TagString: Momia
+  m_Name: Momia Guardiana
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -206,46 +203,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &3992822789241117851
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4252452397503188831}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e83e2fd5a52e5004fb0e1eaad8d34190, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6818250383043201575
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4252452397503188831}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 613b58c7e1ed06b4690c198b61ad39a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _speed: 1.35
-  finishedMove: 0
---- !u!114 &4304185527683871686
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4252452397503188831}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c7395ffc46635d4fa1d3e7dba1bc48f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _target: {fileID: 0}
-  _numPlayers: 0
 --- !u!1 &4651212226284855324
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,7 +302,7 @@ PrefabInstance:
     - target: {fileID: -1257006102311039432, guid: a505a8ba74d2044459a1d63d7f8c17d6, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: b038025b547cb304db074741866ca142, type: 2}
+      objectReference: {fileID: 2100000, guid: 0ed97d072afe45346adb9e290e1251a8, type: 2}
     - target: {fileID: 919132149155446097, guid: a505a8ba74d2044459a1d63d7f8c17d6, type: 3}
       propertyPath: m_Name
       value: Momia@Walking

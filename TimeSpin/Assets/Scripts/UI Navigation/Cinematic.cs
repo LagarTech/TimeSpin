@@ -57,13 +57,8 @@ public class Cinematic : MonoBehaviour
         {
             MobileController.instance.interactuar.onClick.RemoveListener(HandleMobileInteraction);
         }
-        
-        Debug.Log("Pulsado");
-        // Ocultar la cinem?tica y el UILobby
         Cinematica.SetActive(false);
 
-        // Mostrar el lobby
-        Menu.SetActive(true);
-        Nombre.SetActive(true);
+        UI_Controller.instance.StartVideo();
     }
 }

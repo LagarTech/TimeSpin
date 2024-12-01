@@ -14,7 +14,7 @@ public class GravityManager : MonoBehaviour
     public bool runningGame = false;
 
     // Tiempo que se espera entre cambios de gravedad
-    private const float _gravitySwitchTime = 10f;
+    private const float _gravitySwitchTime = 9.5f;
     private float _gravityTimer; // Temporizador
     public bool isGravityInverted = false; // Controla si se ha invertido la gravedad o no
 
@@ -43,6 +43,10 @@ public class GravityManager : MonoBehaviour
     [SerializeField]
     private GameObject _optionsPanel;
 
+    [SerializeField] private GameObject _exitButton;
+    [SerializeField] private GameObject _leaveButton;
+    [SerializeField] private GameObject _leaveAdvise;
+
 
     private void Awake()
     {
@@ -63,16 +67,13 @@ public class GravityManager : MonoBehaviour
         // Despejando, se obtiene que t = sqrt(2*d/g), siendo d la distancia entre las plataformas y g la gravedad
         float distance = Vector3.Distance(_topPlatform.position, _bottomPlatform.position);
         _floatTime = Mathf.Sqrt(2 * distance / _gravity);
+
+        ShowCorrectButton();
     }
 
     private void Update()
     {
         if (!runningGame) return;
-        /*if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            _optionsPanel.SetActive(true);
-            runningGame = false;
-        }*/
 
         // GESTIÓN DEL TIEMPO RESTANTE
         if (_remainingTime > 0f)
@@ -101,7 +102,7 @@ public class GravityManager : MonoBehaviour
         if (_gravityTimer >= _gravitySwitchTime)
         {
             // Se inicia el proceso de flotación
-            StartFloating();
+            StartCoroutine(WarningGravityChange());
             _gravityTimer = 0; // También se reinicia el temporizador
             MusicManager.PonerMusica(_clipAudio, _reproductor, false);
         }
@@ -124,6 +125,12 @@ public class GravityManager : MonoBehaviour
 
     }
 
+    private IEnumerator WarningGravityChange()
+    {
+        yield return GravityWarning.Instance.FlashEffect();
+        StartFloating();
+    }
+
     private void StartFloating()
     {
         // Los jugadores comienzan a flotar
@@ -144,7 +151,7 @@ public class GravityManager : MonoBehaviour
         // Logro: Alienígenas
         AchievementManager.UnlockAchievement("Future_Alienígenas");
 
-        //Logro: Inteligencia Artificial
+        // Logro: Inteligencia Artificial
         consecutiveGravityChanges++;
 
         if (consecutiveGravityChanges >= 5)
@@ -200,5 +207,38 @@ public class GravityManager : MonoBehaviour
     {
         _optionsPanel.SetActive(true);
         runningGame = false;
+    }
+
+    private void ShowCorrectButton()
+    {
+        if (GameSceneManager.instance.practiceStarted)
+        {
+            // Se muestra el botón de salir
+            _exitButton.SetActive(true);
+        }
+        else
+        {
+            // Se muestra el botón de abandonar la partida junto con la advertencia
+            _leaveAdvise.SetActive(true);
+            _leaveButton.SetActive(true);
+        }
+    }
+
+    public void ExitPracticeMode()
+    {
+        // Se indica que ha terminado el juego
+        runningGame = false;
+        // Se calcula la puntuación del jugador en base a los resultados
+        GameSceneManager.instance.GameOverEgyptFuture(_survivedTime, true);
+    }
+
+    public void ExitGame()
+    {
+        // Se indica que se ha terminado el juego
+        runningGame = false;
+        // Se resetea el estado inicial para comenzar una nueva partida
+        GameSceneManager.instance.ResetState();
+        // Se comienza la transición para volver al Lobby
+        StartCoroutine(LoadingScreenManager.instance.FinalFade("LobbyMenu"));
     }
 }

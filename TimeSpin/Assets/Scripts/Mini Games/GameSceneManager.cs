@@ -97,7 +97,7 @@ public class GameSceneManager : MonoBehaviour
                 if (gameStarted && !practiceStarted)
                 {
                     Instantiate(playerPrefab, startingPositionLobby, Quaternion.identity);
-                    GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>()._speed = 2f;
+                    GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>()._speed = 3f;
                 }
                 practiceStarted = false; // Se indica que no ya se ha terminado el minijuego de práctica
                 // Se eliminan las momias del minijuego anterior
@@ -113,13 +113,13 @@ public class GameSceneManager : MonoBehaviour
                 gameStarted = true;
                 // Se instancia al jugador en la posición de inicio adecuada
                 Instantiate(playerPrefab, _startingPositionPrehistory, Quaternion.identity);
-                GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>()._speed = 3f;
+                GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>()._speed = 3.5f;
                 break;
             case "Egypt":
                 // Una vez se cambia de la primera escena, se indica que ya ha comenzado el juego
                 gameStarted = true;
                 // Se instancia al jugador en la posición de inicio adecuada con la escala adecuada
-                Instantiate(playerPrefab, _startingPositionEgypt, Quaternion.identity).transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+                Instantiate(playerPrefab, _startingPositionEgypt, Quaternion.identity).transform.localScale = new Vector3(0.55f, 0.55f, 0.55f);
                 GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>()._speed = 2f;
                 // Se activa la lámpara
                 Light farol = GameObject.FindGameObjectWithTag("LuzFarol").GetComponent<Light>();
@@ -130,7 +130,7 @@ public class GameSceneManager : MonoBehaviour
                 gameStarted = true;
                 // Se instancia al jugador en la posición de inicio adecuada
                 Instantiate(playerPrefab, _startingPositionMedieval, Quaternion.identity);
-                GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>()._speed = 4f;
+                GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>()._speed = 5f;
                 break;
             case "Maya":
                 // Una vez se cambia de la primera escena, se indica que ya ha comenzado el juego

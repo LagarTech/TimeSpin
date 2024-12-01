@@ -14,10 +14,9 @@ public class AudioPlayer : MonoBehaviour
         reproductor = GetComponent<AudioSource>();
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        if (ponerAlEmpezar)
+        if(ponerAlEmpezar)
         {
             PonerClip();
         }
