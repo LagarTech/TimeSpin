@@ -193,8 +193,8 @@ public class GridManager : MonoBehaviour
             Debug.Log("Desbloqueado: MujeresConDerechos");
         }
 
-        // 8. ProcesoDeMomificacion: Obtén 30 puntos en un minuto
-        if (PointsInLastMinute() >= 30)
+        // 8. ProcesoDeMomificacion: Obtén 30 puntos 
+        if (_playerScore >= 30)
         {
             AchievementManager.UnlockAchievement("Egipto_ProcesoDeMomificacion");
             Debug.Log("Desbloqueado: ProcesoDeMomificacion");
@@ -346,6 +346,14 @@ public class GridManager : MonoBehaviour
         if (!runningGame) return;
         // Se indica que ha terminado el juego
         runningGame = false;
+
+        // Revisión de logros finales
+        if (_numSpikes >= 2)
+        {
+            AchievementManager.UnlockAchievement("Egipto_DiversidadEnFaraones");
+            Debug.Log("Desbloqueado: DiversidadEnFaraones");
+        }
+
         // Se calcula la puntuación del jugador en base a los resultados
         GameSceneManager.instance.GameOverEgyptFuture(_survivedTime, true);
     }
@@ -354,8 +362,7 @@ public class GridManager : MonoBehaviour
     //Cada vez que se obtienen puntos
     public void AddPoints(int points)
     {
-        int _playerScore = (int)(50 * _survivedTime / 120f);
-        _playerScore += points;
+        _playerScore += points; // Sumar directamente los puntos obtenidos
         _scoreHistory.Enqueue((Time.time, points));
 
         // Limpia la cola eliminando los puntos fuera del rango de 60 segundos
@@ -373,7 +380,7 @@ public class GridManager : MonoBehaviour
         // Suma los puntos dentro del rango de 60 segundos
         foreach (var entry in _scoreHistory)
         {
-            if (Time.time - entry.time <= 60f)
+            if (Time.time - entry.time <= 120f)
             {
                 totalPoints += entry.points;
             }

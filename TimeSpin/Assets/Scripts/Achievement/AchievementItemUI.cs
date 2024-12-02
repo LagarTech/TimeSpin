@@ -41,6 +41,7 @@ public class AchievementItemUI : MonoBehaviour
     public void SetAchievementData(AchievementData data)
     {
         unlockedAchievement = data.IsUnlocked;
+        closeButton.SetActive(false);   
 
         // Configurar título
         if (titleText != null)
