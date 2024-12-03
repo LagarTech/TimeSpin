@@ -16,6 +16,11 @@ public class AudioPlayer : MonoBehaviour
 
     private void Start()
     {
+        if(GameSceneManager.instance.initiatedGame)
+        {
+            ponerAlEmpezar = true;
+        }
+
         if(ponerAlEmpezar)
         {
             PonerClip();

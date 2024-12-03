@@ -35,6 +35,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Scene _currentScene = Scene.Lobby; // Se comienza en 
 
     // Variables encargadas de la gestión de los minijuegos
+    // PREHISTORIA
+    private bool _isHitting = false;
     // EGIPTO
     [SerializeField] public Tile _currentTile; // Casilla en la que se encuentra el personaje
     // MEDIEVAL
@@ -43,7 +45,8 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody _rb;
     private bool _isGrounded = true; // Se indica que se encuentra en el suelo
     private float _jumpForce = 5f; // Fuerza con la que salta
-    private bool _isConfused = false;
+    public bool isConfused = false;
+    private float _confusedTime = 0f;
 
     // FUTURO
     [SerializeField] private bool _startedRotation = false; // Variable que controla el giro del personaje
@@ -126,6 +129,16 @@ public class PlayerMovement : MonoBehaviour
                     {
                        Interact();
                     }
+                }
+                // Gestión del movimiento con la animación de golpeo
+                AnimatorStateInfo stateInfo = _animatorController.GetCurrentAnimatorStateInfo(0);
+                if(stateInfo.IsName("Standing Melee Attack Downward"))
+                {
+                    _isHitting = true;
+                }
+                else
+                {
+                    _isHitting = false;
                 }
                 break;
 
@@ -223,16 +236,29 @@ public class PlayerMovement : MonoBehaviour
                 break;
         }
 
+        AnimatorStateInfo state = _animatorController.GetCurrentAnimatorStateInfo(0);
+        if (state.IsName("Pick Fruit"))
+        {
+            _rb.velocity = Vector3.zero;
+        }
+
         // Actualiza la velocidad del Rigidbody manteniendo la gravedad
         Vector3 currentVelocity = _rb.velocity;
         Vector3 horizontalVelocity = _movementDirection * _speed;
         // Si está confuso, se invierten sus controles
-        if(_isConfused)
+        if(isConfused)
         {
             horizontalVelocity = new Vector3 (-horizontalVelocity.x, horizontalVelocity.y, horizontalVelocity.z);
         }
 
-        _rb.velocity = new Vector3(horizontalVelocity.x, currentVelocity.y, horizontalVelocity.z);
+        if(_isHitting)
+        {
+            _rb.velocity = Vector3.zero;
+        }
+        else
+        {
+            _rb.velocity = new Vector3(horizontalVelocity.x, currentVelocity.y, horizontalVelocity.z);
+        }
 
         // Calcula la velocidad del Animator usando solo las componentes x y z
         float currentSpeed = new Vector3(_rb.velocity.x, 0f, _rb.velocity.z).magnitude;
@@ -254,6 +280,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Rotar el personaje según la dirección de movimiento
+        if (_isHitting) return;
         RotateCharacter();
 
     }
@@ -368,7 +395,11 @@ public class PlayerMovement : MonoBehaviour
 
             if(collision.gameObject.GetComponent<TrunkMovement>() != null)
             {
-                StartCoroutine(ConfusedState());
+                _confusedTime = 0f;
+                if(!isConfused)
+                {
+                    StartCoroutine(ConfusedState());
+                }
                 MusicManager.PonerMusica(_clipAudio, _reproductor, false);
             }
         }
@@ -396,9 +427,16 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator ConfusedState()
     {
-        _isConfused = true;
-        yield return new WaitForSeconds(5f);
-        _isConfused = false;
+        isConfused = true;
+
+        // Bucle que se ejecuta mientras no haya pasado el tiempo total
+        while (_confusedTime < 5f)
+        {
+            _confusedTime += Time.deltaTime; // Aumentar el tiempo transcurrido
+            yield return null; // Esperar hasta el siguiente frame
+        }
+
+        isConfused = false;
     }
 
     #endregion
@@ -435,9 +473,40 @@ public class PlayerMovement : MonoBehaviour
         _animatorController.SetTrigger("Interacting");
     }
 
-    public void HitDinosaur()
+    public void HitDinosaur(Vector3 dinosaurPosition)
     {
+        // Se calcula la rotación del personaje mirando al dinosaurio
+        Vector3 direction = (dinosaurPosition - transform.position).normalized;
+        direction.y = 0;
+        Quaternion desiredRotation = Quaternion.LookRotation(direction);
+        StartCoroutine(RotateToDinosaur(desiredRotation));
         _animatorController.SetTrigger("Hit");
+
+    }
+
+
+    private IEnumerator RotateToDinosaur(Quaternion rotacionObjetivo, float duracion = 0.25f)
+    {
+        // Rotación inicial
+        Quaternion rotacionInicial = transform.rotation;
+
+        // Tiempo transcurrido
+        float tiempo = 0f;
+
+        while (tiempo < duracion)
+        {
+            // Incrementar el tiempo
+            tiempo += Time.deltaTime;
+
+            // Interpolar entre la rotación inicial y la rotación objetivo
+            transform.rotation = Quaternion.Lerp(rotacionInicial, rotacionObjetivo, tiempo / duracion);
+
+            // Esperar al siguiente frame
+            yield return null;
+        }
+
+        // Asegurarse de que termine exactamente en la rotación objetivo
+        transform.rotation = rotacionObjetivo;
     }
 
 }

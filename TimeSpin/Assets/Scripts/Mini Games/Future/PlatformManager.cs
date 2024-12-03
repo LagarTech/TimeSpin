@@ -153,6 +153,7 @@ public class PlatformManager : MonoBehaviour
             yield return null;
         }
 
+        if (platform.GetComponentInChildren<Platform>() == null) yield break;
         // Se apaga la plataforma, sólo en el cliente    
         platform.GetComponentInChildren<Platform>().FallPlatform();
         

@@ -35,6 +35,9 @@ public class Hole : MonoBehaviour
         // Simula la caída
         yield return new WaitForSeconds(_respawnDelay / 3);
 
+        // Se desactiva su confusión
+        player.gameObject.GetComponent<PlayerMovement>().isConfused = false;
+
         // Desactiva al jugador durante un breve periodo de tiempo
         player.gameObject.SetActive(false);
 

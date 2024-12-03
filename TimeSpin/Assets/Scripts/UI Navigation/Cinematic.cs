@@ -58,7 +58,6 @@ public class Cinematic : MonoBehaviour
             MobileController.instance.interactuar.onClick.RemoveListener(HandleMobileInteraction);
         }
         Cinematica.SetActive(false);
-
         UI_Controller.instance.StartVideo();
     }
 }

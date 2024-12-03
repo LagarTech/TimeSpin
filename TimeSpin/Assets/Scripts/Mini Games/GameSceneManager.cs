@@ -11,6 +11,8 @@ public class GameSceneManager : MonoBehaviour
 {
     public static GameSceneManager instance;
 
+    // Variable que indica si es la primera vez que se entra en el jueg
+    public bool initiatedGame = false;
     public bool gameStarted = false;
     public bool practiceStarted = false;
     public bool gameFinished = false;
@@ -23,8 +25,8 @@ public class GameSceneManager : MonoBehaviour
     const float MAX_SURVIVED_TIME = 120f;
     const int MAX_POINTS_EG_FT = 50;
     // Cálculo de puntuaciones del minijuego Maya
-    const float MIN_RACE_TIME = 50f;
-    const float MAX_RACE_TIME = 100f;
+    const float MIN_RACE_TIME = 30f;
+    const float MAX_RACE_TIME = 80f;
     const int MAX_POINTS_MY = 50;
     // Se almacenan los resultados de los juegos y los puntos asociados para mostrarlos al final
     [SerializeField] private int[] _resultsGames = new int[NUM_GAMES];
@@ -113,7 +115,7 @@ public class GameSceneManager : MonoBehaviour
                 gameStarted = true;
                 // Se instancia al jugador en la posición de inicio adecuada
                 Instantiate(playerPrefab, _startingPositionPrehistory, Quaternion.identity);
-                GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>()._speed = 3.5f;
+                GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>()._speed = 4f;
                 break;
             case "Egypt":
                 // Una vez se cambia de la primera escena, se indica que ya ha comenzado el juego

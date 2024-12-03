@@ -57,6 +57,8 @@ public class UI_Controller : MonoBehaviour
     public GameObject PanelInfo;
     public GameObject PanelRanking;
 
+    public GameObject FondoCinematica;
+
     private void Awake()
     {
         if (instance == null)
@@ -86,6 +88,7 @@ public class UI_Controller : MonoBehaviour
             CreditosPanel.SetActive(false);
             Volver.SetActive(false);
             Nombre.SetActive(false);
+            AbandonarBoton.SetActive(true);
 
             // Se agregan los eventos a los botones asociados
             avanzarButton.onClick.AddListener(OnAvanzarButtonClicked);
@@ -244,6 +247,8 @@ public class UI_Controller : MonoBehaviour
 
         // Muestra la cinem?tica
         Cinematica.SetActive(true);
+
+        FondoCinematica.SetActive(true);
     }
 
     // M?todo que se ejecutar? cuando se pulse el bot?n de avanzar
@@ -257,6 +262,13 @@ public class UI_Controller : MonoBehaviour
     {
         // Comenzar el vídeo
         videoPlayer.Play();
+        StartCoroutine(HidePanel());
+    }
+
+    private IEnumerator HidePanel()
+    {
+        yield return new WaitForSeconds(0.25f);
+        FondoCinematica.SetActive(false);
     }
 
     void OnJugarButtonClicked()
@@ -285,6 +297,8 @@ public class UI_Controller : MonoBehaviour
         Instantiate(playerPrefab, GameSceneManager.instance.startingPositionLobby, Quaternion.identity);
         // Se oculta el menú
         Menu.SetActive(false);
+        // Se muestra el botón de salir
+        AbandonarBoton.SetActive(true);
 
         SelectionTable.Instance.runningGame = true;
     }
@@ -364,12 +378,16 @@ public class UI_Controller : MonoBehaviour
 
     public void OnVideoEnd(VideoPlayer vp)
     {
+        // Ocultar fondo cinematica
+        FondoCinematica.SetActive(false);
         // Mostrar el lobby
         Menu.SetActive(true);
         Nombre.SetActive(true);
         videoPlayer.enabled = false;
         AbandonarBoton.SetActive(true);
         audioPlayer.PonerClip();
+
+        GameSceneManager.instance.initiatedGame = true;
     }
 
     public void ShowGameInfo()

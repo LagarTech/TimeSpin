@@ -28,6 +28,11 @@ public class TrunkMovement : MonoBehaviour
 
         // Rota el tronco alrededor de su propio eje Z
         transform.Rotate(Vector3.forward * _rotationSpeed * Time.deltaTime, Space.Self);
+
+        // Fija la componente Y de la rotación a 90, manteniendo X y Z intactos
+        Vector3 currentRotation = transform.eulerAngles;
+        currentRotation.y = 90f;
+        transform.eulerAngles = currentRotation;
     }
 
     private void ReturnToPool()

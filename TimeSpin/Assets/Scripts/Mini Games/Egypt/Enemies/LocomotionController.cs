@@ -30,7 +30,7 @@ public class LocomotionController : MonoBehaviour
         _targetPosition = Vector3.zero;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         // Se evitan los movimientos si el juego no ha comenzado
         if (!GridManager.Instance.runningGame) return;
@@ -114,7 +114,7 @@ public class LocomotionController : MonoBehaviour
     // Función para calcular si el agente ha llegado a su destino
     private bool AtDestination()
     {
-        if (Vector3.Distance(transform.position, _targetPosition) < 0.01)
+        if (Vector3.Distance(transform.position, _targetPosition) < 0.1f)
         {
             return true;
         }

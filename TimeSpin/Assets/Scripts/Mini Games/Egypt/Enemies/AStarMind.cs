@@ -28,7 +28,7 @@ public class AStarMind : MonoBehaviour
         LocomotionController.MoveDirection nextMove = _path[_path.Count - 1];
 
         return nextMove;
-    } 
+    }
 
     private void Repath()
     {
@@ -58,7 +58,7 @@ public class AStarMind : MonoBehaviour
         _openedList.Remove(currentNode);
 
         // CICLO DE BÚSQUEDA HASTA LLEGAR A LA META
-        while(!firstNode.isGoal)
+        while (!firstNode.isGoal)
         {
             // Función expandir - se obtienen las casillas caminables destino
             Tile[] walkableNeighbours = GridManager.Instance.GetWalkableNeighbours(currentCell);
@@ -89,24 +89,22 @@ public class AStarMind : MonoBehaviour
                 _openedList.Add(nextNode);
             }
 
-            if(_openedList.Count == 0)
+            if (_openedList.Count == 0)
             {
                 Debug.Log("No hay vecinos caminables en la casilla: " + currentCell.xTile + "  " + currentCell.zTile);
             }
-
-            // SE ORDENA LA LISTA DE NUEVO
-            _openedList.Sort(Comparator.CompareNodesByF);
-            firstNode = _openedList[0];
-            currentCell = firstNode.nodeInfo;
-            _closedList.Add(firstNode);
-            _openedList.Remove(firstNode);
+            else
+            {
+                // SE ORDENA LA LISTA DE NUEVO
+                _openedList.Sort(Comparator.CompareNodesByF);
+                firstNode = _openedList[0];
+                currentCell = firstNode.nodeInfo;
+                _closedList.Add(firstNode);
+                _openedList.Remove(firstNode);
+            }
         }
 
-        if (firstNode.isGoal)
-        {
-            CalculatePath(firstNode);
-            return;
-        }
+        CalculatePath(firstNode);      
     }
 
     // Se calcula la heurística de una casilla
@@ -144,7 +142,7 @@ public class AStarMind : MonoBehaviour
             {
                 return true;
             }
-            IsCicle(node.previousNode);
+            return IsCicle(node.previousNode);
         }
         return false;
     }

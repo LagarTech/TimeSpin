@@ -38,6 +38,7 @@ public class MummyBehaviour : MonoBehaviour
             Vector2Int tilePos = new Vector2Int((int)transform.position.x, -(int)transform.position.z);
             _currentTile = GridManager.Instance.GetTile(tilePos.x, tilePos.y);
 
+            _target = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
             // Se toma la casilla en la que se encuentra el objetivo
             Tile targetTile = _target.GetCurrentTile();
             // Se establece un nuevo movimiento en función de lo calculado con el algoritmo de búsqueda

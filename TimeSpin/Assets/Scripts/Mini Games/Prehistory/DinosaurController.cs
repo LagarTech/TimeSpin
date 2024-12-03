@@ -29,6 +29,8 @@ public class DinosaurController : MonoBehaviour
     [SerializeField] private AudioClip _clipAudio; // Sonido de golpeo al dinosaurio
     [SerializeField] private AudioClip _clipAudio2; // Sonido de derrota del T-Rex
 
+    [SerializeField] private GameObject _POW;
+
     void Start()
     {
         // Si el dinosaurio es un T-Rex, necesita dos golpes
@@ -75,7 +77,8 @@ public class DinosaurController : MonoBehaviour
     void HitDinosaur()
     {
         // Animación de golpeo
-        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().HitDinosaur();
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().HitDinosaur(transform.position);
+        StartCoroutine(POW());
         _hitCount++;
         if (_hitCount >= _requiredHits && !_isHit)
         {
@@ -171,6 +174,13 @@ public class DinosaurController : MonoBehaviour
             // Si el jugador está cerca, lo golpea
             HitDinosaur();
         }
+    }
+
+    private IEnumerator POW()
+    {
+        _POW.SetActive(true);
+        yield return new WaitForSeconds(0.2f);
+        _POW.SetActive(false);
     }
 }
 
