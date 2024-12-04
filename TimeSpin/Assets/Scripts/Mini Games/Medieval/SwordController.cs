@@ -49,6 +49,15 @@ public class SwordController : MonoBehaviour
             _rb.velocity = Vector3.zero; // Se desactiva la velocidad
             transform.SetParent(player.transform);
             transform.localPosition = new Vector3(0, 1, 0);
+
+            // Desactivar el collider de la espada
+            Collider swordCollider = GetComponent<Collider>();
+            if (swordCollider != null)
+            {
+                swordCollider.enabled = false;
+            }
+
+            // Música de fondo
             MusicManager.PonerMusica(_clipAudio, _reproductor, false);
         }
     }
