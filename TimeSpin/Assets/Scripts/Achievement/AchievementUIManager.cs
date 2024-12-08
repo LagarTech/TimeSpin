@@ -1,5 +1,7 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
+
 
 public class AchievementUIManager : MonoBehaviour
 {
@@ -8,9 +10,6 @@ public class AchievementUIManager : MonoBehaviour
     [SerializeField] private GameObject fullScreenDetailText; // Texto a pantalla completa para descripción
     [SerializeField] private GameObject closeButton; // Botón de cerrar para fullscreen
     [SerializeField] private GameObject panel;
-
-    [SerializeField] private GameObject notificationPanel; // Panel para la notificación
-    [SerializeField] private TMP_Text notificationText;    // Texto de la notificación
 
     private GameObject currentAchievementPrefab; // Prefab actual del logro
 
@@ -57,30 +56,6 @@ public class AchievementUIManager : MonoBehaviour
         {
             Debug.LogError("No se han asignado las referencias necesarias (AchievementsMenu o FullScreenDetailContainer) en el Inspector.");
         }
-    }
-
-    // Función para mostrar la notificación
-    public void ShowAchievementNotification(string achievementTitle)
-    {
-        if (notificationPanel != null && notificationText != null)
-        {
-            notificationText.text = "¡Logro Desbloqueado!\n" + achievementTitle;
-            notificationPanel.SetActive(true);
-
-            // Ocultar la notificación después de unos segundos
-            StartCoroutine(HideNotificationAfterDelay(3f));
-        }
-        else
-        {
-            Debug.LogError("Faltan referencias al panel o texto de notificación en el Inspector.");
-        }
-    }
-
-    // Corrutina para ocultar la notificación después de un tiempo
-    private IEnumerator HideNotificationAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        notificationPanel.SetActive(false);
     }
 }
 

@@ -11,6 +11,11 @@ public static class AchievementManager
         PlayerPrefs.SetInt(achievementKey, 1);
         PlayerPrefs.Save();
 
+        // Derivar el título automáticamente del achievementKey (ejemplo: "Medieval_CaballerosYTorneos" -> "Medieval Caballeros Y Torneos")
+        string achievementTitle = achievementKey.Replace("_", " ");
+
+        // Mostrar la notificación usando el sistema de notificaciones
+        AchievementNotificationSystem.ShowNotification(achievementTitle);
     }
 
     public static bool IsAchievementUnlocked(string achievementKey)
