@@ -33,6 +33,7 @@ public class GameSceneManager : MonoBehaviour
     public int[] pointsGames = new int[NUM_GAMES];
 
     public int totalPoints = 0;
+    private int highScore = 0; // Puntuación máxima por defecto
 
     // Gestión de las escenas
     // Control de la escena en la que se encuentra el jugador
@@ -69,6 +70,9 @@ public class GameSceneManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+
+            //Cargo el record guardado
+            highScore = PlayerPrefs.GetInt("HighScore", 0);
         }
         else
         {
@@ -211,6 +215,17 @@ public class GameSceneManager : MonoBehaviour
             // Se almacena el resultado en una lista
             bool isRecord = false;
 
+            // Verificar si es récord
+            if (totalPoints > highScore)
+            {
+                highScore = totalPoints;
+                isRecord = true;
+            }
+            else
+            {
+                isRecord = false;
+            }
+
             if (egypt)
             {
                 _resultsGames[1] = (int)survivedTime;
@@ -255,12 +270,23 @@ public class GameSceneManager : MonoBehaviour
             // Se suman los puntos acumulados
             totalPoints += resultPoints;
 
-            // Se almacena el resultado en la lista
-            _resultsGames[3] = (int)raceTime;
-            pointsGames[3] = resultPoints;
 
             // Se comprueba si es record
             bool isRecord = false;
+            // Verificar si es récord
+            if (totalPoints > highScore)
+            {
+                highScore = totalPoints;
+                isRecord = true;
+            }
+            else
+            {
+                isRecord = false;
+            }
+
+            // Se almacena el resultado en la lista
+            _resultsGames[3] = (int)raceTime;
+            pointsGames[3] = resultPoints;
 
             // Se pasa dicha información a la pantalla de puntuaciones para mostrarlo
             LoadingScreenManager.instance.SceneToLobbyTransition("LobbyMenu", (int)raceTime, resultPoints, isRecord);
@@ -274,13 +300,24 @@ public class GameSceneManager : MonoBehaviour
     public void GameOverPrehistoryMedieval(int points, int numDefeated, bool prehistory)
     {
         if (!practiceStarted)
-        {
+        {   
+            // Como resultado, se tomará el número de espadas cogidas y el número de dinosaurios derrotados
+            bool isRecord = false;
+
             // La puntuación de estos minijuegos viene determinada por la propia partida
             int resultPoints = points;
             totalPoints += resultPoints; // Se suman los puntos al total
 
-            // Como resultado, se tomará el número de espadas cogidas y el número de dinosaurios derrotados
-            bool isRecord = false;
+            // Verificar si es récord
+            if (totalPoints > highScore)
+            {
+                highScore = totalPoints;
+                isRecord = true;
+            }
+            else
+            {
+                isRecord = false;
+            }
 
             if (prehistory)
             {
@@ -302,6 +339,12 @@ public class GameSceneManager : MonoBehaviour
         {
             LoadingScreenManager.instance.SceneToLobbyTransition("LobbyMenu", 0, 0, false);
         }
+    }
+
+    private void OnApplicationQuit()
+    {
+        // Guardar el récord en PlayerPrefs
+        PlayerPrefs.SetInt("HighScore", highScore);
     }
 
     public void ResetState()
