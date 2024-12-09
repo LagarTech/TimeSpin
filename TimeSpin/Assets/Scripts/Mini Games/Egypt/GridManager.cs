@@ -63,6 +63,15 @@ public class GridManager : MonoBehaviour
     //Centro 
     public bool centroPisado;
 
+    private bool logr01;
+    private bool logr02;
+    private bool logr03;    
+    private bool logr04;    
+    private bool logr05;    
+    private bool logr06;
+    private bool logr07;
+    private bool logr08;    
+
     // OPCIONES Y CONFIGURACIÓN
 
     [SerializeField]
@@ -91,6 +100,8 @@ public class GridManager : MonoBehaviour
         PrepareSpikesSpawn();
         // Se preapara el menú de opciones
         ShowCorrectButton();
+        // Mostrar el récord al cargar la escena
+        MinigameController.Instance.ShowRecord();
     }
 
     private void Update()
@@ -141,11 +152,13 @@ public class GridManager : MonoBehaviour
 
     private void CheckAchievements()
     {
+
         // 1. AstrologiaDePiramides: Sobrevive 30 segundos sin ser golpeado
-        if (_survivedTime >= 30f && !PlayerCaught)
+        if (_survivedTime >= 30f && !PlayerCaught && !logr01)
         {
             AchievementManager.UnlockAchievement("Egipto_AstrologiaDePiramides");
             Debug.Log("Desbloqueado: AstrologiaDePiramides");
+            logr01 = true;
         }
 
         // 2. CalendarioEgipcio: Sobrevive 1.5 minutos sin ser atrapado
@@ -194,10 +207,11 @@ public class GridManager : MonoBehaviour
         }
 
         // 8. ProcesoDeMomificacion: Obtén 30 puntos 
-        if (_playerScore >= 30)
+        if (_playerScore >= 30 && !logr08)
         {
             AchievementManager.UnlockAchievement("Egipto_ProcesoDeMomificacion");
             Debug.Log("Desbloqueado: ProcesoDeMomificacion");
+            logr08 = true; 
         }
     }
 
@@ -431,6 +445,19 @@ public class GridManager : MonoBehaviour
         GameSceneManager.instance.ResetState();
         // Se comienza la transición para volver al Lobby
         StartCoroutine(LoadingScreenManager.instance.FinalFade("LobbyMenu"));
+
+        // Guardar el récord
+        RecordManager.Instance.SaveRecord("Egypt", _playerScore);
+
+        // Mostrar el récord solo si MinigameController está disponible
+        if (MinigameController.Instance != null)
+        {
+            MinigameController.Instance.ShowRecord();
+        }
+        else
+        {
+            Debug.LogWarning("MinigameController.Instance no está presente en la escena.");
+        }
     }
 
 }

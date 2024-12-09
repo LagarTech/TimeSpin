@@ -31,6 +31,10 @@ public class DinosaurController : MonoBehaviour
 
     [SerializeField] private GameObject _POW;
 
+    private bool logr06;
+    private bool logr07;
+    private bool logr08;
+
     void Start()
     {
         // Si el dinosaurio es un T-Rex, necesita dos golpes
@@ -85,26 +89,29 @@ public class DinosaurController : MonoBehaviour
             _isHit = true;
 
             // Logro PrimerosAsentamientos
-            if (_dinosaurType == "T-Rex")
+            if (_dinosaurType == "T-Rex" && !logr06)
             {
                 PrehistoryManager.Instance._tRexDefeated = true;
                 AchievementManager.UnlockAchievement("Prehistory_PrimerosAsentamientos");
+                logr06 = true;
             }
 
             // Logro DuraciónExtensa
-            if (_dinosaurType == "Diplodocus")
+            if (_dinosaurType == "Diplodocus" && !logr07)
             {
                 PrehistoryManager.Instance._velociraptorHits++;
                 if (PrehistoryManager.Instance._velociraptorHits >= 3)
                 {
                     AchievementManager.UnlockAchievement("Prehistory_DuraciónExtensa");
+                    logr07 = true;
                 }
             }
 
             // Logro ElFuego
-            if (_timer <= 5f)
+            if (_timer <= 5f && !logr08)
             {
                 AchievementManager.UnlockAchievement("Prehistory_ElFuego");
+                logr08 = true;
             }
 
             // Logro: Golpear todos los agujeros

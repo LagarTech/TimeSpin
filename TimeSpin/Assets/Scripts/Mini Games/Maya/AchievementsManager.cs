@@ -18,6 +18,15 @@ public class AchievementsManager : MonoBehaviour
     private bool noJumpsUsed = true; // Sin saltar para 
     private int score = 0; // Puntuación del jugador para 
 
+    private bool logr01;
+    private bool logr02;
+    private bool logr03;
+    private bool logr04;
+    private bool logr05;
+    private bool logr06;
+    private bool logr07;
+    private bool logr08;
+
     private void Awake()
     {
         if (instance == null)
@@ -71,44 +80,52 @@ public class AchievementsManager : MonoBehaviour
 
     private void CheckAchievements()
     {
-        if (!unlockedAchievements.Contains("AbandonoDeLasCiudades"))
+        if (!unlockedAchievements.Contains("AbandonoDeLasCiudades") && !logr01)
         {
             AchievementManager.UnlockAchievement("Maya_AbandonoDeLasCiudades");
+               logr01 = true;
         }
 
-        if (noObstaclesHit && noFalls)
+        if (noObstaclesHit && noFalls && !logr02)
         {
             AchievementManager.UnlockAchievement("Maya_CalendarioAvanzado");
+            logr02 = true;
         }
 
-        if (consecutiveJumps >= 5)
+        if (consecutiveJumps >= 5 && !logr03)
         {
             AchievementManager.UnlockAchievement("Maya_ConocimientosAstronómicos");
+            logr03 = true;
         }
 
-        if (raceTimer <= 60f)
+        if (raceTimer <= 60f && !logr04)
         {
             AchievementManager.UnlockAchievement("Maya_EscrituraJeroglifica");
+            logr04 = true;
         }
 
-        if (noJumpsUsed)
+        if (noJumpsUsed && !logr05)
         {
             AchievementManager.UnlockAchievement("Maya_IngenieríaHidráulica");
+            logr05 = true;
         }
 
-        if (consecutiveFalls >= 2)
+        if (consecutiveFalls >= 2 && !logr06)
         {
             AchievementManager.UnlockAchievement("Maya_JuegoDePelota");
+            logr06 = true;
         }
 
-        if (noFalls)
+        if (noFalls && !logr07)
         {
             AchievementManager.UnlockAchievement("Maya_PirámidesEscalonadas");
+            logr07 = true;
         }
 
-        if (score >= 50)
+        if (score >= 50 && !logr08)
         {
             AchievementManager.UnlockAchievement("Maya_SacrificiosHumanos");
+            logr08 = true;
         }
     }
 

@@ -8,6 +8,7 @@ public class AchievementNotificationSystem : MonoBehaviour
 
     [SerializeField] private GameObject notificationPanel;
     [SerializeField] private TMP_Text notificationText;
+    [SerializeField] private GameObject exclamacion;
 
     private void Awake()
     {
@@ -23,11 +24,7 @@ public class AchievementNotificationSystem : MonoBehaviour
             Destroy(gameObject);
         }
 
-        // Asegurarse de que el panel esté oculto al inicio
-        /*if (notificationPanel != null)
-        {
-            notificationPanel.SetActive(false);
-        }*/
+
     }
 
     // Método estático para mostrar una notificación
@@ -48,6 +45,7 @@ public class AchievementNotificationSystem : MonoBehaviour
         if (notificationPanel != null && notificationText != null)
         {
             notificationPanel.SetActive(true);
+            exclamacion.SetActive(true);
             notificationText.text = "¡Logro Desbloqueado!\n" + achievementTitle;
             
 
@@ -63,6 +61,7 @@ public class AchievementNotificationSystem : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         notificationPanel.SetActive(false);
+        exclamacion?.SetActive(false);
     }
 }
 

@@ -27,6 +27,8 @@ public class PlatformManager : MonoBehaviour
 
     private int consecutiveFalls = 0; //plataformas consecutivas caidas
 
+    private bool logr06;
+
     private void Awake()
     {
         if(instance == null)
@@ -162,9 +164,10 @@ public class PlatformManager : MonoBehaviour
 
         consecutiveFalls++;
 
-        if (consecutiveFalls >= 3)
+        if (consecutiveFalls >= 3 && !logr06)
         {
             AchievementManager.UnlockAchievement("Future_CarrerasEspaciales");
+               logr06 = true;
         }
     }
 

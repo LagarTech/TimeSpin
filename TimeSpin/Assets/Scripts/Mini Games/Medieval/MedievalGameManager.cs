@@ -54,6 +54,15 @@ public class MedievalGameManager : MonoBehaviour
     [SerializeField] private GameObject _leaveButton;
     [SerializeField] private GameObject _leaveAdvise;
 
+    private bool logr01;
+    private bool logr02;
+    private bool logr03;
+    private bool logr04;
+    private bool logr05;    
+    private bool logr06;
+    private bool logr07;
+    private bool logr08;
+
     private void Awake()
     {
         if(Instance == null)
@@ -123,59 +132,67 @@ public class MedievalGameManager : MonoBehaviour
     private void CheckAchievements()
     {
         // 1. CaballerosYTorneos: Recoge una espada y llévala a su baúl
-        if (_totalObjectsDelivered >= 1)
+        if (_totalObjectsDelivered >= 1 && !logr01)
         {
             AchievementManager.UnlockAchievement("Medieval_CaballerosYTorneos");
             Debug.Log("Desbloqueado: CaballerosYTorneos");
+            logr01 = true;
         }
 
         // 2. ElSistemaFeudal: Lleva al menos una espada de cada tipo al baúl
-        if (_swordsDelivered.Contains("Bronze") && _swordsDelivered.Contains("Silver") && _swordsDelivered.Contains("Gold"))
+        if (_swordsDelivered.Contains("Bronze") && _swordsDelivered.Contains("Silver") && _swordsDelivered.Contains("Gold") && !logr02)
         {
             AchievementManager.UnlockAchievement("Medieval_ElSistemaFeudal");
             Debug.Log("Desbloqueado: ElSistemaFeudal");
+            logr02 = true;
         }
 
         // 3. LaPesteNegra: Lleva al menos 3 espadas de oro en una partida al baúl
-        if (_goldSwordsDelivered >= 3)
+        if (_goldSwordsDelivered >= 3 && !logr03)
         {
             AchievementManager.UnlockAchievement("Medieval_LaPesteNegra");
             Debug.Log("Desbloqueado: LaPesteNegra");
+            logr03 = true;  
         }
 
         // 4. LasCiudadesAmuralladas: Lleva 3 espadas de oro seguidas al baúl
-        if (_goldSwordsDeliveredStreak >= 3)
+        if (_goldSwordsDeliveredStreak >= 3 && !logr04)
         {
             AchievementManager.UnlockAchievement("Medieval_LasCiudadesAmuralladas");
             Debug.Log("Desbloqueado: LasCiudadesAmuralladas");
+            logr04 = true;
         }
 
         // 5. LasCruzadas: Lleva al menos 6 objetos a los baúles
-        if (_totalObjectsDelivered >= 6)
+        if (_totalObjectsDelivered >= 6 && !logr05)
         {
             AchievementManager.UnlockAchievement("Medieval_LasCruzadas");
             Debug.Log("Desbloqueado: LasCruzadas");
+            logr05 = true;
         }
 
         // 6. LosCastillos: No chocar contra ningún obstáculo en una partida
-        if (!_collidedWithObstacle && _timeLeft <= 0)
+        if (!_collidedWithObstacle && _timeLeft <= 0 && !logr06)
         {
             AchievementManager.UnlockAchievement("Medieval_LosCastillos");
             Debug.Log("Desbloqueado: LosCastillos");
+            logr06 = true;
         }
 
         // 7. LosGremios: Utiliza todos los baúles al menos una vez
-        if (_usedBases.Count == NUM_BASES)
+        if (_usedBases.Count == NUM_BASES && !logr07)
         {
             AchievementManager.UnlockAchievement("Medieval_LosGremios");
             Debug.Log("Desbloqueado: LosGremios");
+            logr07 = true;
         }
 
         // 8. MujeresEnElMedievo: Consigue 20 puntos o más
-        if (_score >= POINTS_FOR_MEDIEVAL)
+        if (_score >= POINTS_FOR_MEDIEVAL && !logr08)
         {
             AchievementManager.UnlockAchievement("Medieval_MujeresEnElMedievo");
             Debug.Log("Desbloqueado: MujeresEnElMedievo");
+            logr08 = true;
         }
     }
 

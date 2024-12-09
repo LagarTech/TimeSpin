@@ -210,6 +210,7 @@ public class GameSceneManager : MonoBehaviour
             totalPoints += resultPoints;
             // Se almacena el resultado en una lista
             bool isRecord = false;
+
             if (egypt)
             {
                 _resultsGames[1] = (int)survivedTime;

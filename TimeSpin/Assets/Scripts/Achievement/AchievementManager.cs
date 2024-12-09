@@ -4,18 +4,22 @@ using UnityEngine;
 
 public static class AchievementManager
 {
+
     public static void UnlockAchievement(string achievementKey)
     {
         Debug.Log("Clave" + achievementKey);
         // Desbloquea el logro en PlayerPrefs
-        PlayerPrefs.SetInt(achievementKey, 1);
-        PlayerPrefs.Save();
+        if (!IsAchievementUnlocked(achievementKey))
+        {
+            PlayerPrefs.SetInt(achievementKey, 1);
+            PlayerPrefs.Save();
+            // Derivar el título automáticamente del achievementKey (ejemplo: "Medieval_CaballerosYTorneos" -> "Medieval Caballeros Y Torneos")
+            string achievementTitle = achievementKey.Substring(achievementKey.IndexOf('_') + 1).Replace("_", " ");
 
-        // Derivar el título automáticamente del achievementKey (ejemplo: "Medieval_CaballerosYTorneos" -> "Medieval Caballeros Y Torneos")
-        string achievementTitle = achievementKey.Replace("_", " ");
+            // Mostrar la notificación usando el sistema de notificaciones
+            AchievementNotificationSystem.ShowNotification(achievementTitle);
+        }
 
-        // Mostrar la notificación usando el sistema de notificaciones
-        AchievementNotificationSystem.ShowNotification(achievementTitle);
     }
 
     public static bool IsAchievementUnlocked(string achievementKey)

@@ -40,6 +40,12 @@ public class PrehistoryManager : MonoBehaviour
     [SerializeField] private GameObject _leaveButton;
     [SerializeField] private GameObject _leaveAdvise;
 
+    private bool logr01;
+    private bool logr02;
+    private bool logr03;
+    private bool logr04;
+    private bool logr05;
+
     private void Awake()
     {
         if(Instance == null)
@@ -123,18 +129,20 @@ public class PrehistoryManager : MonoBehaviour
         float currentTime = Time.time;
 
         // Logro: Primer golpe
-        if (_hitDinosaurs == 1)
+        if (_hitDinosaurs == 1 && !logr01)
         {
             AchievementManager.UnlockAchievement("Prehistory_PrimerosInstrumentosMusicales");
+            logr01 = true;
         }
 
         // Logro: Racha rápida
-        if (currentTime - _lastHitTime <= 10f)
+        if (currentTime - _lastHitTime <= 10f && !logr02)
         {
             _consecutiveHits++;
             if (_consecutiveHits >= 3)
             {
                 AchievementManager.UnlockAchievement("Prehistory_PinturasRupestres");
+                logr02 = true;
             }
         }
         else
@@ -145,15 +153,18 @@ public class PrehistoryManager : MonoBehaviour
         _lastHitTime = currentTime;
 
         // Logro: Cazador experto
-        if (_hitDinosaurs >= 10)
+        if (_hitDinosaurs >= 10 && !logr03)
         {
             AchievementManager.UnlockAchievement("Prehistory_HerramientasDePiedra");
+            logr03 = true;
+
         }
 
         // Logro: Puntuación perfecta
-        if (_score >= 30)
+        if (_score >= 30 && !logr04)
         {
             AchievementManager.UnlockAchievement("Prehistory_DomesticaciónDeAnimales");
+            logr04 = true;
         }
 
         UpdateUI();
@@ -189,9 +200,10 @@ public class PrehistoryManager : MonoBehaviour
         runningGame = false;
 
         // Logro "El descubrimiento de Ötzi"
-        if (_holesHit.Count == _holes.Length)
+        if (_holesHit.Count == _holes.Length && !logr05)
         {
             AchievementManager.UnlockAchievement("Prehistory_ElDescubrimientoDeÖtzi");
+            logr05 = true;
         }
 
         // Mostrar logros desbloqueados en esta partida

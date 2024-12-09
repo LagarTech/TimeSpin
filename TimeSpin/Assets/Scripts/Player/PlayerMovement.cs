@@ -294,8 +294,6 @@ public class PlayerMovement : MonoBehaviour
         _movementDirection.x = _entradaMovimiento.x; // Izquierda/Derecha (A/D o Joystick eje X).
         _movementDirection.z = _entradaMovimiento.y; // Adelante/Atrás (W/S o Joystick eje Y).
 
-        Debug.Log($"Dirección de Movimiento: {_movementDirection}");
-
     }
 
     private void ProcessMobileInput()

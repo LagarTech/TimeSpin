@@ -47,6 +47,12 @@ public class GravityManager : MonoBehaviour
     [SerializeField] private GameObject _leaveButton;
     [SerializeField] private GameObject _leaveAdvise;
 
+    private bool logr01;
+    private bool logr02;
+    private bool logr03;
+    private bool logr04;
+    private bool logr05;
+
 
     private void Awake()
     {
@@ -118,9 +124,10 @@ public class GravityManager : MonoBehaviour
             }
         }
 
-        if (_survivedTime >= 60f)
+        if (_survivedTime >= 60f && !logr01)
         {
             AchievementManager.UnlockAchievement("Future_Ciudades");
+            logr01 = true;
         }
 
     }
@@ -149,14 +156,20 @@ public class GravityManager : MonoBehaviour
         isGravityInverted = !isGravityInverted;
 
         // Logro: Alienígenas
-        AchievementManager.UnlockAchievement("Future_Alienígenas");
+        if(!logr02)
+        {
+            AchievementManager.UnlockAchievement("Future_Alienígenas");
+            logr02 = true;
+        }
+       
 
         // Logro: Inteligencia Artificial
         consecutiveGravityChanges++;
 
-        if (consecutiveGravityChanges >= 5)
+        if (consecutiveGravityChanges >= 5 && !logr03)
         {
             AchievementManager.UnlockAchievement("Future_InteligenciaArtificialYRobots");
+            logr03 = true;
         }
     }
 
@@ -184,15 +197,17 @@ public class GravityManager : MonoBehaviour
         Physics.gravity = new Vector3(0, -9.81f, 0);
 
         //Logro: Tecnologia de Comunicacion
-        if (_remainingTime <= 0)
+        if (_remainingTime <= 0 && !logr04)
         {
             AchievementManager.UnlockAchievement("Future_TecnologíaDeComunicación");
+            logr04 = true;
         }
 
         float maxScore = 120f; // Cambia esto según tus reglas de puntuación
-        if (_survivedTime >= maxScore)
+        if (_survivedTime >= maxScore && !logr05)
         {
             AchievementManager.UnlockAchievement("Future_VidaEnOtrosPlanetas");
+            logr05 = true;
         }
 
         // Se calcula la puntuación del jugador en base al resultado

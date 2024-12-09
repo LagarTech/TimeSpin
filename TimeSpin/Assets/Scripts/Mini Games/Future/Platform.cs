@@ -20,6 +20,9 @@ public class Platform : MonoBehaviour
 
     public bool isFallen;
 
+    private bool logr07;
+    private bool logr08;
+
     private void Start()
     {
         _meshRenderer = GetComponent<MeshRenderer>();
@@ -45,9 +48,10 @@ public class Platform : MonoBehaviour
         {
             StartCoroutine(PlatformManager.instance.ShakeAndFall(gameObject));
         }
-        if (playerOnPlatformTimer >= 4f)
+        if (playerOnPlatformTimer >= 4f && !logr07)
         {
             AchievementManager.UnlockAchievement("Future_AutomatizaciónDelHogar");
+            logr07 = true;
         }
 
         // Si hay jugadores en la plataforma y no está iluminada
@@ -78,8 +82,14 @@ public class Platform : MonoBehaviour
             // Se activan las plataformas vecinas
             OnPlatformEnter();
 
-            // Logro: CochesVoladores
-            AchievementManager.UnlockAchievement("Future_CochesVoladores");
+            if (!logr08) { 
+
+                // Logro: CochesVoladores
+                AchievementManager.UnlockAchievement("Future_CochesVoladores");
+                logr08 = true;
+            }
+
+
         }
     }
 
