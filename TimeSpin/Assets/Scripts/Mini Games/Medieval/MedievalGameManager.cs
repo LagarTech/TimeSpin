@@ -101,6 +101,7 @@ public class MedievalGameManager : MonoBehaviour
                 SpawnRandomSword();
                 _spawnTimer = 0f;
             }
+
             // Se actualiza la interfaz
             UpdateUI();
         }
@@ -110,6 +111,7 @@ public class MedievalGameManager : MonoBehaviour
         }
 
     }
+
     public void ContarDeliverSword(string swordType)
     {
         _totalObjectsDelivered++;

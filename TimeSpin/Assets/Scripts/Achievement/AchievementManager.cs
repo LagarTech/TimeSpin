@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public static class AchievementManager
 {
-
     public static void UnlockAchievement(string achievementKey)
     {
+        if (GameSceneManager.instance.practiceStarted)
+        {
+            return;
+        }
+
         Debug.Log("Clave" + achievementKey);
         // Desbloquea el logro en PlayerPrefs
         if (!IsAchievementUnlocked(achievementKey))
