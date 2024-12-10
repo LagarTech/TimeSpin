@@ -15,6 +15,16 @@ public class JesterManager : MonoBehaviour
         {
             ActivateJester(swords);
         }
+        else
+        {
+            foreach (var jester in _jesters)
+            {
+                if (!jester.IsActive)
+                {
+                    jester.ContinueWandering();
+                }
+            }
+        }
     }
 
     private void ActivateJester(GameObject[] swords)

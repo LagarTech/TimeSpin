@@ -36,7 +36,7 @@ public class JesterController : MonoBehaviour
         }
         else
         {
-            // Si no hay espadas, vaga por el mapa
+            // Si no hay espadas, sigue vagando
             if (!_agent.hasPath || _agent.remainingDistance < 1f)
             {
                 WanderAround();
@@ -51,6 +51,14 @@ public class JesterController : MonoBehaviour
             _targetSword = targetSword;
             IsActive = true;
             _agent.SetDestination(_targetSword.transform.position);
+        }
+    }
+
+    public void ContinueWandering()
+    {
+        if (!IsActive && !_isCarryingSword && (_targetSword == null || !_agent.hasPath))
+        {
+            WanderAround();
         }
     }
 
