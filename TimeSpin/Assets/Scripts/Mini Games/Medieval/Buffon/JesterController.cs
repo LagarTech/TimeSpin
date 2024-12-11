@@ -16,7 +16,7 @@ public class JesterController : MonoBehaviour
     {
         _agent = GetComponent<NavMeshAgent>();
         _agent.speed = _speed;
-        ChooseRandomWanderTarget();
+        WanderAround();
     }
 
     private void Update()
@@ -36,7 +36,7 @@ public class JesterController : MonoBehaviour
         }
         else
         {
-            // Si no hay espadas, sigue vagando
+            // Si no hay objetivo, sigue vagando
             if (!_agent.hasPath || _agent.remainingDistance < 1f)
             {
                 WanderAround();
@@ -54,12 +54,14 @@ public class JesterController : MonoBehaviour
         }
     }
 
-    public void ContinueWandering()
+    public bool HasTarget()
     {
-        if (!IsActive && !_isCarryingSword && (_targetSword == null || !_agent.hasPath))
-        {
-            WanderAround();
-        }
+        return _targetSword != null || _isCarryingSword;
+    }
+
+    public bool IsTargeting(GameObject sword)
+    {
+        return _targetSword == sword;
     }
 
     private void WanderAround()
@@ -96,6 +98,7 @@ public class JesterController : MonoBehaviour
         Destroy(sword);
         _isCarryingSword = false;
         IsActive = false;
+        WanderAround();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -107,6 +110,7 @@ public class JesterController : MonoBehaviour
         }
     }
 }
+
 
 
 

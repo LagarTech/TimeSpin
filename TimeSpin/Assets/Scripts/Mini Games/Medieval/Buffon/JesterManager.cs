@@ -8,45 +8,20 @@ public class JesterManager : MonoBehaviour
 
     private void Update()
     {
-        // Contar las espadas en la escena
+        // Obtener las espadas en la escena
         GameObject[] swords = GameObject.FindGameObjectsWithTag("Sword");
 
-        if (swords.Length >= 3)
+        foreach (var sword in swords)
         {
-            ActivateJester(swords);
-        }
-        else
-        {
-            foreach (var jester in _jesters)
+            // Asignar espadas a bufones que no tengan objetivo
+            if (!_jesters.Any(j => j.IsTargeting(sword)))
             {
-                if (!jester.IsActive)
+                JesterController availableJester = _jesters.FirstOrDefault(j => !j.HasTarget());
+                if (availableJester != null)
                 {
-                    jester.ContinueWandering();
+                    availableJester.ActivateJester(sword);
                 }
             }
         }
-    }
-
-    private void ActivateJester(GameObject[] swords)
-    {
-        // Ordenar espadas por prioridad: Oro, Plata, Bronce
-        GameObject targetSword = swords
-            .OrderByDescending(sword => GetSwordPriority(sword))
-            .FirstOrDefault();
-
-        // Buscar un bufón disponible
-        JesterController availableJester = _jesters.FirstOrDefault(j => !j.IsActive);
-        if (availableJester != null && targetSword != null)
-        {
-            availableJester.ActivateJester(targetSword);
-        }
-    }
-
-    private int GetSwordPriority(GameObject sword)
-    {
-        if (sword.name.Contains("Espada dorada")) return 3;    // Oro tiene prioridad 3
-        if (sword.name.Contains("Espada plateada")) return 2;  // Plata tiene prioridad 2
-        if (sword.name.Contains("Espada bronce")) return 1;    // Bronce tiene prioridad 1
-        return 0;                                               // Por defecto, menor prioridad
     }
 }
