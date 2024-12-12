@@ -521,7 +521,7 @@ Futuro: Escenarios futuristas llenos de luces neón y elementos flotantes, en un
 ### Interfaz de configuración
 ![Caja](Diseño/ImagenesGDD/Interfaz.png)
 ### Menú principal
-![Caja](Diseño/ImagenesGDD/MenuPrincipal.png)
+![Caja](Diseño/ImagenesGDD/MenúPrincipal.png)
 ### Créditos
 ![Caja](Diseño/ImagenesGDD/PauseMenu.png)
 ### Práctica
