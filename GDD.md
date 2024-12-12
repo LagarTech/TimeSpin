@@ -527,7 +527,7 @@ Futuro: Escenarios futuristas llenos de luces neón y elementos flotantes, en un
 ### Interfaz de voto de minijuego
 ![Caja](Diseño/ImagenesGDD/Práctica.png)
 ### UX del juego
-![Caja](Diseño/ImagenesGDD/UXJuego.png)
+![Caja](Diseño/ImagenesGDD/InterfazCarga.png)
 
 - **Diagrama de flujo**:
 
