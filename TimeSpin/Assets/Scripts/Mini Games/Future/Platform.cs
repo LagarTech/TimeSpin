@@ -20,6 +20,8 @@ public class Platform : MonoBehaviour
 
     public bool isFallen;
 
+    public bool playerFallen = false;
+
     private bool logr07;
     private bool logr08;
 
@@ -43,9 +45,14 @@ public class Platform : MonoBehaviour
         }
 
         // Logro: AutomatizaciónDelHogar
-        // A los 5 segundos se cae la plataforma
+        // A los 3 segundos se cae la plataforma
         if (playerOnPlatformTimer >= 3f)
         {
+            if(!playerFallen)
+            {
+                playerFallen = true;
+                PlatformManager.instance.numPlatformsPlayerFallen++;
+            }
             StartCoroutine(PlatformManager.instance.ShakeAndFall(gameObject));
         }
         if (playerOnPlatformTimer >= 4f && !logr07)

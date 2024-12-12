@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 // Este script se encarga de las inversiones en la gravedad, que se gestionarán por el servidor. La única funcionalidad que realizará el cliente es actualizar el temporizador
 public class GravityManager : MonoBehaviour
@@ -46,6 +47,7 @@ public class GravityManager : MonoBehaviour
     [SerializeField] private GameObject _exitButton;
     [SerializeField] private GameObject _leaveButton;
     [SerializeField] private GameObject _leaveAdvise;
+    [SerializeField] private Slider _gravitySlider;
 
     private bool logr01;
     private bool logr02;
@@ -104,13 +106,15 @@ public class GravityManager : MonoBehaviour
 
         // GESTIÓN DE LA INVERSIÓN DE LA GRAVEDAD
         _gravityTimer += Time.deltaTime;
-
+        // Actualización del slider
+        _gravitySlider.value = Mathf.Min(11 - _gravityTimer, 10);
         if (_gravityTimer >= _gravitySwitchTime)
         {
             // Se inicia el proceso de flotación
             StartCoroutine(WarningGravityChange());
             _gravityTimer = 0; // También se reinicia el temporizador
             MusicManager.PonerMusica(_clipAudio, _reproductor, false);
+            _gravitySlider.value = 10;
         }
 
         if(floating)
@@ -202,14 +206,6 @@ public class GravityManager : MonoBehaviour
             AchievementManager.UnlockAchievement("Future_TecnologíaDeComunicación");
             logr04 = true;
         }
-
-        float maxScore = 120f; // Cambia esto según tus reglas de puntuación
-        if (_survivedTime >= maxScore && !logr05)
-        {
-            AchievementManager.UnlockAchievement("Future_VidaEnOtrosPlanetas");
-            logr05 = true;
-        }
-
         // Se calcula la puntuación del jugador en base al resultado
         GameSceneManager.instance.GameOverEgyptFuture(_survivedTime, false);
     }

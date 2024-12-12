@@ -6,7 +6,7 @@ public class PlayerConfused : MonoBehaviour
 {
     private PlayerMovement playerMovement;
 
-    [SerializeField] private GameObject _confusedDuck;
+    [SerializeField] private GameObject[] _confusedDucks;
 
     // Start is called before the first frame update
     void Start()
@@ -20,11 +20,17 @@ public class PlayerConfused : MonoBehaviour
         // Se activa o desactiva el modelo del pato en función de si el jugador está confuso o no
         if(playerMovement.isConfused)
         {
-            _confusedDuck.SetActive(true);
+            foreach(GameObject pref in _confusedDucks)
+            {
+                pref.SetActive(true);
+            }
         }
         else
         {
-            _confusedDuck.SetActive(false);
+            foreach (GameObject pref in _confusedDucks)
+            {
+                pref.SetActive(false);
+            }
         }
     }
 }

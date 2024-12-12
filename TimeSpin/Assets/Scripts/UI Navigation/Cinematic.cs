@@ -4,6 +4,7 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Video;
 
 public class Cinematic : MonoBehaviour
 {
@@ -56,6 +57,15 @@ public class Cinematic : MonoBehaviour
         if (MobileController.instance.isMobile())
         {
             MobileController.instance.interactuar.onClick.RemoveListener(HandleMobileInteraction);
+            Cinematica.SetActive(false);
+            // Mostrar el lobby
+            UI_Controller.instance.Menu.SetActive(true);
+            UI_Controller.instance.Nombre.SetActive(true);
+            UI_Controller.instance.AbandonarBoton.SetActive(true);
+            UI_Controller.instance.audioPlayer.PonerClip();
+
+            GameSceneManager.instance.initiatedGame = true;
+            return;
         }
         Cinematica.SetActive(false);
         UI_Controller.instance.StartVideo();

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using static AchievementItemUI;
 
@@ -15,6 +16,9 @@ public class LobbyChest : MonoBehaviour
 
     // Prefabs o elementos de UI en la jerarquía que representan logros
     [SerializeField] private List<GameObject> listAchievements;
+
+    // Título del panel
+    [SerializeField] private TMP_Text titulo;
 
     void Start()
     {
@@ -36,15 +40,29 @@ public class LobbyChest : MonoBehaviour
     {
         achievementMenu.SetActive(false);
         SelectionTable.Instance.runningGame = true;
-
-
     }
 
     public void ShowAchievements()
     {   
         SelectionTable.Instance.runningGame = false;
+        UI_Controller.instance.joystick.SetActive(false);
         GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().InteractPlayer();
+        string title = "";
+        switch(minigameName)
+        {
+            case "Prehistory":
+                title = "PREHISTORIA";
+                break;
+            case "Future":
+                title = "FUTURO";
+                break;
+            default:
+                title = minigameName.ToUpper();
+                break;
 
+        }
+        // Se cambia el título del panel
+        titulo.text = "LOGROS " + title;
         achievementMenu.SetActive(true);
         if (achievements.Count != listAchievements.Count)
         {

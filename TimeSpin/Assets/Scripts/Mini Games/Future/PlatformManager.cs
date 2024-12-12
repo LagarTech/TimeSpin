@@ -27,6 +27,8 @@ public class PlatformManager : MonoBehaviour
 
     private int consecutiveFalls = 0; //plataformas consecutivas caidas
 
+    public int numPlatformsPlayerFallen = 0;
+    private bool logr05;
     private bool logr06;
 
     private void Awake()
@@ -51,6 +53,11 @@ public class PlatformManager : MonoBehaviour
     void Update()
     {
         if (!GravityManager.Instance.runningGame) return;
+        if (numPlatformsPlayerFallen >= 5 && !logr05)
+        {
+            logr05 = true;
+            AchievementManager.UnlockAchievement("Future_VidaEnOtrosPlanetas");
+        }
         // Solo continuar si aún no han desaparecido todas las plataformas
         if (_numDisappeared < _totalDisappeared)
         {

@@ -98,7 +98,12 @@ public class PlayerMovement : MonoBehaviour
         {
             case Scene.Lobby:
                 // Si se está en el menú, no te puedes mover
-                if (!SelectionTable.Instance.runningGame) return;
+                if (!SelectionTable.Instance.runningGame)
+                {
+                    _rb.velocity = Vector3.zero;
+                    _animatorController.SetFloat("Speed", 0);
+                    return;
+                }
                 // Gestión de los controles
                 if (MobileController.instance.isMobile())
                 {
@@ -240,6 +245,7 @@ public class PlayerMovement : MonoBehaviour
         if (state.IsName("Pick Fruit"))
         {
             _rb.velocity = Vector3.zero;
+            return;
         }
 
         // Actualiza la velocidad del Rigidbody manteniendo la gravedad

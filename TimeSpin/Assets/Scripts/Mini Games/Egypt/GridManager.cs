@@ -54,8 +54,6 @@ public class GridManager : MonoBehaviour
     public HashSet<Tile> _visitedTiles = new HashSet<Tile>();
     //Cola que almacena las puntuaciones junto con el tiempo en que fueron obtenidas
     private Queue<(float time, int points)> _scoreHistory = new Queue<(float time, int points)>();
-    // Puntuación del jugador
-    private int _playerScore = 0;
     // Indica si el jugador fue atrapado
     public bool PlayerCaught = false;
     // Referencias de UI o externas
@@ -100,8 +98,6 @@ public class GridManager : MonoBehaviour
         PrepareSpikesSpawn();
         // Se preapara el menú de opciones
         ShowCorrectButton();
-        // Mostrar el récord al cargar la escena
-        MinigameController.Instance.ShowRecord();
     }
 
     private void Update()
@@ -200,14 +196,14 @@ public class GridManager : MonoBehaviour
         }
 
         // 7. MujeresConDerechos: Obtén 50 puntos en una partida
-        if (_playerScore >= 50)
+        if (_survivedTime >= 120)
         {
             AchievementManager.UnlockAchievement("Egipto_MujeresConDerechos");
             Debug.Log("Desbloqueado: MujeresConDerechos");
         }
 
         // 8. ProcesoDeMomificacion: Obtén 30 puntos 
-        if (_playerScore >= 30 && !logr08)
+        if (_survivedTime >= 72 && !logr08)
         {
             AchievementManager.UnlockAchievement("Egipto_ProcesoDeMomificacion");
             Debug.Log("Desbloqueado: ProcesoDeMomificacion");
@@ -372,37 +368,6 @@ public class GridManager : MonoBehaviour
         GameSceneManager.instance.GameOverEgyptFuture(_survivedTime, true);
     }
 
-
-    //Cada vez que se obtienen puntos
-    public void AddPoints(int points)
-    {
-        _playerScore += points; // Sumar directamente los puntos obtenidos
-        _scoreHistory.Enqueue((Time.time, points));
-
-        // Limpia la cola eliminando los puntos fuera del rango de 60 segundos
-        while (_scoreHistory.Count > 0 && Time.time - _scoreHistory.Peek().time > 60f)
-        {
-            _scoreHistory.Dequeue();
-        }
-    }
-
-    //Puntos en los ultimos 60 segundos
-    private int PointsInLastMinute()
-    {
-        int totalPoints = 0;
-
-        // Suma los puntos dentro del rango de 60 segundos
-        foreach (var entry in _scoreHistory)
-        {
-            if (Time.time - entry.time <= 120f)
-            {
-                totalPoints += entry.points;
-            }
-        }
-
-        return totalPoints;
-    }
-
     public void ShowOptions()
     {
         _optionsPanel.SetActive(true);
@@ -445,19 +410,6 @@ public class GridManager : MonoBehaviour
         GameSceneManager.instance.ResetState();
         // Se comienza la transición para volver al Lobby
         StartCoroutine(LoadingScreenManager.instance.FinalFade("LobbyMenu"));
-
-        // Guardar el récord
-        RecordManager.Instance.SaveRecord("Egypt", _playerScore);
-
-        // Mostrar el récord solo si MinigameController está disponible
-        if (MinigameController.Instance != null)
-        {
-            MinigameController.Instance.ShowRecord();
-        }
-        else
-        {
-            Debug.LogWarning("MinigameController.Instance no está presente en la escena.");
-        }
     }
 
 }

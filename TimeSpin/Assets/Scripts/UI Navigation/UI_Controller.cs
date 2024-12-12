@@ -59,6 +59,10 @@ public class UI_Controller : MonoBehaviour
 
     public GameObject FondoCinematica;
 
+    public GameObject joystick;
+
+    public bool videoPrepared = false;
+
     private void Awake()
     {
         if (instance == null)
@@ -89,6 +93,7 @@ public class UI_Controller : MonoBehaviour
             Volver.SetActive(false);
             Nombre.SetActive(false);
             AbandonarBoton.SetActive(true);
+            joystick.SetActive(true);
 
             // Se agregan los eventos a los botones asociados
             avanzarButton.onClick.AddListener(OnAvanzarButtonClicked);
@@ -197,8 +202,14 @@ public class UI_Controller : MonoBehaviour
             // Agregar el listener para el bot?n de pr?ctica
             practica.onClick.AddListener(OnPracticaButtonClicked);
 
-            // Se suscribe al evento del vídeo
-            videoPlayer.loopPointReached += OnVideoEnd;
+            // Prepara el video
+            if (!MobileController.instance.isMobile())
+            {
+                videoPlayer.Prepare();
+                videoPlayer.prepareCompleted += OnVideoPrepared;
+                // Se suscribe al evento del vídeo
+                videoPlayer.loopPointReached += OnVideoEnd;
+            }
 
             // Si no se han inicializado ya, se inicializan los servicios de Unity
             if (GameSceneManager.instance.initializedServices) return;
@@ -242,13 +253,20 @@ public class UI_Controller : MonoBehaviour
         // Espera los 4 segundos
         yield return new WaitForSeconds(delay);
 
+        while (!videoPrepared && !MobileController.instance.isMobile())
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+
         // Oculta la imagen de desarrollador
         Desarrollador.SetActive(false);
 
         // Muestra la cinem?tica
         Cinematica.SetActive(true);
 
-        FondoCinematica.SetActive(true);
+        if(!MobileController.instance.isMobile()) { 
+            FondoCinematica.SetActive(true);
+        }
     }
 
     // M?todo que se ejecutar? cuando se pulse el bot?n de avanzar
@@ -260,9 +278,12 @@ public class UI_Controller : MonoBehaviour
 
     public void StartVideo()
     {
-        // Comenzar el vídeo
-        videoPlayer.Play();
-        StartCoroutine(HidePanel());
+        if (!MobileController.instance.isMobile())
+        {
+            // Comenzar el vídeo
+            videoPlayer.Play();
+            StartCoroutine(HidePanel());
+        }
     }
 
     private IEnumerator HidePanel()
@@ -286,6 +307,8 @@ public class UI_Controller : MonoBehaviour
 
         // Se coloca la cámara
         CharacterSelectionController.instance.SetMuseumCamera();
+        // Se muestra el joystick
+        joystick.SetActive(true);
         // Se activa el panel del fundido
         Image background = GameObject.FindGameObjectWithTag("Fundido").GetComponent<Image>();
         Color color = background.color;
@@ -374,6 +397,8 @@ public class UI_Controller : MonoBehaviour
         Camera.main.transform.rotation = rotacionCamara;
         // Se muestra el personaje correcto
         CharacterSelectionController.instance.SetCorrectPreview();
+        // Se oculta el joystick
+        joystick.SetActive(false);
     }
 
     public void OnVideoEnd(VideoPlayer vp)
@@ -388,6 +413,11 @@ public class UI_Controller : MonoBehaviour
         audioPlayer.PonerClip();
 
         GameSceneManager.instance.initiatedGame = true;
+    }
+
+    public void OnVideoPrepared(VideoPlayer vp)
+    {
+        videoPrepared = true;
     }
 
     public void ShowGameInfo()

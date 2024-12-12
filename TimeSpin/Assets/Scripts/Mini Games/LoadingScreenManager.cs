@@ -83,7 +83,14 @@ public class LoadingScreenManager : MonoBehaviour
             TMP_Text pointsText = GameObject.FindGameObjectWithTag("Puntuacion").GetComponent<TMP_Text>();
             pointsText.text = points.ToString();
             // Se indica si es record
-
+            if(isRecord)
+            {
+                GameObject panelRecord = GameObject.FindGameObjectWithTag("Record");
+                foreach (Transform child in panelRecord.transform)
+                {
+                    child.gameObject.SetActive(true);
+                }
+            }
             // Se obtiene el texto y el total de puntos para hacer la animación
             int targetPoints = GameSceneManager.instance.totalPoints;
             TMP_Text currentPointsText = GameObject.FindGameObjectWithTag("PuntuacionActual").GetComponent<TMP_Text>();

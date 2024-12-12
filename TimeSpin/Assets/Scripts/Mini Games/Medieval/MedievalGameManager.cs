@@ -11,7 +11,7 @@ public class MedievalGameManager : MonoBehaviour
 
     [SerializeField] private GameObject[] _swordPrefabs; // Prefabs de espadas (bronce, plata, oro)
     [SerializeField] private GameObject _spawnArea; // Donde aparecen las espadas
-    private const float SPAWN_INTERVAL = 4f; // Tiempo de aparición de espadas
+    private const float SPAWN_INTERVAL = 2.5f; // Tiempo de aparición de espadas
     private const float GAME_TIME = 60f; // Duración del minijuego
 
     private float _timeLeft; // Tiempo restante

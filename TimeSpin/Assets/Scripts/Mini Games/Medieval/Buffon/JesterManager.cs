@@ -11,15 +11,27 @@ public class JesterManager : MonoBehaviour
         // Obtener las espadas en la escena
         GameObject[] swords = GameObject.FindGameObjectsWithTag("Sword");
 
-        foreach (var sword in swords)
+        // Mantener un conjunto de espadas ya asignadas para evitar duplicados
+        HashSet<GameObject> assignedSwords = new HashSet<GameObject>();
+
+        // Recorremos cada bufón y le asignamos una espada disponible
+        foreach (var jester in _jesters)
         {
-            // Asignar espadas a bufones que no tengan objetivo
-            if (!_jesters.Any(j => j.IsTargeting(sword)))
+            // Si el bufón no tiene un objetivo actual
+            if (!jester.HasTarget())
             {
-                JesterController availableJester = _jesters.FirstOrDefault(j => !j.HasTarget());
-                if (availableJester != null)
+                // Buscar una espada que aún no haya sido asignada, no esté siendo objetivo de otros bufones, y su posición Y sea menor a 1
+                GameObject availableSword = swords
+                    .FirstOrDefault(sword =>
+                        !assignedSwords.Contains(sword) &&
+                        !_jesters.Any(j => j.IsTargeting(sword)) &&
+                        sword.transform.position.y < 0.2
+                    );
+
+                if (availableSword != null)
                 {
-                    availableJester.ActivateJester(sword);
+                    jester.ActivateJester(availableSword);
+                    assignedSwords.Add(availableSword); // Marcar esta espada como asignada
                 }
             }
         }

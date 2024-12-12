@@ -9,6 +9,7 @@ public class JesterController : MonoBehaviour
     private bool _isCarryingSword = false;
     private NavMeshAgent _agent;
     private Vector3 _wanderTarget;
+    [SerializeField] private Vector3[] _wanderDestinies;
 
     public bool IsActive { get; private set; } = false;
 
@@ -32,7 +33,15 @@ public class JesterController : MonoBehaviour
         else if (_targetSword != null)
         {
             // Si tiene una espada objetivo, se mueve hacia ella
-            _agent.SetDestination(_targetSword.transform.position);
+            // Se debe comprobar si la espada objetivo ha sido tomada por el jugador. Verificando su altura se puede comprobar
+            if (_targetSword.transform.position.y > 1f)
+            {
+                _targetSword = null;
+            }
+            else
+            {
+                _agent.SetDestination(_targetSword.transform.position);
+            }
         }
         else
         {
@@ -48,6 +57,7 @@ public class JesterController : MonoBehaviour
     {
         if (!IsActive)
         {
+            Debug.Log("Yendo a por espadas");
             _targetSword = targetSword;
             IsActive = true;
             _agent.SetDestination(_targetSword.transform.position);
@@ -73,23 +83,21 @@ public class JesterController : MonoBehaviour
 
     private void ChooseRandomWanderTarget()
     {
+        int randomIndex = Random.Range(0, _wanderDestinies.Length - 1);
         // Define un punto aleatorio dentro del área del mapa
-        _wanderTarget = new Vector3(Random.Range(-10f, 10f), 0, Random.Range(-10f, 10f));
+        _wanderTarget = _wanderDestinies[randomIndex];
     }
 
-    private void StealSword()
+    private void StealSword(GameObject sword)
     {
-        if (_targetSword != null)
-        {
-            _isCarryingSword = true;
-            _targetSword.transform.SetParent(transform);
-            _targetSword.transform.localPosition = new Vector3(0, 1, 0);
-            _targetSword.GetComponent<Rigidbody>().useGravity = false;
-            _targetSword.GetComponent<Collider>().enabled = false;
+        _isCarryingSword = true;
+        sword.transform.SetParent(transform);
+        sword.transform.localPosition = new Vector3(0, 1, 0);
+        sword.GetComponent<Rigidbody>().useGravity = false;
+        sword.GetComponent<Collider>().enabled = false;
 
-            StartCoroutine(DestroySwordAfterDelay(_targetSword));
-            _targetSword = null;
-        }
+        StartCoroutine(DestroySwordAfterDelay(sword));
+        _targetSword = null;
     }
 
     private IEnumerator DestroySwordAfterDelay(GameObject sword)
@@ -104,9 +112,9 @@ public class JesterController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // Si llega a la espada objetivo, la roba
-        if (other.gameObject == _targetSword && !_isCarryingSword)
+        if (!_isCarryingSword && other.gameObject.tag == "Sword")
         {
-            StealSword();
+            StealSword(other.gameObject);
         }
     }
 }

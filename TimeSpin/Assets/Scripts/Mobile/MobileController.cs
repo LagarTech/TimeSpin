@@ -13,6 +13,7 @@ public class MobileController : MonoBehaviour
 
     public GameObject panel;
 
+
     #region WebGL is on mobile check
 
     [DllImport("__Internal")]

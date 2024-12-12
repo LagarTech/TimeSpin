@@ -34,5 +34,6 @@ public class LobbyChestManager : MonoBehaviour
         GameObject.FindGameObjectWithTag("Logros").SetActive(false);
 
         SelectionTable.Instance.runningGame = true;
+        UI_Controller.instance.joystick.SetActive(true);
     }
 }

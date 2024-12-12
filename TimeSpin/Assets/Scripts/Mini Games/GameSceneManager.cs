@@ -6,6 +6,7 @@ using System.Dynamic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameSceneManager : MonoBehaviour
 {
@@ -70,9 +71,6 @@ public class GameSceneManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-
-            //Cargo el record guardado
-            highScore = PlayerPrefs.GetInt("HighScore", 0);
         }
         else
         {
@@ -215,29 +213,35 @@ public class GameSceneManager : MonoBehaviour
             // Se almacena el resultado en una lista
             bool isRecord = false;
 
-            // Verificar si es récord
-            if (totalPoints > highScore)
-            {
-                highScore = totalPoints;
-                isRecord = true;
-            }
-            else
-            {
-                isRecord = false;
-            }
-
             if (egypt)
             {
                 _resultsGames[1] = (int)survivedTime;
                 pointsGames[1] = resultPoints;
-                // Se comprueba si es récord
-
+                // Se comprueba si es record
+                if (!practiceStarted)
+                {
+                    int recordPoints = PlayerPrefs.GetInt("Egypt");
+                    if (resultPoints > recordPoints)
+                    {
+                        PlayerPrefs.SetInt("Egypt", resultPoints);
+                        isRecord = true;
+                    }
+                }
             }
             else
             {
                 _resultsGames[4] = (int)survivedTime;
                 pointsGames[4] = resultPoints;
-                // Se comprueba si es récord
+                // Se comprueba si es record
+                if (!practiceStarted)
+                {
+                    int recordPoints = PlayerPrefs.GetInt("Future");
+                    if (resultPoints > recordPoints)
+                    {
+                        PlayerPrefs.SetInt("Future", resultPoints);
+                        isRecord = true;
+                    }
+                }
 
             }
             // Se pasa dicha información a la pantalla de puntuaciones para mostrarlo
@@ -273,15 +277,15 @@ public class GameSceneManager : MonoBehaviour
 
             // Se comprueba si es record
             bool isRecord = false;
-            // Verificar si es récord
-            if (totalPoints > highScore)
+            // Se comprueba si es record
+            if (!practiceStarted)
             {
-                highScore = totalPoints;
-                isRecord = true;
-            }
-            else
-            {
-                isRecord = false;
+                int recordPoints = PlayerPrefs.GetInt("Maya");
+                if (resultPoints > recordPoints)
+                {
+                    PlayerPrefs.SetInt("Maya", resultPoints);
+                    isRecord = true;
+                }
             }
 
             // Se almacena el resultado en la lista
@@ -300,7 +304,7 @@ public class GameSceneManager : MonoBehaviour
     public void GameOverPrehistoryMedieval(int points, int numDefeated, bool prehistory)
     {
         if (!practiceStarted)
-        {   
+        {
             // Como resultado, se tomará el número de espadas cogidas y el número de dinosaurios derrotados
             bool isRecord = false;
 
@@ -308,28 +312,36 @@ public class GameSceneManager : MonoBehaviour
             int resultPoints = points;
             totalPoints += resultPoints; // Se suman los puntos al total
 
-            // Verificar si es récord
-            if (totalPoints > highScore)
-            {
-                highScore = totalPoints;
-                isRecord = true;
-            }
-            else
-            {
-                isRecord = false;
-            }
 
             if (prehistory)
             {
                 _resultsGames[0] = numDefeated;
                 pointsGames[0] = resultPoints;
                 // Se comprueba si es record
+                if (!practiceStarted)
+                {
+                    int recordPoints = PlayerPrefs.GetInt("Prehistory");
+                    if (resultPoints > recordPoints)
+                    {
+                        PlayerPrefs.SetInt("Prehistory", resultPoints);
+                        isRecord = true;
+                    }
+                }
             }
             else
             {
                 _resultsGames[2] = numDefeated;
                 pointsGames[2] = resultPoints;
                 // Se comprueba si es record
+                if (!practiceStarted)
+                {
+                    int recordPoints = PlayerPrefs.GetInt("Medieval");
+                    if (resultPoints > recordPoints)
+                    {
+                        PlayerPrefs.SetInt("Medieval", resultPoints);
+                        isRecord = true;
+                    }
+                }
             }
 
             // Se pasa dicha información a la pantalla de puntuaciones para mostrarlo
@@ -378,7 +390,7 @@ public class GameSceneManager : MonoBehaviour
         }
         // Se resetea la puntuación total
         totalPoints = 0;
-        
+
         RestartMenu();
 
         gameStarted = false;
@@ -388,10 +400,15 @@ public class GameSceneManager : MonoBehaviour
 
     public void RestartMenu()
     {
+        // Se resetean los botones
+        StartingManager.instance.UnlockButtons();
+        // Se reinicia el nobmre
+        SelectionController.instance.ModifyName("");
         // Se reactiva el menú
         UI_Controller.instance.Menu.SetActive(true);
         // Se reactiva el nombre
         UI_Controller.instance.Nombre.SetActive(true);
+        UI_Controller.instance.Nombre.GetComponent<InputField>().text = string.Empty;
         CharacterSelectionController.instance.skinName.text = "LAGAR BOY";
     }
 

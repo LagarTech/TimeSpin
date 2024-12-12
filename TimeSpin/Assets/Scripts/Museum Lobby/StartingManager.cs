@@ -5,8 +5,22 @@ using UnityEngine.UI;
 
 public class StartingManager : MonoBehaviour
 {
+    public static StartingManager instance;
+
     [SerializeField] private List<Button> _gamesButtons;
     [SerializeField] private List<GameObject> _playedGamesIcons;
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void Start()
     {
@@ -51,6 +65,19 @@ public class StartingManager : MonoBehaviour
         ColorBlock colores = button.colors;
         colores.normalColor = Color.gray; // Cambia a un color gris
         button.colors = colores;
+    }
+
+    public void UnlockButtons()
+    {
+        for(int i = 0; i < _gamesButtons.Count; i++)
+        {
+            Button button = _gamesButtons[i];
+            button.interactable = true;
+            ColorBlock colores = button.colors;
+            colores.normalColor = Color.white; // Cambia el color gris
+            button.colors = colores;
+            _playedGamesIcons[i].SetActive(false);
+        }
     }
 
 }
