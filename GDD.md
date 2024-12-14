@@ -539,17 +539,17 @@ Futuro: Escenarios futuristas llenos de luces neón y elementos flotantes, en un
 - **Hito 3**: El hito 3 hace referencia a la última fase de lanzamiento del videojuego que se completa el día 12/12/2024. Para esta última entrega se realizan una serie de arreglos de todos los bugs encontrados durante la fase de beta testing del juego. El juego se lanza para móviles y ordenador mediante la plataforma de Itch.io. Además de ello se realiza una campaña en redes sociales del lanzamiento de nuestro juego. Las principales redes en las que se promociona nuestro juego son en X y en Instagram a través de una cuenta que se dedica en exclusiva a la empresa LagarTech. En estas cuentas se sube todo lo relacionado con el juego (personajes, cinemática de introducción, fecha de lanzamiento etc). Para ello, se realizan publicaciones se una manera ingeniosa, dicha manera consta de presentar el juego y subir el contenido de forma que parece que son los propios personajes de nuestro juego los que llevan las cuentas de Instagram y X y son ellos quienes presentan el contenido.
 - **Ejemplo RSS1**:
   
-![Caja](Diseño/ImagenesGDD/Redes1.jpg)
+![Caja](Diseño/ImagenesGDD/Redes1.png)
 
 - **Personajes RSS**:
   
-![Caja](Diseño/ImagenesGDD/PersonajesRSS.jpg)
+![Caja](Diseño/ImagenesGDD/PersonajesRSS.png)
 
 - **Porfolio**:
 
-![Caja](Diseño/ImagenesGDD/Portfolio.jpg)
+![Caja](Diseño/ImagenesGDD/Portfolio.png)
 
 - **Porfolio2**:
 
-![Caja](Diseño/ImagenesGDD/Portfolio2.jpg)
+![Caja](Diseño/ImagenesGDD/Portfolio2.png)
 - **Fecha de lanzamiento**: La misma que el día que se lanza el hito 3.
