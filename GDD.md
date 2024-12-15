@@ -536,14 +536,28 @@ Futuro: Escenarios futuristas llenos de luces neón y elementos flotantes, en un
 ## 9. Hoja de ruta del desarrollo
 - **Hito 1**: Como se menciona en el apartado del roadmap, este primer hito del videojuego se compone del desarrollo y publicación de una versión prototipo del videojuego. Esta versión es una versión reducida que no incluye todas las funcionalidades pero que sí es una versión jugable. El objetivo de la publicación de esta versión es obtener una primera impresión acerca del videojuego y encontrar bugs y errores una vez los jugadores comiencen a jugar el juego. El desarrollo de esta versión comienza a mediados de septiembre y la publicación de esta se produce el día 27/10/2024.
 - **Hito 2**: Para esta segunda fase de la beta se incluyen una gran cantidad de mejoras sobre todo a nivel estético dentro de este juego. Dentro de estas mejoras destacan la integración de los modelos de personajes y escenarios a lo largo de todo el juego, transición entre las distintas escenas del juego, inclusión del shader para conseguir un mejor sombreado mediante cel shading y por último, se añade música en cada minijuego, en el menú principal y efectos de sonido dependiendo de la acción que realice el jugador. Además de estas mejoras artísticas, también se realizan algunas mejoras técnicas, entre ellas se destaca el arreglo de bugs, la implementación del sistema de puntuación de cada minijuego y una tabla de clasificación general, así como la posibilidad de que el jugador personalice su personaje como guste. También se añaden los logros y curiosidades para desbloquear y por último el juego es jugable en versión móvil.
-- **Hito 3**: El hito 3 hace referencia a la última fase de lanzamiento del videojuego que se completa el día 12/12/2024. Para esta última entrega se realizan una serie de arreglos de todos los bugs encontrados durante la fase de beta testing del juego. El juego se lanza para móviles y ordenador mediante la plataforma de Itch.io. Además de ello se realiza una campaña en redes sociales del lanzamiento de nuestro juego. Las principales redes en las que se promociona nuestro juego son en X y en Instagram a través de una cuenta que se dedica en exclusiva a la empresa LagarTech. En estas cuentas se sube todo lo relacionado con el juego (personajes, cinemática de introducción, fecha de lanzamiento etc). Para ello, se realizan publicaciones se una manera ingeniosa, dicha manera consta de presentar el juego y subir el contenido de forma que parece que son los propios personajes de nuestro juego los que llevan las cuentas de Instagram y X y son ellos quienes presentan el contenido.
-- **Ejemplo RSS1**:
+- **Hito 3**: El hito 3 hace referencia a la última fase de lanzamiento del videojuego que se completa el día 12/12/2024. Para esta última entrega se realizan una serie de arreglos de todos los bugs encontrados durante la fase de beta testing del juego. El juego se lanza para móviles y ordenador mediante la plataforma de Itch.io. 
+
+- **Fecha de lanzamiento**: La misma que el día que se lanza el hito 3.
+
+## 10. Campaña de publicación y redes sociales
+Además de ello se realiza una campaña en redes sociales del lanzamiento de nuestro juego. Las principales redes en las que se promociona nuestro juego son en X y en Instagram a través de una cuenta que se dedica en exclusiva a la empresa LagarTech. En estas cuentas se sube todo lo relacionado con el juego (personajes, cinemática de introducción, fecha de lanzamiento etc). Para ello, se realizan publicaciones se una manera ingeniosa, dicha manera consta de presentar el juego y subir el contenido de forma que parece que son los propios personajes de nuestro juego los que llevan las cuentas de Instagram y X y son ellos quienes presentan el contenido. El día de la publicación del juego se sube una foto con el logo de la empresa y el nombre del juego, estos se rodean por todos los personajes de TimeSpin, dando así a conocer a todos los personajes y más dinamismo e intriga al juego.
+
+- **Estrategia**:
+
+![Caja](Diseño/ImagenesGDD/estrategia.jpeg)
+
+- **Ejemplo RRSS1**:
   
 ![Caja](Diseño/ImagenesGDD/Redes1.png)
 
-- **Personajes RSS**:
+También se presentan también todos los personajes en una misma publicación, para así atraer la atención de los espectadores y que tengan toda la información recopilada en una misma imagen, de no ser así, de haber 14 imágenes (1 con cada personaje), se puede perder la atención de quienes vean dicha publicación.
+
+- **Personajes RRSS**:
   
 ![Caja](Diseño/ImagenesGDD/PersonajesRSS.png)
+
+Todas estas cosas se suben poco a poco para generar expectación entre los jugadores, lo primero que se sube a la cuenta es la carátula del juego acompañada de los personajes, pero en su versión silueta. Por último, se tiene un porfolio de la empresa que se crea directamente desde GitHub, en él, se publica todo tipo de información acerca del juego, del equipo de desarrollo y de los planes a futuro con TimeSpin.
 
 - **Porfolio**:
 
@@ -552,4 +566,4 @@ Futuro: Escenarios futuristas llenos de luces neón y elementos flotantes, en un
 - **Porfolio2**:
 
 ![Caja](Diseño/ImagenesGDD/Portfolio2.png)
-- **Fecha de lanzamiento**: La misma que el día que se lanza el hito 3.
+
